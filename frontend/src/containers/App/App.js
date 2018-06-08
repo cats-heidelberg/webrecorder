@@ -11,9 +11,9 @@ import { asyncConnect } from 'redux-connect';
 import { DragDropContext } from 'react-dnd';
 
 import { isLoaded as isAuthLoaded,
-         load as loadAuth } from 'redux/modules/auth';
-import { load as loadUser } from 'redux/modules/user';
-import { load as loadTemp } from 'redux/modules/tempUser';
+         load as loadAuth } from 'store/modules/auth';
+import { load as loadUser } from 'store/modules/user';
+import { load as loadTemp } from 'store/modules/tempUser';
 
 import { UserManagement } from 'containers';
 

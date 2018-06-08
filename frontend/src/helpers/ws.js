@@ -1,6 +1,6 @@
-import { updateUrlAndTimestamp } from 'redux/modules/controls';
-import { setSizeCounter } from 'redux/modules/sizeCounter';
-import { setStats } from 'redux/modules/infoStats';
+import { updateUrlAndTimestamp } from 'store/modules/controls';
+import { setSizeCounter } from 'store/modules/sizeCounter';
+import { setStats } from 'store/modules/infoStats';
 
 import config from 'config';
 

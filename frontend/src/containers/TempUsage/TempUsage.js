@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { showModal } from 'redux/modules/userLogin';
-import { load } from 'redux/modules/tempUser';
+import { showModal } from 'store/modules/userLogin';
+import { load } from 'store/modules/tempUser';
 
 import { TempUsageUI } from 'components/siteComponents';
 

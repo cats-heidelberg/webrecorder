@@ -5,8 +5,8 @@ import { withRouter } from 'react-router';
 import { saveDelay } from 'config';
 
 import { resetEditState as resetCollEditState,
-         edit as editCollDesc } from 'redux/modules/collection';
-import { loadCollections } from 'redux/modules/user';
+         edit as editCollDesc } from 'store/modules/collection';
+import { loadCollections } from 'store/modules/user';
 
 import CollectionHeaderUI from 'components/collection/CollectionHeaderUI';
 

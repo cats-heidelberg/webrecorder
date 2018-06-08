@@ -2,11 +2,11 @@ import React from 'react';
 import { asyncConnect } from 'redux-connect';
 import { batchActions } from 'redux-batched-actions';
 
-import { incrementCollCount } from 'redux/modules/auth';
+import { incrementCollCount } from 'store/modules/auth';
 import { isLoaded as areCollsLoaded, load as loadCollections,
-         createCollection } from 'redux/modules/collections';
-import { addUserCollection } from 'redux/modules/user';
-import { sortCollsByAlpha } from 'redux/selectors';
+         createCollection } from 'store/modules/collections';
+import { addUserCollection } from 'store/modules/user';
+import { sortCollsByAlpha } from 'store/selectors';
 
 import CollectionListUI from 'components/collection/CollectionListUI';
 
