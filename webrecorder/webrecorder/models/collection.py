@@ -1,31 +1,28 @@
-# standard library imports
-import os
+import gevent
+import logging
 import json
 import hashlib
-import logging
+import os
+
 from datetime import date
 
-# third party imports
-import gevent
-
-# library specific imports
+from pywb.utils.loaders import load
 from warcio.timeutils import timestamp20_now, timestamp_now
 
-from pywb.utils.loaders import load
 from pywb.warcserver.index.cdxobject import CDXObject
 
-from webrecorder.utils import get_new_id, sanitize_title
-from webrecorder.models.base import (RedisNamedMap, RedisOrderedList,
-                                     RedisUniqueComponent, RedisUnorderedList)
+from webrecorder.utils import sanitize_title, get_new_id
+from webrecorder.models.base import RedisUnorderedList, RedisOrderedList, RedisUniqueComponent, RedisNamedMap
+from webrecorder.models.recording import Recording
 from webrecorder.models.pages import PagesMixin
 from webrecorder.models.datshare import DatShare
-from webrecorder.models.recording import Recording
 from webrecorder.models.list_bookmarks import BookmarkList
 from webrecorder.rec.storage import get_storage as get_global_storage
-from webrecorder.rec.storage.storagepaths import (add_local_store_prefix,
-                                                  strip_prefix)
+
+from webrecorder.rec.storage.storagepaths import strip_prefix, add_local_store_prefix
 
 
+# ============================================================================
 class Collection(PagesMixin, RedisUniqueComponent):
     """Collection Redis building block.
 
@@ -85,7 +82,7 @@ class Collection(PagesMixin, RedisUniqueComponent):
 
         :param dict config: Webrecorder configuration
         """
-        cls.COLL_CDXJ_TTL = config['coll_cdxj_ttl']
+        cls.COLL_CDXJ_TTL = int(config['coll_cdxj_ttl'])
 
         cls.DEFAULT_STORE_TYPE = os.environ.get('DEFAULT_STORAGE', 'local')
 
@@ -166,6 +163,7 @@ class Collection(PagesMixin, RedisUniqueComponent):
 
         if public_only or not self.access.can_write_coll(self):
             lists = [blist for blist in lists if blist.is_public()]
+            #lists = [blist for blist in lists if self.access.can_read_list(blist)]
 
         return lists
 
@@ -277,7 +275,7 @@ class Collection(PagesMixin, RedisUniqueComponent):
         else:
             return len(self.get_lists())
 
-    def init_new(self, title, desc='', public=False, public_index=False):
+    def init_new(self, slug, title, desc='', public=False, public_index=False):
         """Initialize new collection.
 
         :param str title: title
@@ -352,9 +350,15 @@ class Collection(PagesMixin, RedisUniqueComponent):
 
         key_pattern = key_templ.format(rec='*')
 
+        #comp_map = self.get_comp_map()
+
+        #recs = self.redis.hvals(comp_map)
         recs = self.recs.get_keys()
 
         return [key_pattern.replace('*', rec) for rec in recs]
+
+    def get_warc_key(self):
+        return Recording.COLL_WARC_KEY.format(coll=self.my_id)
 
     def commit_all(self, commit_id=None):
         # see if pending commits have been finished
@@ -418,7 +422,7 @@ class Collection(PagesMixin, RedisUniqueComponent):
                     full_filename = os.path.join(coll_dir, 'warcs', filename)
 
                     rec_warc_key = recording.REC_WARC_KEY.format(rec=recording.my_id)
-                    coll_warc_key = recording.COLL_WARC_KEY.format(coll=self.my_id)
+                    coll_warc_key = self.get_warc_key()
 
                     self.redis.hset(coll_warc_key, filename, full_filename)
                     self.redis.sadd(rec_warc_key, filename)
@@ -580,7 +584,7 @@ class Collection(PagesMixin, RedisUniqueComponent):
         try:
             dt_str = date.fromtimestamp(int(self['created_at'])).isoformat()
         except:
-            dt_str = self['created_at'][:10] if self['created_at'] else ''
+            dt_str = self['created_at'][:10]
 
         return dt_str
 
@@ -612,7 +616,7 @@ class Collection(PagesMixin, RedisUniqueComponent):
         if not self.is_external():
             return 0
 
-        warc_key = Recording.COLL_WARC_KEY.format(coll=self.my_id)
+        warc_key = self.get_warc_key()
 
         if warc_map:
             self.redis.hmset(warc_key, warc_map)
@@ -687,7 +691,8 @@ class Collection(PagesMixin, RedisUniqueComponent):
     def sync_coll_index(self, exists=False, do_async=False):
         coll_cdxj_key = self.COLL_CDXJ_KEY.format(coll=self.my_id)
         if exists != self.redis.exists(coll_cdxj_key):
-            self.redis.expire(coll_cdxj_key, self.COLL_CDXJ_TTL)
+            if self.COLL_CDXJ_TTL > 0:
+                self.redis.expire(coll_cdxj_key, self.COLL_CDXJ_TTL)
             return
 
         cdxj_keys = self._get_rec_keys(Recording.CDXJ_KEY)
@@ -695,7 +700,8 @@ class Collection(PagesMixin, RedisUniqueComponent):
             return
 
         self.redis.zunionstore(coll_cdxj_key, cdxj_keys)
-        self.redis.expire(coll_cdxj_key, self.COLL_CDXJ_TTL)
+        if self.COLL_CDXJ_TTL > 0:
+            self.redis.expire(coll_cdxj_key, self.COLL_CDXJ_TTL)
 
         ges = []
         for cdxj_key in cdxj_keys:
@@ -737,7 +743,6 @@ class Collection(PagesMixin, RedisUniqueComponent):
                     break
                 except Exception as e:
                     import traceback
-
                     traceback.print_exc()
                     logging.error('Could not load: ' + cdxj_filename)
                     attempts += 1
@@ -746,13 +751,12 @@ class Collection(PagesMixin, RedisUniqueComponent):
                     if fh:
                         fh.close()
 
-            self.redis.expire(output_key, self.COLL_CDXJ_TTL)
+            if self.COLL_CDXJ_TTL > 0:
+                self.redis.expire(output_key, self.COLL_CDXJ_TTL)
 
         except Exception as e:
             logging.error('Error downloading cache: ' + str(e))
-
             import traceback
-
             traceback.print_exc()
 
         finally:

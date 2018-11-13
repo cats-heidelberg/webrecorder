@@ -83,7 +83,8 @@ class User(RedisUniqueComponent):
         desc = kwargs.get("desc", "")
         public = kwargs.get("public", False)
         public_index = kwargs.get("public_index", False)
-        coll = collection.init_new(coll_name, desc=desc, public=public, public_index=public_index)
+        kwargs = {k: v for k, v in kwargs.items() if k not in ("desc", "public", "public_index")}
+        coll = collection.init_new(coll_name, desc=desc, public=public, public_index=public_index, **kwargs)
 
         self.colls.add_object(coll_name, collection, owner=True)
 
@@ -271,12 +272,19 @@ class User(RedisUniqueComponent):
         else:
             return False
 
+    @property
+    def curr_role(self):
+        return self['role']
+
     def is_rate_limited(self, ip):
         if not self.rate_limit_hours or not self.rate_limit_max:
-            return False
+            return None
 
         if self.access.is_superuser():
-            return False
+            return None
+
+        if self.curr_role == 'rate-unlimited-archivist':
+            return None
 
         rate_key = self.RATE_LIMIT_KEY.format(ip=ip, H='')
         h = int(datetime.utcnow().strftime('%H'))
