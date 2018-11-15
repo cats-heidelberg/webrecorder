@@ -73,7 +73,7 @@ class API(object):
             os.environ["REDIS_BASE_URL"], decode_responses=True
         )
         self.wr_config = webrecorder.utils.load_wr_config()
-        self.user_manager = UserManager(self.strict_redis, self.wr_config)
+        self.user_manager = self.UserManager(self.strict_redis, self.wr_config)
         return
 
     @staticmethod
