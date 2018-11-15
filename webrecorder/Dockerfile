@@ -12,6 +12,8 @@ RUN pip install -r requirements.txt
 USER archivist
 
 VOLUME /data/
+VOLUME /tmp/warcs
+VOLUME /tmp/json_files
 
 # Expose as VOLUMEs for nginx access
 VOLUME /usr/local/lib/python3.5/site-packages/pywb/
