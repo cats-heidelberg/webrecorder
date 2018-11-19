@@ -162,9 +162,13 @@ class API(object):
     def manage(self):
         """Manage OpenDACHS tickets."""
         try:
-            files = os.listdir("/tmp/json_files")
+            dir = "/tmp/json_files"
+            files = os.listdir(dir)
             for filename in files:
                 try:
+                    filename = "{dir}/{filename}".format(
+                        dir=dir, filename=filename
+                    )
                     fp = open(filename)
                     data = json.load(fp)
                     if data["flag"] == "submitted":
