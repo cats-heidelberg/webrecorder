@@ -18,7 +18,7 @@ services:
             - ./webrecorder/:/code/
             - ./webrecorder/proxy-certs:/code/proxy-certs
             - ./data:/data
-            - ~/productive/opendachs/tmp
+            - ~/productive/opendachs/tmp:/tmp
 
         container_name: webrecorder_app_1
 
