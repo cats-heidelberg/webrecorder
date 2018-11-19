@@ -171,7 +171,7 @@ class API(object):
                     )
                     fp = open(filename)
                     data = json.load(fp)
-                    if data["flag"] == "submitted":
+                    if data["flag"] == "pending":
                         self.create_user(filename)
                     elif data["flag"] == "deleted":
                         self.delete_user(filename)
