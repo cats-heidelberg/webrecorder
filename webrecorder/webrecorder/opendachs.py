@@ -23,6 +23,7 @@
 import re
 import os
 import json
+import base64
 
 # third party imports
 import redis
@@ -119,8 +120,8 @@ class API(object):
         try:
             with open(filename) as fp:
                 data = json.load(fp)
-            username, role, password, email_addr = json.loads(data[1])
-            err, user = user_manager.create_user_as_admin(
+            username, role, password, email_addr = json.loads(data["user"])
+            err, user = self.user_manager.create_user_as_admin(
                 email_addr,
                 username,
                 password,
