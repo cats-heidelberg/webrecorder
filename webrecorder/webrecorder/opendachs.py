@@ -142,7 +142,9 @@ class API(object):
             elif user is None:
                 msg = "failed to create user"
                 raise RuntimeError(msg)
-            self.import_warc(data["archive"], user[0])
+            self.import_warc("/{archive}".format(
+                archive=data["archive"]), user[0]
+            )
         except RuntimeError:
             raise
         except Exception as exception:
