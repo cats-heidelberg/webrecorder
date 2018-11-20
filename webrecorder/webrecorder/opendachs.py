@@ -102,6 +102,8 @@ class API(object):
                     self.wr_config
                 )
             )
+            wr_config = {k: v for k, v in self.wr_config.items()}
+            wr_config.update({"wr_temp_coll": "ticket"})
             upload_id = self.generate_upload_id()
             inplace_importer = webrecorder.models.importer.InplaceImporter(
                 self.strict_redis, self.wr_config, user, wr_indexer, upload_id
@@ -121,8 +123,11 @@ class API(object):
             with open(filename) as fp:
                 data = json.load(fp)
             username, role, password, email_addr = json.loads(data["user"])
+            # Webrecorder API uses email_addr in order to manage users
+            # use email_addr + ticket ID to create unique email_addr
+            # not a valid email_addr but Webrecorder is not sending emails
             err, user = self.user_manager.create_user_as_admin(
-                email_addr,
+                email_addr + data["id"],
                 username,
                 password,
                 password,
