@@ -106,7 +106,7 @@ class API(object):
             wr_config.update({"wr_temp_coll": "ticket"})
             upload_id = self.generate_upload_id()
             inplace_importer = webrecorder.models.importer.InplaceImporter(
-                self.strict_redis, self.wr_config, user, wr_indexer, upload_id
+                self.strict_redis, wr_config, user, wr_indexer, upload_id
             )
             inplace_importer.multifile_upload(user, [archive])
         except Exception as exception:
@@ -122,7 +122,7 @@ class API(object):
         try:
             with open(filename) as fp:
                 data = json.load(fp)
-            username, role, password, email_addr = json.loads(data["user"])
+            username, role, password, email_addr = data["user"]
             # Webrecorder API uses email_addr in order to manage users
             # use email_addr + ticket ID to create unique email_addr
             # not a valid email_addr but Webrecorder is not sending emails
