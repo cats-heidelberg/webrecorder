@@ -87,6 +87,7 @@ services:
             - ./data:/data
             - ./webrecorder/:/code/
             - ./frontend/:/frontend/
+            - ~/productive/opendachs/tmp:/tmp
 
         ports:
             - 8089:80
