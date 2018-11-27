@@ -28,7 +28,7 @@ upload_coll:
 
         Date Created: **{datetime}**
 
-    public: true
+    public: false
 
 wr_temp_coll:
     title: 'Webrecorder Collection'
