@@ -160,7 +160,7 @@ class API(object):
         try:
             with open(filename) as fp:
                 data = json.load(fp)
-            username, _, _, _ = json.loads(data[1])
+            username, _, _, _ = json.loads(data["user"])
             self.user_manager.delete_user(username)
         except Exception as exception:
             msg = "failed to delete user:{}".format(exception)
