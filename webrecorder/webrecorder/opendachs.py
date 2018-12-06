@@ -86,8 +86,7 @@ class API(object):
         try:
             upload_id = base64.b32encode(os.urandom(5)).decode("utf-8")
         except Exception as exception:
-            msg = "failed to get upload ID:{}".format(exception)
-            raise RuntimeError(msg)
+            raise RuntimeError("failed to get upload ID") from exception
         return upload_id
 
     def import_warc(self, archive, user):
@@ -110,8 +109,7 @@ class API(object):
             )
             inplace_importer.multifile_upload(user, [archive])
         except Exception as exception:
-            msg = "failed to import WARC archive:{}".format(exception)
-            raise RuntimeError(msg)
+            raise RuntimeError("failed to import WARC archive") from exception
         return
 
     def create_user(self, filename):
@@ -148,8 +146,7 @@ class API(object):
         except RuntimeError:
             raise
         except Exception as exception:
-            msg = "failed to create user:{}".format(exception)
-            raise RuntimeError(msg)
+            raise RuntimeError("failed to create user") from exception
         return
 
     def delete_user(self, filename):
@@ -163,19 +160,18 @@ class API(object):
             username, _, _, _ = data["user"]
             self.user_manager.delete_user(username)
         except Exception as exception:
-            msg = "failed to delete user:{}".format(exception)
-            raise RuntimeError(msg)
+            raise RuntimeError("failed to delete user") from exception
         return
 
     def manage(self):
         """Manage OpenDACHS tickets."""
         try:
-            dir = "/tmp/json_files"
-            files = os.listdir(dir)
+            dir_ = "/tmp/json_files"
+            files = os.listdir(dir_)
             for filename in files:
                 try:
                     filename = "{dir}/{filename}".format(
-                        dir=dir, filename=filename
+                        dir=dir_, filename=filename
                     )
                     fp = open(filename)
                     data = json.load(fp)
@@ -188,21 +184,23 @@ class API(object):
                         raise RuntimeError(msg)
                 except Exception as exception:
                     if "data" in locals():
-                        msg = "failed to manage OpenDACHS ticket {}:{}".format(
-                            data["id"], exception
-                        )
+                        raise RuntimeError(
+                            "failed to manage OpenDACHS ticket {}".format(
+                                data["id"]
+                            )
+                        ) from exception
                     else:
-                        msg = "failed to manage OpenDACHS ticket:{}".format(
-                            exception
-                        )
-                    raise RuntimeError(msg)
+                        raise RuntimeError(
+                            "failed to manage OpenDACHS ticket"
+                        ) from exception
                 finally:
                     if "fp" in locals():
                         fp.close()
                     os.unlink(filename)
         except Exception as exception:
-            msg = "failed to manage OpenDACHS tickets:{}".format(exception)
-            raise RuntimeError(msg)
+            raise RuntimeError(
+                "failed to manage OpenDACHS tickets"
+            ) from exception
         return
 
 
@@ -212,8 +210,7 @@ def main():
         api = API()
         api.manage()
     except Exception as exception:
-        msg = "failed to call API:{}".format(exception)
-        raise SystemExit(msg)
+        raise SystemExit("failed to call API") from exception
     return
 
 
