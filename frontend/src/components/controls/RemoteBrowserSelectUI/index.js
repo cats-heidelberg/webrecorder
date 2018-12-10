@@ -60,7 +60,7 @@ class RemoteBrowserSelectUI extends PureComponent {
 
     this.setState({ open: false });
 
-    if (active) {
+    if (false) {
       const { archiveId, coll, collId, extractMode, rec, user } = params;
 
       if (currMode.includes('replay')) {
