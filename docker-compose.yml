@@ -137,15 +137,6 @@ services:
             - ./data:/data
             - ~/productive/opendachs/tmp:/tmp
 
-    # Postfix (if sending mail locally)
-    mailserver:
-        restart: always
-        image: catatnight/postfix
-
-        environment:
-            - "maildomain=localhost"
-            - "smtp_user=test:archive"
-
 
 networks:
     default:
