@@ -10,7 +10,7 @@ import { RecordingToolsUI } from 'components/controls';
 
 const mapStateToProps = ({ app }) => {
   return {
-    activeBrowser: app.getIn(['remoteBrowsers', 'activeBrowser']),
+    activeBrowser: app.getIn(['remoteBrowsers']),
     autoscroll: app.getIn(['controls', 'autoscroll']),
     timestamp: app.getIn(['controls', 'timestamp']),
     url: app.getIn(['controls', 'url'])
