@@ -37,7 +37,9 @@ class NewRecording extends Component {
   }
 
   render() {
-    return (null);
+    return (
+      <NewRecordingUI {...this.props} />
+    );
   }
 }
 
