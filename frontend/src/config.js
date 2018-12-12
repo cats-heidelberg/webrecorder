@@ -48,7 +48,6 @@ module.exports = Object.assign({
   },
   columnMappings: {
     'session': 'rec',
-    'browser': 'firefox:57'
   },
   defaultBookmarkDesc: 'No description provided.',
   defaultCollectionTitle: 'New Collection',
