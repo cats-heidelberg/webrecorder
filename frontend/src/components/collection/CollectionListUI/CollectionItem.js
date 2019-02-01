@@ -61,7 +61,7 @@ class CollectionItem extends PureComponent {
           <Col className="collection-time" xs={6} md={2}>
             Created {buildDate(collection.get('created_at'), false, true)}
           </Col>
-          <Col className="collection-cover-page" xs={5} md={2}>
+          <Col className="collection-cover-page" xs={5} md={1}>
             <Button className="rounded" onClick={this.goToCover}>
               Cover Page
             </Button>
