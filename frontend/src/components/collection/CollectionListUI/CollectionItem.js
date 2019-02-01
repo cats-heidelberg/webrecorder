@@ -53,6 +53,38 @@ class CollectionItem extends PureComponent {
                 <Link className="collection-title" to={`${getCollectionLink(collection)}/index`}>{collection.get('title')}</Link> :
                 <span className="collection-title">{collection.get('title')}</span>
             }
+            <Button className="rounded" onClick={this.goToCover}>
+              View Cover Page
+            </Button>
+          </Col>
+          <Col xs={6} md={1} className="collection-list-size">
+            <SizeFormat bytes={collection.get('size')} />
+          </Col>
+          <Col className="collection-time" xs={6} md={2}>
+            Created {buildDate(collection.get('created_at'), false, true)}
+          </Col>
+          <Col className="collection-delete-action col-xs-offset-7 col-md-offset-0" xs={5} md={2}>
+            {
+              canAdmin &&
+                <React.Fragment>
+                  <span className={classNames('visibility-button', { 'is-public': collection.get('public') })}>
+                    { collection.get('public') ? 'PUBLIC' : 'PRIVATE' }
+                  </span>
+                </React.Fragment>
+            }
+          </Col>
+        </Row>
+      </li>
+    );
+    /*(
+      <li className={descClasses} key={collection.get('id')}>
+        <Row>
+          <Col sm={12} md={7}>
+            {
+              canAdmin || collection.get('public_index') ?
+                <Link className="collection-title" to={`${getCollectionLink(collection)}/index`}>{collection.get('title')}</Link> :
+                <span className="collection-title">{collection.get('title')}</span>
+            }
             <p className="collection-list-description">
               {
                 truncate(removeMd(collection.get('desc'), { useImgAltText: false }), 3, new RegExp(/([.!?])/))
@@ -90,7 +122,7 @@ class CollectionItem extends PureComponent {
           </Col>
         </Row>
       </li>
-    );
+    );*/
   }
 }
 
