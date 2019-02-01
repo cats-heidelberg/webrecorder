@@ -114,9 +114,6 @@ class CollectionListUI extends Component {
                 {
                   !isAnon && canAdmin &&
                     <React.Fragment>
-                      <Button onClick={this.toggle} className="rounded">
-                        <span className="glyphicon glyphicon-plus glyphicon-button" /> New Collection
-                      </Button>
                       <Upload classes="rounded">
                         <UploadIcon /> Upload
                       </Upload>
@@ -145,12 +142,6 @@ class CollectionListUI extends Component {
             }
           </Col>
         </Row>
-        <NewCollection
-          close={this.close}
-          visible={showModal}
-          createCollection={this.createCollection}
-          creatingCollection={collections.get('creatingCollection')}
-          error={collections.get('creationErorr')} />
       </React.Fragment>
     );
   }
