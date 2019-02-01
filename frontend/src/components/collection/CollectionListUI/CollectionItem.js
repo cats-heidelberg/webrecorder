@@ -61,7 +61,12 @@ class CollectionItem extends PureComponent {
           <Col className="collection-time" xs={6} md={2}>
             Created {buildDate(collection.get('created_at'), false, true)}
           </Col>
-          <Col className="collection-delete-action col-xs-offset-7 col-md-offset-0" xs={5} md={2}>
+          <Col className="collection-cover-page" xs={5} md={2}>
+            <Button className="rounded" onClick={this.goToCover}>
+              Cover Page
+            </Button>
+          </Col>
+          <Col className="collection-delete-action col-xs-offset-7 col-md-offset-0" xs={4} md={2}>
             {
               canAdmin &&
                 <React.Fragment>
@@ -70,11 +75,6 @@ class CollectionItem extends PureComponent {
                   </span>
                 </React.Fragment>
             }
-          </Col>
-          <Col className="collection-cover-page" xs={4} md={2}>
-            <Button className="rounded" onClick={this.goToCover}>
-              Cover Page
-            </Button>
           </Col>
         </Row>
       </li>
