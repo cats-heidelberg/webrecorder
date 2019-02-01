@@ -47,7 +47,7 @@ class CollectionItem extends PureComponent {
     return (
       <li className={descClasses} key={collection.get('id')}>
         <Row>
-          <Col sm={12} md={7}>
+          <Col sm={12} md={6}>
             {
               canAdmin || collection.get('public_index') ?
                 <Link className="collection-title" to={`${getCollectionLink(collection)}/index`}>{collection.get('title')}</Link> :
