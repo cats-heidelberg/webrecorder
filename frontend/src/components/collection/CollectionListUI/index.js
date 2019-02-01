@@ -107,6 +107,7 @@ class CollectionListUI extends Component {
           <title>{`${displayName}'s Collections`}</title>
         </Helmet>
         <Row>
+         /*}
           <Col xs={12} sm={3} className="collection-description">
             <InlineEditor
               canAdmin={canAdmin}
@@ -142,6 +143,7 @@ class CollectionListUI extends Component {
               readOnly={isAnon || !canAdmin}
               success={this.props.edited} />
           </Col>
+          */
           <Col xs={12} sm={9} className="wr-coll-meta">
 
             <Row>
