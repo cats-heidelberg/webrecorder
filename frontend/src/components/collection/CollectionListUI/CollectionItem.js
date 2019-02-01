@@ -53,9 +53,7 @@ class CollectionItem extends PureComponent {
                 <Link className="collection-title" to={`${getCollectionLink(collection)}/index`}>{collection.get('title')}</Link> :
                 <span className="collection-title">{collection.get('title')}</span>
             }
-            <Button className="rounded" onClick={this.goToCover}>
-              View Cover Page
-            </Button>
+
           </Col>
           <Col xs={6} md={1} className="collection-list-size">
             <SizeFormat bytes={collection.get('size')} />
@@ -72,6 +70,11 @@ class CollectionItem extends PureComponent {
                   </span>
                 </React.Fragment>
             }
+          </Col>
+          <Col>
+            <Button className="rounded" onClick={this.goToCover}>
+              Cover Page
+            </Button>
           </Col>
         </Row>
       </li>
