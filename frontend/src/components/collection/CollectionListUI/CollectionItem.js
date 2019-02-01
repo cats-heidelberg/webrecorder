@@ -71,7 +71,7 @@ class CollectionItem extends PureComponent {
                 </React.Fragment>
             }
           </Col>
-          <Col>
+          <Col className="collection-cover-page" xs={6} md={2}>
             <Button className="rounded" onClick={this.goToCover}>
               Cover Page
             </Button>
