@@ -120,12 +120,12 @@ class RemoteBrowserSelectUI extends PureComponent {
             <div>loading options..</div>
           }
           { loaded && browsers &&
-              browsers.valueSeq().map(browser => <RemoteBrowserOption browser={browser} key={browser.get('id') ? browser.get('id') : 'native'} selectBrowser={this.selectBrowser} isActive={instanceContext === browser.get('id')} />)
+            browsers.valueSeq().map(browser => <RemoteBrowserOption browser={browser} key={browser.get('id') ? browser.get('id') : 'native'} selectBrowser={this.selectBrowser} isActive={instanceContext === browser.get('id')} />)
+          }
+          {
+            <RemoteBrowserOption browser={fromJS({ id: null, name: 'Use Current Browser' })} selectBrowser={this.selectBrowser} isActive={instanceContext === null} />
           }
         </div>
-        {
-            <RemoteBrowserOption browser={fromJS({ id: null, name: 'Use Current Browser' })} selectBrowser={this.selectBrowser} isActive={instanceContext === null} />
-        }
       </DropdownButton>
     );
   }
