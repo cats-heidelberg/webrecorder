@@ -91,6 +91,7 @@ class RemoteBrowserSelectUI extends PureComponent {
     const instanceContext = active ? activeBrowser : selectedBrowser;
 
     //const activeBrowserEle = browsers ? browsers.find(b => b.get('id') === instanceContext) : null;
+    this.getRemoteBrowsers;
     const activeBrowserEle = browsers ? browsers.find(b => b.get('id') === "chrome:60") : null;
 
     const btn = activeBrowserEle ?
