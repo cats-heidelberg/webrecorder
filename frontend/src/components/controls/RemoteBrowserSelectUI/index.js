@@ -86,6 +86,8 @@ class RemoteBrowserSelectUI extends PureComponent {
     const { active, activeBrowser, browsers, loading, loaded, selectedBrowser } = this.props;
     const { open } = this.state;
 
+    console.log(browsers);
+
     // if this in an active instance of the widget (on replay/record interface) use activeBrowser prop
     // otherwise use the selected browser from the ui.
     const instanceContext = active ? activeBrowser : selectedBrowser;
