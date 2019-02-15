@@ -131,8 +131,8 @@ class UserManager(object):
                           host=host)
 
             # add to announce list if user opted in
-            if input_data.get('announce_mailer') == '1' and self.announce_list:
-                self.add_to_mailing_list(username, email, name,
+            if input_data.get('announce_mailer') and self.announce_list:
+                self.add_to_mailing_list(username, email, full_name,
                                          list_endpoint=self.announce_list)
 
             if self.invites_enabled:
@@ -788,6 +788,31 @@ class CLIUserManager(UserManager):
         #    self.cork._store.save_users()
 
         print('All done!')
+
+    def list_users(self):
+        """List all existing users."""
+        input_ = input(
+            "{number} users, do you want to list users? (y/n)".format(
+                number=len(self.all_users)
+            )
+        )
+        if input_ == "Y" or input_ == "y":
+            print(
+                "\n".join(
+                    "User {username}".format(username=user)
+                    for user in self.all_users
+                )
+            )
+
+    def check_user(self, username):
+        """Check if username exists.
+
+        :param str username: username
+        """
+        if username not in self.all_users:
+            print("User {username} does not exist".format(username=username))
+        else:
+            print("User {username} exists".format(username=username))
 
     def delete_user(self):
         """Remove a user from the system"""

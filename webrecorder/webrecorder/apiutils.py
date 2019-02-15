@@ -60,6 +60,7 @@ class WRAPISpec(object):
         'list': 'List Id',
         'list_id': 'List Id',
         'bid': 'Bookmark Id',
+        'autoid': 'Automation Id',
 
         'title': 'Title',
         'desc': 'Description',
@@ -67,6 +68,7 @@ class WRAPISpec(object):
         'timestamp': 'Archived at Timestamp',
         'browser': 'Browser Used',
         'page_id': 'Page Id',
+        'upload_id': 'Upload Id',
     }
 
     opt_bool_params = {

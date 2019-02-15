@@ -12,9 +12,9 @@ import './style.scss';
 
 
 class RecordingToolsUI extends PureComponent {
-
   static propTypes = {
     activeBrowser: PropTypes.string,
+    auth: PropTypes.object,
     autoscroll: PropTypes.bool,
     history: PropTypes.object,
     match: PropTypes.object,
@@ -82,11 +82,19 @@ class RecordingToolsUI extends PureComponent {
 
   catalogView = () => {
     const { match: { params: { user, coll } } } = this.props;
-    this.props.history.push(`/${user}/${coll}/index`);
+    this.props.history.push(`/${user}/${coll}/manage`);
   }
 
   toggleAutoscroll = () => {
     this.props.toggleAutoscroll(!this.props.autoscroll);
+  }
+
+  startAuto = () => {
+    apiFetch(`/browser/behavior/start/${this.props.reqId}`, {}, { method: 'POST' });
+  }
+
+  stopAuto = () => {
+    apiFetch(`/browser/behavior/stop/${this.props.reqId}`, {}, { method: 'POST' });
   }
 
   userGuide = () => {
@@ -94,8 +102,11 @@ class RecordingToolsUI extends PureComponent {
   }
 
   openClipboard = () => this.props.toggleClipboard(true)
+
   closeClipboard = () => this.props.toggleClipboard(false)
+
   _open = () => this.setState({ clipboardOpen: true })
+
   _close = () => this.setState({ clipboardOpen: false })
 
   render() {
@@ -105,6 +116,7 @@ class RecordingToolsUI extends PureComponent {
     const isNew = currMode === 'new';
     const isWrite = ['new', 'patch', 'record', 'extract'].includes(currMode);
     const modalFooter = <Button onClick={this._close}>Close</Button>;
+    const newFeatures = canAdmin && ['admin', 'beta-archivist'].includes(this.props.auth.get('role'));
 
     return (
       <div className="recording-actions text-center hidden-xs">
@@ -115,21 +127,23 @@ class RecordingToolsUI extends PureComponent {
           propsPass={{ onEntered: this.openClipboard, onExited: this.closeClipboard }}
           footer={modalFooter}>
           <p>Any text selected in the remote browser will appear below.</p>
-          <p>You can also enter text here to paste (Ctrl+V) into the remote browser.</p>
+          <p>You can also paste text here to send to remote browser.</p>
           <textarea id="clipboard" autoFocus style={{ width: '100%', minHeight: 200 }} />
         </Modal>
         {
           canAdmin && !isNew &&
             <DropdownButton pullRight noCaret id="tool-dropdown" title={<span className="glyphicon glyphicon-option-vertical" aria-hidden="true" />}>
-              <MenuItem onClick={this.catalogView}>Collection Index</MenuItem>
+
               {
-                currMode.includes('replay') &&
+                newFeatures &&
                   <React.Fragment>
+                    <MenuItem onClick={this.startAuto}>Start Automation</MenuItem>
+                    <MenuItem onClick={this.stopAuto}>Stop Automation</MenuItem>
                     <MenuItem divider />
-                    <MenuItem onClick={this.onPatch}>Patch this URL</MenuItem>
-                    <MenuItem onClick={this.onRecord}>Record this URL again</MenuItem>
                   </React.Fragment>
               }
+
+              <MenuItem onClick={this.catalogView}>Collection Index</MenuItem>
               <MenuItem divider />
               <MenuItem onClick={this.toggleAutoscroll}>{autoscroll ? 'Turn off' : 'Turn on'} autoscroll</MenuItem>
               {
@@ -138,17 +152,7 @@ class RecordingToolsUI extends PureComponent {
                     <span className="glyphicon glyphicon-paste" /> Clipboard
                   </MenuItem>
               }
-              <MenuItem divider />
-              <MenuItem onClick={this.userGuide}>Help</MenuItem>
             </DropdownButton>
-        }
-        {
-          !isNew && product !== 'player' &&
-            <BugReport />
-        }
-        {
-          !isWrite && product !== 'player' &&
-            <ShareWidget />
         }
       </div>
     );

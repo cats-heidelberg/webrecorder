@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { checkUser, sendSignup } from 'redux/modules/userSignup';
+import { checkUser, sendSignup } from 'store/modules/userSignup';
 import { UserSignup } from 'components/siteComponents';
 
 
@@ -13,6 +13,7 @@ const mapStateToProps = ({ app }) => {
     checkedUsername: userSignup.get('checkedUsername'),
     errors: userSignup.get('errors'),
     result: userSignup.get('result'),
+    submitting: userSignup.get('submitting'),
     success: userSignup.get('success'),
     userCheck: userSignup.get('userCheck'),
     user: app.getIn(['auth', 'user'])

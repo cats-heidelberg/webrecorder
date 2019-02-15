@@ -37,12 +37,6 @@ class ReplayUI extends Component {
 
     return (
       <div role="presentation" className="container-fluid wr-controls navbar-default">
-        {
-          currMode.includes('replay') && !isMobile &&
-            <Button className="sidebar-toggle" onClick={this.toggleSidebar}>
-              <InfoIcon />
-            </Button>
-        }
 
         {
           canAdmin && !isMobile &&

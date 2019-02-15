@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Alert, Button, Checkbox, ControlLabel, Form,
-         HelpBlock, FormControl, FormGroup } from 'react-bootstrap';
+import { Alert, Button, Checkbox, ControlLabel, Form, HelpBlock, FormControl, FormGroup } from 'react-bootstrap';
 
 import { product, userRegex } from 'config';
 
 import { passwordPassRegex } from 'helpers/utils';
 import { TempUsage } from 'containers';
+import { LoaderIcon } from 'components/icons';
 
 import './style.scss';
 
@@ -21,6 +21,7 @@ class UserSignup extends Component {
     checkedUsername: PropTypes.string,
     result: PropTypes.string,
     errors: PropTypes.object,
+    submitting: PropTypes.bool,
     success: PropTypes.bool,
     user: PropTypes.object,
     userCheck: PropTypes.bool,
@@ -42,18 +43,36 @@ class UserSignup extends Component {
     };
   }
 
+  componentDidUpdate() {
+    const { confirmpassword, missingPw, password } = this.state;
+
+    // clear missing confirm password error
+    if(missingPw && password && confirmpassword) {
+      this.setState({ missingPw: false});
+    }
+  }
+
   save = (evt) => {
     evt.preventDefault();
     const { user } = this.props;
-    const { announce_mailer, username, name,
-            email, password, confirmpassword, moveTemp, toColl } = this.state;
+    const {
+      announce_mailer,
+      confirmpassword,
+      email,
+      moveTemp,
+      name,
+      password,
+      toColl,
+      username
+    } = this.state;
 
     if (!password || !confirmpassword) {
       this.setState({ missingPw: true });
     }
 
     if (username && this.validateUsername() === 'success' &&
-       password && confirmpassword && this.validatePassword() === null && email) {
+       password && confirmpassword && this.validatePassword() === null &&
+       email && this.validateEmail() === null) {
       // core fields to send to server
       let data = { username, email, password, confirmpassword };
 
@@ -77,6 +96,8 @@ class UserSignup extends Component {
   handleChange = (evt) => {
     if (evt.target.type === 'radio') {
       this.setState({ [evt.target.name]: evt.target.value === 'yes' });
+    } else if (evt.target.type === 'checkbox') {
+      this.setState({ [evt.target.name]: !this.state[evt.target.name] });
     } else {
       this.setState({ [evt.target.name]: evt.target.value });
     }
@@ -111,12 +132,14 @@ class UserSignup extends Component {
 
     if (username && username.length > 1) {
       // check if valid username formatting
-      if (!this.userPassRegex(username))
+      if (!this.userPassRegex(username)) {
         return 'error';
+      }
 
       // check if already exists
-      if (userCheck && username === checkedUsername && !available)
+      if (userCheck && username === checkedUsername && !available) {
         return 'error';
+      }
 
       return 'success';
     } else if (userIsRequired) {
@@ -155,10 +178,25 @@ class UserSignup extends Component {
   }
 
   render() {
-    const { available, checkedUsername, errors, result,
-            success, user, userCheck } = this.props;
-    const { email, moveTemp, name, password, confirmpassword,
-            toColl, username } = this.state;
+    const {
+      available,
+      checkedUsername,
+      errors,
+      result,
+      submitting,
+      success,
+      user,
+      userCheck
+    } = this.props;
+    const {
+      email,
+      moveTemp,
+      name,
+      password,
+      confirmpassword,
+      toColl,
+      username
+    } = this.state;
 
     const classes = classNames('col-sm-6 col-md-6 col-md-offset-3 wr-signup', {
       success
@@ -290,7 +328,13 @@ class UserSignup extends Component {
                 toColl={toColl} />
             }
 
-            <Button bsStyle="primary" bsSize="large" type="submit" block disabled={success}>Register</Button>
+            <Button bsStyle="primary" bsSize="large" type="submit" block disabled={success || submitting}>
+              {
+                submitting && !success &&
+                  <LoaderIcon />
+              }
+              Register
+            </Button>
 
             <p className="top-buffer">
               By registering, you agree to our <Link to="/_policies">terms of service</Link>, including that we may use the provided email address to contact you from time to time in reference to the service and your account.

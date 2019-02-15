@@ -25,9 +25,11 @@ class CollectionItem extends PureComponent {
     history: PropTypes.string
   };
 
-  goToCover = () => {
+	detailView = false;
+
+  manageCollection = () => {
     const { collection, history } = this.props;
-    history.push(getCollectionLink(collection));
+    history.push(getCollectionLink(collection, true));
   }
 
   newSession = () => {
@@ -40,6 +42,10 @@ class CollectionItem extends PureComponent {
     this.props.editCollection(collection.get('owner'), collection.get('id'), { public: !collection.get('public') });
   }
 
+	toggleDetailView =() => {
+		this.detailView = !this.detailView;
+	}
+
   render() {
     const { canAdmin, collection } = this.props;
     const descClasses = classNames('left-buffer list-group-item', { 'has-description': collection.get('desc') });
@@ -47,24 +53,16 @@ class CollectionItem extends PureComponent {
     return (
       <li className={descClasses} key={collection.get('id')}>
         <Row>
-          <Col sm={12} md={7}>
-            {
-              canAdmin || collection.get('public_index') ?
-                <Link className="collection-title" to={`${getCollectionLink(collection)}/index`}>{collection.get('title')}</Link> :
-                <span className="collection-title">{collection.get('title')}</span>
-            }
+					<Col sm={2} md={2}>
+						+
+					</Col>
+					<Col sm={8} md={7}>
+            <Link className="collection-title" to={`${getCollectionLink(collection)}`}>{collection.get('title')}</Link>
             <p className="collection-list-description">
               {
                 truncate(removeMd(collection.get('desc'), { useImgAltText: false }), 3, new RegExp(/([.!?])/))
               }
             </p>
-            <Button className="rounded" onClick={this.goToCover}>
-              View Cover Page
-            </Button>
-            {
-              canAdmin &&
-                <Button className="rounded" onClick={this.newSession}><PlusIcon /> New Session</Button>
-            }
           </Col>
           <Col xs={6} md={1} className="collection-list-size">
             <SizeFormat bytes={collection.get('size')} />
@@ -88,6 +86,9 @@ class CollectionItem extends PureComponent {
                 </React.Fragment>
             }
           </Col>
+        </Row>
+				<Row>
+					<p>Stuff der stellvertretend für die Meta infos Steht</p>
         </Row>
       </li>
     );

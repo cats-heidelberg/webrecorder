@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { draggableTypes } from 'config';
-import { getCollectionLink } from 'helpers/utils';
+import { getCollectionLink, keyIn } from 'helpers/utils';
 
 import Modal from 'components/Modal';
 import VisibilityLamp from 'components/collection/VisibilityLamp';
@@ -27,6 +27,7 @@ class ListsUI extends Component {
   static propTypes = {
     activeListSlug: PropTypes.string,
     addToList: PropTypes.func,
+    bulkAdding: PropTypes.bool,
     bulkAddToList: PropTypes.func,
     collection: PropTypes.object,
     collapsibleToggle: PropTypes.func,
@@ -137,16 +138,16 @@ class ListsUI extends Component {
 
   pageDropCallback = (page, list, itemType) => {
     const { collection, pages, pageSelection } = this.props;
-    const selType = typeof pageSelection;
+    const selectionType = typeof pageSelection;
 
     let pageIds = [];
-    if (selType === 'number') {
+    if (selectionType === 'number') {
       pageIds = [
         itemType === draggableTypes.PAGE_ITEM ?
           pages.get(pageSelection).get('id') :
           pages.get(pageSelection).getIn(['page', 'id'])
       ];
-    } else if (selType === 'object' && pageSelection !== null) {
+    } else if (selectionType === 'object' && pageSelection !== null) {
       pageIds = pageSelection.map((pg) => {
         return itemType === draggableTypes.PAGE_ITEM ?
           pages.get(pg).get('id') :
@@ -156,18 +157,20 @@ class ListsUI extends Component {
 
     // check if currently dragged page is within selection
     // if so, bulk add selection, otherwise add single page
-    if (pageSelection === null || selType === 'number' ||
-        (selType === 'object' && !pageIds.includes(page.id))) {
+    if (pageSelection === null || selectionType === 'number' ||
+        (selectionType === 'object' && !pageIds.includes(page.page_id))) {
       this.props.addToList(collection.get('owner'), collection.get('id'), list, page);
     } else {
       const pagesToAdd = [];
+      /* eslint-disable */
       for(const pgIdx of pageSelection) {
         pagesToAdd.push(
           itemType === draggableTypes.PAGE_ITEM ?
             pages.get(pgIdx).toJS() :
-            pages.get(pgIdx).get('page').toJS()
+            pages.get(pgIdx).filterNot(keyIn('id', 'page')).toJS()
         );
       }
+      /* eslint-enable */
       this.props.bulkAddToList(collection.get('owner'), collection.get('id'), list, pagesToAdd);
     }
   }
@@ -193,7 +196,7 @@ class ListsUI extends Component {
     const { lists } = this.state;
     const o = lists.get(origIndex);
     const sorted = lists.splice(origIndex, 1)
-                        .splice(hoverIndex, 0, o);
+                        .splice(hoverIndex, 0, o); // eslint-disable-line
 
     this.setState({ lists: sorted });
   }
@@ -248,8 +251,8 @@ class ListsUI extends Component {
                 {
                   canAdmin &&
                     <React.Fragment>
-                      <button onClick={this.openEditModal} className="button-link list-edit">EDIT</button>
-                      <button onClick={this.openEditModal} className="borderless"><PlusIcon /></button>
+                      <button onClick={this.openEditModal} className="button-link list-edit" type="button">EDIT</button>
+                      <button onClick={this.openEditModal} className="borderless" type="button"><PlusIcon /></button>
                     </React.Fragment>
                 }
               </li>
@@ -257,10 +260,11 @@ class ListsUI extends Component {
               {
                 lists.map((listObj, idx) => (
                   <ListItem
-                    dropCallback={this.pageDropCallback}
+                    bulkAdding={this.props.bulkAdding}
                     collId={collection.get('id')}
                     collPublic={collection.get('public')}
                     collUser={collection.get('owner')}
+                    dropCallback={this.pageDropCallback}
                     editList={this.sendEditList}
                     index={idx}
                     key={listObj.get('id')}
@@ -282,12 +286,12 @@ class ListsUI extends Component {
               footer={<Button onClick={this.closeEditModal} bsStyle="success">Done</Button>}
               dialogClassName="lists-edit-modal">
               <header>
-                <button className="borderless" onClick={this.clearInput} disabled={!title.length}><XIcon /></button>
+                <button className="borderless" onClick={this.clearInput} disabled={!title.length} type="button"><XIcon /></button>
                 <input name="title" className="borderless-input" onKeyPress={this.submitCheck} onChange={this.handleInput} value={title} placeholder="Create new list" autoFocus />
                 {
                   created ?
-                    <button className="borderless"><CheckIcon success /></button> :
-                    <button className={classNames('borderless', { 'wr-add-list': Boolean(title.length) })} onClick={this.createList} disabled={!title.length || isCreating} title="Add list"><PlusIcon /></button>
+                    <button className="borderless" type="button"><CheckIcon success /></button> :
+                    <button className={classNames('borderless', { 'wr-add-list': Boolean(title.length) })} onClick={this.createList} disabled={!title.length || isCreating} title="Add list" type="button"><PlusIcon /></button>
                 }
               </header>
               <ul className="lists-modal-list">

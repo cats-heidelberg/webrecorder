@@ -12,7 +12,7 @@ import RedirectWithStatus from 'components/RedirectWithStatus';
 import WYSIWYG from 'components/WYSIWYG';
 import { NewCollection } from 'components/siteComponents';
 import { Upload } from 'containers';
-import { UploadIcon, LinkIcon } from 'components/icons';
+import { LinkIcon, UploadIcon, UserIcon } from 'components/icons';
 
 import CollectionItem from './CollectionItem';
 import './style.scss';
@@ -44,9 +44,7 @@ class CollectionListUI extends Component {
     super(props);
 
     this.state = {
-      showModal: false,
-      isPublic: false,
-      collTitle: 'New Collection',
+      showModal: false
     };
   }
 
@@ -98,7 +96,7 @@ class CollectionListUI extends Component {
     }
 
     if (collections.get('loaded') && isAnon && canAdmin) {
-      return <RedirectWithStatus to={`/${auth.getIn(['user', 'username'])}/temp/index`} status={301} />;
+      return <RedirectWithStatus to={`/${auth.getIn(['user', 'username'])}/temp/manage`} status={301} />;
     }
 
     return (
@@ -106,86 +104,23 @@ class CollectionListUI extends Component {
         <Helmet>
           <title>{`${displayName}'s Collections`}</title>
         </Helmet>
-        <Row>
-          <Col xs={12} sm={3} className="collection-description">
-            <InlineEditor
-              canAdmin={canAdmin}
-              initial={displayName}
-              onSave={this.editName}
-              readOnly={isAnon || !canAdmin}
-              success={this.props.edited}>
-              <h2>{displayName}</h2>
-            </InlineEditor>
-            <p className="collection-username">{ userParam }</p>
-            {
-              (user.get('display_url') || canAdmin) &&
-                <InlineEditor
-                  canAdmin={canAdmin}
-                  initial={user.get('display_url') || 'Add website...'}
-                  placeholder={'Add website...'}
-                  onSave={this.editURL}
-                  readOnly={isAnon || !canAdmin}
-                  success={this.props.edited}>
-                  <div className="user-link">
-                    <a target="_blank" onClick={stopPropagation} href={userLink}><LinkIcon />
-                      <span>{user.get('display_url') || 'Add website...'}</span>
-                    </a>
-                  </div>
-                </InlineEditor>
-            }
-            <WYSIWYG
-              key={user.get('id')}
-              initial={user.get('desc') || ''}
-              onSave={this.updateUser}
-              placeholder={'Add a description...'}
-              clickToEdit
-              readOnly={isAnon || !canAdmin}
-              success={this.props.edited} />
-          </Col>
-          <Col xs={12} sm={9} className="wr-coll-meta">
-
-            <Row>
-              <Col xs={12} className="collections-index-nav">
-                {
-                  !isAnon && canAdmin &&
-                    <React.Fragment>
-                      <Button onClick={this.toggle} className="rounded">
-                        <span className="glyphicon glyphicon-plus glyphicon-button" /> New Collection
-                      </Button>
-                      <Upload classes="rounded">
-                        <UploadIcon /> Upload
-                      </Upload>
-                    </React.Fragment>
-                }
-              </Col>
-            </Row>
             {
               collections && collections.get('loaded') &&
-                <Row>
-                  <ul className="list-group collection-list">
-                    {
-                      orderedCollections.map((coll) => {
-                        return (
-                          <CollectionItem
-                            key={coll.get('id')}
-                            canAdmin={canAdmin}
-                            collection={coll}
-                            editCollection={editCollection}
-                            history={history} />
-                        );
-                      })
-                    }
-                  </ul>
-                </Row>
+                <ul className="list-group collection-list">
+                  {
+                    orderedCollections.map((coll) => {
+                      return (
+                        <CollectionItem
+                          key={coll.get('id')}
+                          canAdmin={canAdmin}
+                          collection={coll}
+                          editCollection={editCollection}
+                          history={history} />
+                      );
+                    })
+                  }
+                </ul>
             }
-          </Col>
-        </Row>
-        <NewCollection
-          close={this.close}
-          visible={showModal}
-          createCollection={this.createCollection}
-          creatingCollection={collections.get('creatingCollection')}
-          error={collections.get('creationErorr')} />
       </React.Fragment>
     );
   }
