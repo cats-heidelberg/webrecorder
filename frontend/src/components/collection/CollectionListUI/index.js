@@ -14,6 +14,16 @@ import { NewCollection } from 'components/siteComponents';
 import { Upload } from 'containers';
 import { LinkIcon, UploadIcon, UserIcon } from 'components/icons';
 
+//import ReactDOM from 'react-dom';
+import {
+    Accordion,
+    AccordionItem,
+    AccordionItemTitle,
+    AccordionItemBody,
+} from 'react-accessible-accordion';
+import 'react-accessible-accordion/dist/minimal-example.css';
+//import 'react-accessible-accordion/dist/fancy-example.css';
+
 import CollectionItem from './CollectionItem';
 import './style.scss';
 
@@ -104,6 +114,31 @@ class CollectionListUI extends Component {
         <Helmet>
           <title>{`${displayName}'s Collections`}</title>
         </Helmet>
+				<Accordion>
+					<AccordionItem>
+						<AccordionItemTitle>
+							<Row>
+								<Col xs={6} md={6} style={{display: 'flex', justifyContent: 'center'}}><a href="https://mathphys.info"><h3>foo</h3></a></Col>
+								<Col xs={5} md={5} style={{display: 'flex', justifyContent: 'center'}}><div>naja</div></Col>
+								<Col xs={1} md={1} style={{display: 'flex', justifyContent: 'center'}}><div className="accordion__arrow" role="presentation" /></Col>
+							</Row>
+						</AccordionItemTitle>
+						<AccordionItemBody>
+							<p>Text blabla foo</p>
+						</AccordionItemBody>
+					</AccordionItem>
+					<AccordionItem>
+						<AccordionItemTitle>
+							<Row>
+								<Col xs={11} md={11} style={{display: 'flex', justifyContent: 'center'}}><h3>foo</h3></Col>
+								<Col xs={1} md={1} style={{display: 'flex', justifyContent: 'center'}}><div className="accordion__arrow" role="presentation" /></Col>
+							</Row>
+						</AccordionItemTitle>
+						<AccordionItemBody>
+							<p>Text blabla foo</p>
+						</AccordionItemBody>
+					</AccordionItem>
+				</Accordion>
             {
               collections && collections.get('loaded') &&
                 <ul className="list-group collection-list">
@@ -121,6 +156,23 @@ class CollectionListUI extends Component {
                   }
                 </ul>
             }
+			{/*
+        collections && collections.get('loaded') &&
+				<Accordion>
+					{
+						orderedCollections.map((coll) => {
+							return (
+								<CollectionItem
+									key={coll.get('id')}
+									canAdmin={canAdmin}
+									collection={coll}
+									editCollection={editCollection}
+									history={history} />
+              );
+            })
+          }
+				</Accordion>
+			*/}
       </React.Fragment>
     );
   }

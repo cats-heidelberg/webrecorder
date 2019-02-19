@@ -11,6 +11,15 @@ import SizeFormat from 'components/SizeFormat';
 import { DeleteCollection } from 'containers';
 import { TrashIcon, PlusIcon } from 'components/icons';
 
+import {
+    //Accordion,
+    AccordionItem,
+    AccordionItemTitle,
+    AccordionItemBody,
+} from 'react-accessible-accordion';   
+//import 'react-accessible-accordion/dist/minimal-example.css';
+import 'react-accessible-accordion/dist/fancy-example.css';
+
 class CollectionItem extends PureComponent {
   static propTypes = {
     canAdmin: PropTypes.bool,
@@ -25,7 +34,8 @@ class CollectionItem extends PureComponent {
     history: PropTypes.string
   };
 
-	detailView = false;
+	//detailView = false;
+
 
   manageCollection = () => {
     const { collection, history } = this.props;
@@ -42,21 +52,58 @@ class CollectionItem extends PureComponent {
     this.props.editCollection(collection.get('owner'), collection.get('id'), { public: !collection.get('public') });
   }
 
-	toggleDetailView =() => {
-		this.detailView = !this.detailView;
-	}
+  toggleDetailView = () => {
+		if (null == this.detailView) {
+			this.detailView = true;
+		} else {
+			this.detailView = !(this.detailView);
+		}
+  }
 
   render() {
     const { canAdmin, collection } = this.props;
     const descClasses = classNames('left-buffer list-group-item', { 'has-description': collection.get('desc') });
 
+		/*
+		return (
+			<AccordionItem>
+				<AccordionItemTitle>
+					<Row>
+						<Col sm={6} md={6}>
+							<Link className="collection-title" to={`${getCollectionLink(collection)}`}>{collection.get('title')}</Link>
+						</Col>
+						<Col xs={1} md={1} className="collection-list-size">
+						 <SizeFormat bytes={collection.get('size')} />
+						</Col>
+						<Col className="collection-time" xs={2} md={2}>
+							Created {buildDate(collection.get('created_at'), false, true)}
+						</Col>
+						<Col className="collection-delete-action col-xs-offset-7 col-md-offset-0" xs={5} md={2}>
+							{
+								canAdmin &&
+                  <span className={classNames('visibility-button', { 'is-public': collection.get('public') })}>
+                    { collection.get('public') ? 'PUBLIC' : 'PRIVATE' }
+                  </span>
+							}
+						</Col>
+						<Col xs={1} md={1}>
+							<Col xs={1} md={1}><div className="accordion__arrow" role="presentation" /></Col>
+						</Col>
+					</Row>
+				</AccordionItemTitle>
+				<AccordionItemBody>
+					<p>Stuff der stellvertretend für die Meta infos Steht</p>
+				</AccordionItemBody>
+			</AccordionItem>
+    );
+		*/
     return (
       <li className={descClasses} key={collection.get('id')}>
         <Row>
-					<Col sm={2} md={2}>
-						+
+					<Col sm={1} md={1}>
+						<Button onclick={this.toggleDetailView}><PlusIcon /></Button>
 					</Col>
-					<Col sm={8} md={7}>
+					<Col sm={6} md={6}>
             <Link className="collection-title" to={`${getCollectionLink(collection)}`}>{collection.get('title')}</Link>
             <p className="collection-list-description">
               {
@@ -64,32 +111,26 @@ class CollectionItem extends PureComponent {
               }
             </p>
           </Col>
-          <Col xs={6} md={1} className="collection-list-size">
+          <Col xs={1} md={1} className="collection-list-size">
             <SizeFormat bytes={collection.get('size')} />
           </Col>
-          <Col className="collection-time" xs={6} md={2}>
+          <Col className="collection-time" xs={2} md={2}>
             Created {buildDate(collection.get('created_at'), false, true)}
           </Col>
           <Col className="collection-delete-action col-xs-offset-7 col-md-offset-0" xs={5} md={2}>
             {
               canAdmin &&
-                <React.Fragment>
                   <span className={classNames('visibility-button', { 'is-public': collection.get('public') })}>
                     { collection.get('public') ? 'PUBLIC' : 'PRIVATE' }
                   </span>
-                  <DeleteCollection collection={collection}>
-                    <TrashIcon />
-                    <Tooltip placement="top" className="in" id="tooltip-top">
-                      DELETE
-                    </Tooltip>
-                  </DeleteCollection>
-                </React.Fragment>
             }
           </Col>
         </Row>
-				<Row>
-					<p>Stuff der stellvertretend für die Meta infos Steht</p>
-        </Row>
+				{
+					this.detailView && <Row>
+						<p>Stuff der stellvertretend für die Meta infos Steht</p>
+					</Row>
+				}
       </li>
     );
   }

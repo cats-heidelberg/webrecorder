@@ -80,14 +80,6 @@ class RecordURLBar extends Component {
       <div className="main-bar">
         <form className={classNames('form-group-recorder-url', { 'start-recording': isNew, 'content-form': !isNew, 'remote-archive': isPatch || isExtract })}>
           <div className="input-group containerized">
-            <div className="input-group-btn rb-dropdown">
-              {
-                canAdmin &&
-                  <RemoteBrowserSelect
-                    active
-                    params={params} />
-              }
-            </div>
             {
               /* {% if not browser %}autofocus{% endif %} */
               <input type="text" onChange={this.handleChange} onKeyPress={this.handleSubmit} className="url-input-recorder form-control" name="url" value={url} style={{ height: '3.3rem' }} autoFocus required />

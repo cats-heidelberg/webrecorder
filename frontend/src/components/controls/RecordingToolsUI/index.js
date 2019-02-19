@@ -130,30 +130,6 @@ class RecordingToolsUI extends PureComponent {
           <p>You can also paste text here to send to remote browser.</p>
           <textarea id="clipboard" autoFocus style={{ width: '100%', minHeight: 200 }} />
         </Modal>
-        {
-          canAdmin && !isNew &&
-            <DropdownButton pullRight noCaret id="tool-dropdown" title={<span className="glyphicon glyphicon-option-vertical" aria-hidden="true" />}>
-
-              {
-                newFeatures &&
-                  <React.Fragment>
-                    <MenuItem onClick={this.startAuto}>Start Automation</MenuItem>
-                    <MenuItem onClick={this.stopAuto}>Stop Automation</MenuItem>
-                    <MenuItem divider />
-                  </React.Fragment>
-              }
-
-              <MenuItem onClick={this.catalogView}>Collection Index</MenuItem>
-              <MenuItem divider />
-              <MenuItem onClick={this.toggleAutoscroll}>{autoscroll ? 'Turn off' : 'Turn on'} autoscroll</MenuItem>
-              {
-                activeBrowser &&
-                  <MenuItem onClick={this._open}>
-                    <span className="glyphicon glyphicon-paste" /> Clipboard
-                  </MenuItem>
-              }
-            </DropdownButton>
-        }
       </div>
     );
   }

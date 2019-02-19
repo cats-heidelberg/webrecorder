@@ -53,11 +53,6 @@ class ReplayUI extends Component {
             <RecordURLBar {...this.props} /> :
             <ReplayURLBar {...this.props} />
         }
-
-        {
-          !isMobile && !__PLAYER__ &&
-            <RecordingTools />
-        }
       </div>
     );
   }

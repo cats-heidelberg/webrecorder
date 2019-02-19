@@ -37,9 +37,9 @@ class ModeSelectorUI extends PureComponent {
     const { match: { params: { coll, rec, user } } } = this.props;
 
     if (this.context.currMode.indexOf('replay') !== -1) {
-      window.location.href = `/${user}/${coll}/manage`;
+      window.location.href = `/${user}/${coll}`;
     } else {
-      window.location.href = `/${user}/${coll}/manage?query=session:${rec}`;
+      window.location.href = `/${user}/${coll}?query=session:${rec}`;
     }
   }
 
