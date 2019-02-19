@@ -70,6 +70,7 @@
     "raven-for-redux": "^1.4.0",
     "raven-js": "^3.27.0",
     "react": "^16.7.0",
+		"react-accessible-accordion": "^2.4.5",
     "react-bootstrap": "^0.32.4",
     "react-collapsible": "github:m4rk3r/react-collapsible#dist",
     "react-dnd": "^6.0.0",
