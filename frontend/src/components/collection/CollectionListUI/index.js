@@ -21,7 +21,7 @@ import SizeFormat from 'components/SizeFormat';
 import { Link } from 'react-router-dom';
 
 // Ticket Meta
-import TicketMeta from 'components/collection/TickeetMetaUI';
+//import TicketMeta from 'components/collection/TickeetMetaUI';
 
 //import ReactDOM from 'react-dom';
 import {
