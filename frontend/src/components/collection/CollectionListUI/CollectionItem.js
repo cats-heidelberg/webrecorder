@@ -12,11 +12,11 @@ import { DeleteCollection } from 'containers';
 import { TrashIcon, PlusIcon } from 'components/icons';
 
 import {
-    //Accordion,
+    Accordion,
     AccordionItem,
     AccordionItemTitle,
     AccordionItemBody,
-} from 'react-accessible-accordion';   
+} from 'react-accessible-accordion';
 //import 'react-accessible-accordion/dist/minimal-example.css';
 import 'react-accessible-accordion/dist/fancy-example.css';
 
@@ -64,8 +64,41 @@ class CollectionItem extends PureComponent {
     const { canAdmin, collection } = this.props;
     const descClasses = classNames('left-buffer list-group-item', { 'has-description': collection.get('desc') });
 
+		return (
+			<AccordionItem>
+				<AccordionItemTitle>
+					<Row>
+						<Col sm={7} md={7}>
+							<a href="http://mathphys.info">Ein Generischer Ticket Titel</a>
+						</Col>
+						<Col sm={1} md={1}>
+							<p>1,3MB</p>
+						</Col>
+						<Col sm={2} md={2}>
+							<p>Erstellt am <i>Bla</i></p>
+						</Col>
+						<Col sm={1} md={1}>
+							<span>
+								PUBLIC
+							</span>
+						</Col>
+						<Col sm={1} md={1}>
+							<div className="accordion__arrow" role="presentation" />
+						</Col>
+					</Row>
+				</AccordionItemTitle>
+				<AccordionItemBody>
+					<Row>
+						<p>
+							Stuff
+						</p>
+					</Row>
+				</AccordionItemBody>
+			</AccordionItem>
+		);
 		/*
 		return (
+			<React.Fragment>
 			<AccordionItem>
 				<AccordionItemTitle>
 					<Row>
@@ -95,8 +128,10 @@ class CollectionItem extends PureComponent {
 					<p>Stuff der stellvertretend für die Meta infos Steht</p>
 				</AccordionItemBody>
 			</AccordionItem>
+			</React.Fragment>
     );
 		*/
+		/*
     return (
       <li className={descClasses} key={collection.get('id')}>
         <Row>
@@ -133,6 +168,7 @@ class CollectionItem extends PureComponent {
 				}
       </li>
     );
+		*/
   }
 }
 

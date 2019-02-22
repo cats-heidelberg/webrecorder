@@ -14,6 +14,15 @@ import { NewCollection } from 'components/siteComponents';
 import { Upload } from 'containers';
 import { LinkIcon, UploadIcon, UserIcon } from 'components/icons';
 
+// show collection details
+import classNames from 'classnames';
+import { buildDate, getCollectionLink } from 'helpers/utils';
+import SizeFormat from 'components/SizeFormat';
+import { Link } from 'react-router-dom';
+
+// Ticket Meta
+import TicketMeta from 'components/collection/TickeetMetaUI';
+
 //import ReactDOM from 'react-dom';
 import {
     Accordion,
@@ -114,65 +123,46 @@ class CollectionListUI extends Component {
         <Helmet>
           <title>{`${displayName}'s Collections`}</title>
         </Helmet>
-				<Accordion>
-					<AccordionItem>
-						<AccordionItemTitle>
-							<Row>
-								<Col xs={6} md={6} style={{display: 'flex', justifyContent: 'center'}}><a href="https://mathphys.info"><h3>foo</h3></a></Col>
-								<Col xs={5} md={5} style={{display: 'flex', justifyContent: 'center'}}><div>naja</div></Col>
-								<Col xs={1} md={1} style={{display: 'flex', justifyContent: 'center'}}><div className="accordion__arrow" role="presentation" /></Col>
-							</Row>
-						</AccordionItemTitle>
-						<AccordionItemBody>
-							<p>Text blabla foo</p>
-						</AccordionItemBody>
-					</AccordionItem>
-					<AccordionItem>
-						<AccordionItemTitle>
-							<Row>
-								<Col xs={11} md={11} style={{display: 'flex', justifyContent: 'center'}}><h3>foo</h3></Col>
-								<Col xs={1} md={1} style={{display: 'flex', justifyContent: 'center'}}><div className="accordion__arrow" role="presentation" /></Col>
-							</Row>
-						</AccordionItemTitle>
-						<AccordionItemBody>
-							<p>Text blabla foo</p>
-						</AccordionItemBody>
-					</AccordionItem>
-				</Accordion>
-            {
-              collections && collections.get('loaded') &&
-                <ul className="list-group collection-list">
-                  {
-                    orderedCollections.map((coll) => {
-                      return (
-                        <CollectionItem
-                          key={coll.get('id')}
-                          canAdmin={canAdmin}
-                          collection={coll}
-                          editCollection={editCollection}
-                          history={history} />
-                      );
-                    })
-                  }
-                </ul>
-            }
-			{/*
+			<h1>Collection List</h1>
+			{
         collections && collections.get('loaded') &&
 				<Accordion>
 					{
 						orderedCollections.map((coll) => {
 							return (
-								<CollectionItem
-									key={coll.get('id')}
-									canAdmin={canAdmin}
-									collection={coll}
-									editCollection={editCollection}
-									history={history} />
-              );
+							  <AccordionItem>
+							    <AccordionItemTitle>
+							      <Row>
+							        <Col sm={7} md={7}>
+							          <Link className="collection-title" to={`${getCollectionLink(coll)}`}>{coll.get('title')}</Link>
+							        </Col>
+							        <Col sm={1} md={1}>
+												<SizeFormat bytes={coll.get('size')}/>
+							        </Col>
+							        <Col sm={2} md={2}>
+												Created {buildDate(coll.get('created_at'), false, true)}
+							        </Col>
+							        <Col sm={1} md={1}>
+							          <span className={classNames('visibility-button', { 'is-public': coll.get('public')})}>
+													{ coll.get('public') ? 'PUBLIC' : 'PRIVATE' }
+							          </span>
+							        </Col>
+							        <Col sm={1} md={1}>
+							          <div className="accordion__arrow" role="presentation" />
+							        </Col>
+							      </Row>
+							    </AccordionItemTitle>
+							    <AccordionItemBody>
+										<p>
+											Meta Infos
+										</p>
+							    </AccordionItemBody>
+							  </AccordionItem>
+							);
             })
           }
 				</Accordion>
-			*/}
+			}
       </React.Fragment>
     );
   }
