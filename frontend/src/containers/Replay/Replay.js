@@ -203,6 +203,7 @@ class Replay extends Component {
               timestamp={timestamp}
               sidebarExpanded={this.props.expanded}
               toggle={this.props.toggleSidebar}
+							canPatch={collection.get('public')}
               url={url} />
         }
         <div className={classNames('iframe-container', { embed: isEmbed && params.embed !== '_embed_noborder' })}>

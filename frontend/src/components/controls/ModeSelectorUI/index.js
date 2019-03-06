@@ -21,6 +21,7 @@ class ModeSelectorUI extends PureComponent {
     activeBrowser: PropTypes.string,
     match: PropTypes.object,
     timestamp: PropTypes.string,
+		isPublic: PropTypes.bool,
     url: PropTypes.string
   };
 
@@ -123,6 +124,7 @@ class ModeSelectorUI extends PureComponent {
   render() {
     const { currMode } = this.context;
     const { open } = this.state;
+		const { canPatch } = this.props;
     let modeMessage;
     let modeMarkup;
 
@@ -179,14 +181,17 @@ class ModeSelectorUI extends PureComponent {
                   </li>
                 </ul>
 
-                <ul className={classNames('row wr-mode', { active: isPatch, disabled: isRecord })} onClick={this.onPatch} role="button" title={isRecord ? 'Only available from replay after finishing a recording' : 'Record elements that are not yet in the collection'}>
-                  <li className="col-xs-3">
-                    <PatchIcon />
-                  </li>
-                  <li className="col-xs-9">
-                    <h5>{ isPatch ? 'Currently Patching' : 'Patch this URL' }</h5>
-                  </li>
-                </ul>
+								{
+									canPatch &&
+										<ul className={classNames('row wr-mode', { active: isPatch, disabled: isRecord })} onClick={this.onPatch} role="button" title={isRecord ? 'Only available from replay after finishing a recording' : 'Record elements that are not yet in the collection'}>
+											<li className="col-xs-3">
+												<PatchIcon />
+											</li>
+											<li className="col-xs-9">
+												<h5>{ isPatch ? 'Currently Patching' : 'Patch this URL' }</h5>
+											</li>
+										</ul>
+								}
 
                 {
                   isExtract &&

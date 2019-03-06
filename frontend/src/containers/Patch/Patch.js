@@ -67,6 +67,7 @@ class Patch extends Component {
         <ReplayUI
           params={params}
           timestamp={timestamp}
+					canPatch={true}
           url={url} />
         <div className="iframe-container">
           {

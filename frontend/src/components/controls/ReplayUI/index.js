@@ -17,6 +17,7 @@ class ReplayUI extends Component {
     sidebarExpanded: PropTypes.bool,
     timestamp: PropTypes.string,
     toggle: PropTypes.func,
+		canPatch: PropTypes.bool,
     url: PropTypes.string
   };
 
@@ -40,7 +41,7 @@ class ReplayUI extends Component {
 
         {
           canAdmin && !isMobile &&
-            <ModeSelector />
+						<ModeSelector {...this.props} />
         }
 
         {
