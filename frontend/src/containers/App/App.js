@@ -263,10 +263,10 @@ export class App extends Component {
               {renderRoutes(this.props.route.routes)}
             </section>
         }
-        {
+				{/*
           hasFooter &&
             <Footer />
-        }
+						*/}
       </React.Fragment>
     );
   }
