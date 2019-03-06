@@ -6,7 +6,7 @@ import {
   listDetailBreadcrumb
 } from 'components/siteComponents/BreadcrumbsUI/breadcrumbs';
 import {
-  CollectionCover,
+	//CollectionCover,
   CollectionDetail,
   CollectionList,
   CollectionManagement,
