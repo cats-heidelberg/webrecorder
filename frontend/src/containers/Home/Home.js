@@ -9,6 +9,10 @@ import { showModal } from 'store/modules/userLogin';
 
 import { StandaloneRecorder } from 'containers';
 
+import { Button, Form, FormControl, Row, Col } from 'react-bootstrap';
+
+import { RequestForm } from 'containers';
+
 import './style.scss';
 
 
@@ -46,6 +50,9 @@ class Home extends Component {
         <div className="row top-buffer-lg bottom-buffer-lg">
           <StandaloneRecorder />
         </div>
+        <div className="row top-buffer-lg bottom-buffer-lg">
+					<RequestForm />
+				</div>
       </React.Fragment>
     );
   }

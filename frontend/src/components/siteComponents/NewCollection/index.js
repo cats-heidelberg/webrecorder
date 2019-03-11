@@ -81,6 +81,13 @@ class NewCollection extends Component {
               onChange={this.togglePublic} />
           </span>
 
+					{/*
+						<FormGroup bsClass="form-group col-xs-5">
+							<ControlLabel htmlFor="collection">Author:</ControlLabel>
+							<FormControl type="text" inputRef={(obj) => { this.input = obj; }} id="author" name="Author" onFocus={this.focusInput} onChange={this.handleInput} value="Name of the Creator" />
+						</FormGroup>
+							*/}
+
           <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={creatingCollection && !error} type="button">Create</button>
         </form>
       </Modal>
