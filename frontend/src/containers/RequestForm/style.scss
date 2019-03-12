@@ -9,17 +9,19 @@
 	width: 100%;
 }
 
-input {
-	padding: 0.5em;
-}
+//input {
+//	padding: 0.5em;
+//}
 
 .row {
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem;
+	margin-left: -5px;
+	margin-right: -5px;
 	padding: 0;
 }
 
-.col-md-5, .col-md-10, .col-md-2 {
+.col-md-2, .col-md-5, .col-md-8, .col-md-10 {
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
 }
