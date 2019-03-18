@@ -42,13 +42,10 @@ class Home extends Component {
           <title>Homepage</title>
         </Helmet>
         <div className="row top-buffer main-logo">
-          <h1>Webrecorder</h1>
+          <h1>OpenDACHS</h1>
         </div>
         <div className="row tagline">
-          <h4 className="text-center">Collect & Revisit the Web</h4>
-        </div>
-        <div className="row top-buffer-lg bottom-buffer-lg">
-          <StandaloneRecorder />
+          <h4 className="text-center">Webrecorder</h4>
         </div>
         <div className="row top-buffer-lg bottom-buffer-lg">
 					<RequestForm />
