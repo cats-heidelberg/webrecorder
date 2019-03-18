@@ -14,7 +14,7 @@ class Heading extends Component {
 class RequestForm extends Component {
 	state = {
 		subjects:  [
-			{ name: "" }, { name: "" },
+			{ name: "" },
 		],
 		people: [
 			{ name: "" }
@@ -22,6 +22,25 @@ class RequestForm extends Component {
 		authors: [
 			{ }
 		],
+	}
+
+	handleSubmit(event) {
+		event.preventDefault();
+		const meta = new FormData(event.target);
+
+		//fetch('/api/v1/collections', {
+		//	method: 'POST',
+		//	body: meta,
+		//});
+		promise: client => client.pos(`${config.apiPath}/collections`, {
+			params: { user },
+			data: {
+				'title': "aus dem Formular generiert",
+				'public': false,
+				public_index: true,
+				meta
+			}
+		});
 	}
 
 	addSubject = (e) => {
@@ -36,11 +55,33 @@ class RequestForm extends Component {
 		}))
 	}
 
+	removeSubject(i) {
+		let subjects = [...this.state.subjects];
+		this.state.subjects.splice(i, 1);
+		this.setState(this.state);
+	}
+
+	removePerson(i) {
+		let people = [...this.state.people];
+		this.state.people.splice(i, 1);
+		this.setState(this.state);
+	}
+
+	changeSubject(i, event) {
+		this.state.subjects[i].name = event.target.value;
+		this.setState(this.state);
+	}
+
+	changePerson(i, event) {
+		this.state.people[i].name = event.target.value;
+		this.setState(this.state);
+	}
+
 	render() {
 		let { subjects, people } = this.state;
 
 		return(
-		<form className="start-recording-homepage">
+		<form className="start-recording-homepage" onSubmit={this.handleSubmit}>
 
 			<fieldset className="col-md-8 col-md-offset-2">
 				<Row>
@@ -115,10 +156,10 @@ class RequestForm extends Component {
 								return(
 									<Row>
 										<div className="col-md-10">
-											<input className="form-control"/>
+											<input className="form-control" value={val.name||''} onChange={this.changeSubject.bind(this, idx)}/>
 										</div>
 										<div className="col-md-2">
-											<Button className="btn-danger w100">
+											<Button className="btn-danger w100" onClick={this.removeSubject.bind(this, idx)}>
 												Remove
 											</Button>
 										</div>
@@ -143,10 +184,10 @@ class RequestForm extends Component {
 								return(
 									<Row>
 										<div className="col-md-10">
-											<input className="form-control"/>
+											<input className="form-control" value={val.name||''} onChange={this.changePerson.bind(this, idx)}/>
 										</div>
 										<div className="col-md-2">
-											<Button className="btn-danger w100">
+											<Button className="btn-danger w100" onClick={this.removePerson.bind(this, idx)}>
 												Remove
 											</Button>
 										</div>
