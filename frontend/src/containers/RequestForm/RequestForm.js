@@ -29,11 +29,12 @@ class RequestForm extends Component {
 		const meta = new FormData(event.target);
 
 		//fetch('/api/v1/collections', {
+		//	params: { 'user': "Friedrich" },
 		//	method: 'POST',
-		//	body: meta,
+		//	body: meta
 		//});
-		promise: client => client.pos(`${config.apiPath}/collections`, {
-			params: { user },
+		client.pos(`${config.apiPath}/collections`, {
+			params: { 'user': user },
 			data: {
 				'title': "aus dem Formular generiert",
 				'public': false,
@@ -87,13 +88,13 @@ class RequestForm extends Component {
 				<Row>
 					<p className="col-md-2 standalone-dropdown-label">E-mail address</p>
 					<div className="col-md-10">
-						<input className="form-control" placeholder="email@...uni-heidelberg.de"/>
+						<input className="form-control" placeholder="email@...uni-heidelberg.de" name="mail"/>
 					</div>
 				</Row>
 				<Row>
 					<p className="col-md-2 standalone-dropdown-label">URL</p>
 					<div className="col-md-10">
-						<input className="form-control" placeholder="http(s)://...*"/>
+						<input className="form-control" placeholder="http(s)://...*" name="url"/>
 					</div>
 				</Row>
 			</fieldset>
@@ -108,25 +109,25 @@ class RequestForm extends Component {
 				<Row>
 					<p className="col-md-2 standalone-dropdown-label">Title</p>
 					<div className="col-md-5">
-						<input className="form-control" placeholder="Title*"/>
+						<input className="form-control" placeholder="Title*" name="title"/>
 					</div>
 					<div className="col-md-5">
-						<input className="form-control" placeholder="In orig. charackters*"/>
+						<input className="form-control" placeholder="In orig. charackters*" name="orig-title"/>
 					</div>
 				</Row>
 				<Row>
 					<p className="col-md-2 standalone-dropdown-label">Publisher</p>
 					<div className="col-md-5">
-						<input className="w100" placeholder="Publisher*"/>
+						<input className="w100" placeholder="Publisher*" name="publisher"/>
 					</div>
 					<div className="col-md-5">
-						<input className="form-control" placeholder="In orig. charackters*"/>
+						<input className="form-control" placeholder="In orig. charackters*" name="orig-publisher"/>
 					</div>
 				</Row>
 				<Row>
 					<p className="col-md-2 standalone-dropdown-label">Publication date</p>
 					<div className="col-md-5">
-						<input className="form-control" type="date" />
+						<input className="form-control" type="date" name="publication-date"/>
 					</div>
 				</Row>
 			</fieldset>
@@ -135,7 +136,7 @@ class RequestForm extends Component {
 				<Row>
 					<p className="col-md-2 standalone-dropdown-label">Resource type</p>
 					<div className="col-md-5">
-						<select className="form-control">
+						<select className="form-control" name="type">
 							<option value="audiovisual">audiovisual</option>
 							<option value="collection">Collection</option>
 							<option value="image">Image</option>
@@ -144,7 +145,7 @@ class RequestForm extends Component {
 						</select>
 					</div>
 					<div className="col-md-5">
-						<input className="form-control" value="Website"/>
+						<input className="form-control" value="Website" name="website"/>
 					</div>
 				</Row>
 
