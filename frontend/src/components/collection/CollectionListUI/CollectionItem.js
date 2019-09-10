@@ -47,6 +47,41 @@ class CollectionItem extends PureComponent {
     return (
       <li className={descClasses} key={collection.get('id')}>
         <Row>
+          <Col sm={12} md={6}>
+            {
+              canAdmin || collection.get('public_index') ?
+                <Link className="collection-title" to={`${getCollectionLink(collection)}/index`}>{collection.get('title')}</Link> :
+                <span className="collection-title">{collection.get('title')}</span>
+            }
+
+          </Col>
+          <Col className="collection-list-size">
+            <SizeFormat bytes={collection.get('size')} />
+          </Col>
+          <Col className="collection-time">
+            Created {buildDate(collection.get('created_at'), false, true)}
+          </Col>
+          <Col className="collection-cover-page">
+            <Button className="rounded" onClick={this.goToCover}>
+              Cover Page
+            </Button>
+          </Col>
+          <Col className="collection-delete-action col-xs-offset-7 col-md-offset-0">
+            {
+              canAdmin &&
+                <React.Fragment>
+                  <span className={classNames('visibility-button', { 'is-public': collection.get('public') })}>
+                    { collection.get('public') ? 'PUBLIC' : 'PRIVATE' }
+                  </span>
+                </React.Fragment>
+            }
+          </Col>
+        </Row>
+      </li>
+    );
+    /*(
+      <li className={descClasses} key={collection.get('id')}>
+        <Row>
           <Col sm={12} md={7}>
             {
               canAdmin || collection.get('public_index') ?
@@ -90,7 +125,7 @@ class CollectionItem extends PureComponent {
           </Col>
         </Row>
       </li>
-    );
+    );*/
   }
 }
 

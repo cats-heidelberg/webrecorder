@@ -107,41 +107,6 @@ class CollectionListUI extends Component {
           <title>{`${displayName}'s Collections`}</title>
         </Helmet>
         <Row>
-          <Col xs={12} sm={3} className="collection-description">
-            <InlineEditor
-              canAdmin={canAdmin}
-              initial={displayName}
-              onSave={this.editName}
-              readOnly={isAnon || !canAdmin}
-              success={this.props.edited}>
-              <h2>{displayName}</h2>
-            </InlineEditor>
-            <p className="collection-username">{ userParam }</p>
-            {
-              (user.get('display_url') || canAdmin) &&
-                <InlineEditor
-                  canAdmin={canAdmin}
-                  initial={user.get('display_url') || 'Add website...'}
-                  placeholder={'Add website...'}
-                  onSave={this.editURL}
-                  readOnly={isAnon || !canAdmin}
-                  success={this.props.edited}>
-                  <div className="user-link">
-                    <a target="_blank" onClick={stopPropagation} href={userLink}><LinkIcon />
-                      <span>{user.get('display_url') || 'Add website...'}</span>
-                    </a>
-                  </div>
-                </InlineEditor>
-            }
-            <WYSIWYG
-              key={user.get('id')}
-              initial={user.get('desc') || ''}
-              onSave={this.updateUser}
-              placeholder={'Add a description...'}
-              clickToEdit
-              readOnly={isAnon || !canAdmin}
-              success={this.props.edited} />
-          </Col>
           <Col xs={12} sm={9} className="wr-coll-meta">
 
             <Row>
@@ -149,9 +114,6 @@ class CollectionListUI extends Component {
                 {
                   !isAnon && canAdmin &&
                     <React.Fragment>
-                      <Button onClick={this.toggle} className="rounded">
-                        <span className="glyphicon glyphicon-plus glyphicon-button" /> New Collection
-                      </Button>
                       <Upload classes="rounded">
                         <UploadIcon /> Upload
                       </Upload>
@@ -180,12 +142,6 @@ class CollectionListUI extends Component {
             }
           </Col>
         </Row>
-        <NewCollection
-          close={this.close}
-          visible={showModal}
-          createCollection={this.createCollection}
-          creatingCollection={collections.get('creatingCollection')}
-          error={collections.get('creationErorr')} />
       </React.Fragment>
     );
   }

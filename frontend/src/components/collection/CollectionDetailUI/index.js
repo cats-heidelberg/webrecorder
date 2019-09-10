@@ -535,26 +535,6 @@ class CollectionDetailUI extends Component {
             <TempUserAlert />
         }
 
-        <Sidebar storageKey="collSidebar">
-          <CollectionHeader />
-          <div className="resizable-container">
-            <Resizable
-              axis="y"
-              flexGrow={0}
-              minHeight={200}
-              storageKey="collNavigator"
-              overrideHeight={this.state.overrideHeight}>
-              <Lists
-                activeListSlug={activeListSlug}
-                collapsibleToggle={this.collapsibleToggle}
-                pages={objects}
-                pageSelection={selectedPageIdx} />
-            </Resizable>
-            <InspectorPanel />
-          </div>
-        </Sidebar>
-
-
         <div className="table-container">
           {
             activeList ?

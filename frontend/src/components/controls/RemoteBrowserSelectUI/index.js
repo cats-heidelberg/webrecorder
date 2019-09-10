@@ -90,13 +90,16 @@ class RemoteBrowserSelectUI extends PureComponent {
     // otherwise use the selected browser from the ui.
     const instanceContext = active ? activeBrowser : selectedBrowser;
 
-    const activeBrowserEle = browsers ? browsers.find(b => b.get('id') === instanceContext) : null;
+    //const activeBrowserEle = browsers ? browsers.find(b => b.get('id') === instanceContext) : null;
+    this.getRemoteBrowsers;
+    const activeBrowserEle = browsers ? browsers.find(b => b.get('id') === "chrome:60") : null;
 
     const btn = activeBrowserEle ?
       (<span className="btn-content">
         <img src={`/api/browsers/browsers/${activeBrowserEle.get('id')}/icon`} alt="Browser Icon" />{ ` ${activeBrowserEle.get('name')} v${activeBrowserEle.get('version')}` }
       </span>) :
-      <span className="btn-content">{active ? 'Current Browser' : 'Use Current Browser'}</span>;
+      //<span className="btn-content">{active ? 'Current Browser' : 'Use Current Browser'}</span>;
+      <span className="btn-content">{active ? 'Current Browser' : browsers}</span>;
 
     return (
       <DropdownButton
@@ -117,7 +120,7 @@ class RemoteBrowserSelectUI extends PureComponent {
             <div>loading options..</div>
           }
           { loaded && browsers &&
-              browsers.valueSeq().map(browser => <RemoteBrowserOption browser={browser} key={browser.get('id') ? browser.get('id') : 'native'} selectBrowser={this.selectBrowser} isActive={instanceContext === browser.get('id')} />)
+            browsers.valueSeq().map(browser => <RemoteBrowserOption browser={browser} key={browser.get('id') ? browser.get('id') : 'native'} selectBrowser={this.selectBrowser} isActive={instanceContext === browser.get('id')} />)
           }
           //{
           //  <RemoteBrowserOption browser={fromJS({ id: null, name: 'Use Current Browser' })} selectBrowser={this.selectBrowser} isActive={instanceContext === null} />
