@@ -9,6 +9,8 @@ RUN pip install git+https://github.com/FedericoCeratto/bottle-cork.git@94d4017a4
 
 RUN pip install -r requirements.txt
 
+RUN useradd -ms /bin/bash archivist
+
 USER archivist
 
 VOLUME /data/
