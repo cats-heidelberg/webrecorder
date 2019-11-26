@@ -4,7 +4,7 @@ services:
     app:
         container_name: app
         build: ./webrecorder
-        command: ulimit -n 65536; uwsgi --need-app /code/apps/apiapp.ini
+        command: uwsgi --need-app /code/apps/apiapp.ini
 
         env_file:
             - ./wr.env
@@ -64,7 +64,7 @@ services:
     recorder:
         container_name: recorder
         build: ./webrecorder
-        command: ulimit -n 65536; uwsgi --need-app /code/apps/rec.ini
+        command: uwsgi --need-app /code/apps/rec.ini
 
         env_file:
             - ./wr.env
@@ -82,7 +82,7 @@ services:
     warcserver:
         container_name: warcserver
         build: ./webrecorder
-        command: ulimit -n 65536; uwsgi --need-app /code/apps/load.ini
+        command: uwsgi --need-app /code/apps/load.ini
 
         env_file:
             - ./wr.env
