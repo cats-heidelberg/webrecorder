@@ -1,6 +1,6 @@
 from webrecorder.models.usermanager import UserManager
 import ldap
-
+import os
 
 # ============================================================================
 class LdapUserManager(UserManager):
