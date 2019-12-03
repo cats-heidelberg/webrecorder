@@ -123,8 +123,8 @@ class LdapUserManager(UserManager):
             print('created internal user: {}'.format(UserManager.all_users[username]))
             UserManager.create_new_user(username, {'email': 'NYI', 'name': username })
             return UserManager.all_users[username]
-        except:
-            print('ldap auth failed. falling back to internal auth')
+        except Exception as e:
+            print('ldap auth failed. falling back to internal auth. Exception: {}'.format(e))
             # fallback to internal auth
             if not self.cork.is_authenticate(username, password):
                 username = self.find_case_insensitive_username(username)
