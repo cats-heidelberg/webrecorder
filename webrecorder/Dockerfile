@@ -9,6 +9,8 @@ RUN pip install git+https://github.com/FedericoCeratto/bottle-cork.git@94d4017a4
 
 RUN pip install -r requirements.txt
 
+RUN apt install python-dev libldap2-dev libsasl2-dev libssl-dev
+
 ENV VOLUME_DIR /data/
 
 VOLUME /data/
