@@ -1,6 +1,7 @@
 from webrecorder.models.usermanager import UserManager
 import ldap
 import os
+from datetime import datetime
 
 # ============================================================================
 class LdapUserManager(UserManager):
