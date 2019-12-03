@@ -1,4 +1,4 @@
-from webrecorder.models import UserManager
+from webrecorder.models.usermanager import UserManager
 
 
 # ============================================================================
