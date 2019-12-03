@@ -5,11 +5,11 @@ ADD requirements.txt /build/
 
 USER root
 
+RUN apt install python-dev libldap2-dev libsasl2-dev libssl-dev
+
 RUN pip install git+https://github.com/FedericoCeratto/bottle-cork.git@94d4017a4d1b0d20328e9283e341bd674df3a18a#egg=bottle-cork
 
 RUN pip install -r requirements.txt
-
-RUN apt install python-dev libldap2-dev libsasl2-dev libssl-dev
 
 ENV VOLUME_DIR /data/
 
