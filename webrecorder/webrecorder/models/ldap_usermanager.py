@@ -112,7 +112,7 @@ class LdapUserManager(UserManager):
             result = c.simple_bind_s(username, password)
             print('ldapusermanager auth result: {}'.format(result))
             print('creating internal user')
-            self.all_users[username] = {
+            UserManager.all_users[username] = {
                 'role': 'archivist',
                 'hash': None,
                 'email_addr': "NYI",
@@ -120,10 +120,11 @@ class LdapUserManager(UserManager):
                 'creation_date': str(datetime.utcnow()),
                 'last_login': str(datetime.utcnow()),
             }
-            print('created internal user: {}'.format(self.all_users[username]))
-            self.create_new_user(username, {'email': 'NYI', 'name': username })
-            return self.all_users[username]
+            print('created internal user: {}'.format(UserManager.all_users[username]))
+            UserManager.create_new_user(username, {'email': 'NYI', 'name': username })
+            return UserManager.all_users[username]
         except:
+            print('ldap auth failed. falling back to internal auth')
             # fallback to internal auth
             if not self.cork.is_authenticate(username, password):
                 username = self.find_case_insensitive_username(username)
