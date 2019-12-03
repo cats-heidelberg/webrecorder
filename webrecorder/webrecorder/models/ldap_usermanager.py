@@ -1,4 +1,5 @@
 from webrecorder.models.usermanager import UserManager
+import ldap
 
 
 # ============================================================================
@@ -103,13 +104,36 @@ class LdapUserManager(UserManager):
         :rtype: User|None
         """
         print('ldapusermanager authenticating {}'.format(username))
-        # first, authenticate the user
-        # if failing, see if case-insensitive username and try that
-        if not self.cork.is_authenticate(username, password):
-            username = self.find_case_insensitive_username(username)
-            if not username or not self.cork.is_authenticate(username, password):
-                return None
-        return self.all_users[username]
+        c = ldap.initialize(os.environ.get('LDAP_URI', ''))
+        c.protocol_version = 3
+        c.set_option(ldap.OPT_REFERRALS, 0)
+
+        try:
+            result = c.simple_bind_s(username, password)
+            print('ldapusermanager auth result: {}'.format(result))
+            print('creating internal user')
+            self.all_users[username] = {
+                'role': 'archivist',
+                'hash': None,
+                'email_addr': "NYI",
+                'full_name': username,
+                'creation_date': str(datetime.utcnow()),
+                'last_login': str(datetime.utcnow()),
+            }
+            print('created internal user: {}'.format(self.all_users[username]))
+            self.create_new_user(username, {'email': 'NYI', 'name': username })
+            return self.all_users[username]
+        except:
+            # fallback to internal auth
+            if not self.cork.is_authenticate(username, password):
+                username = self.find_case_insensitive_username(username)
+                if not username or not self.cork.is_authenticate(username, password):
+                    return None
+            return self.all_users[username]
+        finally:
+            c.unbind_s()
+
+
 
 
     def update_password(self, curr_password, password, confirm):
