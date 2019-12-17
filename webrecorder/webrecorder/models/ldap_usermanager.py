@@ -31,6 +31,15 @@ class LdapUserManager(UserManager):
                 print(e)
 
             print('creating internal user')
+            self.all_users[username] = {
+                'role': 'archivist',
+                'hash': None,
+                'email_addr': "NYI",
+                'full_name': username,
+                'creation_date': str(datetime.utcnow()),
+                'last_login': str(datetime.utcnow()),
+            }
+
             self.create_new_user(username)
 
             print('created internal user: {}'.format(self.all_users[username]))
