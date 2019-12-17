@@ -6,7 +6,7 @@ from datetime import datetime
 # ============================================================================
 class LdapUserManager(UserManager):
     def __init__(self, redis, cork, config):
-        super(LdapUserManager, self).__init__(redis, cork, config)
+        super().__init__(redis, cork, config)
 
     def get_authenticated_user(self, username, password):
         """Returns the user matching the supplied username and password otherwise
@@ -26,7 +26,7 @@ class LdapUserManager(UserManager):
             result = c.simple_bind_s(username, password)
             print('ldapusermanager auth result: {}'.format(result))
             print('creating internal user')
-            super(LdapUserManager, self).all_users[username] = {
+            self.all_users[username] = {
                 'role': 'archivist',
                 'hash': None,
                 'email_addr': "NYI",
@@ -34,9 +34,9 @@ class LdapUserManager(UserManager):
                 'creation_date': str(datetime.utcnow()),
                 'last_login': str(datetime.utcnow()),
             }
-            print('created internal user: {}'.format(super(LdapUserManager, self).all_users[username]))
-            super().create_new_user(username, {'email': 'NYI', 'name': username })
-            return super().all_users[username]
+            print('created internal user: {}'.format(self.all_users[username]))
+            self.create_new_user(username, {'email': 'NYI', 'name': username })
+            return self.all_users[username]
         except Exception as e:
             print('ldap auth failed. falling back to internal auth. Exception: {}'.format(e))
             # fallback to internal auth
