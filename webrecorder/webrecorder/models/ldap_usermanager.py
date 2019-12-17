@@ -8,93 +8,6 @@ class LdapUserManager(UserManager):
     def __init__(self, redis, cork, config):
         super(LdapUserManager, self).__init__(redis, cork, config)
 
-    # def register_user(self, input_data, host):
-    #     msg = OrderedDict()
-    #     redir_extra = ''
-
-    #     username = input_data.get('username', '')
-    #     full_name = input_data.get('full_name', '')
-    #     email = input_data.get('email', '')
-
-    #     if 'username' not in input_data:
-    #         msg['username'] = 'Missing Username'
-
-    #     elif username.startswith(self.temp_prefix):
-    #         msg['username'] = 'Sorry, this is not a valid username'
-
-    #     if 'email' not in input_data:
-    #         msg['email'] = 'Missing Email'
-
-    #     if self.invites_enabled:
-    #         try:
-    #             val_email = self.is_valid_invite(input_data['invite'])
-    #             if val_email != email:
-    #                 raise ValidationException('Sorry, this invite can only be used with email: {0}'.format(val_email))
-    #         except ValidationException as ve:
-    #             msg['invite'] = str(ve)
-
-    #         else:
-    #             redir_extra = '?invite=' + input_data.get('invite', '')
-
-    #     try:
-    #         self.validate_user(username, email)
-    #         self.validate_password(input_data['password'], input_data['confirmpassword'])
-
-    #     except ValidationException as ve:
-    #         msg['validation'] = str(ve)
-
-    #     try:
-    #         move_info = self.get_move_temp_info(input_data)
-    #     except ValidationException as ve:
-    #         msg['move_info'] = str(ve)
-
-    #     if msg:
-    #         return msg, redir_extra
-
-
-    #     try:
-    #         desc = {'name': full_name}
-
-    #         if move_info:
-    #             desc['move_info'] = move_info
-
-    #         desc = json.dumps(desc)
-
-    #         self.cork.register(username, input_data['password'], email, role='archivist',
-    #                       max_level=50,
-    #                       subject='webrecorder.io Account Creation',
-    #                       email_template='webrecorder/templates/emailconfirm.html',
-    #                       description=desc,
-    #                       host=host)
-
-    #         # add to announce list if user opted in
-    #         if input_data.get('announce_mailer') and self.announce_list:
-    #             self.add_to_mailing_list(username, email, full_name,
-    #                                      list_endpoint=self.announce_list)
-
-    #         if self.invites_enabled:
-    #             self.delete_invite(email)
-
-    #         # extend session for upto 90 mins to store data to be migrated
-    #         # to allow time for user to validate registration
-    #         if move_info:
-    #             self.get_session().save()
-
-    #     except ValidationException as ve:
-    #         msg['validation'] = str(ve)
-
-    #     except Exception as ex:
-    #         import traceback
-    #         traceback.print_exc()
-    #         msg['other_error'] = 'Registration failed: ' + str(ex)
-
-    #     if not msg:
-    #         msg['success'] = ('A confirmation e-mail has been sent to <b>{0}</b>. ' +
-    #                           'Please check your e-mail to complete the registration!').format(username)
-
-    #     return msg, redir_extra
-
-
     def get_authenticated_user(self, username, password):
         """Returns the user matching the supplied username and password otherwise
         returns None
@@ -113,7 +26,7 @@ class LdapUserManager(UserManager):
             result = c.simple_bind_s(username, password)
             print('ldapusermanager auth result: {}'.format(result))
             print('creating internal user')
-            UserManager.all_users[username] = {
+            super().all_users[username] = {
                 'role': 'archivist',
                 'hash': None,
                 'email_addr': "NYI",
@@ -121,9 +34,9 @@ class LdapUserManager(UserManager):
                 'creation_date': str(datetime.utcnow()),
                 'last_login': str(datetime.utcnow()),
             }
-            print('created internal user: {}'.format(UserManager.all_users[username]))
-            UserManager.create_new_user(username, {'email': 'NYI', 'name': username })
-            return UserManager.all_users[username]
+            print('created internal user: {}'.format(super().all_users[username]))
+            super().create_new_user(username, {'email': 'NYI', 'name': username })
+            return super().all_users[username]
         except Exception as e:
             print('ldap auth failed. falling back to internal auth. Exception: {}'.format(e))
             # fallback to internal auth
