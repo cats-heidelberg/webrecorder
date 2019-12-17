@@ -23,17 +23,15 @@ class LdapUserManager(UserManager):
         try:
             result = c.simple_bind_s(username, password)
             print('ldapusermanager auth result: {}'.format(result))
+
+            if self.all_users[username]:
+                print('found user, logging in')
+                return self.all_users[username]
+
             print('creating internal user')
-            self.all_users[username] = {
-                'role': 'archivist',
-                'hash': None,
-                'email_addr': "NYI",
-                'full_name': username,
-                'creation_date': str(datetime.utcnow()),
-                'last_login': str(datetime.utcnow()),
-            }
+            self.create_new_user(username)
+
             print('created internal user: {}'.format(self.all_users[username]))
-            self.create_new_user(username, {'email': 'NYI', 'name': username })
             return self.all_users[username]
         except Exception as e:
             raise(e)
