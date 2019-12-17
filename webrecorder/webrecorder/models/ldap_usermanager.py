@@ -5,8 +5,6 @@ from datetime import datetime
 
 # ============================================================================
 class LdapUserManager(UserManager):
-    def __init__(self, redis, cork, config):
-        super().__init__(redis, cork, config)
 
     def get_authenticated_user(self, username, password):
         """Returns the user matching the supplied username and password otherwise
