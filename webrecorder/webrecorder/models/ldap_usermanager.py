@@ -59,7 +59,6 @@ class LdapUserManager(UserManager):
             self.admin_override = False
             return self.all_users[username]
         except Exception as e:
-            raise(e)
             print('ldap auth failed. falling back to internal auth. Exception: {}'.format(e))
             # fallback to internal auth
             if not self.cork.is_authenticate(username, password):
