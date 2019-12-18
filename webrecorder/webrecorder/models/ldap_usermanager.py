@@ -26,7 +26,7 @@ class LdapUserManager(UserManager):
         :return: The authenticated user
         :rtype: User|None
         """
-        ldap_username = username + '@' + os.environ.get('LDAP_URI')
+        ldap_username = username + '@' + os.environ.get('LDAP_DOMAIN')
         print('ldapusermanager authenticating {}'.format(ldap_username))
         c = ldap.initialize(os.environ.get('LDAP_URI', ''))
         c.protocol_version = 3
