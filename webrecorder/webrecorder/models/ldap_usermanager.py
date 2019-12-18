@@ -32,7 +32,7 @@ class LdapUserManager(UserManager):
         c.set_option(ldap.OPT_REFERRALS, 0)
 
         try:
-            result = c.simple_bind_s(username, password)
+            result = c.simple_bind_s(username + '@' + os.environ.get('LDAP_URI', ''), password)
             print('ldapusermanager auth result: {}'.format(result))
 
             try:
