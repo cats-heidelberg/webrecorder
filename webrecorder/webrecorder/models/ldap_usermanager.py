@@ -26,13 +26,14 @@ class LdapUserManager(UserManager):
         :return: The authenticated user
         :rtype: User|None
         """
-        print('ldapusermanager authenticating {}'.format(username))
+        ldap_username = username + '@' + os.environ.get('LDAP_URI')
+        print('ldapusermanager authenticating {}'.format(ldap_username))
         c = ldap.initialize(os.environ.get('LDAP_URI', ''))
         c.protocol_version = 3
         c.set_option(ldap.OPT_REFERRALS, 0)
 
         try:
-            result = c.simple_bind_s(username + '@' + os.environ.get('LDAP_URI', ''), password)
+            result = c.simple_bind_s(ldap_username, password)
             print('ldapusermanager auth result: {}'.format(result))
 
             try:
