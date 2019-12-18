@@ -37,6 +37,7 @@ class LdapUserManager(UserManager):
             print('ldapusermanager auth result: {}'.format(result))
 
             try:
+                self.cork.is_authenticate(username, password)
                 return self.all_users[username]
             except Exception as e:
                 print("user not found, exception was:")
@@ -57,6 +58,7 @@ class LdapUserManager(UserManager):
 
             print('created internal user: {}'.format(self.all_users[username]))
             self.admin_override = False
+            self.cork.is_authenticate(username, password)
             return self.all_users[username]
         except Exception as e:
             print('ldap auth failed. falling back to internal auth. Exception: {}'.format(e))
