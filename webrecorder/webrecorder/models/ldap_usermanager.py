@@ -7,12 +7,16 @@ from datetime import datetime
 
 # ============================================================================
 class LdapUserManager(UserManager):
+    def __init__(self, redis, cork, config):
+        super().__init__(redis, cork, config)
+        self.admin_override = False
 
     def _get_access(self):
-        print(request['webrec.access'])
-        print(BaseAccess())
-        return request['webrec.access']
-
+        if self.admin_override:
+            self.admin_override = False
+            return BaseAccess()
+        else:
+            return request['webrec.access']
     def get_authenticated_user(self, username, password):
         """Returns the user matching the supplied username and password otherwise
         returns None
@@ -38,6 +42,7 @@ class LdapUserManager(UserManager):
                 print(e)
 
             print('creating internal user')
+            self.admin_override = True
             self.all_users[username] = {
                 'role': 'archivist',
                 'hash': None,
