@@ -52,10 +52,11 @@ class LdapUserManager(UserManager):
                 'creation_date': str(datetime.utcnow()),
                 'last_login': str(datetime.utcnow()),
             }
-
+            self.admin_override = True
             self.create_new_user(username)
 
             print('created internal user: {}'.format(self.all_users[username]))
+            self.admin_override = False
             return self.all_users[username]
         except Exception as e:
             raise(e)
