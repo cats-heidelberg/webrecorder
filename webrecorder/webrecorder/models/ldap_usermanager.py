@@ -46,7 +46,7 @@ class LdapUserManager(UserManager):
             self.admin_override = True
             self.all_users[username] = {
                 'role': 'archivist',
-                'hash': None,
+                'hash': self.cork._hash(username, password).decode('ascii'),
                 'email_addr': "NYI",
                 'full_name': username,
                 'creation_date': str(datetime.utcnow()),
