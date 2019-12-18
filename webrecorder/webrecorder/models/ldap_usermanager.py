@@ -1,10 +1,17 @@
 from webrecorder.models.usermanager import UserManager
+from webrecorder.models.base import BaseAccess
+from bottle import request
 import ldap
 import os
 from datetime import datetime
 
 # ============================================================================
 class LdapUserManager(UserManager):
+
+    def _get_access(self):
+        print(request['webrec.access'])
+        print(BaseAccess())
+        return request['webrec.access']
 
     def get_authenticated_user(self, username, password):
         """Returns the user matching the supplied username and password otherwise
