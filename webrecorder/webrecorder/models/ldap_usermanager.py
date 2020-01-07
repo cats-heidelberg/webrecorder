@@ -35,31 +35,32 @@ class LdapUserManager(UserManager):
         try:
             result = c.simple_bind_s(ldap_username, password)
             print('ldapusermanager auth result: {}'.format(result))
+            escaped_username = username.replace(".", "_")
 
             try:
-                self.cork.is_authenticate(username, password)
-                return self.all_users[username]
+                self.cork.is_authenticate(escaped_username, password)
+                return self.all_users[escaped_username]
             except Exception as e:
                 print("user not found, exception was:")
                 print(e)
 
             print('creating internal user')
             self.admin_override = True
-            self.all_users[username] = {
+            self.all_users[escaped_username] = {
                 'role': 'archivist',
-                'hash': self.cork._hash(username, password).decode('ascii'),
+                'hash': self.cork._hash(escaped_username, password).decode('ascii'),
                 'email_addr': "NYI",
                 'full_name': username,
                 'creation_date': str(datetime.utcnow()),
                 'last_login': str(datetime.utcnow()),
             }
             self.admin_override = True
-            self.create_new_user(username)
+            self.create_new_user(escaped_username)
 
-            print('created internal user: {}'.format(self.all_users[username]))
+            print('created internal user: {}'.format(self.all_users[escaped_username]))
             self.admin_override = False
-            self.cork.is_authenticate(username, password)
-            return self.all_users[username]
+            self.cork.is_authenticate(escaped_username, password)
+            return self.all_users[escaped_username]
         except Exception as e:
             print('ldap auth failed. falling back to internal auth. Exception: {}'.format(e))
             # fallback to internal auth
