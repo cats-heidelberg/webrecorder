@@ -147,7 +147,7 @@ class CollectionListUI extends Component {
               </Col>
           }
           <Col xs={12} sm={__DESKTOP__ ? 10 : 9} smOffset={__DESKTOP__ ? 1 : 0} className="wr-coll-meta">
-            {
+            {/*
               canAdmin &&
                 <Row className="collection-start-form">
                   <Col className="start-form" xs={12}>
@@ -155,8 +155,8 @@ class CollectionListUI extends Component {
                     <StandaloneRecorder />
                   </Col>
                 </Row>
-            }
-            {
+            */}
+            {/*
               !isAnon && canAdmin &&
                 <Row>
                   <Col xs={12} className={classNames('collections-index-nav', { desktop: __DESKTOP__ })}>
@@ -169,7 +169,7 @@ class CollectionListUI extends Component {
                     </Upload>
                   </Col>
                 </Row>
-            }
+            */}
             {
               collections && collections.get('loaded') &&
                 <Row>
@@ -191,12 +191,12 @@ class CollectionListUI extends Component {
             }
           </Col>
         </Row>
-        <NewCollection
+      {/*  <NewCollection
           close={this.close}
           visible={showModal}
           createCollection={this.createCollection}
           creatingCollection={collections.get('creatingCollection')}
-          error={collections.get('error')} />
+          error={collections.get('error')} />*/}
       </React.Fragment>
     );
   }

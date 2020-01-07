@@ -15,7 +15,7 @@ import Capstone from 'components/collection/Capstone';
 import EditModal from 'components/collection/EditModal';
 import PublicSwitch from 'components/collection/PublicSwitch';
 import { OnBoarding } from 'components/siteComponents';
-import { ClipboardIcon, DatIcon, LoaderIcon, MoreIcon, PlusIcon } from 'components/icons';
+import { ClipboardIcon, DatIcon, LoaderIcon, MoreIcon, PlusIcon, CheckIcon } from 'components/icons';
 
 import './style.scss';
 
@@ -49,6 +49,7 @@ class CollectionHeaderUI extends Component {
     this.state = {
       datShare: false,
       editModal: false,
+      modalSessionSave: false,
       onBoarding: false
     };
   }
@@ -108,6 +109,14 @@ class CollectionHeaderUI extends Component {
   toggleDatModal = () => {
     this.setState({ datShare: !this.state.datShare });
   }
+  toggleSessionSave = () => {
+	  this.setState({ modalSessionSave: !this.state.modalSessionSave });
+	}
+  sendArchive = () => {
+    const { collection, history } = this.props;
+    history.push('/_warcsent');
+  }
+
 
   showOnboarding = () => {
     this.setState({ onBoarding: true });
@@ -184,7 +193,28 @@ class CollectionHeaderUI extends Component {
             canAdmin &&
               <div className="menu-row">
                 <Button className="rounded new-session" onClick={this.newSession}><PlusIcon /><span className="hidden-xs"> New Session</span></Button>
-                <DropdownButton id="coll-menu" noCaret className="rounded" title={<MoreIcon />}>
+                <Button className="rounded new-session" onClick={this.toggleSessionSave}><CheckIcon /><span className="hidden-xs"> Complete Session</span></Button>
+                {
+            //allowDat &&
+            <Modal
+              visible={this.state.modalSessionSave}
+              closeCb={this.toggleSessionSave}Complete Session
+              dialogClassName="table-header-modal dat-modal">
+              {
+
+
+                  <React.Fragment>
+                    <h4>Attention</h4>
+                    <p>If you submit your archive for DOI creation you won't be able to record more content.<br /> <br />End recording archive? <a href="https://datproject.org/" target="_blank">Learn more</a></p>
+                    <Button className="rounded new-session" onClick={this.sendArchive}><CheckIcon /><span className="hidden-xs">I am sure.</span></Button>
+
+                  </React.Fragment>
+              }
+              <Button onClick={this.toggleSessionSave} className="rectangular">Close</Button>
+            </Modal>
+          }
+                {/*<DropdownButton id="coll-menu" noCaret className="rounded" title={<MoreIcon />}>
+                
                   <MenuItem onClick={this.newSession}>New Session</MenuItem>
                   <MenuItem divider />
                   <MenuItem onClick={this.togglePublicView}>Cover</MenuItem>
@@ -209,7 +239,7 @@ class CollectionHeaderUI extends Component {
                       <MenuItem onClick={this.showOnboarding}><span role="img" aria-label="tada emoji">&#127881;</span> Tour New Features</MenuItem>
                   }
                   <MenuItem href="https://guide.webrecorder.io/" target="_blank">Help</MenuItem>
-                </DropdownButton>
+                </DropdownButton>*/}
               </div>
           }
           {

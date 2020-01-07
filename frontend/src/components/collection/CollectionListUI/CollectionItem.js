@@ -48,13 +48,16 @@ class CollectionItem extends PureComponent {
       <li className={descClasses} key={collection.get('id')}>
         <Row>
           <Col sm={12} md={7}>
-            <Link className="collection-title" to={`${getCollectionLink(collection)}`}>{collection.get('title')}</Link>
+            //<Link className="collection-title" to={`${getCollectionLink(collection)}`}>{collection.get('title')}</Link>
+            <Button className="rounded" onClick={this.manageCollection}>
+            {collection.get('title')}
+          </Button>
             <p className="collection-list-description">
               {
                 truncate(removeMd(collection.get('desc'), { useImgAltText: false }), 3, new RegExp(/([.!?])/))
               }
             </p>
-            {
+            {/*
               canAdmin &&
                 <React.Fragment>
                   <Button className="rounded" onClick={this.manageCollection}>
@@ -62,9 +65,9 @@ class CollectionItem extends PureComponent {
                   </Button>
                   <Button className="rounded" onClick={this.newSession}><PlusIcon /> New Session</Button>
                 </React.Fragment>
-            }
+            */}
           </Col>
-          <Col xs={6} md={1} className="collection-list-size">
+          {/*<Col xs={6} md={1} className="collection-list-size">
             <SizeFormat bytes={collection.get('size')} />
           </Col>
           <Col className="collection-time" xs={6} md={2}>
@@ -88,7 +91,7 @@ class CollectionItem extends PureComponent {
                   </DeleteCollection>
                 </React.Fragment>
             }
-          </Col>
+          </Col>*/}
         </Row>
       </li>
     );

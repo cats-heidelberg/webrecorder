@@ -117,14 +117,14 @@ default_coll:
     id: 'default-collection'
     title: 'Default Collection'
     desc: |
-        *This is your first collection!*
+        *Vielen Dank, dass Sie sich für das Opendach enschieden haben!*
 
-        Each collection contains pages you’ve captured using Webrecorder.
+        Bitte klicken Sie auf Aufnahme beginnen, um
 
-        To add to this collection you can capture more pages.
+        Webseiten zu einer Archivierungsanfrage hinzuzufügen.
 
-        You can make lists and add text to provide information about one or more pages in your collection.
-
+        Anschließend beenden und Sie die Aufnahme und wir erstellen die DOI.
+        
 upload_coll:
     id: 'uploaded-collection'
     title: 'Uploaded Collection'
