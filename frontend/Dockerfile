@@ -25,4 +25,4 @@ WORKDIR $APP
 
 RUN npm install --global yarn
 
-RUN rm -rf node_modules && yarn install && yarn cache clean && rm -rf ~/tmp/*
+RUN rm -rf node_modules && yarn add react-tooltip && yarn install && yarn cache clean && rm -rf ~/tmp/*
