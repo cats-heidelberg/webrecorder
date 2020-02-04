@@ -14,6 +14,7 @@ import './style.scss';
 
 const creatorLegend = ['corporate/institutional name', 'personal name'];
 const creatorList = [''];
+const subjectHeaderList = [''];
 
 class NewCollection extends Component {
   static propTypes = {
@@ -29,7 +30,10 @@ class NewCollection extends Component {
     super(props);
 
     this.state = {
+      listID: 0,
       publisher: '',
+      subjectHeaderList,
+      subjectHeadingText: '',
       collTitle: '',
       pubTitle: '',
       collYear: '',
@@ -76,9 +80,25 @@ class NewCollection extends Component {
     this.setState({ selectedGroupName: evt.target.value });
   }
 
+  onRemoveItem = (item) => {
+    this.setState({
+        creatorList: this.state.creatorList.filter(el => el !== item)
+    })
+  }
+  onRemoveSubject = (item) => {
+    this.setState({
+        subjectHeaderList: this.state.subjectHeaderList.filter(el => el !== item)
+    })
+  }
+
   onAddItem = () => {
+    this.setState({ listID: this.state.listID + 1 });
     if (this.state.selectedGroupName==='corporate/institutional name') {
-      const temp = this.state.collTitle+', '+this.state.copTitle;
+      const temp =
+      {
+      "htmlText": this.state.collTitle+', '+this.state.copTitle,
+      "id": this.state.listID
+    };
       this.setState(state => {
 
         const creatorList = [...state.creatorList, temp];
@@ -90,7 +110,11 @@ class NewCollection extends Component {
       });
     }
     else {
-      const temp = this.state.persName+', '+this.state.surName+', '+this.state.collYear;
+      const temp =
+      {
+      "htmlText": this.state.persName+', '+this.state.surName+', '+this.state.collYear,
+      "id": this.state.listID
+    };
       this.setState(state => {
         const creatorList = [...state.creatorList, temp];
         return {
@@ -103,6 +127,23 @@ class NewCollection extends Component {
     }
 
   }
+
+  onAddSubject = () => {
+    this.setState({ listID: this.state.listID + 1 });
+
+      const temp =
+      {
+      "htmlText": this.state.subjectHeadingText,
+      "id": this.state.listID
+    };
+      this.setState(state => {
+        const subjectHeaderList = [...state.subjectHeaderList, temp];
+        return {
+          subjectHeaderList,
+          subjectHeadingText: ''
+        };
+      });
+    }
   onClearArray = () => {
     this.setState({ list: [] });
   };
@@ -156,7 +197,7 @@ class NewCollection extends Component {
 
   render() {
     const { close, creatingCollection, error, visible } = this.props;
-    const { collTitle, collYear, surName, copTitle, isPublic , pubTitle, publishYear, usermail, persName, publisher, selectedGroupName, creatorLegend, url } = this.state;
+    const { collTitle, collYear, surName, copTitle, isPublic , pubTitle, publishYear, usermail, persName, publisher, selectedGroupName, subjectHeadingText, creatorLegend, url } = this.state;
     if (visible) {
         this.rebuildTooltip();
     }
@@ -223,7 +264,12 @@ class NewCollection extends Component {
                         <ul>
                         {
                           this.state.creatorList.map(item => (
-                              <li>{item}</li>
+                            <li key={item.id}>
+                              <React.Fragment>
+                                <span className="glyphicon glyphicon-remove glyphicon-button" value={item} onClick={() => this.onRemoveItem(item)}style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} />
+                                <div>{item.htmlText}</div>
+                              </React.Fragment>
+                            </li>
                           ))
                         }
                         </ul>
@@ -246,6 +292,32 @@ class NewCollection extends Component {
                 <FormControl type="text" placeholder="Publisher*" inputRef={(obj) => { this.input = obj; }} id="publishYear" name="publishYear" onFocus={this.focusInput} onChange={this.handleInput} value={publishYear} />
               </FormGroup>
               </React.Fragment>
+
+              <div>
+                <FormGroup id="fieldset" validationState={this.validateAuthorship()}>
+                <label onMouseOver={() => { ReactTooltip.show(this.fooRef5) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef5) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef5 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Subject headings help to describe and categorize the web resource. The headings should conform to a list drawn from the Library of Congress. A complete list currently by OpenDACHS in use can be found"/>
+                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Subject headings:</div>
+                      </label>
+
+                          <React.Fragment>
+                            <FormControl type="text" placeholder="subject" inputRef={(obj) => { this.input = obj; }} id="subjectHeadingText" name="subjectHeadingText" onFocus={this.focusInput} onChange={this.handleInput} value={subjectHeadingText} />
+                          </React.Fragment>
+
+                        <ul>
+                        {
+                          this.state.subjectHeaderList.map(item => (
+                            <li key={item.id}>
+                              <React.Fragment>
+                                <span className="glyphicon glyphicon-remove glyphicon-button" value={item} onClick={() => this.onRemoveSubject(item)}style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} />
+                                <div>{item.htmlText}</div>
+                              </React.Fragment>
+                            </li>
+                          ))
+                        }
+                        </ul>
+                    <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddSubject}>Add header</button>
+                </FormGroup>
+              </div>
               </span>
           }
             <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={creatingCollection && !error} type="button">Create</button>
