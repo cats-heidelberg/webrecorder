@@ -13,8 +13,10 @@ import ReactTooltip from 'react-tooltip';
 import './style.scss';
 
 const creatorLegend = ['corporate/institutional name', 'personal name'];
-const creatorList = [''];
-const subjectHeaderList = [''];
+const creatorList = [];
+const subjectHeaderList = [];
+const personHeaderList = [];
+
 
 class NewCollection extends Component {
   static propTypes = {
@@ -34,6 +36,8 @@ class NewCollection extends Component {
       publisher: '',
       subjectHeaderList,
       subjectHeadingText: '',
+      personHeaderList,
+      personeadingText: '',
       collTitle: '',
       pubTitle: '',
       collYear: '',
@@ -90,6 +94,11 @@ class NewCollection extends Component {
         subjectHeaderList: this.state.subjectHeaderList.filter(el => el !== item)
     })
   }
+  onRemovePerson = (item) => {
+    this.setState({
+        personHeaderList: this.state.personHeaderList.filter(el => el !== item)
+    })
+  }
 
   onAddItem = () => {
     this.setState({ listID: this.state.listID + 1 });
@@ -144,6 +153,23 @@ class NewCollection extends Component {
         };
       });
     }
+
+    onAddPerson = () => {
+      this.setState({ listID: this.state.listID + 1 });
+
+        const temp =
+        {
+        "htmlText": this.state.personHeadingText,
+        "id": this.state.listID
+      };
+        this.setState(state => {
+          const personHeaderList = [...state.personHeaderList, temp];
+          return {
+            personHeaderList,
+            personHeadingText: ''
+          };
+        });
+      }
   onClearArray = () => {
     this.setState({ list: [] });
   };
@@ -197,7 +223,7 @@ class NewCollection extends Component {
 
   render() {
     const { close, creatingCollection, error, visible } = this.props;
-    const { collTitle, collYear, surName, copTitle, isPublic , pubTitle, publishYear, usermail, persName, publisher, selectedGroupName, subjectHeadingText, creatorLegend, url } = this.state;
+    const { collTitle, collYear, surName, copTitle, isPublic , pubTitle, publishYear, usermail, persName, publisher, selectedGroupName, subjectHeadingText,  personHeadingText, creatorLegend, url } = this.state;
     if (visible) {
         this.rebuildTooltip();
     }
@@ -316,6 +342,29 @@ class NewCollection extends Component {
                         }
                         </ul>
                     <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddSubject}>Add header</button>
+                </FormGroup>
+                <FormGroup id="fieldset" validationState={this.validateAuthorship()}>
+                <label onMouseOver={() => { ReactTooltip.show(this.fooRef6) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef6) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef6 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Adding person headings allows for expanding the catalogue entry by the persons the web resource focuses on."/>
+                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Add Subject</div>
+                      </label>
+
+                          <React.Fragment>
+                            <FormControl type="text" placeholder="person" inputRef={(obj) => { this.input = obj; }} id="personHeadingText" name="personHeadingText" onFocus={this.focusInput} onChange={this.handleInput} value={personHeadingText} />
+                          </React.Fragment>
+
+                        <ul>
+                        {
+                          this.state.personHeaderList.map(item => (
+                            <li key={item.id}>
+                              <React.Fragment>
+                                <span className="glyphicon glyphicon-remove glyphicon-button" value={item} onClick={() => this.onRemovePerson(item)}style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} />
+                                <div>{item.htmlText}</div>
+                              </React.Fragment>
+                            </li>
+                          ))
+                        }
+                        </ul>
+                    <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddPerson}>Add Person</button>
                 </FormGroup>
               </div>
               </span>
