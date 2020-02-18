@@ -33,6 +33,7 @@ from webrecorder.uploadcontroller import UploadController
 from webrecorder.appcontroller import AppController
 from webrecorder.autocontroller import AutoController
 from webrecorder.behaviormgr import BehaviorMgr
+from webrecorder.odredirectcontroller import OdRedirectController
 
 from webrecorder.browsermanager import BrowserManager
 
@@ -69,6 +70,7 @@ class MainController(BaseController):
                        ListsController,
                        AutoController,
                        BehaviorMgr,
+                       OdRedirectController,
                       ]
 
 
