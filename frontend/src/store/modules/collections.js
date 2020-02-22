@@ -64,7 +64,7 @@ export function isLoaded({ app }) {
          app.getIn(['collections', 'loaded']);
 }
 
-export function createCollection(user, title, makePublic = false) {
+export function createCollection(user, title, url, makePublic = false) {
   return {
     types: [CREATE_COLL, CREATE_COLL_SUCCESS, CREATE_COLL_FAIL],
     promise: client => client.post(`${config.apiPath}/collections`, {

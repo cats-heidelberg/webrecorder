@@ -20,19 +20,25 @@ opacity: 1 !important;
  }
 }
 /*React Tooltip*/
-ul {
-  list-style-type: none;
-}
+
 /* formular*/
-fieldset {
+.modal-dialog {
+    top: 10%;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+    height: 800px; // <-- This sets the height
+    overflow: scroll; // <-- This tells the modal to scrol
+}
+#fieldset {
+  padding: 7px;
     background-color: #efefef;
     border: 1px solid #999;
     box-shadow: 1px 2px 2px rgba(0, 0, 0, .15);
 }
-fieldset.publication, fieldset.classification {
+#fieldset.publication, #fieldset.classification {
     margin-top: 30px;
 }
-fieldset.request {
+#fieldset.request {
     margin: 20px 0 20px 0;
 }
 input[type=button], input[type=submit], input[type=reset] {
@@ -120,7 +126,10 @@ input:focus {
  input:not(:placeholder-shown):invalid {
     background-color: rgba(250, 128, 114, 0.5);
 }
-
+/* no bullet point*/
+ul {
+  list-style-type: none;
+}
 /* formular*/
 .collection-start-form {
 

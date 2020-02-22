@@ -17,7 +17,6 @@ const creatorList = [];
 const subjectHeaderList = [];
 const personHeaderList = [];
 
-
 class NewCollection extends Component {
   static propTypes = {
     close: PropTypes.func,
@@ -99,7 +98,6 @@ class NewCollection extends Component {
         personHeaderList: this.state.personHeaderList.filter(el => el !== item)
     })
   }
-
   onAddItem = () => {
     this.setState({ listID: this.state.listID + 1 });
     if (this.state.selectedGroupName==='corporate/institutional name') {
@@ -153,7 +151,6 @@ class NewCollection extends Component {
         };
       });
     }
-
     onAddPerson = () => {
       this.setState({ listID: this.state.listID + 1 });
 
@@ -170,6 +167,7 @@ class NewCollection extends Component {
           };
         });
       }
+
   onClearArray = () => {
     this.setState({ list: [] });
   };
@@ -183,7 +181,7 @@ class NewCollection extends Component {
     evt.preventDefault();
     const { publisher, publishYear, collTitle, collYear ,surName, copTitle, isPublic, pubTitle, usermail, url } = this.state;
 
-    this.props.createCollection(pubTitle, isPublic);
+    this.props.createCollection(pubTitle, url, isPublic);
   }
   validateEmail = () => {
     const { checkEmail, email } = this.state;
@@ -223,7 +221,7 @@ class NewCollection extends Component {
 
   render() {
     const { close, creatingCollection, error, visible } = this.props;
-    const { collTitle, collYear, surName, copTitle, isPublic , pubTitle, publishYear, usermail, persName, publisher, selectedGroupName, subjectHeadingText,  personHeadingText, creatorLegend, url } = this.state;
+    const { collTitle, collYear, surName, copTitle, isPublic , pubTitle, publishYear, usermail, persName, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
     if (visible) {
         this.rebuildTooltip();
     }
@@ -287,7 +285,8 @@ class NewCollection extends Component {
                             <FormControl type="text" placeholder="YYYY" inputRef={(obj) => { this.input = obj; }} id="collYear" name="collYear" onFocus={this.focusInput} onChange={this.handleInput} value={collYear} />
                           </React.Fragment>
                         )}
-                        <ul>
+                        {
+                      this.state.creatorList.length>0 &&  <ul>
                         {
                           this.state.creatorList.map(item => (
                             <li key={item.id}>
@@ -299,6 +298,7 @@ class NewCollection extends Component {
                           ))
                         }
                         </ul>
+                      }
                     <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddItem}>Add Creator</button>
                 </FormGroup>
               </div>
@@ -345,7 +345,7 @@ class NewCollection extends Component {
                 </FormGroup>
                 <FormGroup id="fieldset" validationState={this.validateAuthorship()}>
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef6) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef6) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef6 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Adding person headings allows for expanding the catalogue entry by the persons the web resource focuses on."/>
-                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Add Subject</div>
+                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Add Subject:</div>
                       </label>
 
                           <React.Fragment>
@@ -368,6 +368,8 @@ class NewCollection extends Component {
                 </FormGroup>
               </div>
               </span>
+
+
           }
             <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={creatingCollection && !error} type="button">Create</button>
         </form>

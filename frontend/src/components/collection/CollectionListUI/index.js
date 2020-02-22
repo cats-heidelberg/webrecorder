@@ -47,13 +47,14 @@ class CollectionListUI extends Component {
     super(props);
 
     this.state = {
-      showModal: false
+      showModal: false,
+      showModalFinish: false
     };
   }
 
-  createCollection = (collTitle, isPublic) => {
+  createCollection = (collTitle, url, isPublic) => {
     const { createNewCollection, match: { params: { user } } } = this.props;
-    createNewCollection(user, collTitle, isPublic);
+    createNewCollection(user, collTitle, url, isPublic);
   }
 
   editName = (full_name) => {
@@ -70,10 +71,16 @@ class CollectionListUI extends Component {
     this.setState({ showModal: !this.state.showModal });
   }
 
+  toggleFinish = () => {
+    this.setState({ showModalFinish: !this.state.showModalFinish });
+  }
+
   close = () => {
     this.setState({ showModal: false });
   }
-
+  closeFinish = () => {
+    this.setState({ showModalFinish: !this.state.showModalFinish });
+  }
   updateUser = (description) => {
     const { editUser, match: { params: { user } } } = this.props;
     editUser(user, { desc: description });
@@ -82,7 +89,7 @@ class CollectionListUI extends Component {
   render() {
     const { isAnon } = this.context;
     const { auth, collections, editCollection, history, orderedCollections, match: { params }, user } = this.props;
-    const { showModal } = this.state;
+    const { showModal, showModalFinish } = this.state;
     const userParam = params.user;
     const displayName = user.get('full_name') || userParam;
     const canAdmin = auth.getIn(['user', 'username']) === userParam;
@@ -156,7 +163,7 @@ class CollectionListUI extends Component {
                   </Col>
                 </Row>
             */}
-            {/*
+            {
               !isAnon && canAdmin &&
                 <Row>
                   <Col xs={12} className={classNames('collections-index-nav', { desktop: __DESKTOP__ })}>
@@ -164,12 +171,9 @@ class CollectionListUI extends Component {
                     <Button onClick={this.toggle} className="rounded">
                       <span className="glyphicon glyphicon-plus glyphicon-button" /> New Collection
                     </Button>
-                    <Upload classes="rounded">
-                      <UploadIcon /> { __DESKTOP__ ? 'Import' : 'Upload' }
-                    </Upload>
                   </Col>
                 </Row>
-            */}
+            }
             {
               collections && collections.get('loaded') &&
                 <Row>
@@ -182,7 +186,10 @@ class CollectionListUI extends Component {
                             canAdmin={canAdmin}
                             collection={coll}
                             editCollection={editCollection}
-                            history={history} />
+                            history={history}
+                            toggleFinish={this.toggleFinish}
+                            closeFinish={this.closeFinish}
+                            visible={showModalFinish} />
                         );
                       })
                     }
@@ -191,12 +198,12 @@ class CollectionListUI extends Component {
             }
           </Col>
         </Row>
-      {/*  <NewCollection
+        <NewCollection
           close={this.close}
           visible={showModal}
           createCollection={this.createCollection}
           creatingCollection={collections.get('creatingCollection')}
-          error={collections.get('error')} />*/}
+          error={collections.get('error')} />
       </React.Fragment>
     );
   }

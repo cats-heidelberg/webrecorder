@@ -81,7 +81,7 @@ class HomeUI extends PureComponent {
             </a>
           </figure>
           <div className="intro">
-            <h2>Webrecorder.io is a web archiving service to collect and revisit web pages.</h2>
+            <h2>Bitte loggen Sie sich mit ihren uni id ein.</h2>
             <p>Webrecorder creates an interactive copy of any web page that you browse, including content revealed by your interactions such as playing video and audio, scrolling, clicking buttons, and so forth.</p>
 
             <div className="cta">

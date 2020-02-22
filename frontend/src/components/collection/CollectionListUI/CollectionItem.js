@@ -4,44 +4,59 @@ import removeMd from 'remove-markdown';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { Button, Col, Row, Tooltip } from 'react-bootstrap';
+import { CheckIcon } from 'components/icons';
 
 import { buildDate, getCollectionLink, truncate } from 'helpers/utils';
 
 import SizeFormat from 'components/SizeFormat';
+import Modal from 'components/Modal';
+
+
 import { DeleteCollection } from 'containers';
 import { TrashIcon, PlusIcon } from 'components/icons';
 
 class CollectionItem extends PureComponent {
   static propTypes = {
+    closeFinish: PropTypes.func,
     canAdmin: PropTypes.bool,
     addToList: PropTypes.func,
     collId: PropTypes.string,
     collUser: PropTypes.string,
+    toggleFinish: PropTypes.func,
     editCollection: PropTypes.func,
     id: PropTypes.string,
     isOver: PropTypes.bool,
     collection: PropTypes.object,
     selected: PropTypes.bool,
-    history: PropTypes.string
+    history: PropTypes.string,
+    visible: PropTypes.bool
   };
+
 
   manageCollection = () => {
     const { collection, history } = this.props;
     history.push(getCollectionLink(collection, true));
   }
-
+  closeModal = (evt) => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    this.props.toggleFinish();
+  }
   newSession = () => {
     const { collection, history } = this.props;
     history.push(`${getCollectionLink(collection)}/$new`);
   }
-
+  sendArchive = () => {
+    const { collection, history } = this.props;
+    history.push('/_warcsent');
+  }
   toggleVisibility = () => {
     const { collection } = this.props;
     this.props.editCollection(collection.get('owner'), collection.get('id'), { public: !collection.get('public') });
   }
 
   render() {
-    const { canAdmin, collection } = this.props;
+    const { canAdmin, collection, closeFinish, visible } = this.props;
     const descClasses = classNames('left-buffer list-group-item', { 'has-description': collection.get('desc') });
 
     return (
@@ -61,6 +76,27 @@ class CollectionItem extends PureComponent {
                     Manage Collection
                   </Button>
                   <Button className="rounded" onClick={this.newSession}><PlusIcon /> New Session</Button>
+                  <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span className="hidden-xs"> Complete Session</span></Button>
+                  {
+              //allowDat &&
+              <Modal
+                visible={visible}
+                closeCb={closeFinish}
+                header="To finish recording please confirm."
+                dialogClassName="table-header-modal dat-modal">
+                {
+
+
+                    <React.Fragment>
+                      <h4>Attention</h4>
+                      <p>If you submit your archive for DOI creation you won't be able to record more content.<br /> <br />End recording archive? <a href="https://datproject.org/" target="_blank">Learn more</a></p>
+                      <Button className="rounded new-session" onClick={this.sendArchive}><CheckIcon /><span className="hidden-xs">I am sure.</span></Button>
+
+                    </React.Fragment>
+                }
+                <Button onClick={this.closeModal} className="rectangular">Close</Button>
+              </Modal>
+            }
                 </React.Fragment>
             }
           </Col>

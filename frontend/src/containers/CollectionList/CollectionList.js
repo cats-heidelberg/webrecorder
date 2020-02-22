@@ -40,7 +40,7 @@ const mapStateToProps = ({ app }) => {
 
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    createNewCollection: (user, collTitle, makePublic) => {
+    createNewCollection: (user, collTitle, url, makePublic) => {
       dispatch(createCollection(user, collTitle, makePublic))
         .then((res) => {
           if (res.hasOwnProperty('collection')) {
