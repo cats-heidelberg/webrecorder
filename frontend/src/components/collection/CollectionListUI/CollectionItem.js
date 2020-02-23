@@ -11,7 +11,7 @@ import { buildDate, getCollectionLink, truncate } from 'helpers/utils';
 import SizeFormat from 'components/SizeFormat';
 import Modal from 'components/Modal';
 
-
+import { EditMetadata } from 'components/siteComponents';
 import { DeleteCollection } from 'containers';
 import { TrashIcon, PlusIcon } from 'components/icons';
 
@@ -24,6 +24,7 @@ class CollectionItem extends PureComponent {
     collUser: PropTypes.string,
     toggleFinish: PropTypes.func,
     editCollection: PropTypes.func,
+    error: PropTypes.string,
     id: PropTypes.string,
     isOver: PropTypes.bool,
     collection: PropTypes.object,
@@ -56,6 +57,7 @@ class CollectionItem extends PureComponent {
   }
 
   render() {
+    <React.Fragment>
     const { canAdmin, collection, closeFinish, visible } = this.props;
     const descClasses = classNames('left-buffer list-group-item', { 'has-description': collection.get('desc') });
 
@@ -76,10 +78,10 @@ class CollectionItem extends PureComponent {
                     Manage Collection
                   </Button>
                   <Button className="rounded" onClick={this.newSession}><PlusIcon /> New Session</Button>
-                  <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span className="hidden-xs"> Complete Session</span></Button>
+                  <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span className="hidden-xs"> Edit Metadata</span></Button>
                   {
               //allowDat &&
-              <Modal
+              /*<Modal
                 visible={visible}
                 closeCb={closeFinish}
                 header="To finish recording please confirm."
@@ -95,7 +97,7 @@ class CollectionItem extends PureComponent {
                     </React.Fragment>
                 }
                 <Button onClick={this.closeModal} className="rectangular">Close</Button>
-              </Modal>
+              </Modal>*/
             }
                 </React.Fragment>
             }
@@ -127,6 +129,11 @@ class CollectionItem extends PureComponent {
           </Col>
         </Row>
       </li>
+      <EditMetadata
+        close={closeFinish}
+        visible={visible}
+        error={error} />
+      </React.Fragment>
     );
   }
 }

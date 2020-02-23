@@ -185,6 +185,7 @@ class CollectionListUI extends Component {
                             key={coll.get('id')}
                             canAdmin={canAdmin}
                             collection={coll}
+                            error={collections.get('error')}
                             editCollection={editCollection}
                             history={history}
                             toggleFinish={this.toggleFinish}
