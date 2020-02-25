@@ -21,10 +21,10 @@ class CollectionItem extends PureComponent {
     canAdmin: PropTypes.bool,
     addToList: PropTypes.func,
     collId: PropTypes.string,
+    error: PropTypes.string,
     collUser: PropTypes.string,
     toggleFinish: PropTypes.func,
     editCollection: PropTypes.func,
-    error: PropTypes.string,
     id: PropTypes.string,
     isOver: PropTypes.bool,
     collection: PropTypes.object,
@@ -54,12 +54,11 @@ class CollectionItem extends PureComponent {
   }
 
   render() {
-    
-    const { canAdmin, collection, closeFinish, visible } = this.props;
+    const { canAdmin, collection, closeFinish, error, visible } = this.props;
     const descClasses = classNames('left-buffer list-group-item', { 'has-description': collection.get('desc') });
 
     return (
-      <React.Fragment>
+    <React.Fragment>
       <li className={descClasses} key={collection.get('id')}>
         <Row>
           <Col sm={12} md={7}>
