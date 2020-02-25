@@ -34,10 +34,7 @@ class CollectionItem extends PureComponent {
   };
 
 
-  manageCollection = () => {
-    const { collection, history } = this.props;
-    history.push(getCollectionLink(collection, true));
-  }
+
   closeModal = (evt) => {
     evt.stopPropagation();
     evt.preventDefault();
@@ -57,11 +54,12 @@ class CollectionItem extends PureComponent {
   }
 
   render() {
-    <React.Fragment>
+    
     const { canAdmin, collection, closeFinish, visible } = this.props;
     const descClasses = classNames('left-buffer list-group-item', { 'has-description': collection.get('desc') });
 
     return (
+      <React.Fragment>
       <li className={descClasses} key={collection.get('id')}>
         <Row>
           <Col sm={12} md={7}>
@@ -74,10 +72,7 @@ class CollectionItem extends PureComponent {
             {
               canAdmin &&
                 <React.Fragment>
-                  <Button className="rounded" onClick={this.manageCollection}>
-                    Manage Collection
-                  </Button>
-                  <Button className="rounded" onClick={this.newSession}><PlusIcon /> New Session</Button>
+                  <Button className="rounded" onClick={this.newSession}><PlusIcon />Edit and Complete</Button>
                   <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span className="hidden-xs"> Edit Metadata</span></Button>
                   {
               //allowDat &&
