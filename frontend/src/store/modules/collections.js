@@ -71,6 +71,7 @@ export function createCollection(user, title, url, makePublic = false) {
       params: { user },
       data: {
         title,
+        url,
         'public': makePublic,
         public_index: true
       }

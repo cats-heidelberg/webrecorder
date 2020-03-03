@@ -43,7 +43,6 @@ class NewCollection extends Component {
       copTitle: '',
       surName: '',
       persName: '',
-      url: '',
       usermail: '',
       creatorList,
       isPublic: false,

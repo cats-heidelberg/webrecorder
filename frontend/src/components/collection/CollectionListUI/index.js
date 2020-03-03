@@ -88,7 +88,7 @@ class CollectionListUI extends Component {
 
   render() {
     const { isAnon } = this.context;
-    const { auth, collections, editCollection, history, orderedCollections, match: { params }, user } = this.props;
+    const { auth, collections, history, orderedCollections, match: { params }, user } = this.props;
     const { showModal, showModalFinish } = this.state;
     const userParam = params.user;
     const displayName = user.get('full_name') || userParam;
@@ -186,7 +186,6 @@ class CollectionListUI extends Component {
                             canAdmin={canAdmin}
                             collection={coll}
                             error={collections.get('error')}
-                            editCollection={editCollection}
                             history={history}
                             toggleFinish={this.toggleFinish}
                             closeFinish={this.closeFinish}

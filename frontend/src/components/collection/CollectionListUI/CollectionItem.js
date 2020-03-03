@@ -24,7 +24,6 @@ class CollectionItem extends PureComponent {
     error: PropTypes.string,
     collUser: PropTypes.string,
     toggleFinish: PropTypes.func,
-    editCollection: PropTypes.func,
     id: PropTypes.string,
     isOver: PropTypes.bool,
     collection: PropTypes.object,
@@ -48,10 +47,7 @@ class CollectionItem extends PureComponent {
     const { collection, history } = this.props;
     history.push('/_warcsent');
   }
-  toggleVisibility = () => {
-    const { collection } = this.props;
-    this.props.editCollection(collection.get('owner'), collection.get('id'), { public: !collection.get('public') });
-  }
+
 
   render() {
     const { canAdmin, collection, closeFinish, error, visible } = this.props;
@@ -124,6 +120,7 @@ class CollectionItem extends PureComponent {
         </Row>
       </li>
       <EditMetadata
+        coll={collection}
         close={closeFinish}
         visible={visible}
         error={error} />

@@ -19,6 +19,7 @@ const personHeaderList = [];
 
 class EditMetadata extends Component {
   static propTypes = {
+    coll: PropTypes.object,
     close: PropTypes.func,
     error: PropTypes.string,
     key: PropTypes.string,
@@ -42,14 +43,13 @@ class EditMetadata extends Component {
       copTitle: '',
       surName: '',
       persName: '',
-      url: '',
       usermail: '',
       creatorList,
       isPublic: false,
       creatorLegend,
       publishYear: '',
       selectedGroupName: 'corporate/institutional name',
-      url: ''
+      url: this.props.coll.get('url')
     };
   }
   checkEmail = () => {
@@ -176,44 +176,17 @@ class EditMetadata extends Component {
     evt.preventDefault();
 
   }
-  validateEmail = () => {
-    const { checkEmail, email } = this.state;
-
-    if (checkEmail && (!email || email.indexOf('@') === -1 || email.match(/\.\w+$/) === null)) {
-      return 'error';
-    }
-
-    return null;
-  }
-  validateAuthorship = () => {
-    const { collTitle, copTitle, persName, surName, collYear } = this.state;
-
-
-    if (this.state.selectedGroupName == 'corporate/institutional name') {
-      if  (!collTitle) {
-        return 'error';
-      }
-    }else {
-      if  (!surName) {
-        return 'error';
-      }
-    }
-
-    return null;
-  }
 
 
 
-  titleValidation = () => {
-    return this.props.error ? 'error' : null;
-  }
+
 
   togglePublic = (evt) => {
     this.setState({ isPublic: !this.state.isPublic });
   }
 
   render() {
-    const { close, error, visible } = this.props;
+    const { close, coll, error, visible } = this.props;
     const { collTitle, collYear, surName, copTitle, isPublic , pubTitle, publishYear, usermail, persName, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
     if (visible) {
         this.rebuildTooltip();
@@ -236,7 +209,7 @@ class EditMetadata extends Component {
             !__DESKTOP__ &&
               <span className="col-xs-6 col-xs-offset-1">
               <div>
-                <FormGroup id="fieldset" validationState={this.validateEmail()}>
+                <FormGroup id="fieldset">
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Any further information regarding your OpenDACHS request will be sent to this e-mail address. The e-mail address must end in 'uni-heidelberg.de'."/>
                     <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >E-mail address:</div>
                   </label>
@@ -250,12 +223,12 @@ class EditMetadata extends Component {
                     value={usermail}
                     onChange={this.handleChange}
                     onBlur={this.checkEmail} />
-                    <FormControl id="url" aria-label="url" type="text" name="url" onChange={this.handleInput} style={{ height: '33px' }} value={url} placeholder="URL to capture" title='Enter URL to capture' />
+                    <FormControl id="url" aria-label="url" type="text" name="url" onChange={this.handleInput} style={{ height: '33px' }} value={url} placeholder={coll.get('url')} title='Enter URL to capture' />
                 </FormGroup>
               </div>
 
               <div>
-                <FormGroup id="fieldset" validationState={this.validateAuthorship()}>
+                <FormGroup id="fieldset">
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef1) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef1) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef1 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="The main researchers involved working on the data, or the authors of the publication in priority order. May be corporate/institutional or personal names."/>
                     <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Authorship Information</div>
                       </label>
@@ -296,7 +269,7 @@ class EditMetadata extends Component {
                 </FormGroup>
               </div>
               <React.Fragment>
-              <FormGroup id="fieldset" validationState={this.titleValidation()}>
+              <FormGroup id="fieldset">
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef2) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef2) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef2 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="	The name or title by which the web resource is known."/>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Title:</div>
                   </label>
@@ -313,7 +286,7 @@ class EditMetadata extends Component {
               </React.Fragment>
 
               <div>
-                <FormGroup id="fieldset" validationState={this.validateAuthorship()}>
+                <FormGroup id="fieldset">
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef5) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef5) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef5 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Subject headings help to describe and categorize the web resource. The headings should conform to a list drawn from the Library of Congress. A complete list currently by OpenDACHS in use can be found"/>
                     <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Subject headings:</div>
                       </label>
@@ -336,7 +309,7 @@ class EditMetadata extends Component {
                         </ul>
                     <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddSubject}>Add header</button>
                 </FormGroup>
-                <FormGroup id="fieldset" validationState={this.validateAuthorship()}>
+                <FormGroup id="fieldset">
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef6) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef6) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef6 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Adding person headings allows for expanding the catalogue entry by the persons the web resource focuses on."/>
                     <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Add Subject:</div>
                       </label>
@@ -364,7 +337,7 @@ class EditMetadata extends Component {
 
 
           }
-            <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={!error} type="button">Create</button>
+            <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} type="button">Close</button>
         </form>
       </Modal>
       <ReactTooltip className='extraClass' delayHide={1000} effect='solid' type='info'/>

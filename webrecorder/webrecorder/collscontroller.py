@@ -23,7 +23,7 @@ class CollsController(BaseController):
 
         @self.app.post('/api/v1/collections')
         @self.api(query=['user'],
-                  req=['title', 'public', 'public_index'],
+                  req=['title', 'url', 'public', 'public_index'],
                   resp='collection')
 
         def create_collection():
@@ -32,6 +32,8 @@ class CollsController(BaseController):
             data = request.json or {}
 
             title = data.get('title', '')
+
+            url = data.get('url', '')
 
             coll_name = self.sanitize_title(title)
 
@@ -61,7 +63,7 @@ class CollsController(BaseController):
                 self._raise_error(400, 'duplicate_name')
 
             try:
-                collection = user.create_collection(coll_name, title=title,
+                collection = user.create_collection(coll_name, title=title, url=url,
                                                     desc='', public=is_public,
                                                     public_index=is_public_index)
 
@@ -152,7 +154,7 @@ class CollsController(BaseController):
 
         @self.app.post('/api/v1/collection/<coll_name>')
         @self.api(query=['user'],
-                  req=['title', 'desc', 'public', 'public_index'],
+                  req=['title', 'url', 'desc', 'public', 'public_index'],
                   resp='collection')
         def update_collection(coll_name):
             user, collection = self.load_user_coll(coll_name=coll_name)
@@ -301,4 +303,3 @@ class CollsController(BaseController):
         result['size_remaining'] = user.get_size_remaining()
 
         return result
-
