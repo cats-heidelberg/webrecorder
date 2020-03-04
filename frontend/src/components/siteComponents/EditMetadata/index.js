@@ -19,8 +19,8 @@ const personHeaderList = [];
 
 class EditMetadata extends Component {
   static propTypes = {
-    coll: PropTypes.object,
     close: PropTypes.func,
+    coll: PropTypes.object,
     error: PropTypes.string,
     key: PropTypes.string,
     showModal: PropTypes.bool,
@@ -49,8 +49,13 @@ class EditMetadata extends Component {
       creatorLegend,
       publishYear: '',
       selectedGroupName: 'corporate/institutional name',
-      url: this.props.coll.get('url')
+      url: ''
     };
+  }
+
+  componentDidMount()
+  {
+     this.setState({ url: this.props.coll.get('url')});
   }
   checkEmail = () => {
     this.setState({ checkEmail: true });
@@ -178,9 +183,6 @@ class EditMetadata extends Component {
   }
 
 
-
-
-
   togglePublic = (evt) => {
     this.setState({ isPublic: !this.state.isPublic });
   }
@@ -188,6 +190,7 @@ class EditMetadata extends Component {
   render() {
     const { close, coll, error, visible } = this.props;
     const { collTitle, collYear, surName, copTitle, isPublic , pubTitle, publishYear, usermail, persName, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
+    
     if (visible) {
         this.rebuildTooltip();
     }
@@ -195,7 +198,7 @@ class EditMetadata extends Component {
       <React.Fragment>
       <Modal
         closeCb={close}
-        header="To begin, please fill out the information form below."
+        header="To edit Metadata, please use the information form below."
         visible={visible}>
 
         <form onSubmit={this.submit} id="create-coll" className="form-horizontal">
@@ -223,7 +226,7 @@ class EditMetadata extends Component {
                     value={usermail}
                     onChange={this.handleChange}
                     onBlur={this.checkEmail} />
-                    <FormControl id="url" aria-label="url" type="text" name="url" onChange={this.handleInput} style={{ height: '33px' }} value={url} placeholder={coll.get('url')} title='Enter URL to capture' />
+                    <FormControl id="url" aria-label="url" type="text" name="url" onChange={this.handleInput} style={{ height: '33px' }} value={url} placeholder={url} title='Enter URL to capture' />
                 </FormGroup>
               </div>
 
@@ -270,7 +273,7 @@ class EditMetadata extends Component {
               </div>
               <React.Fragment>
               <FormGroup id="fieldset">
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef2) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef2) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef2 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="	The name or title by which the web resource is known."/>
+                <label onMouseOver={() => { ReactTooltip.show(this.fooRef2) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef2) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef2 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip=" The name or title by which the web resource is known."/>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Title:</div>
                   </label>
                 <FormControl type="text" placeholder="Title*" inputRef={(obj) => { this.input = obj; }} id="pubTitle" name="pubTitle" onFocus={this.focusInput} onChange={this.handleInput} value={pubTitle} />
@@ -337,7 +340,7 @@ class EditMetadata extends Component {
 
 
           }
-            <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} type="button">Close</button>
+            <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={!error} type="button">Create</button>
         </form>
       </Modal>
       <ReactTooltip className='extraClass' delayHide={1000} effect='solid' type='info'/>

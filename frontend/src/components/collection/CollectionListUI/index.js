@@ -31,7 +31,6 @@ class CollectionListUI extends Component {
     collections: PropTypes.object,
     createNewCollection: PropTypes.func,
     edited: PropTypes.bool,
-    editCollection: PropTypes.func,
     editUser: PropTypes.func,
     orderedCollections: PropTypes.object,
     match: PropTypes.object,
@@ -71,16 +70,12 @@ class CollectionListUI extends Component {
     this.setState({ showModal: !this.state.showModal });
   }
 
-  toggleFinish = () => {
-    this.setState({ showModalFinish: !this.state.showModalFinish });
-  }
+
 
   close = () => {
     this.setState({ showModal: false });
   }
-  closeFinish = () => {
-    this.setState({ showModalFinish: !this.state.showModalFinish });
-  }
+
   updateUser = (description) => {
     const { editUser, match: { params: { user } } } = this.props;
     editUser(user, { desc: description });
@@ -187,9 +182,7 @@ class CollectionListUI extends Component {
                             collection={coll}
                             error={collections.get('error')}
                             history={history}
-                            toggleFinish={this.toggleFinish}
-                            closeFinish={this.closeFinish}
-                            visible={showModalFinish} />
+                            />
                         );
                       })
                     }

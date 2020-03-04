@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import removeMd from 'remove-markdown';
 import classNames from 'classnames';
@@ -15,29 +15,32 @@ import { EditMetadata } from 'components/siteComponents';
 import { DeleteCollection } from 'containers';
 import { TrashIcon, PlusIcon } from 'components/icons';
 
-class CollectionItem extends PureComponent {
+class CollectionItem extends Component {
   static propTypes = {
-    closeFinish: PropTypes.func,
     canAdmin: PropTypes.bool,
     addToList: PropTypes.func,
     collId: PropTypes.string,
     error: PropTypes.string,
     collUser: PropTypes.string,
-    toggleFinish: PropTypes.func,
     id: PropTypes.string,
     isOver: PropTypes.bool,
     collection: PropTypes.object,
     selected: PropTypes.bool,
     history: PropTypes.string,
-    visible: PropTypes.bool
   };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showModalFinish: false
+    };
+  }
 
 
 
-  closeModal = (evt) => {
-    evt.stopPropagation();
-    evt.preventDefault();
-    this.props.toggleFinish();
+
+  closeModal = () => {
+    this.setState({ showModalFinish: !this.state.showModalFinish });
   }
   newSession = () => {
     const { collection, history } = this.props;
@@ -50,9 +53,10 @@ class CollectionItem extends PureComponent {
 
 
   render() {
-    const { canAdmin, collection, closeFinish, error, visible } = this.props;
-    const descClasses = classNames('left-buffer list-group-item', { 'has-description': collection.get('desc') });
+    const { canAdmin, collection, error } = this.props;
+    const { showModalFinish } = this.state;
 
+    const descClasses = classNames('left-buffer list-group-item', { 'has-description': collection.get('desc') });
     return (
     <React.Fragment>
       <li className={descClasses} key={collection.get('id')}>
@@ -68,7 +72,7 @@ class CollectionItem extends PureComponent {
               canAdmin &&
                 <React.Fragment>
                   <Button className="rounded" onClick={this.newSession}><PlusIcon />Edit and Complete</Button>
-                  <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span className="hidden-xs"> Edit Metadata</span></Button>
+                  <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span> Edit Metadata</span></Button>
                   {
               //allowDat &&
               /*<Modal
@@ -117,13 +121,14 @@ class CollectionItem extends PureComponent {
                 </React.Fragment>
             }
           </Col>
+          <EditMetadata
+            coll={collection}
+            close={this.closeModal}
+            visible={showModalFinish}
+            error={error} />
         </Row>
+
       </li>
-      <EditMetadata
-        coll={collection}
-        close={closeFinish}
-        visible={visible}
-        error={error} />
       </React.Fragment>
     );
   }
