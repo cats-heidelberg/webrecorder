@@ -55,7 +55,6 @@ class CollectionItem extends Component {
   render() {
     const { canAdmin, collection, error } = this.props;
     const { showModalFinish } = this.state;
-
     const descClasses = classNames('left-buffer list-group-item', { 'has-description': collection.get('desc') });
     return (
     <React.Fragment>

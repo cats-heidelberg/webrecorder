@@ -319,12 +319,11 @@ class Collection(PagesMixin, RedisUniqueComponent):
         else:
             return len(self.get_lists())
 
-    def init_new(self, slug, title, url='', desc='', public=False, public_index=False):
+    def init_new(self, slug, title, url='', creatorList='', subjectHeaderList='', personHeaderList='', publisher='', collTitle='', pubTitle='', collYear='', copTitle='', surName='', persName='', usermail='', selectedGroupName='', publishYear='', listID='', desc='', public=False, public_index=False):
         """Initialize new collection.
 
         :param str title: title
         :param str desc: description
-        :param str url: url
         :param bool public: whether collection is public
         :param bool public_index: whether CDX index file is public
 
@@ -337,6 +336,20 @@ class Collection(PagesMixin, RedisUniqueComponent):
 
         self.data = {'title': title,
                      'url': url,
+                     'creatorList':creatorList,
+                     'subjectHeaderList':subjectHeaderList,
+                     'personHeaderList':personHeaderList,
+                     'publisher':publisher,
+                     'collTitle':collTitle,
+                     'pubTitle':pubTitle,
+                     'collYear':collYear,
+                     'copTitle':copTitle,
+                     'surName':surName,
+                     'persName':persName,
+                     'usermail':usermail,
+                     'selectedGroupName':selectedGroupName,
+                     'publishYear':publishYear,
+                     'listID':listID,
                      'size': 0,
                      'desc': desc,
                      'public': self._from_bool(public),

@@ -52,10 +52,28 @@ class EditMetadata extends Component {
       url: ''
     };
   }
-
-  componentDidMount()
-  {
-     this.setState({ url: this.props.coll.get('url')});
+  componentDidMount(prevProps) {
+     this.setState(state => {
+       return {
+         listID: this.props.coll.get('listID'),
+         publisher: this.props.coll.get('publisher'),
+         subjectHeaderList:JSON.parse(this.props.coll.get('subjectHeaderList').replace(/'/g, '"')),
+         subjectHeadingText: '',
+         personHeaderList: JSON.parse(this.props.coll.get('personHeaderList').replace(/'/g, '"')),
+         personeadingText: '',
+         collTitle: this.props.coll.get('collTitle'),
+         pubTitle: this.props.coll.get('pubTitle'),
+         collYear: this.props.coll.get('collYear'),
+         copTitle: this.props.coll.get('copTitle'),
+         surName: this.props.coll.get('surName'),
+         persName: this.props.coll.get('persName'),
+         usermail: this.props.coll.get('usermail'),
+         creatorList: JSON.parse(this.props.coll.get('creatorList').replace(/'/g, '"')),
+         publishYear: this.props.coll.get('publishYear'),
+         selectedGroupName: 'corporate/institutional name',
+         url: this.props.coll.get('url')
+       };
+     });
   }
   checkEmail = () => {
     this.setState({ checkEmail: true });
@@ -103,7 +121,7 @@ class EditMetadata extends Component {
     if (this.state.selectedGroupName==='corporate/institutional name') {
       const temp =
       {
-      "htmlText": this.state.collTitle+', '+this.state.copTitle,
+      "htmlText": this.state.collTitle+' '+this.state.copTitle,
       "id": this.state.listID
     };
       this.setState(state => {
@@ -119,7 +137,7 @@ class EditMetadata extends Component {
     else {
       const temp =
       {
-      "htmlText": this.state.persName+', '+this.state.surName+', '+this.state.collYear,
+      "htmlText": this.state.persName+' '+this.state.surName+' - '+this.state.collYear,
       "id": this.state.listID
     };
       this.setState(state => {
@@ -172,7 +190,7 @@ class EditMetadata extends Component {
     this.setState({ list: [] });
   };
 
-  rebuildTooltip = () => {
+  rebuildTooltip = (coll) => {
     ReactTooltip.rebuild();
   }
 
@@ -188,11 +206,11 @@ class EditMetadata extends Component {
   }
 
   render() {
-    const { close, coll, error, visible } = this.props;
+    const { close, error,coll, visible } = this.props;
     const { collTitle, collYear, surName, copTitle, isPublic , pubTitle, publishYear, usermail, persName, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
-    
+
     if (visible) {
-        this.rebuildTooltip();
+        this.rebuildTooltip(coll);
     }
     return (
       <React.Fragment>
@@ -297,8 +315,8 @@ class EditMetadata extends Component {
                           <React.Fragment>
                             <FormControl type="text" placeholder="subject" inputRef={(obj) => { this.input = obj; }} id="subjectHeadingText" name="subjectHeadingText" onFocus={this.focusInput} onChange={this.handleInput} value={subjectHeadingText} />
                           </React.Fragment>
-
-                        <ul>
+                          {
+                      this.state.subjectHeaderList.length>0 && <ul>
                         {
                           this.state.subjectHeaderList.map(item => (
                             <li key={item.id}>
@@ -310,6 +328,7 @@ class EditMetadata extends Component {
                           ))
                         }
                         </ul>
+                        }
                     <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddSubject}>Add header</button>
                 </FormGroup>
                 <FormGroup id="fieldset">
@@ -320,8 +339,8 @@ class EditMetadata extends Component {
                           <React.Fragment>
                             <FormControl type="text" placeholder="person" inputRef={(obj) => { this.input = obj; }} id="personHeadingText" name="personHeadingText" onFocus={this.focusInput} onChange={this.handleInput} value={personHeadingText} />
                           </React.Fragment>
-
-                        <ul>
+                          {
+                        this.state.personHeaderList.length>0 && <ul>
                         {
                           this.state.personHeaderList.map(item => (
                             <li key={item.id}>
@@ -332,7 +351,7 @@ class EditMetadata extends Component {
                             </li>
                           ))
                         }
-                        </ul>
+                        </ul>}
                     <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddPerson}>Add Person</button>
                 </FormGroup>
               </div>

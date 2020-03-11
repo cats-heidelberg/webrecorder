@@ -102,7 +102,7 @@ class NewCollection extends Component {
     if (this.state.selectedGroupName==='corporate/institutional name') {
       const temp =
       {
-      "htmlText": this.state.collTitle+', '+this.state.copTitle,
+      "htmlText": this.state.collTitle+' '+this.state.copTitle,
       "id": this.state.listID
     };
       this.setState(state => {
@@ -118,7 +118,7 @@ class NewCollection extends Component {
     else {
       const temp =
       {
-      "htmlText": this.state.persName+', '+this.state.surName+', '+this.state.collYear,
+      "htmlText": this.state.persName+' '+this.state.surName+' - '+this.state.collYear,
       "id": this.state.listID
     };
       this.setState(state => {
@@ -178,9 +178,9 @@ class NewCollection extends Component {
   submit = (evt) => {
     evt.stopPropagation();
     evt.preventDefault();
-    const { publisher, publishYear, collTitle, collYear ,surName, copTitle, isPublic, pubTitle, usermail, url } = this.state;
+    const { pubTitle, url, isPublic, creatorList, subjectHeaderList, personHeaderList,publisher,collTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID } = this.state;
 
-    this.props.createCollection(pubTitle, url, isPublic);
+    this.props.createCollection(pubTitle, url, isPublic,JSON.stringify(creatorList),JSON.stringify(subjectHeaderList),JSON.stringify(personHeaderList),publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID);
   }
   validateEmail = () => {
     const { checkEmail, email } = this.state;

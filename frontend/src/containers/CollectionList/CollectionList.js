@@ -40,8 +40,8 @@ const mapStateToProps = ({ app }) => {
 
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    createNewCollection: (user, collTitle, url, makePublic) => {
-      dispatch(createCollection(user, collTitle, url, makePublic))
+    createNewCollection: (user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear) => {
+      dispatch(createCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear))
         .then((res) => {
           if (res.hasOwnProperty('collection')) {
             dispatch(batchActions([

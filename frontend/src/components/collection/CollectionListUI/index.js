@@ -51,9 +51,9 @@ class CollectionListUI extends Component {
     };
   }
 
-  createCollection = (collTitle, url, isPublic) => {
+  createCollection = (title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID) => {
     const { createNewCollection, match: { params: { user } } } = this.props;
-    createNewCollection(user, collTitle, url, isPublic);
+    createNewCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear,listID);
   }
 
   editName = (full_name) => {

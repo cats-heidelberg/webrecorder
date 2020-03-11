@@ -48,6 +48,35 @@ class CollsController(BaseController):
 
             is_anon = self.access.is_anon(user)
 
+            creatorList = data.get('creatorList', '')
+
+            subjectHeaderList = data.get('subjectHeaderList', '')
+
+            personHeaderList = data.get('personHeaderList', '')
+
+            publisher = data.get('publisher', '')
+
+            collTitle = data.get('collTitle', '')
+
+            pubTitle = data.get('pubTitle', '')
+
+            collYear = data.get('collYear', '')
+
+            copTitle = data.get('copTitle', '')
+
+            surName = data.get('surName', '')
+
+            persName = data.get('persName', '')
+
+            usermail = data.get('usermail', '')
+
+            selectedGroupName = data.get('selectedGroupName', '')
+
+            publishYear = data.get('publishYear', '')
+
+            listID = data.get('listID', 0)
+
+
             if is_external:
                 if not self.allow_external:
                     self._raise_error(403, 'external_not_allowed')
@@ -63,7 +92,7 @@ class CollsController(BaseController):
                 self._raise_error(400, 'duplicate_name')
 
             try:
-                collection = user.create_collection(coll_name, title=title, url=url,
+                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, listID=listID,
                                                     desc='', public=is_public,
                                                     public_index=is_public_index)
 
