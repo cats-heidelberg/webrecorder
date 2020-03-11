@@ -33,7 +33,7 @@ from webrecorder.uploadcontroller import UploadController
 from webrecorder.appcontroller import AppController
 from webrecorder.autocontroller import AutoController
 from webrecorder.behaviormgr import BehaviorMgr
-
+from webrecorder.odredirectcontroller import OdRedirectController
 from webrecorder.browsermanager import BrowserManager
 
 from webrecorder.webreccork import WebRecCork
@@ -41,7 +41,7 @@ from webrecorder.webreccork import WebRecCork
 from webrecorder.session import Session, RedisSessionMiddleware
 
 from webrecorder.models.access import SessionAccessCache
-from webrecorder.models.usermanager import UserManager
+from webrecorder.models.ldap_usermanager import LdapUserManager as UserManager
 from webrecorder.models.datshare import DatShare
 
 from webrecorder.rec.storage import storagepaths
@@ -69,6 +69,7 @@ class MainController(BaseController):
                        ListsController,
                        AutoController,
                        BehaviorMgr,
+                       OdRedirectController
                       ]
 
 

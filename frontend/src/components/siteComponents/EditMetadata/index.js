@@ -190,7 +190,7 @@ class EditMetadata extends Component {
     this.setState({ list: [] });
   };
 
-  rebuildTooltip = (coll) => {
+  rebuildTooltip = () => {
     ReactTooltip.rebuild();
   }
 
@@ -210,7 +210,7 @@ class EditMetadata extends Component {
     const { collTitle, collYear, surName, copTitle, isPublic , pubTitle, publishYear, usermail, persName, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
 
     if (visible) {
-        this.rebuildTooltip(coll);
+        this.rebuildTooltip();
     }
     return (
       <React.Fragment>
