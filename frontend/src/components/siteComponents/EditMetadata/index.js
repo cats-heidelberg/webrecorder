@@ -52,14 +52,38 @@ class EditMetadata extends Component {
       url: ''
     };
   }
+
+
   componentDidMount(prevProps) {
+    const self = this;
+    const promise1 = new Promise(function(resolve, reject) {
+      var didSucceed = JSON.parse(self.props.coll.get('personHeaderList').replace(/'/g, '"'));
+      resolve(didSucceed);
+    });
+    const promise2 = new Promise(function(resolve, reject) {
+      var didSucceed = JSON.parse(self.props.coll.get('subjectHeaderList').replace(/'/g, '"'));
+      resolve(didSucceed);
+    });
+    const promise3 = new Promise(function(resolve, reject) {
+      var didSucceed = JSON.parse(self.props.coll.get('creatorList').replace(/'/g, '"'));
+      resolve(didSucceed);
+    });
+
+    Promise.all([promise1, promise2, promise3]).then(function(values) {
+      self.setState(state => {
+        return {
+          personHeaderList:values[0],
+          subjectHeaderList: values[1],
+          creatorList: values[2]
+        };
+      });
+    }).catch(err => console.log('There was an error:' + err));
+
      this.setState(state => {
        return {
          listID: this.props.coll.get('listID'),
          publisher: this.props.coll.get('publisher'),
-         subjectHeaderList:JSON.parse(this.props.coll.get('subjectHeaderList').replace(/'/g, '"')),
          subjectHeadingText: '',
-         personHeaderList: JSON.parse(this.props.coll.get('personHeaderList').replace(/'/g, '"')),
          personeadingText: '',
          collTitle: this.props.coll.get('collTitle'),
          pubTitle: this.props.coll.get('pubTitle'),
@@ -68,7 +92,6 @@ class EditMetadata extends Component {
          surName: this.props.coll.get('surName'),
          persName: this.props.coll.get('persName'),
          usermail: this.props.coll.get('usermail'),
-         creatorList: JSON.parse(this.props.coll.get('creatorList').replace(/'/g, '"')),
          publishYear: this.props.coll.get('publishYear'),
          selectedGroupName: 'corporate/institutional name',
          url: this.props.coll.get('url')
