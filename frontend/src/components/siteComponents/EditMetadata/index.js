@@ -20,6 +20,7 @@ const personHeaderList = [];
 class EditMetadata extends Component {
   static propTypes = {
     close: PropTypes.func,
+    editCollection: PropTypes.func,
     coll: PropTypes.object,
     error: PropTypes.string,
     key: PropTypes.string,
@@ -220,10 +221,15 @@ class EditMetadata extends Component {
   submit = (evt) => {
     evt.stopPropagation();
     evt.preventDefault();
-
+    const { pubTitle, url, creatorList, subjectHeaderList, personHeaderList,publisher,collTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID } = this.state;
+    const { coll } = this.props;
+    this.props.editCollection(coll.get('id'), pubTitle, url, creatorList, subjectHeaderList, personHeaderList,publisher,collTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID);
+    this.props.close();
   }
 
-
+  titleValidation = () => {
+    return this.props.error ? 'error' : null;
+  }
   togglePublic = (evt) => {
     this.setState({ isPublic: !this.state.isPublic });
   }
@@ -313,7 +319,7 @@ class EditMetadata extends Component {
                 </FormGroup>
               </div>
               <React.Fragment>
-              <FormGroup id="fieldset">
+              <FormGroup id="fieldset" validationState={this.titleValidation()}>
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef2) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef2) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef2 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip=" The name or title by which the web resource is known."/>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Title:</div>
                   </label>
@@ -382,10 +388,10 @@ class EditMetadata extends Component {
 
 
           }
-            <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={!error} type="button">Create</button>
+            <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={false&&!error} type="button">Close Edit</button>
         </form>
       </Modal>
-      <ReactTooltip className='extraClass' delayHide={1000} effect='solid' type='info'/>
+      <ReactTooltip className='extraClass' delayHide={100} effect='solid' type='info'/>
     </React.Fragment>
 
     );

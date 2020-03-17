@@ -25,6 +25,7 @@ class CollectionItem extends Component {
     id: PropTypes.string,
     isOver: PropTypes.bool,
     collection: PropTypes.object,
+    editCollection: PropTypes.func,
     selected: PropTypes.bool,
     history: PropTypes.string,
   };
@@ -42,6 +43,11 @@ class CollectionItem extends Component {
   closeModal = () => {
     this.setState({ showModalFinish: !this.state.showModalFinish });
   }
+
+  editCollectiontemp = (collID, pubTitle, url, creatorList, subjectHeaderList, personHeaderList,publisher,collTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID) => {
+    this.props.editCollection(collID, pubTitle, url, creatorList, subjectHeaderList, personHeaderList,publisher,collTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID);
+  }
+
   newSession = () => {
     const { collection, history } = this.props;
     history.push(`${getCollectionLink(collection)}/$new`);
@@ -122,6 +128,7 @@ class CollectionItem extends Component {
           </Col>
           <EditMetadata
             coll={collection}
+            editCollection={this.editCollectiontemp}
             close={this.closeModal}
             visible={showModalFinish}
             error={error} />

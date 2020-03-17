@@ -83,7 +83,11 @@ export default function collection(state = initialState, action = {}) {
     case COLL_LOAD_SUCCESS: {
       const {
         collection: {
+          collTitle,
+          collYear,
+          copTitle,
           created_at,
+          creatorList,
           dat_updated_at,
           dat_key,
           dat_share,
@@ -91,17 +95,28 @@ export default function collection(state = initialState, action = {}) {
           duration,
           featured_list,
           id,
+          listID,
           lists,
           owner,
           pages,
+          persName,
+          personHeaderList,
           public_index,
+          publisher,
+          publishYear,
+          pubTitle,
           recordings,
+          selectedGroupName,
           size,
           slug,
           slug_matched,
+          subjectHeaderList,
+          surName,
           timespan,
           title,
-          updated_at
+          updated_at,
+          usermail,
+          url
         }
       } = action.result;
 
@@ -224,14 +239,31 @@ export function deleteCollection(user, coll) {
 }
 
 
-export function edit(user, coll, data) {
+export function editCollectionDispatch(user, collID, title, url, creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear,listID) {
   return {
     types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
-    promise: client => client.post(`${apiPath}/collection/${coll}`, {
+    promise: client => client.post(`${apiPath}/collection/${collID}`, {
       params: { user },
-      data
+      data: {
+        title,
+        url,
+        creatorList,
+        subjectHeaderList,
+        personHeaderList,
+        publisher,
+        collTitle,
+        pubTitle,
+        collYear,
+        copTitle,
+        surName,
+        persName,
+        usermail,
+        selectedGroupName,
+        publishYear,
+        listID
+      }
     }),
-    data
+
   };
 }
 

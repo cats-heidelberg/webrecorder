@@ -7,7 +7,7 @@ import { saveDelay } from 'config';
 import { addUserCollection, incrementCollCount } from 'store/modules/auth';
 import { load as loadCollections, createCollection } from 'store/modules/collections';
 
-import { edit } from 'store/modules/collection';
+import { editCollectionDispatch } from 'store/modules/collection';
 import { load as loadUser, edit as editUser, resetEditState } from 'store/modules/user';
 import { sortCollsByAlpha } from 'store/selectors';
 
@@ -52,9 +52,11 @@ const mapDispatchToProps = (dispatch, { history }) => {
           }
         }, () => {});
     },
-    editCollection: (user, coll, data) => {
-      dispatch(edit(user, coll, data))
-        .then(res => dispatch(loadCollections(user)));
+    editCollection: (user, collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear) => {
+      dispatch(editCollectionDispatch(user, collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear))
+        .then((res) => {
+          history.push(`/${user}`);
+        }, (error) => {console.log(error);});
     },
     editUser: (user, data) => {
       dispatch(editUser(user, data))

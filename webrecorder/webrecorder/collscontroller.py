@@ -183,7 +183,7 @@ class CollsController(BaseController):
 
         @self.app.post('/api/v1/collection/<coll_name>')
         @self.api(query=['user'],
-                  req=['title', 'url', 'desc', 'public', 'public_index'],
+                  req=['title'],
                   resp='collection')
         def update_collection(coll_name):
             user, collection = self.load_user_coll(coll_name=coll_name)
@@ -205,6 +205,48 @@ class CollsController(BaseController):
                     self._raise_error(400, 'duplicate_name')
 
                 collection['title'] = new_coll_title
+
+            if 'creatorList' in data:
+                collection['creatorList'] = data['creatorList']
+
+            if 'subjectHeaderList' in data:
+                collection['subjectHeaderList'] = data['subjectHeaderList']
+
+            if 'personHeaderList' in data:
+                collection['personHeaderList'] = data['personHeaderList']
+
+            if 'publisher' in data:
+                collection['publisher'] = data['publisher']
+
+            if 'collTitle' in data:
+                collection['collTitle'] = data['collTitle']
+
+            if 'pubTitle' in data:
+                collection['pubTitle'] = data['pubTitle']
+
+            if 'collYear' in data:
+                collection['collYear'] = data['collYear']
+
+            if 'copTitle' in data:
+                collection['copTitle'] = data['copTitle']
+
+            if 'surName' in data:
+                collection['surName'] = data['surName']
+
+            if 'persName' in data:
+                collection['persName'] = data['persName']
+
+            if 'usermail' in data:
+                collection['usermail'] = data['usermail']
+
+            if 'selectedGroupName' in data:
+                collection['selectedGroupName'] = data['selectedGroupName']
+
+            if 'publishYear' in data:
+                collection['publishYear'] = data['publishYear']
+
+            if 'listID' in data:
+                collection['listID'] = data['listID']
 
             if 'desc' in data:
                 collection['desc'] = data['desc']

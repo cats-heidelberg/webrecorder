@@ -30,6 +30,7 @@ class CollectionListUI extends Component {
     auth: PropTypes.object,
     collections: PropTypes.object,
     createNewCollection: PropTypes.func,
+    editCollection: PropTypes.func,
     edited: PropTypes.bool,
     editUser: PropTypes.func,
     orderedCollections: PropTypes.object,
@@ -55,7 +56,11 @@ class CollectionListUI extends Component {
     const { createNewCollection, match: { params: { user } } } = this.props;
     createNewCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear,listID);
   }
-
+  editColl = (collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear) => {
+    const { editCollection, match: { params: { user } } } = this.props;
+    console.log(collTitle);
+    editCollection(user, collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear);
+  }
   editName = (full_name) => {
     const { editUser, match: { params: { user } } } = this.props;
     editUser(user, { full_name });
@@ -180,6 +185,7 @@ class CollectionListUI extends Component {
                             key={coll.get('id')}
                             canAdmin={canAdmin}
                             collection={coll}
+                            editCollection={this.editColl}
                             error={collections.get('error')}
                             history={history}
                             />
