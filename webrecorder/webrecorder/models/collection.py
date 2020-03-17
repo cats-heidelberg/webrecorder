@@ -319,7 +319,7 @@ class Collection(PagesMixin, RedisUniqueComponent):
         else:
             return len(self.get_lists())
 
-    def init_new(self, slug, title, url='', creatorList='', subjectHeaderList='', personHeaderList='', publisher='', collTitle='', pubTitle='', collYear='', copTitle='', surName='', persName='', usermail='', selectedGroupName='', publishYear='', listID='', desc='', public=False, public_index=False):
+    def init_new(self, slug, title, url='', creatorList='', subjectHeaderList='', personHeaderList='', publisher='', collTitle='', pubTitle='', collYear='', copTitle='', surName='', persName='', usermail='', selectedGroupName='', publishYear='', listID='', desc='', public=False, public_index=False, ticketState='open'):
         """Initialize new collection.
 
         :param str title: title
@@ -336,22 +336,23 @@ class Collection(PagesMixin, RedisUniqueComponent):
 
         self.data = {'title': title,
                      'url': url,
-                     'creatorList':creatorList,
-                     'subjectHeaderList':subjectHeaderList,
-                     'personHeaderList':personHeaderList,
-                     'publisher':publisher,
-                     'collTitle':collTitle,
-                     'pubTitle':pubTitle,
-                     'collYear':collYear,
-                     'copTitle':copTitle,
-                     'surName':surName,
-                     'persName':persName,
-                     'usermail':usermail,
-                     'selectedGroupName':selectedGroupName,
-                     'publishYear':publishYear,
-                     'listID':listID,
+                     'creatorList': creatorList,
+                     'subjectHeaderList': subjectHeaderList,
+                     'personHeaderList': personHeaderList,
+                     'publisher': publisher,
+                     'collTitle': collTitle,
+                     'pubTitle': pubTitle,
+                     'collYear': collYear,
+                     'copTitle': copTitle,
+                     'surName': surName,
+                     'persName': persName,
+                     'usermail': usermail,
+                     'selectedGroupName': selectedGroupName,
+                     'publishYear': publishYear,
+                     'listID': listID,
                      'size': 0,
                      'desc': desc,
+                     'ticketState': ticketState,
                      'public': self._from_bool(public),
                      'public_index': self._from_bool(public_index),
                     }
