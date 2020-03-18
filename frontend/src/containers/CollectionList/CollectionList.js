@@ -2,7 +2,7 @@ import React from 'react';
 import { asyncConnect } from 'redux-connect';
 import { batchActions } from 'redux-batched-actions';
 
-import { saveDelay } from 'config';
+import { saveDelay, appHost } from 'config';
 
 import { addUserCollection, incrementCollCount } from 'store/modules/auth';
 import { load as loadCollections, createCollection } from 'store/modules/collections';
@@ -10,6 +10,9 @@ import { load as loadCollections, createCollection } from 'store/modules/collect
 import { editCollectionDispatch } from 'store/modules/collection';
 import { load as loadUser, edit as editUser, resetEditState } from 'store/modules/user';
 import { sortCollsByAlpha } from 'store/selectors';
+
+
+import { addTrailingSlash, apiFetch, fixMalformedUrls } from 'helpers/utils';
 
 import CollectionListUI from 'components/collection/CollectionListUI';
 
@@ -46,10 +49,29 @@ const mapDispatchToProps = (dispatch, { history }) => {
           if (res.hasOwnProperty('collection')) {
             dispatch(batchActions([
               incrementCollCount(1),
-              addUserCollection(res.collection)
+              addUserCollection(res.collection),
+
             ]));
-            history.push(`/${user}/${res.collection.slug}/manage`);
+            //history.push(`/${user}/${res.collection.slug}/manage`);
           }
+          return(res);
+        }).then((res)=>{
+
+          const _untidyURL = res.collection.url;
+          const cleanUrl = addTrailingSlash(fixMalformedUrls(_untidyURL));
+
+          // data to create new recording
+          const data = {
+            mode: 'record',
+            url: cleanUrl,
+            coll: res.collection.id,
+          };
+          // generate recording url
+
+          apiFetch('/new', data, { method: 'POST' })
+            .then(res => res.json())
+            .then(({ url }) => history.push(url.replace(appHost, '')))
+            .catch(err => console.log('error', err));
         }, () => {});
     },
     editCollection: (user, collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear) => {
