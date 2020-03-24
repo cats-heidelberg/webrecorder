@@ -49,7 +49,8 @@ class NewCollection extends Component {
       creatorLegend,
       publishYear: '',
       selectedGroupName: 'corporate/institutional name',
-      url: ''
+      url: '',
+      ticketState: 'open'
     };
   }
   checkEmail = () => {
@@ -178,9 +179,9 @@ class NewCollection extends Component {
   submit = (evt) => {
     evt.stopPropagation();
     evt.preventDefault();
-    const { pubTitle, url, isPublic, creatorList, subjectHeaderList, personHeaderList,publisher,collTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID } = this.state;
+    const { pubTitle, url, isPublic, creatorList, subjectHeaderList, personHeaderList,publisher,collTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID, ticketState } = this.state;
 
-    this.props.createCollection(pubTitle, url, isPublic,JSON.stringify(creatorList),JSON.stringify(subjectHeaderList),JSON.stringify(personHeaderList),publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID);
+    this.props.createCollection(pubTitle, url, isPublic,JSON.stringify(creatorList),JSON.stringify(subjectHeaderList),JSON.stringify(personHeaderList),publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID, ticketState);
   }
   validateEmail = () => {
     const { checkEmail, email } = this.state;

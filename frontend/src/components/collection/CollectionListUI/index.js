@@ -169,7 +169,7 @@ class CollectionListUI extends Component {
                   <Col xs={12} className={classNames('collections-index-nav', { desktop: __DESKTOP__ })}>
                     { __DESKTOP__ && <h4>My Collections</h4> }
                     <Button onClick={this.toggle} className="rounded">
-                      <span className="glyphicon glyphicon-plus glyphicon-button" /> New Collection
+                      <span className="glyphicon glyphicon-plus glyphicon-button" /> New Download
                     </Button>
                   </Col>
                 </Row>

@@ -74,7 +74,7 @@ class CollectionItem extends Component {
               }
             </p>
             {
-              canAdmin &&
+              canAdmin && collection.get('ticketState')==='open' &&
                 <React.Fragment>
                   <Button className="rounded" onClick={this.newSession}><PlusIcon />Edit and Complete</Button>
                   <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span> Edit Metadata</span></Button>
