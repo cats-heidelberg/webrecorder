@@ -109,7 +109,7 @@ class CollectionItem extends Component {
           </Col>
           <Col className="collection-delete-action col-xs-offset-7 col-md-offset-0" xs={5} md={2}>
             {
-              canAdmin &&
+              canAdmin && collection.get('ticketState')==='open' &&
                 <React.Fragment>
                   {
                     !__DESKTOP__ &&
