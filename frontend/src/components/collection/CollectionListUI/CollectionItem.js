@@ -13,7 +13,7 @@ import Modal from 'components/Modal';
 
 import { EditMetadata } from 'components/siteComponents';
 import { DeleteCollection } from 'containers';
-import { TrashIcon, PlusIcon } from 'components/icons';
+import { TrashIcon, PlusIcon, LockIcon } from 'components/icons';
 
 class CollectionItem extends Component {
   static propTypes = {
@@ -52,7 +52,7 @@ class CollectionItem extends Component {
     const { collection, history } = this.props;
     history.push(`${getCollectionLink(collection)}/$new`);
   }
-  sendArchive = () => {
+  sendforReview = () => {
     const { collection, history } = this.props;
     history.push('/_warcsent');
   }
@@ -66,7 +66,7 @@ class CollectionItem extends Component {
     <React.Fragment>
       <li className={descClasses} key={collection.get('id')}>
         <Row>
-          <Col sm={12} md={7}>
+          <Col sm={15} md={12}>
             <Link className="collection-title" to={`${getCollectionLink(collection)}`}>{collection.get('title')}</Link>
             <p className="collection-list-description">
               {
@@ -78,6 +78,7 @@ class CollectionItem extends Component {
                 <React.Fragment>
                   <Button className="rounded" onClick={this.newSession}><PlusIcon />Edit and Complete</Button>
                   <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span> Edit Metadata</span></Button>
+                  <Button className="rounded new-session" onClick={this.sendForReview}><LockIcon /><span> Complete</span></Button>
                   {
               //allowDat &&
               /*<Modal

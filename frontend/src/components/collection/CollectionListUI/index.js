@@ -52,9 +52,9 @@ class CollectionListUI extends Component {
     };
   }
 
-  createCollection = (title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID) => {
+  createCollection = (title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID, ticketState) => {
     const { createNewCollection, match: { params: { user } } } = this.props;
-    createNewCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear,listID);
+    createNewCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear,listID, ticketState);
   }
   editColl = (collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear) => {
     const { editCollection, match: { params: { user } } } = this.props;
@@ -114,46 +114,7 @@ class CollectionListUI extends Component {
         <Helmet>
           <title>{`${displayName}'s Collections`}</title>
         </Helmet>
-        <Row>
-          {
-            !__DESKTOP__ &&
-              <Col xs={12} sm={3} className="collection-description">
-                <InlineEditor
-                  canAdmin={canAdmin}
-                  initial={displayName}
-                  onSave={this.editName}
-                  readOnly={isAnon || !canAdmin}
-                  success={this.props.edited}>
-                  <h2>{displayName}</h2>
-                </InlineEditor>
-                <p className="collection-username"><span className="glyphicon glyphicon-user right-buffer-sm" />{ userParam }</p>
-                {
-                  (user.get('display_url') || canAdmin) &&
-                    <InlineEditor
-                      canAdmin={canAdmin}
-                      initial={user.get('display_url') || 'Add website...'}
-                      placeholder="Add website..."
-                      onSave={this.editURL}
-                      readOnly={isAnon || !canAdmin}
-                      success={this.props.edited}>
-                      <div className="user-link">
-                        <a target="_blank" onClick={stopPropagation} href={userLink}><LinkIcon />
-                          <span>{user.get('display_url') || 'Add website...'}</span>
-                        </a>
-                      </div>
-                    </InlineEditor>
-                }
-                <WYSIWYG
-                  key={user.get('id')}
-                  initial={user.get('desc') || ''}
-                  onSave={this.updateUser}
-                  placeholder="Add a description..."
-                  clickToEdit
-                  readOnly={isAnon || !canAdmin}
-                  success={this.props.edited} />
-              </Col>
-          }
-          <Col xs={12} sm={__DESKTOP__ ? 10 : 9} smOffset={__DESKTOP__ ? 1 : 0} className="wr-coll-meta">
+          <Col xs={15} sm={__DESKTOP__ ? 10 : 9} smOffset={__DESKTOP__ ? 1 : 0} className="wr-coll-meta">
             {/*
               canAdmin &&
                 <Row className="collection-start-form">
@@ -166,7 +127,7 @@ class CollectionListUI extends Component {
             {
               !isAnon && canAdmin &&
                 <Row>
-                  <Col xs={12} className={classNames('collections-index-nav', { desktop: __DESKTOP__ })}>
+                  <Col xs={15} className={classNames('collections-index-nav', { desktop: __DESKTOP__ })}>
                     { __DESKTOP__ && <h4>My Collections</h4> }
                     <Button onClick={this.toggle} className="rounded">
                       <span className="glyphicon glyphicon-plus glyphicon-button" /> New Download
