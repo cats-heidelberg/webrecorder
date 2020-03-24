@@ -76,7 +76,7 @@ class CollectionItem extends Component {
             {
               canAdmin && collection.get('ticketState')==='open' &&
                 <React.Fragment>
-                  <Button className="rounded" onClick={this.newSession}><PlusIcon />Edit and Complete</Button>
+                  <Button className="rounded" onClick={this.newSession}><PlusIcon />Review and Edit</Button>
                   <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span> Edit Metadata</span></Button>
                   <Button className="rounded new-session" onClick={this.sendForReview}><LockIcon /><span> Complete</span></Button>
                   {
