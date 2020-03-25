@@ -26,6 +26,7 @@ class CollectionItem extends Component {
     isOver: PropTypes.bool,
     collection: PropTypes.object,
     editCollection: PropTypes.func,
+    onPatch: PropTypes.func,
     selected: PropTypes.bool,
     history: PropTypes.string,
   };
@@ -49,10 +50,10 @@ class CollectionItem extends Component {
   }
 
   newSession = () => {
-    const { collection, history } = this.props;
-    history.push(`${getCollectionLink(collection)}/$new`);
+    const { collection } = this.props;
+    this.props.onPatch(collection.get('id'),collection.get('url'));
   }
-  sendforReview = () => {
+  sendForReview = () => {
     const { collection, history } = this.props;
     history.push('/_warcsent');
   }
@@ -62,6 +63,7 @@ class CollectionItem extends Component {
     const { canAdmin, collection, error } = this.props;
     const { showModalFinish } = this.state;
     const descClasses = classNames('left-buffer list-group-item', { 'has-description': collection.get('desc') });
+
     return (
     <React.Fragment>
       <li className={descClasses} key={collection.get('id')}>

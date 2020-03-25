@@ -5,7 +5,8 @@ import classNames from 'classnames';
 import { fromJS } from 'immutable';
 import { Button, Col, Row } from 'react-bootstrap';
 
-import { stopPropagation } from 'helpers/utils';
+import { apiFetch, stopPropagation } from 'helpers/utils';
+import { appHost } from 'config';
 
 import { StandaloneRecorder } from 'containers';
 
@@ -27,15 +28,19 @@ class CollectionListUI extends Component {
   };
 
   static propTypes = {
+    activeBrowser: PropTypes.string,
     auth: PropTypes.object,
     collections: PropTypes.object,
     createNewCollection: PropTypes.func,
     editCollection: PropTypes.func,
     edited: PropTypes.bool,
     editUser: PropTypes.func,
+    onPatch: PropTypes.func,
+    match: PropTypes.object,
     orderedCollections: PropTypes.object,
     match: PropTypes.object,
     history: PropTypes.object,
+    timestamp: PropTypes.string,
     user: PropTypes.object
   };
 
@@ -69,6 +74,30 @@ class CollectionListUI extends Component {
   editURL = (display_url) => {
     const { editUser, match: { params: { user } } } = this.props;
     editUser(user, { display_url });
+  }
+
+  onPatch = (coll, url) => {
+
+    const { activeBrowser, history, timestamp } = this.props;
+
+    // data to create new recording
+    const data = {
+      url,
+      coll,
+      timestamp,
+      mode: 'patch'
+    };
+
+    // add remote browser
+    if (activeBrowser) {
+      data.browser = activeBrowser;
+    }
+
+    // generate recording url
+    apiFetch('/new', data, { method: 'POST' })
+      .then(res => res.json())
+      .then(({ url }) => { history.push(url.replace(appHost, '')); })
+      .catch(err => console.log('error', err));
   }
 
   toggle = () => {
@@ -150,6 +179,7 @@ class CollectionListUI extends Component {
                             editCollection={this.editColl}
                             error={collections.get('error')}
                             history={history}
+                            onPatch= {this.onPatch}
                             />
                         );
                       })
