@@ -114,6 +114,7 @@ class CollectionListUI extends Component {
         <Helmet>
           <title>{`${displayName}'s Collections`}</title>
         </Helmet>
+        <Row>
           <Col xs={15} sm={__DESKTOP__ ? 10 : 9} smOffset={__DESKTOP__ ? 1 : 0} className="wr-coll-meta">
             {/*
               canAdmin &&
