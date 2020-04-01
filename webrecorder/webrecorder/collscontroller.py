@@ -74,6 +74,8 @@ class CollsController(BaseController):
 
             publishYear = data.get('publishYear', '')
 
+            ticketState = data.get('ticketState', 'open')
+
             listID = data.get('listID', 0)
 
 
@@ -92,7 +94,9 @@ class CollsController(BaseController):
                 self._raise_error(400, 'duplicate_name')
 
             try:
-                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, listID=listID,
+                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList,
+                                                    publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName,
+                                                    usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, ticketState=ticketState, listID=listID,
                                                     desc='', public=is_public,
                                                     public_index=is_public_index)
 
