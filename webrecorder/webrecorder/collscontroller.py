@@ -252,6 +252,9 @@ class CollsController(BaseController):
             if 'listID' in data:
                 collection['listID'] = data['listID']
 
+            if 'ticketState' in data:
+                collection['ticktState'] = data['ticketState']
+
             if 'desc' in data:
                 collection['desc'] = data['desc']
 
