@@ -54,8 +54,6 @@ class CollectionItem extends Component {
 
     //this.props.onPatch(collection.get('id'),collection.get('url'));
     const { collection, history, collUser } = this.props;
-    console.log("user"+collUser);
-    console.log("collecititieatien"+collection)
     history.push(`/${collUser.get('username')}/${collection.get('id')}/${collection.get('recordingTimestamp')}/${collection.get('recordingUrl')}`);
   }
   sendForReview = () => {
@@ -84,7 +82,7 @@ class CollectionItem extends Component {
             {
               canAdmin && collection.get('ticketState')==='open' &&
                 <React.Fragment>
-                  <Button className="rounded" onClick={this.newSession}><PlusIcon />Review and Edit</Button>
+                  <Button className="rounded" onClick={this.newSession}>Review and Edit</Button>
                   <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span> Edit Metadata</span></Button>
                   <Button className="rounded new-session" onClick={this.sendForReview}><LockIcon /><span> Complete</span></Button>
                   {

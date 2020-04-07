@@ -37,13 +37,16 @@ class ModeSelectorUI extends PureComponent {
     const { match: { params: { coll, rec, user } } } = this.props;
 
     if (this.context.currMode === "live") {
-      this.props.history.push('/');
+      //this.props.history.push('/');
+      this.props.history.push(`/${user}`);
     } else if (this.context.currMode.indexOf('replay') !== -1) {
       //window.location.href = `/${user}/${coll}/index`;
-      this.props.history.push(`/${user}/${coll}/manage`);
+      //this.props.history.push(`/${user}/${coll}/manage`);
+      this.props.history.push(`/${user}`);
     } else {
       //window.location.href = `/${user}/${coll}/index?query=session:${rec}`;
-      this.props.history.push(`/${user}/${coll}/manage?query=session:${rec}`);
+      //this.props.history.push(`/${user}/${coll}/manage?query=session:${rec}`);
+      this.props.history.push(`/${user}`);
     }
   }
 

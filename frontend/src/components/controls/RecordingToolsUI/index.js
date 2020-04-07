@@ -48,18 +48,8 @@ this.waitForStamp();
       .then(res=>{
           res.collections.forEach(el =>{
             if(el!==undefined&&el.isCollLoaded!==undefined&& el.isCollLoaded !==null){
-              console.log(user.get('username'));
-              console.log(el.id);
-              console.log(url);
-              console.log(timestamp);
-                console.log(el.isCollLoaded);
             if (el.isCollLoaded==true || el.isCollLoaded=="true" || el.isCollLoaded=="True") {
-              console.log(user.get('username'));
-              console.log(el.id);
-              console.log(url);
-              console.log(timestamp);
-              editCollection(user.get('username'),el.id, false,url, timestamp)
-              .then(()=>console.log(el));
+              editCollection(user.get('username'),el.id, false,url, timestamp);
             };
           };
           });
