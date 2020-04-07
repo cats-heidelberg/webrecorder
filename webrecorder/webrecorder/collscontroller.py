@@ -74,6 +74,8 @@ class CollsController(BaseController):
 
             publishYear = data.get('publishYear', '')
 
+            ticketState = data.get('ticketState', 'open')
+
             listID = data.get('listID', 0)
 
             ticketState = data.get('ticketState')
@@ -100,7 +102,15 @@ class CollsController(BaseController):
                 self._raise_error(400, 'duplicate_name')
 
             try:
-                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, listID=listID, ticketState=ticketState, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp,desc='', public=is_public,public_index=is_public_index)
+<<<<<<< HEAD
+                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, ticketState=ticketState, listID=listID, desc='', public=is_public, public_index=is_public_index, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp)
+=======
+                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList,
+                                                    publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName,
+                                                    usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, ticketState=ticketState, listID=listID,
+                                                    desc='', public=is_public,
+                                                    public_index=is_public_index)
+>>>>>>> 38107c9ff5dc984a69ce913392696f9dc68c2aef
 
                 if is_external:
                     collection.set_external(True)
@@ -259,6 +269,9 @@ class CollsController(BaseController):
                 collection['recordingUrl'] = data['recordingUrl']
             if 'recordingTimestamp' in data:
                 collection['recordingTimestamp'] = data['recordingTimestamp']
+
+            if 'ticketState' in data:
+                collection['ticktState'] = data['ticketState']
 
             if 'desc' in data:
                 collection['desc'] = data['desc']
