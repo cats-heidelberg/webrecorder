@@ -102,15 +102,7 @@ class CollsController(BaseController):
                 self._raise_error(400, 'duplicate_name')
 
             try:
-<<<<<<< HEAD
                 collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, ticketState=ticketState, listID=listID, desc='', public=is_public, public_index=is_public_index, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp)
-=======
-                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList,
-                                                    publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName,
-                                                    usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, ticketState=ticketState, listID=listID,
-                                                    desc='', public=is_public,
-                                                    public_index=is_public_index)
->>>>>>> 38107c9ff5dc984a69ce913392696f9dc68c2aef
 
                 if is_external:
                     collection.set_external(True)
