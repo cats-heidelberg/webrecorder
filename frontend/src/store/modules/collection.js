@@ -237,7 +237,20 @@ export function deleteCollection(user, coll) {
     })
   };
 }
+export function editCollectionRecording(user, collID, isCollLoaded=false, recordingUrl, recordingTimestamp) {
+  return {
+    types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
+    promise: client => client.post(`${apiPath}/collection/${collID}`, {
+      params: { user },
+      data: {
+        isCollLoaded,
+        recordingUrl,
+        recordingTimestamp
+      }
+    }),
 
+  };
+}
 
 export function editCollectionDispatch(user, collID, title, url, creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear,listID) {
   return {

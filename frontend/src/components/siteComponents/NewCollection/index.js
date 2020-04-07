@@ -50,7 +50,10 @@ class NewCollection extends Component {
       publishYear: '',
       selectedGroupName: 'corporate/institutional name',
       url: '',
-      ticketState: 'open'
+      ticketState: 'open',
+      isCollLoaded: true,
+      recordingUrl: '',
+      recordingTimestamp:''
     };
   }
   checkEmail = () => {
@@ -179,9 +182,9 @@ class NewCollection extends Component {
   submit = (evt) => {
     evt.stopPropagation();
     evt.preventDefault();
-    const { pubTitle, url, isPublic, creatorList, subjectHeaderList, personHeaderList,publisher,collTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID, ticketState } = this.state;
+    const { pubTitle, url, isPublic, creatorList, subjectHeaderList, personHeaderList,publisher,collTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp } = this.state;
 
-    this.props.createCollection(pubTitle, url, isPublic,JSON.stringify(creatorList),JSON.stringify(subjectHeaderList),JSON.stringify(personHeaderList),publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID, ticketState);
+    this.props.createCollection(pubTitle, url, isPublic,JSON.stringify(creatorList),JSON.stringify(subjectHeaderList),JSON.stringify(personHeaderList),publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp);
   }
   validateEmail = () => {
     const { checkEmail, email } = this.state;
@@ -374,7 +377,7 @@ class NewCollection extends Component {
             <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={creatingCollection && !error} type="button">Create</button>
         </form>
       </Modal>
-      <ReactTooltip className='extraClass' delayHide={1000} effect='solid' type='info'/>
+      <ReactTooltip className='extraClass' delayHide={100} effect='solid' type='info'/>
     </React.Fragment>
 
     );

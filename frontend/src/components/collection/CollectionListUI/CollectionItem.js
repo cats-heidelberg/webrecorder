@@ -50,12 +50,18 @@ class CollectionItem extends Component {
   }
 
   newSession = () => {
-    const { collection } = this.props;
-    this.props.onPatch(collection.get('id'),collection.get('url'));
+  //  const { collection } = this.props;
+
+    //this.props.onPatch(collection.get('id'),collection.get('url'));
+    const { collection, history, collUser } = this.props;
+    console.log("user"+collUser);
+    console.log("collecititieatien"+collection)
+    history.push(`/${collUser.get('username')}/${collection.get('id')}/${collection.get('recordingTimestamp')}/${collection.get('recordingUrl')}`);
   }
   sendForReview = () => {
-    const { collection, history } = this.props;
-    history.push('/_warcsent');
+    const { collection, history, collUser } = this.props;
+
+    history.push(`/${collUser.get('username')}/${collection.get('id')}/${collection.get('recordingTimestamp')}/${collection.get('recordingUrl')}`);
   }
 
 

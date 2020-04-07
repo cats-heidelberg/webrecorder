@@ -76,6 +76,14 @@ class CollsController(BaseController):
 
             listID = data.get('listID', 0)
 
+            ticketState = data.get('ticketState')
+
+            isCollLoaded = data.get('isCollLoaded', True)
+
+            recordingUrl = data.get('recordingUrl')
+
+            recordingTimestamp = data.get('recordingTimestamp')
+
 
             if is_external:
                 if not self.allow_external:
@@ -92,9 +100,7 @@ class CollsController(BaseController):
                 self._raise_error(400, 'duplicate_name')
 
             try:
-                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, listID=listID,
-                                                    desc='', public=is_public,
-                                                    public_index=is_public_index)
+                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, listID=listID, ticketState=ticketState, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp,desc='', public=is_public,public_index=is_public_index)
 
                 if is_external:
                     collection.set_external(True)
@@ -247,6 +253,12 @@ class CollsController(BaseController):
 
             if 'listID' in data:
                 collection['listID'] = data['listID']
+            if 'isCollLoaded' in data:
+                collection.set_bool_prop('isCollLoaded', data['isCollLoaded'])
+            if 'recordingUrl' in data:
+                collection['recordingUrl'] = data['recordingUrl']
+            if 'recordingTimestamp' in data:
+                collection['recordingTimestamp'] = data['recordingTimestamp']
 
             if 'desc' in data:
                 collection['desc'] = data['desc']

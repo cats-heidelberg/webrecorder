@@ -33,18 +33,20 @@ const preloadCollections = [
 
 const mapStateToProps = ({ app }) => {
   return {
+    activeBrowser: app.getIn(['remoteBrowsers', 'activeBrowser']),
     auth: app.get('auth'),
     collections: app.get('collections'),
     edited: app.getIn(['user', 'edited']),
     orderedCollections: app.getIn(['collections', 'loaded']) ? sortCollsByAlpha(app) : null,
+    timestamp: app.getIn(['controls', 'timestamp']),
     user: app.get('user')
   };
 };
 
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    createNewCollection: (user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, ticketState) => {
-      dispatch(createCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, ticketState))
+    createNewCollection: (user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, ticketState, isCollLoaded=true, recordingUrl, recordingTimestamp) => {
+      dispatch(createCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, ticketState, isCollLoaded, recordingTimestamp))
         .then((res) => {
           if (res.hasOwnProperty('collection')) {
             dispatch(batchActions([
@@ -67,15 +69,15 @@ const mapDispatchToProps = (dispatch, { history }) => {
             coll: res.collection.id,
           };
           // generate recording url
-
+          
           apiFetch('/new', data, { method: 'POST' })
             .then(res => res.json())
             .then(({ url }) => history.push(url.replace(appHost, '')))
             .catch(err => console.log('error', err));
         }, () => {});
     },
-    editCollection: (user, collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear) => {
-      dispatch(editCollectionDispatch(user, collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear))
+    editCollection: (user, collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, isCollLoaded, recordingUrl, recordingTimestamp) => {
+      dispatch(editCollectionDispatch(user, collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, isCollLoaded, recordingUrl, recordingTimestamp))
         .then((res) => {
           history.push(`/${user}`);
         }, (error) => {console.log(error);});

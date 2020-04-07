@@ -57,14 +57,14 @@ class CollectionListUI extends Component {
     };
   }
 
-  createCollection = (title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID, ticketState) => {
+  createCollection = (title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID, ticketState, isCollLoaded=true, recordingUrl="", recordingTimestamp="") => {
     const { createNewCollection, match: { params: { user } } } = this.props;
-    createNewCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear,listID, ticketState);
+    createNewCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear,listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp);
   }
-  editColl = (collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear) => {
+  editColl = (collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, ticketState, isCollLoaded=false, recordingUrl="", recordingTimestamp="") => {
     const { editCollection, match: { params: { user } } } = this.props;
     console.log(collTitle);
-    editCollection(user, collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear);
+    editCollection(user, collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, ticketState, isCollLoaded, recordingUrl, recordingTimestamp);
   }
   editName = (full_name) => {
     const { editUser, match: { params: { user } } } = this.props;
@@ -176,6 +176,7 @@ class CollectionListUI extends Component {
                             key={coll.get('id')}
                             canAdmin={canAdmin}
                             collection={coll}
+                            collUser={user}
                             editCollection={this.editColl}
                             error={collections.get('error')}
                             history={history}
