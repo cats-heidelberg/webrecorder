@@ -140,7 +140,7 @@ class ModeSelectorUI extends PureComponent {
     const isPatch = currMode === 'patch';
     const isLive = currMode === 'live';
     const isWrite = ['extract', 'extract_only', 'patch', 'record'].includes(currMode);
-    const reRecordDisable = true;
+    const reCaptureDisable = true;
 
     switch(currMode) {
       case 'live':
@@ -204,7 +204,7 @@ class ModeSelectorUI extends PureComponent {
                 !isLive && 
                   <div className="wr-modes">
                     {
-                       !reRecordDisable &&
+                       !reCaptureDisable &&
                         <ul className={classNames('row wr-mode', { active: isRecord })} onClick={this.onRecord} role="button" title="Start a new recording session at the current URL">
                           <li className="col-xs-3">
                             <span className="glyphicon glyphicon-dot-sm glyphicon-recording-status wr-mode-icon" aria-hidden="true" />
