@@ -140,6 +140,7 @@ class ModeSelectorUI extends PureComponent {
     const isPatch = currMode === 'patch';
     const isLive = currMode === 'live';
     const isWrite = ['extract', 'extract_only', 'patch', 'record'].includes(currMode);
+    const reRecordDisable = true;
 
     switch(currMode) {
       case 'live':
@@ -200,16 +201,19 @@ class ModeSelectorUI extends PureComponent {
               }
 
               {
-                !isLive &&
+                !isLive && 
                   <div className="wr-modes">
-                    <ul className={classNames('row wr-mode', { active: isRecord })} onClick={this.onRecord} role="button" title="Start a new recording session at the current URL">
-                      <li className="col-xs-3">
-                        <span className="glyphicon glyphicon-dot-sm glyphicon-recording-status wr-mode-icon" aria-hidden="true" />
-                      </li>
-                      <li className="col-xs-9">
-                        <h5>{ isRecord ? 'Currently Capturing' : isLiveMsg }</h5>
-                      </li>
-                    </ul>
+                    {
+                       !reRecordDisable &&
+                        <ul className={classNames('row wr-mode', { active: isRecord })} onClick={this.onRecord} role="button" title="Start a new recording session at the current URL">
+                          <li className="col-xs-3">
+                            <span className="glyphicon glyphicon-dot-sm glyphicon-recording-status wr-mode-icon" aria-hidden="true" />
+                          </li>
+                          <li className="col-xs-9">
+                            <h5>{ isRecord ? 'Currently Capturing' : isLiveMsg }</h5>
+                          </li>
+                        </ul>
+                      }
 
                     <ul className={classNames('row wr-mode', { active: isReplay, disabled: isLive })} onClick={this.onReplay} role="button" title="Access an archived version of this URL">
                       <li className="col-xs-3">
