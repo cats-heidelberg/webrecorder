@@ -34,12 +34,21 @@ class CollectionItem extends Component {
     super(props);
 
     this.state = {
-      showModalFinish: false
+      showModalFinish: false,
+      open:false
     };
   }
 
 
+  toggle = () => {
+    this.setState({ open: !this.state.open });
+  }
 
+
+
+  close = () => {
+    this.setState({ open: false });
+  }
 
   closeModal = () => {
     this.setState({ showModalFinish: !this.state.showModalFinish });
@@ -57,15 +66,16 @@ class CollectionItem extends Component {
     history.push(`/${collUser.get('username')}/${collection.get('id')}/${collection.get('recordingTimestamp')}/${collection.get('recordingUrl')}`);
   }
   sendForReview = () => {
-    const { collection, history, collUser } = this.props;
 
-    history.push(`/${collUser.get('username')}/${collection.get('id')}/${collection.get('recordingTimestamp')}/${collection.get('recordingUrl')}`);
+  }
+  sendArchive = ()=>{
+    this.close();
   }
 
 
   render() {
     const { canAdmin, collection, error } = this.props;
-    const { showModalFinish } = this.state;
+    const { showModalFinish, open } = this.state;
     const descClasses = classNames('left-buffer list-group-item', { 'has-description': collection.get('desc') });
 
     return (
@@ -84,12 +94,12 @@ class CollectionItem extends Component {
                 <React.Fragment>
                   <Button className="rounded" onClick={this.newSession}>Review and Edit</Button>
                   <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span> Edit Metadata</span></Button>
-                  <Button className="rounded new-session" onClick={this.sendForReview}><LockIcon /><span> Complete</span></Button>
+                  <Button className="rounded new-session" onClick={this.toggle}><LockIcon /><span> Complete</span></Button>
                   {
               //allowDat &&
-              /*<Modal
-                visible={visible}
-                closeCb={closeFinish}
+              <Modal
+                visible={open}
+                closeCb={this.close}
                 header="To finish recording please confirm."
                 dialogClassName="table-header-modal dat-modal">
                 {
@@ -102,8 +112,8 @@ class CollectionItem extends Component {
 
                     </React.Fragment>
                 }
-                <Button onClick={this.closeModal} className="rectangular">Close</Button>
-              </Modal>*/
+                <Button onClick={this.close} className="rectangular">Close</Button>
+              </Modal>
             }
                 </React.Fragment>
             }
