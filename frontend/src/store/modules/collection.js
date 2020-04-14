@@ -14,6 +14,11 @@ const COLL_EDIT_SUCCESS = 'wr/coll/COLL_EDIT_SUCCESS';
 const COLL_EDIT_FAIL = 'wr/coll/COLL_EDIT_FAIL';
 const RESET_EDIT_STATE = 'wr/coll/RESET_EDIT_STATE';
 
+const COLL_STATUSCHANGE = 'wr/coll/COLL_STATUSCHANGE';
+const COLL_STATUSCHANGE_SUCCESS = 'wr/coll/COLL_STATUSCHANGE_SUCCESS';
+const COLL_STATUSCHANGE_FAIL = 'wr/coll/COLL_STATUSCHANGE_FAIL';
+const RESET_STATUSCHANGE_STATE = 'wr/coll/RESET_STATUSCHANGE_STATE';
+
 const COLL_SET_SORT = 'wr/coll/COLL_SET_SORT';
 const COLL_SET_PUBLIC = 'wr/coll/SET_PUBLIC';
 const COLL_SET_PUBLIC_SUCCESS = 'wr/coll/SET_PUBLIC_SUCCESS';
@@ -75,6 +80,23 @@ export default function collection(state = initialState, action = {}) {
         editing: false,
         editError: action.error.error
       });
+      case COLL_STATUSCHANGE:
+        return state.merge({
+          edited: false,
+          editing: true,
+          editError: null
+        });
+      case COLL_STATUSCHANGE_SUCCESS:
+        return state.merge({
+          edited: true,
+          editing: false
+        });
+      case COLL_STATUSCHANGE_FAIL:
+        return state.merge({
+          edited: false,
+          editing: false,
+          editError: action.error.error
+        });
     case COLL_EDIT:
       return state.set('editing', true);
     case COLL_LOAD:
@@ -112,6 +134,7 @@ export default function collection(state = initialState, action = {}) {
           slug_matched,
           subjectHeaderList,
           surName,
+          ticketState,
           timespan,
           title,
           updated_at,
@@ -234,6 +257,17 @@ export function deleteCollection(user, coll) {
     types: [COLL_DELETE, COLL_DELETE_SUCCESS, COLL_DELETE_FAIL],
     promise: client => client.del(`${apiPath}/collection/${coll}`, {
       params: { user }
+    })
+  };
+}
+export function completeRecordingDispatch(user, coll, ticketState) {
+  return {
+    types: [COLL_STATUSCHANGE, COLL_STATUSCHANGE_SUCCESS, COLL_STATUSCHANGE_FAIL],
+    promise: client => client.post(`${apiPath}/collection/${coll}`, {
+      params: { user },
+      data: {
+        ticketState
+      }
     })
   };
 }

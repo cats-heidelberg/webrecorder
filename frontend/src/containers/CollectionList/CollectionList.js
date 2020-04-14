@@ -7,7 +7,7 @@ import { saveDelay, appHost } from 'config';
 import { addUserCollection, incrementCollCount } from 'store/modules/auth';
 import { load as loadCollections, createCollection } from 'store/modules/collections';
 
-import { editCollectionDispatch } from 'store/modules/collection';
+import { editCollectionDispatch, completeRecordingDispatch } from 'store/modules/collection';
 import { load as loadUser, edit as editUser, resetEditState } from 'store/modules/user';
 import { sortCollsByAlpha } from 'store/selectors';
 
@@ -45,7 +45,7 @@ const mapStateToProps = ({ app }) => {
 
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    createNewCollection: (user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, ticketState, isCollLoaded=true, recordingUrl, recordingTimestamp) => {
+    createNewCollection: (user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, ticketState="open", isCollLoaded=true, recordingUrl, recordingTimestamp) => {
       dispatch(createCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, ticketState, isCollLoaded, recordingTimestamp))
         .then((res) => {
           if (res.hasOwnProperty('collection')) {
@@ -69,7 +69,7 @@ const mapDispatchToProps = (dispatch, { history }) => {
             coll: res.collection.id,
           };
           // generate recording url
-          
+
           apiFetch('/new', data, { method: 'POST' })
             .then(res => res.json())
             .then(({ url }) => history.push(url.replace(appHost, '')))
@@ -81,6 +81,9 @@ const mapDispatchToProps = (dispatch, { history }) => {
         .then((res) => {
           history.push(`/${user}`);
         }, (error) => {console.log(error);});
+    },
+    completeRecording: (user, collID, ticketState="pending") => {
+      dispatch(completeRecordingDispatch(user, collID, ticketState));
     },
     editUser: (user, data) => {
       dispatch(editUser(user, data))

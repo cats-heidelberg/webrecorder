@@ -22,6 +22,7 @@ class CollectionItem extends Component {
     collId: PropTypes.string,
     error: PropTypes.string,
     collUser: PropTypes.string,
+    completeRec: PropTypes.func,
     id: PropTypes.string,
     isOver: PropTypes.bool,
     collection: PropTypes.object,
@@ -35,7 +36,8 @@ class CollectionItem extends Component {
 
     this.state = {
       showModalFinish: false,
-      open:false
+      open:false,
+      ticketState: 'open'
     };
   }
 
@@ -43,7 +45,14 @@ class CollectionItem extends Component {
   toggle = () => {
     this.setState({ open: !this.state.open });
   }
+  sendArchive = () => {
+    const { collection, completeRec } = this.props;
+    const collID = collection.get('id');
+    this.setState({ticketState: 'pending'});
+    completeRec(collID, "pending");
+    this.close();
 
+  }
 
 
   close = () => {
@@ -68,14 +77,11 @@ class CollectionItem extends Component {
   sendForReview = () => {
 
   }
-  sendArchive = ()=>{
-    this.close();
-  }
 
 
   render() {
     const { canAdmin, collection, error } = this.props;
-    const { showModalFinish, open } = this.state;
+    const { showModalFinish, open, ticketState } = this.state;
     const descClasses = classNames('left-buffer list-group-item', { 'has-description': collection.get('desc') });
 
     return (
@@ -90,50 +96,58 @@ class CollectionItem extends Component {
               }
             </p>
             {
-              canAdmin && collection.get('ticketState')==='open' &&
+              canAdmin &&
                 <React.Fragment>
                   <Button className="rounded" onClick={this.newSession}>Review and Edit</Button>
-                  <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span> Edit Metadata</span></Button>
-                  <Button className="rounded new-session" onClick={this.toggle}><LockIcon /><span> Complete</span></Button>
                   {
-              //allowDat &&
-              <Modal
-                visible={open}
-                closeCb={this.close}
-                header="To finish recording please confirm."
-                dialogClassName="table-header-modal dat-modal">
-                {
+                    collection.get('ticketState')==='open' && ticketState === 'open' &&
+                    <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span> Edit Metadata</span></Button>
+                  }
+                  {
+                    collection.get('ticketState')==='open' && ticketState === 'open' &&
+                    <Button className="rounded new-session" onClick={this.toggle}><LockIcon /><span> Complete</span></Button>
+                  }
+                  {
+                    collection.get('ticketState')==='open' && ticketState === 'open' &&
+                    <Modal
+                      visible={open}
+                      closeCb={this.close}
+                      header="To finish recording please confirm."
+                      dialogClassName="table-header-modal dat-modal">
+                      {
 
 
-                    <React.Fragment>
-                      <h4>Attention</h4>
-                      <p>If you submit your archive for DOI creation you won't be able to record more content.<br /> <br />End recording archive? <a href="https://datproject.org/" target="_blank">Learn more</a></p>
-                      <Button className="rounded new-session" onClick={this.sendArchive}><CheckIcon /><span className="hidden-xs">I am sure.</span></Button>
+                          <React.Fragment>
+                            <h4>Attention</h4>
+                            <p>If you submit your archive for DOI creation you won't be able to record more content.<br /> <br />End recording archive? <a href="https://datproject.org/" target="_blank">Learn more</a></p>
+                            <Button className="rounded new-session" onClick={this.sendArchive}><CheckIcon /><span className="hidden-xs">I am sure.</span></Button>
 
-                    </React.Fragment>
-                }
-                <Button onClick={this.close} className="rectangular">Close</Button>
-              </Modal>
-            }
+                          </React.Fragment>
+                      }
+                      <Button onClick={this.close} className="rectangular">Close</Button>
+                    </Modal>
+                  }
                 </React.Fragment>
             }
-          </Col>
-          <Col xs={6} md={1} className="collection-list-size">
-            <SizeFormat bytes={collection.get('size')} />
+            {
+              canAdmin && (collection.get('ticketState')==='pending' ||  ticketState === 'pending') &&
+                <React.Fragment>
+                  <p>
+                    Your recording is getting reviewed by the library team.<br />
+                    Please keep track of this message since we will update it<br />
+                    once the review process has been completed.<br />
+                    Thank you for your patience and for chosing openDachs.<br />
+                  </p>
+                </React.Fragment>
+            }
           </Col>
           <Col className="collection-time" xs={6} md={2}>
             Created {buildDate(collection.get('created_at'), false, true)}
           </Col>
           <Col className="collection-delete-action col-xs-offset-7 col-md-offset-0" xs={5} md={2}>
             {
-              canAdmin && collection.get('ticketState')==='open' &&
+              canAdmin && collection.get('ticketState')==='open' && ticketState === 'open' &&
                 <React.Fragment>
-                  {
-                    !__DESKTOP__ &&
-                      <span className={classNames('visibility-button', { 'is-public': collection.get('public') })}>
-                        { collection.get('public') ? 'PUBLIC' : 'PRIVATE' }
-                      </span>
-                  }
                   <DeleteCollection collection={collection}>
                     <TrashIcon />
                     <Tooltip placement="top" className="in" id="tooltip-top">
