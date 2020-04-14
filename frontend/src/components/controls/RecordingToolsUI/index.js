@@ -48,6 +48,7 @@ this.waitForStamp();
       .then(res=>{
           res.collections.forEach(el =>{
             if(el!==undefined&&el.isCollLoaded!==undefined&& el.isCollLoaded !==null){
+                console.log(el.isCollLoaded);
             if (el.isCollLoaded==true || el.isCollLoaded=="true" || el.isCollLoaded=="True") {
               editCollection(user.get('username'),el.id, false,url, timestamp);
             };
@@ -128,7 +129,7 @@ this.waitForStamp();
   render() {
     const { canAdmin, currMode } = this.context;
     const { activeBrowser, autopilotInfo, match: { params: { coll } }, timestamp, url, collections, user, loadCollectionDispatch} = this.props;
-
+    const wedontneednoBrowser = true;
     const isNew = currMode === 'new';
     const isWrite = ['new', 'patch', 'record', 'extract', 'live'].includes(currMode);
     const modalFooter = <Button onClick={this._close}>Close</Button>;
@@ -151,7 +152,7 @@ this.waitForStamp();
         </Modal>
 
         {
-          canAdmin && !isNew && activeBrowser &&
+          canAdmin && !isNew && activeBrowser && !wedontneednoBrowser &&
             <button
               type="button"
               className="rounded clipboard-btn"

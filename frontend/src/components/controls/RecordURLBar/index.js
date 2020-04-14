@@ -75,7 +75,8 @@ class RecordURLBar extends Component {
     const { currMode, canAdmin } = this.context;
     const { activeCollection, autopilotRunning, params } = this.props;
     const { url } = this.state;
-
+    const wedontneednoremoteBrowser = true;
+    const wedontneednourl = true;
     const isNew = currMode === 'new';
     const isExtract = currMode.indexOf('extract') !== -1;
     const isPatch = currMode === 'patch';
@@ -85,7 +86,7 @@ class RecordURLBar extends Component {
         <form className={classNames('form-group-recorder-url', { 'start-recording': isNew, 'content-form': !isNew, 'remote-archive': isPatch || isExtract })}>
           <div className="input-group containerized">
             {
-              !__DESKTOP__ && canAdmin &&
+              !__DESKTOP__ && canAdmin && !wedontneednoremoteBrowser &&
                 <div className="input-group-btn rb-dropdown">
                   {
                     <RemoteBrowserSelect
@@ -97,7 +98,7 @@ class RecordURLBar extends Component {
             }
             {
               /* {% if not browser %}autofocus{% endif %} */
-              <input type="text" disabled={autopilotRunning} onChange={this.handleChange} onKeyPress={this.handleSubmit} className="url-input-recorder form-control" name="url" value={url} style={{ height: '3.2rem' }} autoFocus required />
+              <input type="text" active={!wedontneednourl} disabled={autopilotRunning || wedontneednourl} onChange={this.handleChange} onKeyPress={this.handleSubmit} className="url-input-recorder form-control" name="url" value={url} style={{ height: '3.2rem' }} autoFocus required />
             }
             {
               isExtract &&
