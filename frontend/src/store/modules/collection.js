@@ -134,9 +134,9 @@ export default function collection(state = initialState, action = {}) {
           slug_matched,
           subjectHeaderList,
           surName,
-          ticketState,
           timespan,
           title,
+          ticketState,
           updated_at,
           usermail,
           url

@@ -34,6 +34,9 @@ class CollsController(BaseController):
             title = data.get('title', '')
 
             url = data.get('url', '')
+            
+            if not url:
+                self._raise_error(400, 'please enter a URL to record')
 
             coll_name = self.sanitize_title(title)
 
