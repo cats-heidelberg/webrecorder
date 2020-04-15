@@ -246,7 +246,7 @@ class NewCollection extends Component {
             !__DESKTOP__ &&
               <span className="col-xs-6 col-xs-offset-1">
               <div>
-                <FormGroup id="fieldset">
+                <FormGroup id="fieldset" validationState={this.validateEmail()>
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Any further information regarding your OpenDACHS request will be sent to this e-mail address. The e-mail address must end in 'uni-heidelberg.de'."/>
                     <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >E-mail address:</div>
                   </label>
