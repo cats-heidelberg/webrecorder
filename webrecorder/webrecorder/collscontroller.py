@@ -76,6 +76,8 @@ class CollsController(BaseController):
 
             ticketState = data.get('ticketState', 'open')
 
+            notes = data.get('notes', '')
+
             listID = data.get('listID', 0)
 
 
@@ -93,10 +95,13 @@ class CollsController(BaseController):
             if user.has_collection(coll_name):
                 self._raise_error(400, 'duplicate_name')
 
+            if ticketState not in allowed_ticket_states:
+                self._raise_error(400, 'invalid ticket state')
+
             try:
                 collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList,
                                                     publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName,
-                                                    usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, ticketState=ticketState, listID=listID,
+                                                    usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, ticketState=ticketState, notes=notes, listID=listID,
                                                     desc='', public=is_public,
                                                     public_index=is_public_index)
 
