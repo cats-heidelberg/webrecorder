@@ -14,6 +14,11 @@ const COLL_EDIT_SUCCESS = 'wr/coll/COLL_EDIT_SUCCESS';
 const COLL_EDIT_FAIL = 'wr/coll/COLL_EDIT_FAIL';
 const RESET_EDIT_STATE = 'wr/coll/RESET_EDIT_STATE';
 
+const COLL_STATUSCHANGE = 'wr/coll/COLL_STATUSCHANGE';
+const COLL_STATUSCHANGE_SUCCESS = 'wr/coll/COLL_STATUSCHANGE_SUCCESS';
+const COLL_STATUSCHANGE_FAIL = 'wr/coll/COLL_STATUSCHANGE_FAIL';
+const RESET_STATUSCHANGE_STATE = 'wr/coll/RESET_STATUSCHANGE_STATE';
+
 const COLL_SET_SORT = 'wr/coll/COLL_SET_SORT';
 const COLL_SET_PUBLIC = 'wr/coll/SET_PUBLIC';
 const COLL_SET_PUBLIC_SUCCESS = 'wr/coll/SET_PUBLIC_SUCCESS';
@@ -75,6 +80,23 @@ export default function collection(state = initialState, action = {}) {
         editing: false,
         editError: action.error.error
       });
+      case COLL_STATUSCHANGE:
+        return state.merge({
+          edited: false,
+          editing: true,
+          editError: null
+        });
+      case COLL_STATUSCHANGE_SUCCESS:
+        return state.merge({
+          edited: true,
+          editing: false
+        });
+      case COLL_STATUSCHANGE_FAIL:
+        return state.merge({
+          edited: false,
+          editing: false,
+          editError: action.error.error
+        });
     case COLL_EDIT:
       return state.set('editing', true);
     case COLL_LOAD:
@@ -97,23 +119,29 @@ export default function collection(state = initialState, action = {}) {
           id,
           listID,
           lists,
+          noteToDachs,
           owner,
           pages,
           persName,
+          personHeadingText,
           personHeaderList,
           public_index,
+          publisherOriginal,
           publisher,
           publishYear,
           pubTitle,
+          pubTitleOriginal,
           recordings,
           selectedGroupName,
           size,
           slug,
           slug_matched,
+          subjectHeadingText,
           subjectHeaderList,
           surName,
           timespan,
           title,
+          ticketState,
           updated_at,
           usermail,
           url
@@ -237,9 +265,33 @@ export function deleteCollection(user, coll) {
     })
   };
 }
+export function completeRecordingDispatch(user, coll, ticketState) {
+  return {
+    types: [COLL_STATUSCHANGE, COLL_STATUSCHANGE_SUCCESS, COLL_STATUSCHANGE_FAIL],
+    promise: client => client.post(`${apiPath}/collection/${coll}`, {
+      params: { user },
+      data: {
+        ticketState
+      }
+    })
+  };
+}
+export function editCollectionRecording(user, collID, isCollLoaded=false, recordingUrl, recordingTimestamp) {
+  return {
+    types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
+    promise: client => client.post(`${apiPath}/collection/${collID}`, {
+      params: { user },
+      data: {
+        isCollLoaded,
+        recordingUrl,
+        recordingTimestamp
+      }
+    }),
 
+  };
+}
 
-export function editCollectionDispatch(user, collID, title, url, creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear,listID) {
+export function editCollectionDispatch(user, collID, title, url, creatorList,subjectHeaderList,publisherOriginal,personHeaderList,publisher, collTitle,collYear,copTitle, noteToDachs,surName,persName, personHeadingText, pubTitleOriginal, subjectHeadingText,usermail,selectedGroupName,publishYear, listID) {
   return {
     types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
     promise: client => client.post(`${apiPath}/collection/${collID}`, {
@@ -249,14 +301,18 @@ export function editCollectionDispatch(user, collID, title, url, creatorList,sub
         url,
         creatorList,
         subjectHeaderList,
+        publisherOriginal,
         personHeaderList,
         publisher,
         collTitle,
-        pubTitle,
         collYear,
         copTitle,
+        noteToDachs,
         surName,
         persName,
+        personHeadingText,
+        pubTitleOriginal,
+        subjectHeadingText,
         usermail,
         selectedGroupName,
         publishYear,

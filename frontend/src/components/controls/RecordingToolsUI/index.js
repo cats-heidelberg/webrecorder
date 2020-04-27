@@ -37,8 +37,30 @@ class RecordingToolsUI extends PureComponent {
     super(props);
 
     this.state = { clipboardOpen: false };
+    this.waitForStamp = this.waitForStamp.bind(this);
+this.waitForStamp();
   }
+  waitForStamp = () => {
+    const { match: { params: { coll } }, timestamp, url, collections, user, loadCollectionDispatch, editCollection} = this.props;
+    if(timestamp!==undefined&&timestamp!==null)
+    {
+      loadCollectionDispatch(user.get('username'))
+      .then(res=>{
+          res.collections.forEach(el =>{
+            if(el!==undefined&&el.isCollLoaded!==undefined&& el.isCollLoaded !==null){
+                console.log(el.isCollLoaded);
+            if (el.isCollLoaded==true || el.isCollLoaded=="true" || el.isCollLoaded=="True") {
+              editCollection(user.get('username'),el.id, false,url, timestamp);
+            };
+          };
+          });
 
+
+      });
+    }else {
+      setTimeout(this.waitForStamp,1000);
+    }
+  }
   onPatch = () => {
     if (this.context.currMode === 'record') return;
 
@@ -106,14 +128,15 @@ class RecordingToolsUI extends PureComponent {
 
   render() {
     const { canAdmin, currMode } = this.context;
-    const { activeBrowser, autopilotInfo } = this.props;
-
+    const { activeBrowser, autopilotInfo, match: { params: { coll } }, timestamp, url, collections, user, loadCollectionDispatch} = this.props;
+    const wedontneednoBrowser = true;
     const isNew = currMode === 'new';
     const isWrite = ['new', 'patch', 'record', 'extract', 'live'].includes(currMode);
     const modalFooter = <Button onClick={this._close}>Close</Button>;
     const autopilotClasses = classNames('rounded autopilot-btn', {
       'special-behavior': autopilotInfo && autopilotInfo.get('defaultBehavior') !== true
     });
+
 
     return (
       <div className="recording-actions text-center hidden-xs">
@@ -129,7 +152,7 @@ class RecordingToolsUI extends PureComponent {
         </Modal>
 
         {
-          canAdmin && !isNew && activeBrowser &&
+          canAdmin && !isNew && activeBrowser && !wedontneednoBrowser &&
             <button
               type="button"
               className="rounded clipboard-btn"

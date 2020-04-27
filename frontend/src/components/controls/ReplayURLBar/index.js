@@ -58,13 +58,14 @@ class ReplayURLBar extends Component {
     const { canAdmin } = this.context;
     const { params, timestamp } = this.props;
     const { url } = this.state;
-
+    const wedontneednourl = true;
+    const wedontneednoremoteBrowser = true;
     return (
       <div className="main-bar">
         <form className="form-group-recorder-url">
           <div className="input-group containerized">
             {
-              canAdmin && !__DESKTOP__ &&
+              canAdmin && !__DESKTOP__ && !wedontneednoremoteBrowser &&
                 <div className="input-group-btn rb-dropdown">
                   <RemoteBrowserSelect
                     active
@@ -73,7 +74,7 @@ class ReplayURLBar extends Component {
             }
 
             <div className="wr-app-url">
-              <input type="text" onChange={this.handleInput} onKeyPress={this.handleSubmit} style={{ height: '3.2rem' }} className="form-control dropdown-toggle" name="url" aria-haspopup="true" value={url} autoComplete="off" />
+              <input type="text" active={!wedontneednourl} disabled={wedontneednourl} onChange={this.handleInput} onKeyPress={this.handleSubmit} style={{ height: '3.2rem' }} className="form-control dropdown-toggle" name="url" aria-haspopup="true" value={url} autoComplete="off" />
               <div className="wr-replay-info">
                 <InfoWidget />
                 <span className="replay-date main-replay-date hidden-xs">

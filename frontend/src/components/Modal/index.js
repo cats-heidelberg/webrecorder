@@ -32,7 +32,7 @@ class Modal extends Component {
           <BSModal.Header closeButton>
             {
               typeof header === 'string' ?
-                <BSModal.Title>{ header }</BSModal.Title> :
+                <BSModal.Title>{ header.split('\n').map(text => <p>{text}</p>) }</BSModal.Title> :
                 header
             }
           </BSModal.Header>

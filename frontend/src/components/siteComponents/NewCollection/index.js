@@ -33,12 +33,14 @@ class NewCollection extends Component {
     this.state = {
       listID: 0,
       publisher: '',
+      publisherOriginal: '',
       subjectHeaderList,
       subjectHeadingText: '',
       personHeaderList,
-      personeadingText: '',
+      personHeadingText: '',
       collTitle: '',
       pubTitle: '',
+      pubTitleOriginal: '',
       collYear: '',
       copTitle: '',
       surName: '',
@@ -47,10 +49,14 @@ class NewCollection extends Component {
       creatorList,
       isPublic: false,
       creatorLegend,
+      noteToDachs: '',
       publishYear: '',
       selectedGroupName: 'corporate/institutional name',
       url: '',
-      ticketState: 'open'
+      ticketState: 'open',
+      isCollLoaded: true,
+      recordingUrl: '',
+      recordingTimestamp:''
     };
   }
   checkEmail = () => {
@@ -103,7 +109,7 @@ class NewCollection extends Component {
     if (this.state.selectedGroupName==='corporate/institutional name') {
       const temp =
       {
-      "htmlText": this.state.collTitle+' '+this.state.copTitle,
+      "htmlText": "C/I name:"+this.state.collTitle+", "+this.state.copTitle,
       "id": this.state.listID
     };
       this.setState(state => {
@@ -112,14 +118,14 @@ class NewCollection extends Component {
         return {
           creatorList,
           collTitle: '',
-          copTitle: ''
+          copTitle: '',
         };
       });
     }
     else {
       const temp =
       {
-      "htmlText": this.state.persName+' '+this.state.surName+' - '+this.state.collYear,
+      "htmlText": "personal name:"+this.state.persName+", "+this.state.surName +"- "+this.state.collYear,
       "id": this.state.listID
     };
       this.setState(state => {
@@ -128,7 +134,7 @@ class NewCollection extends Component {
           creatorList,
           persName: '',
           surName: '',
-          collYear: ''
+          collYear: '',
         };
       });
     }
@@ -179,9 +185,9 @@ class NewCollection extends Component {
   submit = (evt) => {
     evt.stopPropagation();
     evt.preventDefault();
-    const { pubTitle, url, isPublic, creatorList, subjectHeaderList, personHeaderList,publisher,collTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID, ticketState } = this.state;
+    const { pubTitle, url, isPublic, creatorList, subjectHeaderList,publisherOriginal, personHeaderList,publisher,collTitle,collYear,copTitle, noteToDachs,surName,persName,personHeadingText, pubTitleOriginal, usermail,selectedGroupName, subjectHeadingText,publishYear, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp } = this.state;
 
-    this.props.createCollection(pubTitle, url, isPublic,JSON.stringify(creatorList),JSON.stringify(subjectHeaderList),JSON.stringify(personHeaderList),publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID, ticketState);
+    this.props.createCollection(pubTitle, url, isPublic,JSON.stringify(creatorList),JSON.stringify(subjectHeaderList),JSON.stringify(personHeaderList), noteToDachs,publisher,collTitle,publisherOriginal,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp);
   }
   validateEmail = () => {
     const { checkEmail, email } = this.state;
@@ -198,11 +204,11 @@ class NewCollection extends Component {
 
     if (this.state.selectedGroupName == 'corporate/institutional name') {
       if  (!collTitle) {
-        return 'error';
+        //return 'error';
       }
     }else {
       if  (!surName) {
-        return 'error';
+        //return 'error';
       }
     }
 
@@ -221,7 +227,7 @@ class NewCollection extends Component {
 
   render() {
     const { close, creatingCollection, error, visible } = this.props;
-    const { collTitle, collYear, surName, copTitle, isPublic , pubTitle, publishYear, usermail, persName, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
+    const { collTitle, collYear, surName, copTitle, isPublic , noteToDachs, pubTitle, publisherOriginal, publishYear, usermail, persName, pubTitleOriginal, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
     if (visible) {
         this.rebuildTooltip();
     }
@@ -243,30 +249,43 @@ class NewCollection extends Component {
             !__DESKTOP__ &&
               <span className="col-xs-6 col-xs-offset-1">
               <div>
-                <FormGroup id="fieldset" validationState={this.validateEmail()}>
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Any further information regarding your OpenDACHS request will be sent to this e-mail address. The e-mail address must end in 'uni-heidelberg.de'."/>
-                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >E-mail address:</div>
+                <FormGroup id="fieldset">
+                <label onMouseOver={() => { ReactTooltip.show(this.fooRef) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Any further information regarding your OpenDACHS request will be sent to this e-mail address."/>
+                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Your e-mail address:</div>
                   </label>
-                  <ControlLabel srOnly>Email address:</ControlLabel>
+                  <ControlLabel srOnly>email address:</ControlLabel>
                   <FormControl
                     aria-label="email"
                     type="email"
+                    validationState={this.validateEmail()}
                     name="usermail"
                     placeholder="email@...uni-heidelberg.de*"
                     autoFocus
+                    required
                     value={usermail}
                     onChange={this.handleChange}
                     onBlur={this.checkEmail} />
-                    <FormControl id="url" aria-label="url" type="text" name="url" onChange={this.handleInput} style={{ height: '33px' }} value={url} placeholder="URL to capture" title='Enter URL to capture' />
                 </FormGroup>
               </div>
 
               <div>
-                <FormGroup id="fieldset" validationState={this.validateAuthorship()}>
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef1) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef1) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef1 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="The main researchers involved working on the data, or the authors of the publication in priority order. May be corporate/institutional or personal names."/>
-                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Authorship Information</div>
+                <FormGroup id="fieldset">
+                <label onMouseOver={() => { ReactTooltip.show(this.fooRef21) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef21) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef21 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="URL of the web resource."/>
+                <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*URL:</div>
+                  </label>
+                  <FormControl id="url" aria-label="url" required type="text" name="url" onChange={this.handleInput} style={{ height: '33px' }} value={url} placeholder={url} title='Enter URL to capture' />
+                <label onMouseOver={() => { ReactTooltip.show(this.fooRef1) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef1) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef1 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Name or title of the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/>
+                <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Title (Latin alphabet):</div>
+                  </label>
+                <FormControl type="text" required placeholder="original script, e.g. Chinese, Japanese, Korean script." inputRef={(obj) => { this.input = obj; }} id="pubTitleOriginal" name="pubTitleOriginal" onFocus={this.focusInput} onChange={this.handleInput} value={pubTitleOriginal} />
+                <label onMouseOver={() => { ReactTooltip.show(this.fooRef2) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef2) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef2 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/>
+                <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Title (original script):</div>
+                  </label>
+                <FormControl type="text" placeholder="you can change Record Title here" inputRef={(obj) => { this.input = obj; }} id="pubTitle" name="pubTitle" onFocus={this.focusInput} onChange={this.handleInput} value={pubTitle} />
+                <label onMouseOver={() => { ReactTooltip.show(this.fooRef3) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef3) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef3 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Person or institution that authored the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/>
+                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Authorship information (Latin alphabet): [corporate/institutional name] or [personal name]:</div>
                       </label>
-                      <FormControl componentClass="select" placeholder="corporate/institutional name" inputRef={(ref) => { this.state.groupSelect = ref }} onChange={this.groupSelect}>
+                      <FormControl componentClass="select" required placeholder="corporate/institutional name" inputRef={(ref) => { this.state.groupSelect = ref }} onChange={this.groupSelect}>
                       {
                           this.state.creatorLegend.map(group => (
                               <option key={group} value={group} selected={this.state.selectedGroupName == group}>{group}</option>
@@ -276,13 +295,22 @@ class NewCollection extends Component {
                         {this.state.selectedGroupName == 'corporate/institutional name' ? (
                           <React.Fragment>
                             <FormControl type="text" placeholder="corporate/institutional name" inputRef={(obj) => { this.input = obj; }} id="collTitle" name="collTitle" onFocus={this.focusInput} onChange={this.handleInput} value={collTitle} />
-                            <FormControl type="text" placeholder="In orig. characters*" inputRef={(obj) => { this.input = obj; }} id="copTitle" name="copTitle" onFocus={this.focusInput} onChange={this.handleInput} value={copTitle} />
+                            <label onMouseOver={() => { ReactTooltip.show(this.fooRef4) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef4) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef4 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/>
+                            <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Authorship information (orig. script):</div>
+                            </label>
+                            <FormControl type="text" placeholder="" inputRef={(obj) => { this.input = obj; }} id="copTitle" name="copTitle" onFocus={this.focusInput} onChange={this.handleInput} value={copTitle} />
+
+
                           </React.Fragment>
                         ) : (
                           <React.Fragment>
-                            <FormControl type="text" placeholder="Surname, given name*" inputRef={(obj) => { this.input = obj; }} id="persName" name="persName" onFocus={this.focusInput} onChange={this.handleInput} value={persName} />
-                            <FormControl type="text" placeholder="Full name in orig. characters*" inputRef={(obj) => { this.input = obj; }} id="surName" name="surName" onFocus={this.focusInput} onChange={this.handleInput} value={surName} />
+                            <FormControl type="text" placeholder="Surname, given name" inputRef={(obj) => { this.input = obj; }} id="persName" name="persName" onFocus={this.focusInput} onChange={this.handleInput} value={persName} />
                             <FormControl type="text" placeholder="YYYY" inputRef={(obj) => { this.input = obj; }} id="collYear" name="collYear" onFocus={this.focusInput} onChange={this.handleInput} value={collYear} />
+                            <label onMouseOver={() => { ReactTooltip.show(this.fooRef5) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef5) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef5 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/>
+                            <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Authorship information (orig. script):</div>
+                            </label>
+                            <FormControl type="text" placeholder="" inputRef={(obj) => { this.input = obj; }} id="surName" name="surName" onFocus={this.focusInput} onChange={this.handleInput} value={surName} />
+
                           </React.Fragment>
                         )}
                         {
@@ -304,32 +332,32 @@ class NewCollection extends Component {
               </div>
               <React.Fragment>
               <FormGroup id="fieldset" validationState={this.titleValidation()}>
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef2) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef2) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef2 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip=" The name or title by which the web resource is known."/>
-                <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Title:</div>
+              <label onMouseOver={() => { ReactTooltip.show(this.fooRef6) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef6) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef6 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="The name of the entity that holds, archives, publishes, prints, distributes, releases, issues or produces the resource. This property will be used to formulate the citation. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc.)"/>
+              <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Publisher (Latin alphabet):</div>
+                </label>
+                <FormControl type="text" placeholder="Publisher" required inputRef={(obj) => { this.input = obj; }} id="publisher" name="publisher" onFocus={this.focusInput} onChange={this.handleInput} value={publisher} />
+<label onMouseOver={() => { ReactTooltip.show(this.fooRef7) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef7) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef7 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/>
+                <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Publisher (orig. script):</div>
                   </label>
-                <FormControl type="text" placeholder="Title*" inputRef={(obj) => { this.input = obj; }} id="pubTitle" name="pubTitle" onFocus={this.focusInput} onChange={this.handleInput} value={pubTitle} />
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef3) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef3) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef3 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="The name of the entity that holds, archives, publishes prints, distributes, releases, issues or produces the resource. This property will be used to formulate the citation."/>
-                <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Publisher:</div>
+                  <FormControl type="text" placeholder="publisherOriginal" inputRef={(obj) => { this.input = obj; }} id="publisherOriginal" name="publisherOriginal" onFocus={this.focusInput} onChange={this.handleInput} value={publisherOriginal} />
+                <label onMouseOver={() => { ReactTooltip.show(this.fooRef8) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef8) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef8 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Date when the data is made publicly available."/>
+                <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Publication date [YYYY-MM-DD]:</div>
                   </label>
-                <FormControl type="text" placeholder="Publisher*" inputRef={(obj) => { this.input = obj; }} id="publisher" name="publisher" onFocus={this.focusInput} onChange={this.handleInput} value={publisher} />
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef4) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef4) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef4 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Date when the data is made publicly available."/>
-                <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Publication date:</div>
-                  </label>
-                <FormControl type="text" placeholder="Publisher*" inputRef={(obj) => { this.input = obj; }} id="publishYear" name="publishYear" onFocus={this.focusInput} onChange={this.handleInput} value={publishYear} />
+                <FormControl type="text" placeholder="Publisher" inputRef={(obj) => { this.input = obj; }} id="publishYear" name="publishYear" onFocus={this.focusInput} onChange={this.handleInput} value={publishYear} />
               </FormGroup>
               </React.Fragment>
 
               <div>
-                <FormGroup id="fieldset" validationState={this.validateAuthorship()}>
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef5) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef5) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef5 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Subject headings help to describe and categorize the web resource. The headings should conform to a list drawn from the Library of Congress. A complete list currently by OpenDACHS in use can be found"/>
-                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Subject headings:</div>
+                <FormGroup id="fieldset">
+                <label onMouseOver={() => { ReactTooltip.show(this.fooRef9) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef9) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef9 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Subject headings help to describe and categorize the web resource. The headings should conform to a list drawn from the Library of Congress, see http://id.loc.gov/authorities/subjects.html."/>
+                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Subject headings (in English):</div>
                       </label>
 
                           <React.Fragment>
                             <FormControl type="text" placeholder="subject" inputRef={(obj) => { this.input = obj; }} id="subjectHeadingText" name="subjectHeadingText" onFocus={this.focusInput} onChange={this.handleInput} value={subjectHeadingText} />
                           </React.Fragment>
-
-                        <ul>
+                          {
+                      this.state.subjectHeaderList.length>0 && <ul>
                         {
                           this.state.subjectHeaderList.map(item => (
                             <li key={item.id}>
@@ -341,18 +369,19 @@ class NewCollection extends Component {
                           ))
                         }
                         </ul>
+                        }
                     <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddSubject}>Add header</button>
                 </FormGroup>
-                <FormGroup id="fieldset" validationState={this.validateAuthorship()}>
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef6) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef6) }}><span className="glyphicon glyphicon-alert"  ref={ref => this.fooRef6 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Adding person headings allows for expanding the catalogue entry by the persons the web resource focuses on."/>
-                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Add Subject:</div>
+                <FormGroup id="fieldset">
+                <label onMouseOver={() => { ReactTooltip.show(this.fooRef10) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef10) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef10 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Adding person headings allows for expanding the catalogue entry by the persons the web resource focuses on."/>
+                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Person headings:</div>
                       </label>
 
                           <React.Fragment>
                             <FormControl type="text" placeholder="person" inputRef={(obj) => { this.input = obj; }} id="personHeadingText" name="personHeadingText" onFocus={this.focusInput} onChange={this.handleInput} value={personHeadingText} />
                           </React.Fragment>
-
-                        <ul>
+                          {
+                        this.state.personHeaderList.length>0 && <ul>
                         {
                           this.state.personHeaderList.map(item => (
                             <li key={item.id}>
@@ -363,9 +392,28 @@ class NewCollection extends Component {
                             </li>
                           ))
                         }
-                        </ul>
-                    <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddPerson}>Add Person</button>
+                        </ul>}
+                    <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddPerson}>Add header</button>
                 </FormGroup>
+              </div>
+              <div>
+                <FormGroup id="fieldset">
+                <label onMouseOver={() => { ReactTooltip.show(this.fooRef11) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef11) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef11 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="If you have comments for the DACHS team you can post them here."/>
+                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Note to DACHS team:</div>
+                  </label>
+                  <ControlLabel srOnly>Note to DACHS team:</ControlLabel>
+                  <textarea
+           className="form-control"
+           rows="3"
+           placeholder="note to dachs"
+           inputRef={(obj) => { this.input = obj; }}
+           id="noteToDachs"
+           name="noteToDachs"
+           onFocus={this.focusInput}
+           onChange={this.handleInput}
+           value={noteToDachs}
+           />
+           </FormGroup>
               </div>
               </span>
 
@@ -374,7 +422,7 @@ class NewCollection extends Component {
             <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={creatingCollection && !error} type="button">Create</button>
         </form>
       </Modal>
-      <ReactTooltip className='extraClass' delayHide={1000} effect='solid' type='info'/>
+      <ReactTooltip className='extraClass' delayHide={100} effect='solid' type='info'/>
     </React.Fragment>
 
     );

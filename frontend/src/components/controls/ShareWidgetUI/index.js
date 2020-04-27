@@ -151,14 +151,14 @@ class ShareWidgetUI extends Component {
     const { canAdmin, isAnon } = this.context;
     const { bsSize, collection, embedUrl, isPublic, shareUrl, showLoginModal } = this.props;
     const { open, sizeSet, widgetHeight } = this.state;
-
+    const wedontneednosharing = true;
     const shareClasses = classNames('share-container', { open });
     const widgetClasses = classNames('public-switch clearfix', { hidden: isPublic });
     const shareableClasses = classNames('shareables', { disabled: !isPublic && sizeSet });
 
     return (
       <OutsideClick handleClick={this.close}>
-        <div id="share-widget" className={shareClasses} title="Sharing options">
+        <div id="share-widget" className={shareClasses} title="Sharing options" hidden={wedontneednosharing}>
           <div id="fb-root" />
           <button
             type="button"

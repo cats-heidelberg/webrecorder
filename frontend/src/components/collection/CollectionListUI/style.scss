@@ -168,7 +168,60 @@ a.collection-title:hover {
         word-break: break-word;
     }
 }
+.dat-modal {
+  overflow: auto;
+    .dat-info {
+        margin-bottom: 1.5rem;
 
+        .dat-current {
+            color: $brightGreen;
+            margin-top: .5rem;
+        }
+        .dat-current.update-dat{
+            color: $warning;
+            display: inline-block;
+            width: 75%;
+            vertical-align: middle;
+        }
+        button {
+            margin-top: 2rem;
+        }
+
+        .clipboard {
+            vertical-align: top;
+            margin-right: 0.4rem;
+        }
+        input[name="datUrl"] {
+            width: 75%;
+            display: inline-block;
+            height: 30px;
+            background: $white;
+        }
+        .rounded {
+            display: inline-block;
+            margin-top:0;
+            margin-bottom:0.5rem;
+            margin-left: 1rem;
+            padding: 0.6rem 1.5rem;
+            vertical-align: top;
+        }
+        .rounded.copy-dat {
+            padding: 0.6rem 1.4rem;
+        }
+    }
+
+    .loading-dat {
+        h4 {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .dat-note {
+            font-size: 1.2rem;
+            text-align: center;
+        }
+    }
+}
 .collection-list {
     margin: 1rem 0;
 
@@ -240,20 +293,20 @@ a.collection-title:hover {
         }
 
         .collection-delete-action {
-        	button:last-of-type {
+            button:last-of-type {
                 background: rgba(0,0,0,0);
                 border: none;
                 padding:1.5rem 0 0;
                 float:right;
 
                 svg {
-	                width:15px;
-	                height:15px;
+                    width:15px;
+                    height:15px;
                     &:hover + .tooltip.top {
                         display: block;
                     }
-	            }
-        	}
+                }
+            }
         }
 
         .tooltip.top {
@@ -272,6 +325,17 @@ a.collection-title:hover {
 }
 
 @media (min-width: 768px){
+  .dat-modal{
+      .dat-info{
+          input[name="datUrl"]{
+              width: 65%;
+          }
+
+          .dat-current.update-dat{
+              width: 65%;
+          }
+      }
+  }
     .collection-list li {
         .collection-list-size span {
             padding: 2rem 0;

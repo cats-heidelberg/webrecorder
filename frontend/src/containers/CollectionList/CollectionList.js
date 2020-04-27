@@ -7,7 +7,7 @@ import { saveDelay, appHost } from 'config';
 import { addUserCollection, incrementCollCount } from 'store/modules/auth';
 import { load as loadCollections, createCollection } from 'store/modules/collections';
 
-import { editCollectionDispatch } from 'store/modules/collection';
+import { editCollectionDispatch, completeRecordingDispatch } from 'store/modules/collection';
 import { load as loadUser, edit as editUser, resetEditState } from 'store/modules/user';
 import { sortCollsByAlpha } from 'store/selectors';
 
@@ -33,18 +33,20 @@ const preloadCollections = [
 
 const mapStateToProps = ({ app }) => {
   return {
+    activeBrowser: app.getIn(['remoteBrowsers', 'activeBrowser']),
     auth: app.get('auth'),
     collections: app.get('collections'),
     edited: app.getIn(['user', 'edited']),
     orderedCollections: app.getIn(['collections', 'loaded']) ? sortCollsByAlpha(app) : null,
+    timestamp: app.getIn(['controls', 'timestamp']),
     user: app.get('user')
   };
 };
 
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    createNewCollection: (user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, ticketState) => {
-      dispatch(createCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, ticketState))
+    createNewCollection: (user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText,listID, ticketState="open", isCollLoaded=true, recordingUrl, recordingTimestamp) => {
+      dispatch(createCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText,listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp))
         .then((res) => {
           if (res.hasOwnProperty('collection')) {
             dispatch(batchActions([
@@ -74,11 +76,14 @@ const mapDispatchToProps = (dispatch, { history }) => {
             .catch(err => console.log('error', err));
         }, () => {});
     },
-    editCollection: (user, collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear) => {
-      dispatch(editCollectionDispatch(user, collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear))
+    editCollection: (user, collID, title, url,creatorList,subjectHeaderList,publisherOriginal,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle, noteToDachs,surName,persName, personHeadingText, pubTitleOriginal, subjectHeadingText,usermail,selectedGroupName,publishYear, isCollLoaded, recordingUrl, recordingTimestamp) => {
+      dispatch(editCollectionDispatch(user, collID, title, url,creatorList,subjectHeaderList,publisherOriginal,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle, noteToDachs,surName,persName, personHeadingText, pubTitleOriginal, subjectHeadingText,usermail,selectedGroupName,publishYear, isCollLoaded, recordingUrl, recordingTimestamp))
         .then((res) => {
           history.push(`/${user}`);
         }, (error) => {console.log(error);});
+    },
+    completeRecording: (user, collID, ticketState="pending") => {
+      dispatch(completeRecordingDispatch(user, collID, ticketState));
     },
     editUser: (user, data) => {
       dispatch(editUser(user, data))
