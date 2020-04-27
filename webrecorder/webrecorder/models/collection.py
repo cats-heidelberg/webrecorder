@@ -319,7 +319,7 @@ class Collection(PagesMixin, RedisUniqueComponent):
         else:
             return len(self.get_lists())
 
-    def init_new(self, slug, title, url='', creatorList='', subjectHeaderList='', personHeaderList='', publisher='', collTitle='', pubTitle='', collYear='', copTitle='', surName='', persName='', usermail='', selectedGroupName='', publishYear='', listID='', desc='', public=False, public_index=False, ticketState='open', isCollLoaded=True, recordingUrl='', recordingTimestamp=''):
+def init_new(self, slug, title, url='', creatorList='', noteToDachs='', subjectHeaderList='', personHeaderList='', publisher='', collTitle='', publisherOriginal='', pubTitle='', pubTitleOriginal='', personHeadingText='', collYear='', copTitle='', subjectHeadingText='', surName='', persName='', usermail='', selectedGroupName='', publishYear='', listID='', desc='', public=False, public_index=False, ticketState='open', isCollLoaded=True, recordingUrl='', recordingTimestamp=''):
         """Initialize new collection.
 
         :param str title: title
@@ -342,8 +342,13 @@ class Collection(PagesMixin, RedisUniqueComponent):
                      'publisher':publisher,
                      'collTitle':collTitle,
                      'pubTitle':pubTitle,
+                     'noteToDachs':noteToDachs,
+                     'publisherOriginal':publisherOriginal,
+                     'pubTitleOriginal':pubTitleOriginal,
                      'collYear':collYear,
+                     'personHeadingText':personHeadingText,
                      'copTitle':copTitle,
+                     'subjectHeadingText':subjectHeadingText,
                      'surName':surName,
                      'persName':persName,
                      'usermail':usermail,
@@ -353,7 +358,7 @@ class Collection(PagesMixin, RedisUniqueComponent):
                      'size': 0,
                      'desc': desc,
                      'ticketState': ticketState,
-                     'isCollLoaded': isCollLoaded, 
+                     'isCollLoaded': isCollLoaded,
                      'recordingUrl': recordingUrl,
                      'recordingTimestamp': recordingTimestamp,
                      'public': self._from_bool(public),

@@ -119,19 +119,24 @@ export default function collection(state = initialState, action = {}) {
           id,
           listID,
           lists,
+          noteToDachs,
           owner,
           pages,
           persName,
+          personHeadingText,
           personHeaderList,
           public_index,
+          publisherOriginal,
           publisher,
           publishYear,
           pubTitle,
+          pubTitleOriginal,
           recordings,
           selectedGroupName,
           size,
           slug,
           slug_matched,
+          subjectHeadingText,
           subjectHeaderList,
           surName,
           timespan,
@@ -286,7 +291,7 @@ export function editCollectionRecording(user, collID, isCollLoaded=false, record
   };
 }
 
-export function editCollectionDispatch(user, collID, title, url, creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear,listID) {
+export function editCollectionDispatch(user, collID, title, url, creatorList,subjectHeaderList,publisherOriginal,personHeaderList,publisher, collTitle,collYear,copTitle, noteToDachs,surName,persName, personHeadingText, pubTitleOriginal, subjectHeadingText,usermail,selectedGroupName,publishYear, listID) {
   return {
     types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
     promise: client => client.post(`${apiPath}/collection/${collID}`, {
@@ -296,14 +301,18 @@ export function editCollectionDispatch(user, collID, title, url, creatorList,sub
         url,
         creatorList,
         subjectHeaderList,
+        publisherOriginal,
         personHeaderList,
         publisher,
         collTitle,
-        pubTitle,
         collYear,
         copTitle,
+        noteToDachs,
         surName,
         persName,
+        personHeadingText,
+        pubTitleOriginal,
+        subjectHeadingText,
         usermail,
         selectedGroupName,
         publishYear,

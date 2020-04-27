@@ -34,7 +34,7 @@ class CollsController(BaseController):
             title = data.get('title', '')
 
             url = data.get('url', '')
-            
+
             if not url:
                 self._raise_error(400, 'please enter a URL to record')
 
@@ -59,13 +59,26 @@ class CollsController(BaseController):
 
             publisher = data.get('publisher', '')
 
+            if not publisher:
+                self._raise_error(400, 'please enter the publisher of the resource')
+
+            personHeadingText = data.get('personHeadingText', '')
+
             collTitle = data.get('collTitle', '')
 
+            noteToDachs = data.get('noteToDachs', '')
+
             pubTitle = data.get('pubTitle', '')
+
+            publisherOriginal = data.get('publisherOriginal', '')
+
+            pubTitleOriginal = data.get('pubTitleOriginal', '')
 
             collYear = data.get('collYear', '')
 
             copTitle = data.get('copTitle', '')
+
+            subjectHeadingText = data.get('subjectHeadingText', '')
 
             surName = data.get('surName', '')
 
@@ -73,11 +86,12 @@ class CollsController(BaseController):
 
             usermail = data.get('usermail', '')
 
+            if not usermail:
+                self._raise_error(400, 'invalid email adress')
+
             selectedGroupName = data.get('selectedGroupName', '')
 
             publishYear = data.get('publishYear', '')
-
-            ticketState = data.get('ticketState', 'open')
 
             listID = data.get('listID', 0)
 
@@ -105,7 +119,7 @@ class CollsController(BaseController):
                 self._raise_error(400, 'duplicate_name')
 
             try:
-                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, ticketState=ticketState, listID=listID, desc='', public=is_public, public_index=is_public_index, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp)
+                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, listID=listID, ticketState=ticketState, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp,desc='', public=is_public,public_index=is_public_index)
 
                 if is_external:
                     collection.set_external(True)
@@ -226,14 +240,14 @@ class CollsController(BaseController):
             if 'personHeaderList' in data:
                 collection['personHeaderList'] = data['personHeaderList']
 
+            if 'publisherOriginal' in data:
+                collection['publisherOriginal'] = data['publisherOriginal']
+
             if 'publisher' in data:
                 collection['publisher'] = data['publisher']
 
             if 'collTitle' in data:
                 collection['collTitle'] = data['collTitle']
-
-            if 'pubTitle' in data:
-                collection['pubTitle'] = data['pubTitle']
 
             if 'collYear' in data:
                 collection['collYear'] = data['collYear']
@@ -241,11 +255,27 @@ class CollsController(BaseController):
             if 'copTitle' in data:
                 collection['copTitle'] = data['copTitle']
 
+            if 'pubTitle' in data:
+                collection['pubTitle'] = data['pubTitle']
+
+            if 'noteToDachs' in data:
+                collection['noteToDachs'] = data['noteToDachs']
+
             if 'surName' in data:
                 collection['surName'] = data['surName']
 
             if 'persName' in data:
                 collection['persName'] = data['persName']
+
+
+            if 'personHeadingText' in data:
+                collection['personHeadingText'] = data['personHeadingText']
+
+            if 'pubTitleOriginal' in data:
+                collection['pubTitleOriginal'] = data['pubTitleOriginal']
+
+            if 'subjectHeadingText' in data:
+                collection['subjectHeadingText'] = data['subjectHeadingText']
 
             if 'usermail' in data:
                 collection['usermail'] = data['usermail']
@@ -258,18 +288,22 @@ class CollsController(BaseController):
 
             if 'listID' in data:
                 collection['listID'] = data['listID']
+
             if 'isCollLoaded' in data:
                 collection.set_bool_prop('isCollLoaded', data['isCollLoaded'])
+
             if 'recordingUrl' in data:
                 collection['recordingUrl'] = data['recordingUrl']
+
+
             if 'recordingTimestamp' in data:
                 collection['recordingTimestamp'] = data['recordingTimestamp']
 
-            if 'ticketState' in data:
-                collection['ticktState'] = data['ticketState']
-
             if 'desc' in data:
                 collection['desc'] = data['desc']
+
+            if 'ticketState' in data:
+                collection['ticketState'] = data['ticketState']
 
 
             # TODO: notify the user if this is a request from the admin panel

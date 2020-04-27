@@ -58,13 +58,13 @@ class CollectionListUI extends Component {
     };
   }
 
-  createCollection = (title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID, ticketState='open', isCollLoaded=true, recordingUrl="", recordingTimestamp="") => {
+  createCollection = (title, url, isPublic,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear,  pubTitleOriginal, personHeadingText, subjectHeadingText,listID, ticketState='open', isCollLoaded=true, recordingUrl="", recordingTimestamp="") => {
     const { createNewCollection, match: { params: { user } } } = this.props;
-    createNewCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear,listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp);
+    createNewCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText,listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp);
   }
-  editColl = (collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, ticketState, isCollLoaded=false, recordingUrl="", recordingTimestamp="") => {
+  editColl = (collID, title, url,creatorList,subjectHeaderList, publisherOriginal,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle, noteToDachs,surName,persName,personHeadingText, pubTitleOriginal, usermail,selectedGroupName, subjectHeadingText,publishYear, ticketState, isCollLoaded=false, recordingUrl="", recordingTimestamp="") => {
     const { editCollection, match: { params: { user } } } = this.props;
-    editCollection(user, collID, title, url,creatorList,subjectHeaderList,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, ticketState, isCollLoaded, recordingUrl, recordingTimestamp);
+    editCollection(user, collID, title, url,creatorList,subjectHeaderList, publisherOriginal,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle, noteToDachs,surName,persName,personHeadingText, pubTitleOriginal,usermail,selectedGroupName, subjectHeadingText,publishYear, ticketState, isCollLoaded, recordingUrl, recordingTimestamp);
   }
   completeRec = (collID, ticketState="pending") => {
     const { completeRecording, match: { params: { user } } } = this.props;
