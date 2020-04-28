@@ -95,8 +95,8 @@ class EditMetadata extends Component {
          listID: this.props.coll.get('listID'),
          publisher: this.props.coll.get('publisher'),
          publisherOriginal: this.props.coll.get('publisherOriginal'),
-         subjectHeadingText: '',
-         personHeadingText: '',
+         subjectHeadingText: this.props.coll.get('subjectHeadingText'),
+         personHeadingText: this.props.coll.get('personHeadingText'),
          collTitle: this.props.coll.get('collTitle'),
          pubTitle: this.props.coll.get('pubTitle'),
          pubTitleOriginal: this.props.coll.get('pubTitleOriginal'),
@@ -259,7 +259,7 @@ class EditMetadata extends Component {
   render() {
     const { close, error,coll, visible } = this.props;
     const { collTitle, collYear, surName, copTitle, isPublic , noteToDachs, pubTitle, publisherOriginal, publishYear, usermail, persName, pubTitleOriginal, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
-    const text = `To edit Metadata, please use the information form below.${"\n"} Fields marked with asterisk (*) are required`
+    const text = `To edit Metadata, please use the information form below.${"\n"} Fields marked with asterisk (*) are required`;
     if (visible) {
         this.rebuildTooltip();
     }

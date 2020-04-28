@@ -228,6 +228,7 @@ class NewCollection extends Component {
   render() {
     const { close, creatingCollection, error, visible } = this.props;
     const { collTitle, collYear, surName, copTitle, isPublic , noteToDachs, pubTitle, publisherOriginal, publishYear, usermail, persName, pubTitleOriginal, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
+    const text = `To edit Metadata, please use the information form below.${"\n"} Fields marked with asterisk (*) are required`;
     if (visible) {
         this.rebuildTooltip();
     }
@@ -235,7 +236,7 @@ class NewCollection extends Component {
       <React.Fragment>
       <Modal
         closeCb={close}
-        header="To begin, please fill out the information form below."
+        header={text}
         visible={visible}>
 
         <form onSubmit={this.submit} id="create-coll" className="form-horizontal">

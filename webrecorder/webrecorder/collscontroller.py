@@ -125,7 +125,7 @@ class CollsController(BaseController):
                 self._raise_error(400, 'invalid ticket state')
 
             try:
-                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList,
+                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList,
                                                     publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName,
                                                     usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, ticketState=ticketState, notes=notes, listID=listID,
                                                     desc='', public=is_public,
