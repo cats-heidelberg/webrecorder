@@ -361,7 +361,7 @@ class Collection(PagesMixin, RedisUniqueComponent):
                      'recordingUrl': recordingUrl,
                      'recordingTimestamp': recordingTimestamp,
                      'public': self._from_bool(public),
-                     'public_index': self._from_bool(public_index),
+                     'public_index': self._from_bool(public_index)
                     }
 
         self._init_new()

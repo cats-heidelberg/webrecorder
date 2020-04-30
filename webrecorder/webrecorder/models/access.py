@@ -195,7 +195,10 @@ class SessionAccessCache(BaseAccess):
         :returns: whether current user has right
         :rtype: bool
         """
-        return self.check_write_access(collection)
+        if collection['ticketState']=='pending':
+            return False
+        else:
+            return self.check_write_access(collection)
 
     def assert_can_write_coll(self, collection):
         """Assert current user has right to modify collection.
