@@ -40,7 +40,7 @@ class EditMetadata extends Component {
       personHeaderList,
       personHeadingText: '',
       collTitle: '',
-      pubTitle: '',
+      title: '',
       pubTitleOriginal: '',
       collYear: '',
       copTitle: '',
@@ -98,7 +98,7 @@ class EditMetadata extends Component {
          subjectHeadingText: this.props.coll.get('subjectHeadingText'),
          personHeadingText: this.props.coll.get('personHeadingText'),
          collTitle: this.props.coll.get('collTitle'),
-         pubTitle: this.props.coll.get('pubTitle'),
+         title: this.props.coll.get('title'),
          pubTitleOriginal: this.props.coll.get('pubTitleOriginal'),
          collYear: this.props.coll.get('collYear'),
          copTitle: this.props.coll.get('copTitle'),
@@ -243,9 +243,9 @@ class EditMetadata extends Component {
   submit = (evt) => {
     evt.stopPropagation();
     evt.preventDefault();
-    const { pubTitle, creatorList, noteToDachs, subjectHeaderList, subjectHeadingText, personHeaderList,publisher,publisherOriginal, pubTitleOriginal, personHeadingText, collTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID } = this.state;
+    const { title, creatorList, noteToDachs, subjectHeaderList, subjectHeadingText, personHeaderList,publisher,publisherOriginal, pubTitleOriginal, personHeadingText, collTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, listID } = this.state;
     const { coll } = this.props;
-    this.props.editCollection(coll.get('id'), pubTitle,JSON.stringify(creatorList),JSON.stringify(subjectHeaderList),publisherOriginal, JSON.stringify(personHeaderList),publisher, collTitle,collYear,copTitle, noteToDachs,surName,persName, personHeadingText, pubTitleOriginal, subjectHeadingText,usermail,selectedGroupName,publishYear, listID);
+    this.props.editCollection(coll.get('id'), title,JSON.stringify(creatorList),JSON.stringify(subjectHeaderList), JSON.stringify(personHeaderList), noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID);
     this.props.close();
   }
 
@@ -258,8 +258,8 @@ class EditMetadata extends Component {
 
   render() {
     const { close, error,coll, visible } = this.props;
-    const { collTitle, collYear, surName, copTitle, isPublic , noteToDachs, pubTitle, publisherOriginal, publishYear, usermail, persName, pubTitleOriginal, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
-    const text = `To edit Metadata, please use the information form below.${"\n"} Fields marked with asterisk (*) are required`;
+    const { collTitle, collYear, surName, copTitle, isPublic , noteToDachs, title, publisherOriginal, publishYear, usermail, persName, pubTitleOriginal, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
+    const text = `To edit Metadata, please use the information form below.${"\n"} Fields marked with asterisk (*) are required`
     if (visible) {
         this.rebuildTooltip();
     }
@@ -305,11 +305,11 @@ class EditMetadata extends Component {
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef1) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef1) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef1 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Name or title of the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Title (Latin alphabet):</div>
                   </label>
-                <FormControl type="text" required placeholder="original script, e.g. Chinese, Japanese, Korean script." inputRef={(obj) => { this.input = obj; }} id="pubTitleOriginal" name="pubTitleOriginal" onFocus={this.focusInput} onChange={this.handleInput} value={pubTitleOriginal} />
+                <FormControl type="text" required placeholder="original script, e.g. Chinese, Japanese, Korean script." inputRef={(obj) => { this.input = obj; }} id="title" name="title" onFocus={this.focusInput} onChange={this.handleInput} value={title} />
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef2) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef2) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef2 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Title (original script):</div>
                   </label>
-                <FormControl type="text" placeholder="you can change Record Title here" inputRef={(obj) => { this.input = obj; }} id="pubTitle" name="pubTitle" onFocus={this.focusInput} onChange={this.handleInput} value={pubTitle} />
+                <FormControl type="text" placeholder="you can change Record Title here" inputRef={(obj) => { this.input = obj; }} id="pubTitleOriginal" name="pubTitleOriginal" onFocus={this.focusInput} onChange={this.handleInput} value={pubTitleOriginal} />
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef3) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef3) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef3 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Person or institution that authored the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/>
                     <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Authorship information (Latin alphabet): [corporate/institutional name] or [personal name]:</div>
                       </label>

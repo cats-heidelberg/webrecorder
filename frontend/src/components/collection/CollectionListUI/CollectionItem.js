@@ -63,8 +63,8 @@ class CollectionItem extends Component {
     this.setState({ showModalFinish: !this.state.showModalFinish });
   }
 
-  editCollectiontemp = (collID, pubTitle, url, creatorList, subjectHeaderList, publisherOriginal, personHeaderList,publisher,collTitle,collYear,copTitle, noteToDachs, surName,persName,personHeadingText, pubTitleOriginal, subjectHeadingText, usermail,selectedGroupName,publishYear, listID) => {
-    this.props.editCollection(collID, pubTitle, url, creatorList, subjectHeaderList, publisherOriginal, personHeaderList,publisher,collTitle,collYear,copTitle, noteToDachs, surName,persName,personHeadingText, pubTitleOriginal, subjectHeadingText, usermail,selectedGroupName,publishYear, listID);
+  editCollectiontemp = (collID, title, creatorList, subjectHeaderList, personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID) => {
+    this.props.editCollection(collID, title, creatorList, subjectHeaderList, personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID);
   }
 
   newSession = () => {

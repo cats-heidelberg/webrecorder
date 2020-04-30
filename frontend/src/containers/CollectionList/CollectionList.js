@@ -45,8 +45,8 @@ const mapStateToProps = ({ app }) => {
 
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    createNewCollection: (user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText,listID, ticketState="open", isCollLoaded=true, recordingUrl, recordingTimestamp) => {
-      dispatch(createCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText,listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp))
+    createNewCollection: (user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp) => {
+      dispatch(createCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp))
         .then((res) => {
           if (res.hasOwnProperty('collection')) {
             dispatch(batchActions([
@@ -76,8 +76,8 @@ const mapDispatchToProps = (dispatch, { history }) => {
             .catch(err => console.log('error', err));
         }, () => {});
     },
-    editCollection: (user, collID, title, url,creatorList,subjectHeaderList,publisherOriginal,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle, noteToDachs,surName,persName, personHeadingText, pubTitleOriginal, subjectHeadingText,usermail,selectedGroupName,publishYear, isCollLoaded, recordingUrl, recordingTimestamp) => {
-      dispatch(editCollectionDispatch(user, collID, title, url,creatorList,subjectHeaderList,publisherOriginal,personHeaderList,publisher,collTitle,pubTitle,collYear,copTitle, noteToDachs,surName,persName, personHeadingText, pubTitleOriginal, subjectHeadingText,usermail,selectedGroupName,publishYear, isCollLoaded, recordingUrl, recordingTimestamp))
+    editCollection: (user, collID, title,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID) => {
+      dispatch(editCollectionDispatch(user, collID, title,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID))
         .then((res) => {
           history.push(`/${user}`);
         }, (error) => {console.log(error);});

@@ -33,6 +33,9 @@ class CollsController(BaseController):
 
             title = data.get('title', '')
 
+            if not title:
+                title._raise_error(400, 'please enter a title to record')
+
             url = data.get('url', '')
 
             if not url:
@@ -66,9 +69,10 @@ class CollsController(BaseController):
 
             collTitle = data.get('collTitle', '')
 
-            noteToDachs = data.get('noteToDachs', '')
+            if not collTitle:
+                self._raise_error(400, 'please enter the authership information of the resource')
 
-            pubTitle = data.get('pubTitle', '')
+            noteToDachs = data.get('noteToDachs', '')
 
             publisherOriginal = data.get('publisherOriginal', '')
 
@@ -92,9 +96,6 @@ class CollsController(BaseController):
             selectedGroupName = data.get('selectedGroupName', '')
 
             publishYear = data.get('publishYear', '')
-
-
-            notes = data.get('notes', '')
 
             listID = data.get('listID', 0)
 
@@ -121,15 +122,8 @@ class CollsController(BaseController):
             if user.has_collection(coll_name):
                 self._raise_error(400, 'duplicate_name')
 
-            if ticketState not in allowed_ticket_states:
-                self._raise_error(400, 'invalid ticket state')
-
             try:
-                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList,
-                                                    publisher=publisher, collTitle=collTitle, pubTitle=pubTitle, collYear=collYear, copTitle=copTitle, surName=surName, persName=persName,
-                                                    usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, ticketState=ticketState, notes=notes, listID=listID,
-                                                    desc='', public=is_public,
-                                                    public_index=is_public_index)
+                collection = user.create_collection(coll_name, title=title,creatorList=creatorList,subjectHeaderList=subjectHeaderList,personHeaderList=personHeaderList, noteToDachs=noteToDachs,publisher=publisher,collTitle=collTitle,publisherOriginal=publisherOriginal,collYear=collYear,copTitle=copTitle,surName=surName,persName=persName,usermail=usermail,selectedGroupName=selectedGroupName,publishYear=publishYear, pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, subjectHeadingText=subjectHeadingText, listID=listID, ticketState=ticketState, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp,desc='', public=is_public,public_index=is_public_index)
 
                 if is_external:
                     collection.set_external(True)
@@ -264,9 +258,6 @@ class CollsController(BaseController):
 
             if 'copTitle' in data:
                 collection['copTitle'] = data['copTitle']
-
-            if 'pubTitle' in data:
-                collection['pubTitle'] = data['pubTitle']
 
             if 'noteToDachs' in data:
                 collection['noteToDachs'] = data['noteToDachs']

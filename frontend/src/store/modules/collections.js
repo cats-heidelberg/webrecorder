@@ -64,7 +64,7 @@ export function isLoaded({ app }) {
          app.getIn(['collections', 'loaded']);
 }
 
-export function createCollection(user, title, url, makePublic = False,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,pubTitle,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear,pubTitleOriginal,personeadingText,subjectHeadingText,listID,ticketState) {
+export function createCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp) {
   return {
     types: [CREATE_COLL, CREATE_COLL_SUCCESS, CREATE_COLL_FAIL],
     promise: client => client.post(`${config.apiPath}/collections`, {
@@ -81,7 +81,6 @@ export function createCollection(user, title, url, makePublic = False,creatorLis
         publisher,
         collTitle,
         publisherOriginal,
-        pubTitle,
         collYear,
         copTitle,
         surName,
@@ -90,10 +89,13 @@ export function createCollection(user, title, url, makePublic = False,creatorLis
         selectedGroupName,
         publishYear,
         pubTitleOriginal,
-        personeadingText,
+        personHeadingText,
         subjectHeadingText,
         listID,
-        ticketState
+        ticketState,
+        isCollLoaded,
+        recordingUrl,
+        recordingTimestamp
       }
     })
   };
