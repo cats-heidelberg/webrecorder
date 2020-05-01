@@ -39,11 +39,13 @@ export default function collections(state = initialState, action = {}) {
       });
 
     case CREATE_COLL:
+      console.log("coll create");
       return state.merge({
         creatingCollection: true,
         error: null
       });
     case CREATE_COLL_SUCCESS:
+      console.log("coll success");
       return state.merge({
         newCollection: action.result.collection.id,
         creatingCollection: false,
@@ -64,7 +66,35 @@ export function isLoaded({ app }) {
          app.getIn(['collections', 'loaded']);
 }
 
-export function createCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp) {
+export function createCollection(user, title, url, isPublic,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp, makePublic = false) {
+  console.log({
+    title,
+    url,
+    'public': makePublic,
+    public_index: true,
+    creatorList,
+    subjectHeaderList,
+    personHeaderList,
+    noteToDachs,
+    publisher,
+    collTitle,
+    publisherOriginal,
+    collYear,
+    copTitle,
+    surName,
+    persName,
+    usermail,
+    selectedGroupName,
+    publishYear,
+    pubTitleOriginal,
+    personHeadingText,
+    subjectHeadingText,
+    listID,
+    ticketState,
+    isCollLoaded,
+    recordingUrl,
+    recordingTimestamp
+  });
   return {
     types: [CREATE_COLL, CREATE_COLL_SUCCESS, CREATE_COLL_FAIL],
     promise: client => client.post(`${config.apiPath}/collections`, {

@@ -58,7 +58,6 @@ const mapDispatchToProps = (dispatch, { history }) => {
           }
           return(res);
         }).then((res)=>{
-
           const _untidyURL = res.collection.url;
           const cleanUrl = addTrailingSlash(fixMalformedUrls(_untidyURL));
 
@@ -74,7 +73,7 @@ const mapDispatchToProps = (dispatch, { history }) => {
             .then(res => res.json())
             .then(({ url }) => history.push(url.replace(appHost, '')))
             .catch(err => console.log('error', err));
-        }, () => {});
+        }, err=>console.log(err)).catch(err=>console.log(err));
     },
     editCollection: (user, collID, title,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID) => {
       dispatch(editCollectionDispatch(user, collID, title,creatorList,subjectHeaderList,personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID))

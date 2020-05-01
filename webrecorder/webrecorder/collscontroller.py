@@ -33,13 +33,13 @@ class CollsController(BaseController):
 
             title = data.get('title', '')
 
-            if not title:
-                title._raise_error(400, 'please enter a title to record')
+            #if not title:
+            #    title._raise_error(400, 'please enter a title to record')
 
             url = data.get('url', '')
 
-            if not url:
-                self._raise_error(400, 'please enter a URL to record')
+            #if not url:
+            #    self._raise_error(400, 'please enter a URL to record')
 
             coll_name = self.sanitize_title(title)
 
@@ -62,15 +62,15 @@ class CollsController(BaseController):
 
             publisher = data.get('publisher', '')
 
-            if not publisher:
-                self._raise_error(400, 'please enter the publisher of the resource')
+            #if not publisher:
+            #    self._raise_error(400, 'please enter the publisher of the resource')
 
             personHeadingText = data.get('personHeadingText', '')
 
             collTitle = data.get('collTitle', '')
 
-            if not collTitle:
-                self._raise_error(400, 'please enter the authership information of the resource')
+            #if not collTitle:
+            #    self._raise_error(400, 'please enter the authership information of the resource')
 
             noteToDachs = data.get('noteToDachs', '')
 
@@ -90,8 +90,8 @@ class CollsController(BaseController):
 
             usermail = data.get('usermail', '')
 
-            if not usermail:
-                self._raise_error(400, 'invalid email adress')
+            #if not usermail:
+            #    self._raise_error(400, 'invalid email adress')
 
             selectedGroupName = data.get('selectedGroupName', '')
 
@@ -103,9 +103,9 @@ class CollsController(BaseController):
 
             isCollLoaded = data.get('isCollLoaded', True)
 
-            recordingUrl = data.get('recordingUrl')
+            recordingUrl = data.get('recordingUrl', '')
 
-            recordingTimestamp = data.get('recordingTimestamp')
+            recordingTimestamp = data.get('recordingTimestamp', '')
 
 
             if is_external:
@@ -123,7 +123,7 @@ class CollsController(BaseController):
                 self._raise_error(400, 'duplicate_name')
 
             try:
-                collection = user.create_collection(coll_name, title=title,creatorList=creatorList,subjectHeaderList=subjectHeaderList,personHeaderList=personHeaderList, noteToDachs=noteToDachs,publisher=publisher,collTitle=collTitle,publisherOriginal=publisherOriginal,collYear=collYear,copTitle=copTitle,surName=surName,persName=persName,usermail=usermail,selectedGroupName=selectedGroupName,publishYear=publishYear, pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, subjectHeadingText=subjectHeadingText, listID=listID, ticketState=ticketState, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp,desc='', public=is_public,public_index=is_public_index)
+                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal, pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, listID=listID, desc='', public=is_public, public_index=is_public_index, ticketState=ticketState, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp)
 
                 if is_external:
                     collection.set_external(True)

@@ -131,6 +131,7 @@ class CollectionListUI extends Component {
 
 
     if (collections.get('error') && !collections.get('creatingCollection')) {
+      console.log(collections.getIn(['error', 'error_message']));
       return (
         <HttpStatus>
           {collections.getIn(['error', 'error_message'])}

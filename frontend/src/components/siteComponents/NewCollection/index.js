@@ -183,10 +183,10 @@ class NewCollection extends Component {
   }
 
   submit = (evt) => {
+
     evt.stopPropagation();
     evt.preventDefault();
-    const { title, url, isPublic, creatorList, subjectHeaderList,publisherOriginal, personHeaderList,publisher,collTitle,collYear, noteToDachs,surName,persName,personHeadingText, pubTitleOriginal, usermail,selectedGroupName, subjectHeadingText,publishYear, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp } = this.state;
-
+    const { title, url, isPublic, creatorList, subjectHeaderList, personHeaderList, noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp } = this.state;
     this.props.createCollection(title, url, isPublic,JSON.stringify(creatorList),JSON.stringify(subjectHeaderList),JSON.stringify(personHeaderList), noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp);
   }
   validateEmail = () => {
@@ -204,18 +204,38 @@ class NewCollection extends Component {
 
     if (this.state.selectedGroupName == 'corporate/institutional name') {
       if  (!collTitle) {
-        //return 'error';
+        return 'error';
       }
     }else {
       if  (!surName) {
-        //return 'error';
+        return 'error';
       }
     }
 
     return null;
   }
 
-
+  validateURL = () => {
+    const { url } = this.state;
+      if  (!url) {
+        return 'error';
+      }
+    return null;
+  }
+  validateTitle = () => {
+    const { title } = this.state;
+      if  (!title) {
+        return 'error';
+      }
+    return null;
+  }
+  validatePublisher = () => {
+    const { publisher } = this.state;
+      if  (!publisher) {
+        return 'error';
+      }
+    return null;
+  }
 
   titleValidation = () => {
     return this.props.error ? 'error' : null;
@@ -226,8 +246,10 @@ class NewCollection extends Component {
   }
 
   render() {
+
     const { close, creatingCollection, error, visible } = this.props;
     const { collTitle, collYear, surName, copTitle, isPublic , noteToDachs, title, publisherOriginal, publishYear, usermail, persName, pubTitleOriginal, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
+
 const text = `To edit Metadata, please use the information form below.${"\n"} Fields marked with asterisk (*) are required`
     if (visible) {
         this.rebuildTooltip();
@@ -274,11 +296,11 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef21) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef21) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef21 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="URL of the web resource."/>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*URL:</div>
                   </label>
-                  <FormControl id="url" aria-label="url" required type="text" name="url" onChange={this.handleInput} style={{ height: '33px' }} value={url} placeholder={url} title='Enter URL to capture' />
+                  <FormControl id="url" aria-label="url" validationState={this.validateURL()} type="text" name="url" onChange={this.handleInput} style={{ height: '33px' }} value={url} placeholder={url} title='Enter URL to capture' />
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef1) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef1) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef1 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Name or title of the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Title (Latin alphabet):</div>
                   </label>
-                <FormControl type="text" required placeholder="original script, e.g. Chinese, Japanese, Korean script." inputRef={(obj) => { this.input = obj; }} id="title" name="title" onFocus={this.focusInput} onChange={this.handleInput} value={title} />
+                <FormControl type="text"  validationState={this.validateTitle()} placeholder="original script, e.g. Chinese, Japanese, Korean script." inputRef={(obj) => { this.input = obj; }} id="title" name="title" onFocus={this.focusInput} onChange={this.handleInput} value={title} />
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef2) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef2) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef2 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Title (original script):</div>
                   </label>
@@ -286,7 +308,7 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
                 <label onMouseOver={() => { ReactTooltip.show(this.fooRef3) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef3) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef3 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Person or institution that authored the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/>
                     <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Authorship information (Latin alphabet): [corporate/institutional name] or [personal name]:</div>
                       </label>
-                      <FormControl componentClass="select" required placeholder="corporate/institutional name" inputRef={(ref) => { this.state.groupSelect = ref }} onChange={this.groupSelect}>
+                      <FormControl componentClass="select" placeholder="corporate/institutional name" inputRef={(ref) => { this.state.groupSelect = ref }} onChange={this.groupSelect}>
                       {
                           this.state.creatorLegend.map(group => (
                               <option key={group} value={group} selected={this.state.selectedGroupName == group}>{group}</option>
@@ -295,7 +317,7 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
                       </FormControl>
                         {this.state.selectedGroupName == 'corporate/institutional name' ? (
                           <React.Fragment>
-                            <FormControl type="text" placeholder="corporate/institutional name" inputRef={(obj) => { this.input = obj; }} id="collTitle" name="collTitle" onFocus={this.focusInput} onChange={this.handleInput} value={collTitle} />
+                            <FormControl type="text" validationState={this.validateAuthorship()} placeholder="corporate/institutional name" inputRef={(obj) => { this.input = obj; }} id="collTitle" name="collTitle" onFocus={this.focusInput} onChange={this.handleInput} value={collTitle} />
                             <label onMouseOver={() => { ReactTooltip.show(this.fooRef4) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef4) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef4 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/>
                             <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Authorship information (orig. script):</div>
                             </label>
@@ -305,7 +327,7 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
                           </React.Fragment>
                         ) : (
                           <React.Fragment>
-                            <FormControl type="text" placeholder="Surname, given name" inputRef={(obj) => { this.input = obj; }} id="persName" name="persName" onFocus={this.focusInput} onChange={this.handleInput} value={persName} />
+                            <FormControl type="text" validationState={this.validateAuthorship()} placeholder="Surname, given name" inputRef={(obj) => { this.input = obj; }} id="persName" name="persName" onFocus={this.focusInput} onChange={this.handleInput} value={persName} />
                             <FormControl type="text" placeholder="YYYY" inputRef={(obj) => { this.input = obj; }} id="collYear" name="collYear" onFocus={this.focusInput} onChange={this.handleInput} value={collYear} />
                             <label onMouseOver={() => { ReactTooltip.show(this.fooRef5) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef5) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef5 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/>
                             <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Authorship information (orig. script):</div>
@@ -336,7 +358,7 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
               <label onMouseOver={() => { ReactTooltip.show(this.fooRef6) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef6) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef6 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="The name of the entity that holds, archives, publishes, prints, distributes, releases, issues or produces the resource. This property will be used to formulate the citation. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc.)"/>
               <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Publisher (Latin alphabet):</div>
                 </label>
-                <FormControl type="text" placeholder="Publisher" required inputRef={(obj) => { this.input = obj; }} id="publisher" name="publisher" onFocus={this.focusInput} onChange={this.handleInput} value={publisher} />
+                <FormControl type="text" placeholder="Publisher"  validationState={this.validatePublisher()} inputRef={(obj) => { this.input = obj; }} id="publisher" name="publisher" onFocus={this.focusInput} onChange={this.handleInput} value={publisher} />
 <label onMouseOver={() => { ReactTooltip.show(this.fooRef7) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef7) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef7 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Publisher (orig. script):</div>
                   </label>
@@ -420,7 +442,7 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
 
 
           }
-            <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={creatingCollection && !error} type="button">Create</button>
+            <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={!usermail || (!collTitle&&!surName) || !url || !title || !publisher || (creatingCollection && !error)} type="button">Create</button>
         </form>
       </Modal>
       <ReactTooltip className='extraClass' delayHide={100} effect='solid' type='info'/>
