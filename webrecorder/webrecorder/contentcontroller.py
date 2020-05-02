@@ -824,6 +824,7 @@ class ContentController(BaseController, RewriterApp):
                 'rec': rec_name,
                 'type': type,
                 'app_host': self.app_host,
+                'pending': collection['ticketState']
             }
 
             @self.jinja2_view('content_error.html')
@@ -1167,6 +1168,3 @@ class ContentController(BaseController, RewriterApp):
             return prefix + '/' + url
         else:
             return url
-
-
-

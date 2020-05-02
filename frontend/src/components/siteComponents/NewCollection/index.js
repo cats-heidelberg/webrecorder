@@ -270,12 +270,12 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
           }
           {
             !__DESKTOP__ &&
-              <span className="col-xs-6 col-xs-offset-1">
+              <span className="col-xs-7 col-xs-offset-1">
               <div>
                 <FormGroup id="fieldset">
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Any further information regarding your OpenDACHS request will be sent to this e-mail address."/>
+                <label style={{ display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Any further information regarding your OpenDACHS request will be sent to this e-mail address."/></label>
                     <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Your e-mail address:</div>
-                  </label>
+
                   <ControlLabel srOnly>email address:</ControlLabel>
                   <FormControl
                     aria-label="email"
@@ -293,21 +293,21 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
 
               <div>
                 <FormGroup id="fieldset">
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef21) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef21) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef21 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="URL of the web resource."/>
+                <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef21) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef21) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef21 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="URL of the web resource."/></label>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*URL:</div>
-                  </label>
+
                   <FormControl id="url" aria-label="url" validationState={this.validateURL()} type="text" name="url" onChange={this.handleInput} style={{ height: '33px' }} value={url} placeholder={url} title='Enter URL to capture' />
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef1) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef1) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef1 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Name or title of the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/>
+                <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef1) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef1) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef1 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Name or title of the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/></label>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Title (Latin alphabet):</div>
-                  </label>
+
                 <FormControl type="text"  validationState={this.validateTitle()} placeholder="original script, e.g. Chinese, Japanese, Korean script." inputRef={(obj) => { this.input = obj; }} id="title" name="title" onFocus={this.focusInput} onChange={this.handleInput} value={title} />
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef2) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef2) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef2 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/>
+                <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef2) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef2) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef2 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/></label>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Title (original script):</div>
-                  </label>
+
                 <FormControl type="text" placeholder="you can change Record Title here" inputRef={(obj) => { this.input = obj; }} id="pubTitleOriginal" name="pubTitleOriginal" onFocus={this.focusInput} onChange={this.handleInput} value={pubTitleOriginal} />
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef3) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef3) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef3 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Person or institution that authored the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/>
-                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Authorship information (Latin alphabet): [corporate/institutional name] or [personal name]:</div>
-                      </label>
+                <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef3) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef3) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef3 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Person or institution that authored the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/></label>
+                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Authorship information (Latin alphabet):</div>
+<div  style={{ marginRight: '4px', display: 'block', float: 'left' }} >[corporate/institutional name] or [personal name]:</div>
                       <FormControl componentClass="select" placeholder="corporate/institutional name" inputRef={(ref) => { this.state.groupSelect = ref }} onChange={this.groupSelect}>
                       {
                           this.state.creatorLegend.map(group => (
@@ -318,9 +318,9 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
                         {this.state.selectedGroupName == 'corporate/institutional name' ? (
                           <React.Fragment>
                             <FormControl type="text" validationState={this.validateAuthorship()} placeholder="corporate/institutional name" inputRef={(obj) => { this.input = obj; }} id="collTitle" name="collTitle" onFocus={this.focusInput} onChange={this.handleInput} value={collTitle} />
-                            <label onMouseOver={() => { ReactTooltip.show(this.fooRef4) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef4) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef4 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/>
+                            <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef4) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef4) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef4 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/></label>
                             <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Authorship information (orig. script):</div>
-                            </label>
+
                             <FormControl type="text" placeholder="" inputRef={(obj) => { this.input = obj; }} id="copTitle" name="copTitle" onFocus={this.focusInput} onChange={this.handleInput} value={copTitle} />
 
 
@@ -329,9 +329,9 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
                           <React.Fragment>
                             <FormControl type="text" validationState={this.validateAuthorship()} placeholder="Surname, given name" inputRef={(obj) => { this.input = obj; }} id="persName" name="persName" onFocus={this.focusInput} onChange={this.handleInput} value={persName} />
                             <FormControl type="text" placeholder="YYYY" inputRef={(obj) => { this.input = obj; }} id="collYear" name="collYear" onFocus={this.focusInput} onChange={this.handleInput} value={collYear} />
-                            <label onMouseOver={() => { ReactTooltip.show(this.fooRef5) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef5) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef5 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/>
+                            <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef5) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef5) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef5 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/></label>
                             <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Authorship information (orig. script):</div>
-                            </label>
+
                             <FormControl type="text" placeholder="" inputRef={(obj) => { this.input = obj; }} id="surName" name="surName" onFocus={this.focusInput} onChange={this.handleInput} value={surName} />
 
                           </React.Fragment>
@@ -355,26 +355,26 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
               </div>
               <React.Fragment>
               <FormGroup id="fieldset" validationState={this.titleValidation()}>
-              <label onMouseOver={() => { ReactTooltip.show(this.fooRef6) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef6) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef6 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="The name of the entity that holds, archives, publishes, prints, distributes, releases, issues or produces the resource. This property will be used to formulate the citation. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc.)"/>
+              <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef6) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef6) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef6 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="The name of the entity that holds, archives, publishes, prints, distributes, releases, issues or produces the resource. This property will be used to formulate the citation. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc.)"/></label>
               <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >*Publisher (Latin alphabet):</div>
-                </label>
+
                 <FormControl type="text" placeholder="Publisher"  validationState={this.validatePublisher()} inputRef={(obj) => { this.input = obj; }} id="publisher" name="publisher" onFocus={this.focusInput} onChange={this.handleInput} value={publisher} />
-<label onMouseOver={() => { ReactTooltip.show(this.fooRef7) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef7) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef7 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/>
+<label onMouseOver={() => { ReactTooltip.show(this.fooRef7) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef7) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef7 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/></label>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Publisher (orig. script):</div>
-                  </label>
+
                   <FormControl type="text" placeholder="publisherOriginal" inputRef={(obj) => { this.input = obj; }} id="publisherOriginal" name="publisherOriginal" onFocus={this.focusInput} onChange={this.handleInput} value={publisherOriginal} />
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef8) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef8) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef8 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Date when the data is made publicly available."/>
+                <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef8) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef8) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef8 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Date when the data is made publicly available."/></label>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Publication date [YYYY-MM-DD]:</div>
-                  </label>
+
                 <FormControl type="text" placeholder="Publisher" inputRef={(obj) => { this.input = obj; }} id="publishYear" name="publishYear" onFocus={this.focusInput} onChange={this.handleInput} value={publishYear} />
               </FormGroup>
               </React.Fragment>
 
               <div>
                 <FormGroup id="fieldset">
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef9) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef9) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef9 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Subject headings help to describe and categorize the web resource. The headings should conform to a list drawn from the Library of Congress, see http://id.loc.gov/authorities/subjects.html."/>
-                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Subject headings (in English):</div>
-                      </label>
+                <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef9) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef9) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef9 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Subject headings help to describe and categorize the web resource. The headings should conform to a list drawn from the Library of Congress, see http://id.loc.gov/authorities/subjects.html."/>
+                    </label><div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Subject headings (in English):</div>
+
 
                           <React.Fragment>
                             <FormControl type="text" placeholder="subject" inputRef={(obj) => { this.input = obj; }} id="subjectHeadingText" name="subjectHeadingText" onFocus={this.focusInput} onChange={this.handleInput} value={subjectHeadingText} />
@@ -396,9 +396,9 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
                     <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddSubject}>Add header</button>
                 </FormGroup>
                 <FormGroup id="fieldset">
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef10) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef10) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef10 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Adding person headings allows for expanding the catalogue entry by the persons the web resource focuses on."/>
+                <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef10) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef10) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef10 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Adding person headings allows for expanding the catalogue entry by the persons the web resource focuses on."/></label>
                     <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Person headings:</div>
-                      </label>
+
 
                           <React.Fragment>
                             <FormControl type="text" placeholder="person" inputRef={(obj) => { this.input = obj; }} id="personHeadingText" name="personHeadingText" onFocus={this.focusInput} onChange={this.handleInput} value={personHeadingText} />
@@ -421,9 +421,9 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
               </div>
               <div>
                 <FormGroup id="fieldset">
-                <label onMouseOver={() => { ReactTooltip.show(this.fooRef11) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef11) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef11 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="If you have comments for the DACHS team you can post them here."/>
+                <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef11) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef11) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef11 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="If you have comments for the DACHS team you can post them here."/></label>
                     <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Note to DACHS team:</div>
-                  </label>
+
                   <ControlLabel srOnly>Note to DACHS team:</ControlLabel>
                   <textarea
            className="form-control"
