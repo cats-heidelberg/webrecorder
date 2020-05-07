@@ -89,7 +89,7 @@ class CollectionItem extends Component {
       <li className={descClasses} key={collection.get('id')}>
         <Row>
           <Col sm={15} md={12}>
-            <Link className="collection-title" to={`${getCollectionLink(collection)}`}>{collection.get('title')}</Link>
+            <h3>{collection.get('title')}</h3>
             <p className="collection-list-description">
               {
                 truncate(removeMd(collection.get('desc'), { useImgAltText: false }), 3, new RegExp(/([.!?])/))
@@ -101,11 +101,11 @@ class CollectionItem extends Component {
                   <Button className="rounded" onClick={this.newSession}>Review and Edit</Button>
                   {
                     collection.get('ticketState')==='open' && ticketState === 'open' &&
-                    <Button className="rounded new-session" onClick={this.closeModal}><CheckIcon /><span> Edit Metadata</span></Button>
+                    <Button className="rounded new-session" onClick={this.closeModal}><span> Edit Metadata</span></Button>
                   }
                   {
                     collection.get('ticketState')==='open' && ticketState === 'open' &&
-                    <Button className="rounded new-session" onClick={this.toggle}><LockIcon /><span> Complete</span></Button>
+                    <Button className="rounded new-session" onClick={this.toggle}><span> Complete</span></Button>
                   }
                   {
                     collection.get('ticketState')==='open' && ticketState === 'open' &&
