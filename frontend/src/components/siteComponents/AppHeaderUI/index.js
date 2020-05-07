@@ -47,11 +47,12 @@ class AppHeader extends PureComponent {
                   <LogoIcon darkMode={canAdmin} />
               }
             </NavLink>
-            {
+            //Collection Manager 
+            /*{
               canAdmin ?
                 match.params.coll && <AdminHeader managing={route.managementView} /> :
                 <BreadcrumbsUI is404={is404} url={pathname} />
-            }
+            }*/
           </div>
           <UserManagement route={route} canAdmin={canAdmin} />
         </nav>
