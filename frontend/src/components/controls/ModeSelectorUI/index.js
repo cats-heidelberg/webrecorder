@@ -59,7 +59,8 @@ class ModeSelectorUI extends PureComponent {
 
   onPatch = () => {
     if (this.context.currMode === 'record') return;
-
+    console.log(this.props.collection.get('ticketState'));
+    if (this.props.collection.get('ticketState')=='pending') return;
     const { activeBrowser, history, match: { params: { coll } }, timestamp, url } = this.props;
 
     // data to create new recording
@@ -130,6 +131,7 @@ class ModeSelectorUI extends PureComponent {
 
   render() {
     const { currMode } = this.context;
+    const { collection } = this.props;
     const { open } = this.state;
     let modeMessage;
     let modeMarkup;
@@ -249,13 +251,13 @@ class ModeSelectorUI extends PureComponent {
       <ul
         className={classNames("row wr-mode", {
           active: isPatch,
-          disabled: isRecord || isLive,
+          disabled: isRecord || isLive || collection.get('ticketState')=='pending',
         })}
         onClick={this.onPatch}
         role="button"
         title={
-          isRecord
-            ? "Only available from replay after finishing a recording"
+           isRecord
+            ? collection.get('ticketState')=='pending'? "Not possible since Collection is in Review" : "Only available from replay after finishing a recording"
             : "Record elements that are not yet in the collection"
         }
       >
@@ -263,7 +265,7 @@ class ModeSelectorUI extends PureComponent {
           <PatchIcon />
         </li>
         <li className="col-xs-9">
-          <h5>{isPatch ? "Currently Patching" : "Patch this URL"}</h5>
+          <h5>{isPatch ? "Currently Patching" : collection.get('ticketState')=='pending' ? "already in review" : "Patch this URL"}</h5>
         </li>
       </ul>
 

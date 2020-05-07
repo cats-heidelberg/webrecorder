@@ -9,6 +9,7 @@ const mapStateToProps = ({ app }) => {
   return {
     activeBrowser: app.getIn(['remoteBrowsers', 'activeBrowser']),
     timestamp: app.getIn(['controls', 'timestamp']),
+    collection: app.get('collection'),
     url: app.getIn(['controls', 'url'])
   };
 };

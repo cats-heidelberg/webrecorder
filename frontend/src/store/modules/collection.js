@@ -184,6 +184,7 @@ export default function collection(state = initialState, action = {}) {
         size,
         slug,
         slug_matched,
+        ticketState,
         timespan,
         title,
         updated_at,
