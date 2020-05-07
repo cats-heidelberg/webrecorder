@@ -310,6 +310,8 @@ class EditMetadata extends Component {
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Title (original script):</div>
 
                 <FormControl type="text" placeholder="you can change Record Title here" inputRef={(obj) => { this.input = obj; }} id="pubTitleOriginal" name="pubTitleOriginal" onFocus={this.focusInput} onChange={this.handleInput} value={pubTitleOriginal} />
+                </FormGroup>
+                <FormGroup id="fieldset">
                 <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef3) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef3) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef3 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Person or institution that authored the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/></label>
                     <div  style={{ marginRight: '4px',display: 'inline', float: 'left' }} >*Authorship information (Latin alphabet):</div>
 <div  style={{ marginRight: '4px', display: 'block', float: 'left' }} >[corporate/institutional name] or [personal name]:</div>
