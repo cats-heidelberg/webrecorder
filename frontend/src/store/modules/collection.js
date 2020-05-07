@@ -297,7 +297,6 @@ export function editCollectionDispatch(user, collID, title, creatorList,subjectH
       params: { user },
       data: {
         title,
-        url,
         creatorList,
         subjectHeaderList,
         personHeaderList,
