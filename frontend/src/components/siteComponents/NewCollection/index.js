@@ -192,11 +192,13 @@ class NewCollection extends Component {
   validateEmail = () => {
     const { checkEmail, email } = this.state;
 
-    if (checkEmail && (!email || email.indexOf('@') === -1 || email.match(/\.\w+$/) === null)) {
+    /*if (checkEmail && ( email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) === null)) {
       return 'error';
     }
 
-    return null;
+    return null;*/
+    const myTest = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return myTest.test(email);
   }
   validateAuthorship = () => {
     const { collTitle, copTitle, persName, surName, collYear } = this.state;
@@ -217,10 +219,15 @@ class NewCollection extends Component {
 
   validateURL = () => {
     const { url } = this.state;
-      if  (!url) {
-        return 'error';
-      }
-    return null;
+    //const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const myTest = /(http\:\/\/|https\:\/\/)?([a-z0-9][a-z0-9\-]*)+\.+[a-z0-9][a-z0-9]*$/i;
+    return myTest.test(url);
+  /*
+  if (url.match(/^(http\:\/\/|https\:\/\/)?([a-z0-9][a-z0-9\-]*\.)+[a-z0-9][a-z0-9\-]/) === null) {
+      return 'error';
+    }
+
+    return null;*/
   }
   validateTitle = () => {
     const { title } = this.state;
@@ -296,7 +303,16 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
                 <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef21) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef21) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef21 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="URL of the web resource."/></label>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' ,color:url?'black':'red' }} >*URL:</div>
 
-                  <FormControl id="url" aria-label="url" validationState={this.validateURL()} type="text" name="url" onChange={this.handleInput} style={{ height: '33px' }} value={url} placeholder={url} title='Enter URL to capture' />
+                  <FormControl
+                  aria-label="url"
+                  type="url"
+                  validationState={this.validateURL()}
+                  name="url"
+                  placeholder="resource location*"
+                  required
+                  value={url}
+                  onChange={this.handleInput}
+                   />
                 <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef1) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef1) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef1 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Name or title of the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/></label>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' ,color:title?'black':'red' }} >*Title (Latin alphabet):</div>
 
