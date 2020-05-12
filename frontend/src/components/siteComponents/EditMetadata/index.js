@@ -228,12 +228,6 @@ class EditMetadata extends Component {
   };
   validateEmail = () => {
     const { checkEmail, email } = this.state;
-
-    /*if (checkEmail && ( email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) === null)) {
-      return 'error';
-    }
-
-    return null;*/
     const myTest = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return myTest.test(email);
   }
@@ -305,7 +299,7 @@ class EditMetadata extends Component {
               <div>
                 <FormGroup id="fieldset">
                 <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef1) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef1) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef1 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Name or title of the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/></label>
-                <div  style={{ marginRight: '4px', display: 'inline', float: 'left'  ,color:title?'black':'red'}} >*Title (Latin alphabet):</div>
+                <div  style={{ marginRight: '4px', display: 'inline', float: 'left' ,color:usermail?'black':'red' }} >*Title (Latin alphabet):</div>
 
                 <FormControl type="text" required placeholder="original script, e.g. Chinese, Japanese, Korean script." inputRef={(obj) => { this.input = obj; }} id="title" name="title" onFocus={this.focusInput} onChange={this.handleInput} value={title} />
                 <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef2) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef2) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef2 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/></label>
@@ -315,7 +309,7 @@ class EditMetadata extends Component {
                 </FormGroup>
                 <FormGroup id="fieldset">
                 <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef3) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef3) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef3 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Person or institution that authored the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."/></label>
-                    <div  style={{ marginRight: '4px',display: 'inline', float: 'left'  ,color:collTitle?'black':'red'}} >*Authorship information (Latin alphabet):</div>
+                    <div  style={{ marginRight: '4px',display: 'inline', float: 'left' ,color:usermail?'black':'red' }} >*Authorship information (Latin alphabet):</div>
 <div  style={{ marginRight: '4px', display: 'block', float: 'left' }} >[corporate/institutional name] or [personal name]:</div>
                       <FormControl componentClass="select" required placeholder="corporate/institutional name" inputRef={(ref) => { this.state.groupSelect = ref }} onChange={this.groupSelect}>
                       {
@@ -359,13 +353,13 @@ class EditMetadata extends Component {
                         }
                         </ul>
                       }
-                    <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddItem}>Add Additional Creator</button>
+                    <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddItem} disabled={!persName || !collTitle}>Add Additional Creator</button>
                 </FormGroup>
               </div>
               <React.Fragment>
               <FormGroup id="fieldset" validationState={this.titleValidation()}>
               <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef6) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef6) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef6 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="The name of the entity that holds, archives, publishes, prints, distributes, releases, issues or produces the resource. This property will be used to formulate the citation. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc.)"/></label>
-              <div  style={{ marginRight: '4px', display: 'inline', float: 'left'  ,color:publisher?'black':'red'}} >*Publisher (Latin alphabet):</div>
+              <div  style={{ marginRight: '4px', display: 'inline', float: 'left' ,color:usermail?'black':'red' }} >*Publisher (Latin alphabet):</div>
 
                 <FormControl type="text" placeholder="Publisher" required inputRef={(obj) => { this.input = obj; }} id="publisher" name="publisher" onFocus={this.focusInput} onChange={this.handleInput} value={publisher} />
 <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef7) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef7) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef7 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/></label>
@@ -402,7 +396,7 @@ class EditMetadata extends Component {
                         }
                         </ul>
                         }
-                    <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddSubject}>Add Additional header</button>
+                    <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddSubject} disabled={!subjectHeadingText}>Add Additional header</button>
                 </FormGroup>
                 <FormGroup id="fieldset">
                 <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef10) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef10) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef10 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Adding person headings allows for expanding the catalogue entry by the persons the web resource focuses on."/></label>
@@ -425,7 +419,7 @@ class EditMetadata extends Component {
                           ))
                         }
                         </ul>}
-                    <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddPerson}>Add Additional header</button>
+                    <button type="button" class="btn btn-success"  style={{float:'right'}} onClick={this.onAddPerson} disabled={!personHeadingText}>Add Additional header</button>
                 </FormGroup>
               </div>
               <div>
