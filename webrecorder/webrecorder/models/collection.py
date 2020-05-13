@@ -589,7 +589,7 @@ class Collection(PagesMixin, RedisUniqueComponent):
 
         if not data.get('desc'):
             data['desc'] = self.DEFAULT_COLL_DESC.format(self.name)
-        if not data.get('ticketState'):
+        if not data.get('ticketState') and self.ticketState:
             data['ticketState'] = self.ticketState
         data['public'] = self.is_public()
         data['public_index'] = self.get_bool_prop('public_index', False)
