@@ -33,9 +33,8 @@ class LdapUserManager(UserManager):
         c.set_option(ldap.OPT_REFERRALS, 0)
         try:
             result = c.simple_bind_s(ldap_username, password)
-            adminusers = c.search_s(os.environ.get('LDAP_BASE'), ldap.SCOPE_SUBTREE, '(cn={})'.format(os.environ.get('LDAP_ADMIN_GROUP')))
-            print('ldapusermanager auth result: {}'.format(c.whoami_s()))
-            print(adminusers)
+            adminusers = c.search_s(os.environ.get('LDAP_BASE'), ldap.SCOPE_SUBTREE, '(cn={})'.format(os.environ.get('LDAP_ADMIN_GROUP')), ['member'])
+            print(adminusers[0])
 
             escaped_username = username.replace(".", "_")
 
