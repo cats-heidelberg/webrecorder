@@ -34,7 +34,7 @@ class LdapUserManager(UserManager):
         try:
             result = c.simple_bind_s(ldap_username, password)
             group = c.search_s(os.environ.get('LDAP_BASE'), ldap.SCOPE_SUBTREE, '(cn={})'.format(os.environ.get('LDAP_ADMIN_GROUP')))
-            print('ldapusermanager auth result: {}'.format(result))
+            print('ldapusermanager auth result: {}'.format(c.whoami_s()))
             for dn, entry in group:
                 print(repr(entry))
 
