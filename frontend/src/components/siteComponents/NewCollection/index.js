@@ -177,7 +177,17 @@ class NewCollection extends Component {
   onClearArray = () => {
     this.setState({ list: [] });
   };
+  validateCollYear = () => {
+    const { collYear } = this.state;
+    const myTest = /[0-9]{4}( - [0-9]{4})?/;
+    return myTest.test(collYear);
+  }
 
+  validatePublishYear = () => {
+    const { publishYear } = this.state;
+    const myTest = /[0-9]{4}([0-9]{2})?([0-9]{2})?/;
+    return myTest.test(publishYear);
+  }
   rebuildTooltip = () => {
     ReactTooltip.rebuild();
   }
@@ -346,7 +356,7 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
                         ) : (
                           <React.Fragment>
                             <FormControl type="text" validationState={this.validateAuthorship()} placeholder="Surname, given name" inputRef={(obj) => { this.input = obj; }} id="persName" name="persName" onFocus={this.focusInput} onChange={this.handleInput} value={persName} />
-                            <FormControl type="text" placeholder="YYYY" inputRef={(obj) => { this.input = obj; }} id="collYear" name="collYear" onFocus={this.focusInput} onChange={this.handleInput} value={collYear} />
+                            <FormControl type="text" placeholder="YYYY" validationState={this.validateCollYear()}  inputRef={(obj) => { this.input = obj; }} id="collYear" name="collYear" onFocus={this.focusInput} onChange={this.handleInput} value={collYear} />
                             <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef5) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef5) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef5 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."/></label>
                             <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Authorship information (orig. script):</div>
 
@@ -384,7 +394,7 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
                 <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef8) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef8) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef8 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Date when the data is made publicly available."/></label>
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' }} >Publication date [YYYY-MM-DD]:</div>
 
-                <FormControl type="text" placeholder="Publisher" inputRef={(obj) => { this.input = obj; }} id="publishYear" name="publishYear" onFocus={this.focusInput} onChange={this.handleInput} value={publishYear} />
+                <FormControl type="text" placeholder="Year of publication" validationState={this.validatePublishYear()} inputRef={(obj) => { this.input = obj; }} id="publishYear" name="publishYear" onFocus={this.focusInput} onChange={this.handleInput} value={publishYear} />
               </FormGroup>
               </React.Fragment>
 
