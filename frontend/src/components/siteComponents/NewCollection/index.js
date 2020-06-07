@@ -107,9 +107,12 @@ class NewCollection extends Component {
   onAddItem = () => {
     this.setState({ listID: this.state.listID + 1 });
     if (this.state.selectedGroupName==='corporate/institutional name') {
+      let tempText = "C/I name:"+this.state.collTitle;
+      this.state.copTitle!==""?tempText+=", "+this.state.copTitle:null;
+
       const temp =
       {
-      "htmlText": "C/I name:"+this.state.collTitle+", "+this.state.copTitle,
+      "htmlText": tempText,
       "id": this.state.listID
     };
       this.setState(state => {
@@ -123,10 +126,17 @@ class NewCollection extends Component {
       });
     }
     else {
+      let tempText = "personal name:"+this.state.persName;
+      this.state.surName!==""?tempText+=", "+this.state.surName:null;
+      this.state.collYear!==""?tempText+=" - "+this.state.collYear:null;
       const temp =
       {
-      "htmlText": "personal name:"+this.state.persName+", "+this.state.surName +"- "+this.state.collYear,
-      "id": this.state.listID
+      "htmlText": tempText,
+      "id": this.state.listID,
+      "personal_name": this.state.persName,
+      "surname": this.state.surName,
+      "coll_year": this.state.collYear
+
     };
       this.setState(state => {
         const creatorList = [...state.creatorList, temp];
@@ -207,13 +217,13 @@ class NewCollection extends Component {
     }
 
     return null;*/
-    const myTest = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const myTest = /^[^\<\>\(\)\[\]\\\.\,\;\:\@\"\']([a-zA-Z\-\_0-9]+)@(([a-zA-Z\-0-9]+\.{1})+[a-zA-Z]{2,3})$/;
     return myTest.test(email);
   }
   validateURL = () => {
     const { url } = this.state;
     //const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const myTest = /(http\:\/\/|https\:\/\/)?([a-z0-9][a-z0-9\-]*)+\.+[a-z0-9][a-z0-9]*$/i;
+    const myTest = /^(http\:\/\/|https\:\/\/|(?:www\.|(?!www)))([a-z0-9][a-z0-9\-]*)(([a-zA-Z\-0-9]+\.{1})+[a-zA-Z]{2,3})$/i;
     return myTest.test(url);
   /*
   if (url.match(/^(http\:\/\/|https\:\/\/)?([a-z0-9][a-z0-9\-]*\.)+[a-z0-9][a-z0-9\-]/) === null) {
@@ -266,7 +276,7 @@ class NewCollection extends Component {
   render() {
 
     const { close, creatingCollection, error, visible } = this.props;
-    const { collTitle, collYear, surName, copTitle, isPublic , noteToDachs, title, publisherOriginal, publishYear, usermail, persName, pubTitleOriginal, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
+    const { collTitle, collYear, surName, copTitle, isPublic , noteToDachs, title, publisherOriginal, publishYear, usermail, persName, pubTitleOriginal, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url, creatorList } = this.state;
 
 const text = `To edit Metadata, please use the information form below.${"\n"} Fields marked with asterisk (*) are required`
     if (visible) {
@@ -300,7 +310,7 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
                     type="email"
                     validationState={this.validateEmail()}
                     name="usermail"
-                    placeholder="email@...uni-heidelberg.de*"
+                    placeholder="please enter your email*"
                     autoFocus
                     required
                     value={usermail}
@@ -318,7 +328,7 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
                   type="url"
                   validationState={this.validateURL()}
                   name="url"
-                  placeholder="resource location*"
+                  placeholder="please enter a valid webpage url*"
                   required
                   value={url}
                   onChange={this.handleInput}
@@ -470,7 +480,7 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
 
 
           }
-            <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={!usermail || (!collTitle&&!surName) || !url || !title || !publisher || (creatingCollection && !error)} type="button">Create</button>
+            <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={!usermail || (!collTitle&&!surName&&!creatorList.length>0) || !url || !title || !publisher || (creatingCollection && !error)} type="button">Create</button>
         </form>
       </Modal>
       <ReactTooltip className='extraClass' delayHide={100} effect='solid' type='info'/>
