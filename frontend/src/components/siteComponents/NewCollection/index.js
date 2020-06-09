@@ -223,7 +223,7 @@ class NewCollection extends Component {
   validateURL = () => {
     const { url } = this.state;
     //const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const myTest = /^(http\:\/\/|https\:\/\/|(?:www\.|(?!www)))([a-z0-9][a-z0-9\-]*)(([a-zA-Z\-0-9]+\.{1})+[a-zA-Z]{2,3})$/i;
+    const myTest = /((http\:\/\/|https\:\/\/)|(?:www\.)|(?!www))?([a-z0-9][a-z0-9\-]*)(([a-zA-Z\-0-9]+\.{1})+[a-zA-Z]{2,3})$/i;
     return myTest.test(url);
   /*
   if (url.match(/^(http\:\/\/|https\:\/\/)?([a-z0-9][a-z0-9\-]*\.)+[a-z0-9][a-z0-9\-]/) === null) {
