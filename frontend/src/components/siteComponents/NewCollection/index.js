@@ -212,15 +212,15 @@ class NewCollection extends Component {
     this.props.createCollection(title, url, isPublic,JSON.stringify(creatorList),JSON.stringify(subjectHeaderList),JSON.stringify(personHeaderList), noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp);
   }
   validateEmail = () => {
-    const { emailValid, email } = this.state;
+    const { emailValid, usermail } = this.state;
     /*if (checkEmail && ( email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) === null)) {
       return 'error';
     }
     return null;*/
-    const myTest = /^([a-zA-Z\-\_0-9]+)@(([a-zA-Z\-0-9]+\.{1})+[a-zA-Z]{2,3})$/;
-    if (myTest.test(email) === true && !emailValid) {
+    const myTest = /^[a-zA-Z\-\_0-9]+@[a-zA-Z\-\_0-9]+\.[a-zA-Z]{2,3}$/;
+    if (myTest.test(usermail) === true && !emailValid) {
         this.setState({ emailValid: true });
-      }else if (myTest.test(email) === false && emailValid) {
+      }else if (myTest.test(usermail) === false && emailValid) {
         this.setState({ emailValid: false });
       }
   }
@@ -228,7 +228,7 @@ class NewCollection extends Component {
     const { url, urlValid } = this.state;
     ///^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
     //const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const myTest = /((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*)([\w\-\.]+[^#?\s]+)(.*)?((#[\w\-]+)|([a-zA-Z]{2,3}))$/i;
+    const myTest = /((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*)([\w\-\.]+[^#?\s]+)\.(([a-zA-Z]{2,3})|([a-zA-Z]{2,3}\/[\w\-#=]+))$/i;
     //this.setState({ urlValid: myTest.test(url) });
     if (myTest.test(url) === true && !urlValid) {
         this.setState({ urlValid: true });
@@ -319,6 +319,7 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
 
                   <ControlLabel srOnly>email address:</ControlLabel>
                   <FormControl
+                    style={{ border:emailValid?'1px solid black':'1px solid #ff1a1a'}}
                     aria-label="email"
                     validationState={this.validateEmail()}
                     name="usermail"
@@ -337,6 +338,7 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
                 <div  style={{ marginRight: '4px', display: 'inline', float: 'left' ,color:urlValid?'black':'red' }} >*URL:</div>
                 <FormControl
                   aria-label="url"
+                  style={{ border:urlValid?'1px solid black':'1px solid #ff1a1a'}}
                   validationState={this.validateURL()}
                   name="url"
                   placeholder="please enter a valid webpage url*"
