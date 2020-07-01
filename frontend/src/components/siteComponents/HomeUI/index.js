@@ -1,6 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router-dom';
+import { Alert, Button, Col, Form, FormGroup, FormControl, Row } from 'react-bootstrap';
+import { guestSessionTimeout, product, userRegex } from 'config';
+
+import { login } from 'helpers/userMessaging';
 
 import { anonDisabled, homepageAnnouncement, supporterPortal } from 'config';
 
@@ -19,7 +24,50 @@ class HomeUI extends PureComponent {
     collections: PropTypes.array,
     history: PropTypes.object,
     showModalCB: PropTypes.func,
+    anonCTA: PropTypes.bool
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      formError: false,
+      moveTemp: true,
+      toColl: 'New Collection',
+      remember_me: false,
+      username: '',
+      password: ''
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.auth.get('loggingIn') && !nextProps.auth.get('loggingIn')) {
+      if (!nextProps.auth.get('loginError')) {
+        //this.closeLogin();
+        if (this.state.formError) {
+          this.setState({ formError: false });
+        }
+
+        const next = this.props.next !== null ? this.props.next : `/${nextProps.auth.getIn(['user', 'username'])}`;
+        if (next.startsWith('http')) {
+          window.location.href = next;
+        } else {
+          this.props.history.push(next);
+        }
+      } else {
+        this.setState({ formError: true });
+      }
+    }
+  }
+
+
+  handleChange = (evt) => {
+    if (evt.target.type === 'radio') {
+      this.setState({ [evt.target.name]: evt.target.value === 'yes' });
+    } else {
+      this.setState({ [evt.target.name]: evt.target.value });
+    }
+  }
 
   goToSupporterSite = () => {
     window.location.href = supporterPortal;
@@ -41,12 +89,43 @@ class HomeUI extends PureComponent {
     window.location.href = 'https://github.com/webrecorder/webrecorder-player/releases/latest';
   }
 
+
+  save = (evt) => {
+    evt.preventDefault();
+    const { auth } = this.props;
+    const { moveTemp, password, toColl, username } = this.state;
+
+    let data = { username, password };
+
+    if (this.state.remember_me) {
+      data.remember_me = '1';
+    }
+
+    // check for anon usage
+    if (auth.getIn(['user', 'anon']) && auth.getIn(['user', 'num_collections']) > 0) {
+      data = { ...data, moveTemp, toColl };
+    }
+
+    this.props.loginFn(data);
+  }
+
   signup = () => {
     this.props.history.push('/_register');
   }
 
+  validateUsername = () => {
+    const pattern = userRegex;
+    if (typeof this.state.username !== 'undefined') {
+      return this.state.username.match(pattern) === this.state.username ? null : 'warning';
+    }
+    return null;
+  }
+
+
   render() {
-    const { auth, showModalCB } = this.props;
+    const { anonCTA, auth, showModalCB, closeLogin, formError } = this.props;
+    const { moveTemp, password, toColl, username } = this.state;
+
     const user = auth.get('user');
 
     if (__DESKTOP__ || !user.get('anon')) {
@@ -74,139 +153,63 @@ class HomeUI extends PureComponent {
           </div>
         }
 
-        <div className="keystone">
-          <figure>
-            <a href="https://webrecorder.io/pelicanbomb/pelican-bomb">
-              <img src={require('shared/images/homepage/keystone-figure.png')} alt="Screenshots of Webrecorder.io" />
-            </a>
-          </figure>
-          <div className="intro">
-            <h2>Bitte loggen Sie sich mit ihren uni id ein.</h2>
-            <p>Webrecorder creates an interactive copy of any web page that you browse, including content revealed by your interactions such as playing video and audio, scrolling, clicking buttons, and so forth.</p>
+        {/* new login screen */}
+                  <div className="col-xs-8 col-xs-offset-2">
+                    <div className="card">
+                      <h2 className="card-header text-center" >
+                        <img src={require('shared/images/homepage/hd_logo_standard_16cm_rgb.png')} class="img-fluid" title="UNIVERSITÄT HEIDELBERG" alt="UNIVERSITÄT HEIDELBERG" />
+                      </h2>
+                      <div className="card-body">
+                        <div className="row" style={{ justifyContent: 'center' }}>
+                          <div className="col-md-5">
+                          <Row className="wr-login-form">
+                            {
+                              anonCTA &&
+                                login[auth.get('loginError')] || <h4>Please sign in to manage collections.</h4>
+                            }
+                            {
+                              formError &&
+                                <Alert bsStyle="danger">
+                                  {
+                                    <span>Invalid Login. Please Try Again</span>
+                                  }
+                                </Alert>
+                            }
+                            <Form id="loginform" onSubmit={this.save}>
+                              <FormGroup
+                                key="username">
+                                <label htmlFor="username" className="sr-only">Username</label>
+                                <FormControl aria-label="username" onChange={this.handleChange} value={username} type="text" id="username" name="username" className="form-control" placeholder="username" required autoFocus />
+                                <div className="help-block with-errors" />
+                              </FormGroup>
 
-            <div className="cta">
-              <button className="rounded btn-primary" onClick={this.signup} type="button">Create a Free Account</button>
-              <button className="button-link" onClick={this.login} type="button">Existing Users Login</button>
-            </div>
+                              <FormGroup key="password">
+                                <label htmlFor="inputPassword" className="sr-only">Password</label>
+                                <FormControl aria-label="password" onChange={this.handleChange} value={password} type="password" id="password" name="password" className="form-control" placeholder="Password" required />
+                              </FormGroup>
 
-            { supporterPortal && <div className="note">Webrecorder.io offers free accounts with 5GB of storage. Get more and contribute to Webrecorder's development by <a href={supporterPortal} target="_blank">becoming a supporter</a>.</div> }
+                              <FormGroup key="remember">
+                                <input onChange={this.handleChange} type="checkbox" id="remember_me" name="remember_me" />
+                                <label htmlFor="remember_me">Remember me</label>
 
-            <div className="note">Don't want to register? <a href="https://github.com/webrecorder/webrecorder-desktop/releases/latest">Download Desktop App</a> to collect and access archived web pages on your own computer, no account necessary.</div>
+                                <Link to="/_forgot" style={{ float: 'right' }}>Forgot password or username?</Link>
+                              </FormGroup>
+                              {
+                                auth.getIn(['user', 'anon']) && auth.getIn(['user', 'num_collections']) > 0 &&
+                                  <TempUsage
+                                    handleInput={this.handleChange}
+                                    moveTemp={moveTemp}
+                                    toColl={toColl} />
+                              }
+                              <Button bsSize="lg" bsStyle="primary" type="submit" block>Sign in</Button>
+                            </Form>
+                          </Row>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-            {
-              homepageAnnouncement &&
-                <HomepageAnnouncement />
-            }
-          </div>
-        </div>
-
-        <section className="row landing-info">
-          <div>
-            <div className="col-sm-6">
-              <h3>Online Now ≠ Online Tomorrow</h3>
-              <p>Links break. Information is removed from the web. Services disappear and redesigns happen. Make sure that what’s important to you will stay available.</p>
-            </div>
-            <div className="col-sm-6 hidden-xs">
-              <img src={require('shared/images/homepage/link.png')} className="center-block" alt="Online Now ≠ Online Forever" />
-            </div>
-          </div>
-        </section>
-
-        {/* For Web Media */}
-        <section className="row landing-info">
-          <div>
-            <div className="col-sm-6">
-              <h3>Capture Complex Webpages</h3>
-              <p>Webrecorder takes a new approach to web archiving by capturing ("recording") network traffic and processes within the browser while you interact with a web page. Unlike conventional crawler-based web archiving methods, this allows even intricate websites, such as those with embedded media, complex Javascript, user-specific content and interactions, and other dynamic elements, to be captured and faithfully restaged.</p>
-            </div>
-            <div className="col-sm-6 hidden-xs">
-              <img src={require('shared/images/homepage/belljar.png')} className="center-block" alt="Web Preservation for Web Media" />
-            </div>
-          </div>
-        </section>
-
-        {/* autopilot */}
-        <section className="row landing-info">
-          <div>
-            <div className="col-sm-6">
-              <h3>Autopilot Your Captures</h3>
-              <p>Capturing pages on a popular web platform? Autopilot behaviors may be able to speed up your capture via automation.</p>
-            </div>
-            <div className="col-sm-6 hidden-xs">
-              <figure>
-                {
-                  !__DESKTOP__ &&
-                    <video autoPlay loop muted poster={require('shared/images/homepage/autopilot.jpg')}>
-                      <source src={require('shared/media/autopilot.mp4')} type="video/mp4" />
-                      <source src={require('shared/media/autopilot.webm')} type="video/webm" />
-                      <source src={require('shared/media/autopilot.ogv')} type="video/ogg" />
-                    </video>
-                }
-              </figure>
-            </div>
-          </div>
-        </section>
-
-        <section className="advanced-features">
-          <div className="col-xs-8 col-xs-offset-2">
-            <h3>Advanced Features</h3>
-            <dl>
-              <dt>Login and Capture</dt>
-              <dd>Capture what you see on websites when you're logged into them, and share archived pages without revealing your credentials.</dd>
-
-              <dt>Publish and Share</dt>
-              <dd>Make your collections publicly accessible or keep them private.</dd>
-
-              <dt>Own Your Data</dt>
-              <dd>Download your web archives in the ISO standard WARC file format.</dd>
-
-              <dt>Pre-configured browsers for best capturing results</dt>
-              <dd>Webrecorder's Remote Browser feature provides access to a range of preconfigured browsers running on the Webrecorder server. They offer for the most thorough capture of network traffic, and support for Flash.</dd>
-            </dl>
-          </div>
-        </section>
-
-        <section className="supporter">
-          <header>
-            <h1>You can support free, open source tools for archiving the web.</h1>
-          </header>
-
-          <div className="oss-intro">
-            <h2>The Webrecorder project is an open source initiative by Rhizome at the New Museum. Our mission is to make high-fidelity web archiving accessible to all.</h2>
-            <p>Here are some other tools we have developed. An extensive lists of re-usable software components produced by Webrecorder is available here.</p>
-          </div>
-
-          {
-            supporterPortal &&
-              <div className="supportCTA">
-                <h3>You can support free, open source tools for archiving the web.</h3>
-                <button className="rounded" onClick={this.goToSupporterSite} type="button">Become a Supporter</button>
-                <a href="https://supporter.webrecorder.io" target="_blank">Learn more</a>
-                <p>Webrecorder is a project of Rhizome, a registered 501(c)(3) non-profit organization. Your donations are tax-deductible.</p>
-              </div>
-          }
-
-          <div>
-            <img src={require('shared/images/homepage/desktop.png')} alt="Desktop Logo" />
-            <h4>Webrecorder Desktop App</h4>
-            <p>Create, manage, and store web archives on your local computer.</p>
-            <button className="rounded" onClick={this.desktopApp} type="button">Download Desktop App</button>
-          </div>
-
-          <div>
-            <img src={require('shared/images/homepage/player.png')} alt="Player Logo" />
-            <h4>Webrecorder Player App</h4>
-            <p>Use this desktop web archive viewer to browse exported collections, even when you are offline.</p>
-            <button className="rounded" onClick={this.playerApp} type="button">Download Player App</button>
-          </div>
-
-          <div>
-            <img src={require('shared/images/homepage/oss.png')} alt="Group of open source software logos" />
-            <h4>Other Software Components</h4>
-            <p>Webrecorder produces a range of re-usable open source software components for web archiving, all of which are available on GitHub.</p>
-            <button className="rounded" onClick={this.github} type="button">Visit Our Github</button>
-          </div>
-        </section>
       </React.Fragment>
     );
   }

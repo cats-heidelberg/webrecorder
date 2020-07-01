@@ -4,6 +4,7 @@ import { asyncConnect } from 'redux-connect';
 
 import { loadCollections } from 'store/modules/auth';
 import { showModal } from 'store/modules/userLogin';
+import { load, login } from 'store/modules/auth';
 
 import { HomeUI } from 'components/siteComponents';
 
@@ -21,12 +22,15 @@ const initalData = [
 
 const mapStateToProps = ({ app }) => {
   return {
-    auth: app.get('auth')
+    anonCTA: app.getIn(['userLogin', 'anonCTA']),
+    auth: app.get('auth'),
+    next: app.getIn(['userLogin', 'next']),
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    loginFn: data => dispatch(login(data)),
     showModalCB: (b = true) => dispatch(showModal(b))
   };
 };
