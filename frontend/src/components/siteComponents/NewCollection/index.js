@@ -32,6 +32,8 @@ class NewCollection extends Component {
 
     this.state = {
       listID: 0,
+      urlValid: false,
+      emailValid: false,
       publisher: '',
       publisherOriginal: '',
       subjectHeaderList,
@@ -107,9 +109,12 @@ class NewCollection extends Component {
   onAddItem = () => {
     this.setState({ listID: this.state.listID + 1 });
     if (this.state.selectedGroupName==='corporate/institutional name') {
+      let tempText = "C/I name:"+this.state.collTitle;
+      this.state.copTitle!==""?tempText+=", "+this.state.copTitle:null;
+
       const temp =
       {
-      "htmlText": "C/I name:"+this.state.collTitle+", "+this.state.copTitle,
+      "htmlText": tempText,
       "id": this.state.listID
     };
       this.setState(state => {
@@ -123,10 +128,17 @@ class NewCollection extends Component {
       });
     }
     else {
+      let tempText = "personal name:"+this.state.persName;
+      this.state.surName!==""?tempText+=", "+this.state.surName:null;
+      this.state.collYear!==""?tempText+=" - "+this.state.collYear:null;
       const temp =
       {
-      "htmlText": "personal name:"+this.state.persName+", "+this.state.surName +"- "+this.state.collYear,
-      "id": this.state.listID
+      "htmlText": tempText,
+      "id": this.state.listID,
+      "personal_name": this.state.persName,
+      "surname": this.state.surName,
+      "coll_year": this.state.collYear
+
     };
       this.setState(state => {
         const creatorList = [...state.creatorList, temp];
@@ -200,27 +212,38 @@ class NewCollection extends Component {
     this.props.createCollection(title, url, isPublic,JSON.stringify(creatorList),JSON.stringify(subjectHeaderList),JSON.stringify(personHeaderList), noteToDachs,publisher,collTitle,publisherOriginal,collYear,copTitle,surName,persName,usermail,selectedGroupName,publishYear, pubTitleOriginal, personHeadingText, subjectHeadingText, listID, ticketState, isCollLoaded, recordingUrl, recordingTimestamp);
   }
   validateEmail = () => {
-    const { checkEmail, email } = this.state;
-
+    const { emailValid, usermail } = this.state;
     /*if (checkEmail && ( email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) === null)) {
       return 'error';
     }
-
     return null;*/
-    const myTest = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return myTest.test(email);
+    const myTest = /^[a-zA-Z\-\_0-9]+@[a-zA-Z\-\_0-9]+\.[a-zA-Z]{2,3}$/;
+    if (myTest.test(usermail) === true && !emailValid) {
+        this.setState({ emailValid: true });
+      }else if (myTest.test(usermail) === false && emailValid) {
+        this.setState({ emailValid: false });
+      }
   }
   validateURL = () => {
-    const { url } = this.state;
+    const { url, urlValid } = this.state;
+    ///^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
     //const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const myTest = /(http\:\/\/|https\:\/\/)?([a-z0-9][a-z0-9\-]*)+\.+[a-z0-9][a-z0-9]*$/i;
-    return myTest.test(url);
+    const myTest = /((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*)([\w\-\.]+[^#?\s]+)\.(([a-zA-Z]{2,3})|([a-zA-Z]{2,3}\/[\w\-#=]+))$/i;
+    //this.setState({ urlValid: myTest.test(url) });
+    if (myTest.test(url) === true && !urlValid) {
+        this.setState({ urlValid: true });
+      }else if (myTest.test(url) === false && urlValid) {
+        this.setState({ urlValid: false });
+      }
   /*
-  if (url.match(/^(http\:\/\/|https\:\/\/)?([a-z0-9][a-z0-9\-]*\.)+[a-z0-9][a-z0-9\-]/) === null) {
-      return 'error';
-    }
+  //if (url===null || url==='') { return null; }
 
-    return null;*/
+    var valid = url.match(/^(http[s]?:\/\/|www\.|[a-z0-9]+)([a-z0-9]+[a-z0-9\-])+\.[a-zA-Z]{2,3}$/i);
+    if (valid===true) {
+      return true;
+    } else {
+      return true;
+    }*/
   }
   validateAuthorship = () => {
     const { collTitle, copTitle, persName, surName, collYear } = this.state;
@@ -266,7 +289,7 @@ class NewCollection extends Component {
   render() {
 
     const { close, creatingCollection, error, visible } = this.props;
-    const { collTitle, collYear, surName, copTitle, isPublic , noteToDachs, title, publisherOriginal, publishYear, usermail, persName, pubTitleOriginal, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url } = this.state;
+    const { collTitle, collYear, emailValid, surName, copTitle, isPublic , noteToDachs, title, publisherOriginal, publishYear, usermail, persName, pubTitleOriginal, publisher, selectedGroupName, subjectHeadingText, personHeadingText,creatorLegend, url, urlValid, creatorList } = this.state;
 
 const text = `To edit Metadata, please use the information form below.${"\n"} Fields marked with asterisk (*) are required`
     if (visible) {
@@ -292,15 +315,15 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
               <div>
                 <FormGroup id="fieldset">
                 <label style={{ display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="Any further information regarding your OpenDACHS request will be sent to this e-mail address."/></label>
-                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' ,color:usermail?'black':'red'}} >*Your e-mail address:</div>
+                    <div  style={{ marginRight: '4px', display: 'inline', float: 'left' ,color:emailValid?'black':'red'}} >*Your e-mail address:</div>
 
                   <ControlLabel srOnly>email address:</ControlLabel>
                   <FormControl
+                    style={{ border:emailValid?'1px solid black':'1px solid #ff1a1a'}}
                     aria-label="email"
-                    type="email"
                     validationState={this.validateEmail()}
                     name="usermail"
-                    placeholder="email@...uni-heidelberg.de*"
+                    placeholder="please enter your email*"
                     autoFocus
                     required
                     value={usermail}
@@ -312,13 +335,13 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
               <div>
                 <FormGroup id="fieldset">
                 <label style={{ marginRight: '4px', display: 'inline', float: 'left' }} onMouseOver={() => { ReactTooltip.show(this.fooRef21) }} onMouseOut={() => { ReactTooltip.hide(this.fooRef21) }}><span className="glyphicon glyphicon-info-sign"  ref={ref => this.fooRef21 = ref} style={{ marginRight: '4px', display: 'inline' ,width: '14px', float:'left'}} data-tip="URL of the web resource."/></label>
-                <div  style={{ marginRight: '4px', display: 'inline', float: 'left' ,color:url?'black':'red' }} >*URL:</div>
+                <div  style={{ marginRight: '4px', display: 'inline', float: 'left' ,color:urlValid?'black':'red' }} >*URL:</div>
                 <FormControl
                   aria-label="url"
-                  type="url"
+                  style={{ border:urlValid?'1px solid black':'1px solid #ff1a1a'}}
                   validationState={this.validateURL()}
                   name="url"
-                  placeholder="resource location*"
+                  placeholder="please enter a valid webpage url*"
                   required
                   value={url}
                   onChange={this.handleInput}
@@ -470,7 +493,7 @@ const text = `To edit Metadata, please use the information form below.${"\n"} Fi
 
 
           }
-            <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={!usermail || (!collTitle&&!surName) || !url || !title || !publisher || (creatingCollection && !error)} type="button">Create</button>
+            <button className="btn btn-lg btn-primary btn-block" onClick={this.submit} disabled={!emailValid || (!collTitle&&!surName&&!creatorList.length>0) || !urlValid || !title || !publisher || (creatingCollection && !error)} type="button">Create</button>
         </form>
       </Modal>
       <ReactTooltip className='extraClass' delayHide={100} effect='solid' type='info'/>

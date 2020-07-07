@@ -99,7 +99,7 @@ class CollectionItem extends Component {
               canAdmin &&
                 <React.Fragment>
                   {
-                          collection.get('ticketState')==='open' ?
+                          collection.get('ticketState')==='open' && ticketState === 'open' ?
                             <Button className="rounded" onClick={this.newSession}>Review and Edit</Button> :
                             <Button className="rounded" onClick={this.newSession}>Review</Button>
                         }
@@ -124,7 +124,7 @@ class CollectionItem extends Component {
                           <React.Fragment>
                             <h4>Attention</h4>
                             <p>If you submit your archive for DOI creation you won't be able to record more content.<br /> <br />End recording archive? <a href="https://datproject.org/" target="_blank">Learn more</a></p>
-                            <Button className="rounded new-session" onClick={this.sendArchive}><CheckIcon /><span className="hidden-xs">I am sure.</span></Button>
+                            <Button className="rounded new-session" onClick={this.sendArchive}><CheckIcon /><span className="hidden-xs">confirm.</span></Button>
 
                           </React.Fragment>
                       }

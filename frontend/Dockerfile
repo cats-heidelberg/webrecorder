@@ -1,4 +1,4 @@
-FROM node:10.6.0
+FROM node:10.18.0
 
 ENV TERM=xterm APP=/code
 
@@ -23,6 +23,6 @@ ADD src $APP/
 
 WORKDIR $APP
 
-RUN npm install --global yarn
+RUN npm install --global --force yarn
 
 RUN rm -rf node_modules && yarn add react-tooltip && yarn install && yarn cache clean && rm -rf ~/tmp/*
