@@ -29,12 +29,13 @@ class LdapUserManager(UserManager):
         ldap_username = username + '@' + os.environ.get('LDAP_DOMAIN')
         print('ldapusermanager authenticating {}'.format(ldap_username))
         c = ldap.initialize(os.environ.get('LDAP_URI', ''))
+
         c.protocol_version = 3
         c.set_option(ldap.OPT_REFERRALS, 0)
         try:
             result = c.simple_bind_s(ldap_username, password)
             adminusers = c.search_s(os.environ.get('LDAP_BASE'), ldap.SCOPE_SUBTREE, '(&(sAMAccountName={})(memberOf={}))'.format(username, os.environ.get('LDAP_ADMIN_GROUP')))
-            print(adminusers)
+            print([dn for (dn, attrs) in adminusers.items()])
 
             escaped_username = username.replace(".", "_")
 
