@@ -269,7 +269,7 @@ class HomeUI extends PureComponent {
                             width: "14px",
                             float: "left",
                           }}
-                          data-tip="You must allow this cookie in your browser to provide continuity and to remain logged in when browsing the site. When you log out or close the browser, this cookie is destroyed (in your browser and on the server).&lt;/p&gt;&lt;p&gt;The other cookie is purely for convenience"
+                          data-tip="You must allow this cookie in your browser to provide continuity and to remain logged in when browsing the site."
                         />
                       </label>
                       <div
@@ -291,10 +291,6 @@ class HomeUI extends PureComponent {
                             id="remember_me"
                             name="remember_me"
                           />
-                          <label htmlFor="remember_me">Remember me</label>
-                          <Link to="/_forgot" style={{ float: "right" }}>
-                            Forgot password or username?
-                          </Link>
                         </FormGroup>
                       </Form>
                     </div>
