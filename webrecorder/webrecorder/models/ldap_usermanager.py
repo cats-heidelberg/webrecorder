@@ -35,7 +35,7 @@ class LdapUserManager(UserManager):
         try:
             result = c.simple_bind_s(ldap_username, password)
             adminusers = c.search_s(os.environ.get('LDAP_BASE'), ldap.SCOPE_SUBTREE, '(&(sAMAccountName={})(memberOf={}))'.format(username, os.environ.get('LDAP_ADMIN_GROUP')))
-            print([dn for (dn, attrs) in adminusers if dn])
+            is_admin = len([dn for (dn, attrs) in adminusers if dn]) == 1
 
             escaped_username = username.replace(".", "_")
 
@@ -49,7 +49,7 @@ class LdapUserManager(UserManager):
             print('creating internal user')
             self.admin_override = True
             self.all_users[escaped_username] = {
-                'role': 'archivist',
+                'role': 'admin' if is_admin else 'archivist',
                 'hash': self.cork._hash(escaped_username, password).decode('ascii'),
                 'email_addr': "NYI",
                 'full_name': username,
