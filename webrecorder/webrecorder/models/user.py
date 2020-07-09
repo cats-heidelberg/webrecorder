@@ -111,7 +111,7 @@ class User(RedisUniqueComponent):
         collections = []
         for collection in all_collections:
             collection.owner = self
-            if self.access.can_read_coll(collection, allow_superuser=False):
+            if self.access.can_read_coll(collection, allow_superuser=True):
                 if load:
                     collection.load()
                 collections.append(collection)

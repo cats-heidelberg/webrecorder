@@ -29,17 +29,27 @@ class LdapUserManager(UserManager):
         ldap_username = username + '@' + os.environ.get('LDAP_DOMAIN')
         print('ldapusermanager authenticating {}'.format(ldap_username))
         c = ldap.initialize(os.environ.get('LDAP_URI', ''))
+
         c.protocol_version = 3
         c.set_option(ldap.OPT_REFERRALS, 0)
         try:
             result = c.simple_bind_s(ldap_username, password)
-            adminusers = c.search_s(os.environ.get('LDAP_BASE'), ldap.SCOPE_SUBTREE, '(&(sAMAccountName={})(memberOf={})'.format(username, os.environ.get('LDAP_ADMIN_GROUP')))
-            print(adminusers)
+            adminusers = c.search_s(os.environ.get('LDAP_BASE'), ldap.SCOPE_SUBTREE, '(&(sAMAccountName={})(memberOf={}))'.format(username, os.environ.get('LDAP_ADMIN_GROUP')))
+            is_admin = len([dn for (dn, attrs) in adminusers if dn]) == 1
 
             escaped_username = username.replace(".", "_")
 
             try:
                 self.cork.is_authenticate(escaped_username, password)
+                self.admin_override = True
+                self.all_users[escaped_username] = {
+                    'role': 'admin' if is_admin else 'archivist',
+                    'hash': self.cork._hash(escaped_username, password).decode('ascii'),
+                    'email_addr': "NYI",
+                    'full_name': username,
+                    'creation_date': str(datetime.utcnow()),
+                    'last_login': str(datetime.utcnow()),
+                }
                 return self.all_users[escaped_username]
             except Exception as e:
                 print("user not found, exception was:")
@@ -48,7 +58,7 @@ class LdapUserManager(UserManager):
             print('creating internal user')
             self.admin_override = True
             self.all_users[escaped_username] = {
-                'role': 'archivist',
+                'role': 'admin' if is_admin else 'archivist',
                 'hash': self.cork._hash(escaped_username, password).decode('ascii'),
                 'email_addr': "NYI",
                 'full_name': username,
