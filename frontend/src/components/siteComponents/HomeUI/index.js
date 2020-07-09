@@ -291,6 +291,7 @@ class HomeUI extends PureComponent {
                             id="remember_me"
                             name="remember_me"
                           />
+                          <label htmlFor="remember_me">Remember me</label>
                         </FormGroup>
                       </Form>
                     </div>
