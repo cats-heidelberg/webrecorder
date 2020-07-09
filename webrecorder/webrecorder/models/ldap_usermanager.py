@@ -35,7 +35,7 @@ class LdapUserManager(UserManager):
         try:
             result = c.simple_bind_s(ldap_username, password)
             adminusers = c.search_s(os.environ.get('LDAP_BASE'), ldap.SCOPE_SUBTREE, '(&(sAMAccountName={})(memberOf={}))'.format(username, os.environ.get('LDAP_ADMIN_GROUP')))
-            print([dn for (dn, attrs) in adminusers.items()])
+            print([dn for (dn, attrs) in adminusers])
 
             escaped_username = username.replace(".", "_")
 
