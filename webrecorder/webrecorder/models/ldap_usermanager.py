@@ -41,6 +41,15 @@ class LdapUserManager(UserManager):
 
             try:
                 self.cork.is_authenticate(escaped_username, password)
+                self.admin_override = True
+                self.all_users[escaped_username] = {
+                    'role': 'admin' if is_admin else 'archivist',
+                    'hash': self.cork._hash(escaped_username, password).decode('ascii'),
+                    'email_addr': "NYI",
+                    'full_name': username,
+                    'creation_date': str(datetime.utcnow()),
+                    'last_login': str(datetime.utcnow()),
+                }
                 return self.all_users[escaped_username]
             except Exception as e:
                 print("user not found, exception was:")
