@@ -1,6 +1,16 @@
 @import 'src/vars';
 
-
+#app {
+  background:#fff url('../../../shared/images/homepage/uh.jpg') center center no-repeat;
+  background-attachment:fixed;
+  background-size: 100% auto;
+}
+.creator, section {
+    border: none; 
+    margin-bottom: 15px;
+    padding: 8px;
+    background-color: transparent;
+}
 .keystone {
     display: flex;
     margin-top: 3rem;
@@ -113,13 +123,51 @@
 }
 
 .advanced-features {
-    border-bottom: .1rem solid $gray300;
-
+    border-bottom: 3.0rem solid $gray300;
+    justify-content: center;
+    flex: 0 0 66.66%;
+    max-width: 66.66%;
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-left: -15px;
+      margin-right: -15px;
+    }
+    margin-top: 3.0rem;
     dt {
         margin-top: 1.5rem;
     }
 }
-
+.advanced-features::before {
+  box-sizing: border-box;
+}
+.advanced-features::after {
+  box-sizing: border-box;
+}
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+}
+.text-center {
+    text-align: center !important;
+}
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
 .supporter {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

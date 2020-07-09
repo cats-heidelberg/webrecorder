@@ -1,140 +1,147 @@
-@import 'src/vars';
+@import "src/vars";
 
 .wr-controls {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 200;
+  border-radius: 0;
+  border-bottom: solid 0.1rem #97989a;
+  width: 100%;
+  background-color: #eee;
+  padding: 5px;
+  border: 1px solid;
+  border-radius: 5px;
+  margin: 1rem 0;
+  .public {
     position: relative;
-    z-index: 200;
-    border-radius: 0;
-    border-bottom: solid .1rem #97989A;
-    width: 100%;
+    justify-content: center;
 
-    .public {
-        position: relative;
-        justify-content: center;
-
-        .main-bar {
-            max-width: 60vw;
-        }
-        .recording-actions {
-            position: absolute;
-            top: 0;
-            right: 1.5rem;
-        }
+    .main-bar {
+      max-width: 60vw;
     }
-
-    & > * {
-        margin-top: 1.2rem;
-        margin-bottom: 1.2rem;
+    .recording-actions {
+      position: absolute;
+      top: 0;
+      right: 1.5rem;
     }
+  }
 
-    & > *:not(:last-child) {
-        margin-right: 1.5rem;
-    }
+  & > * {
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  & > *:not(:last-child) {
+    margin-right: 1.5rem;
+  }
 }
 
 .browser-nav {
-    display: flex;
-    align-items: center;
-    margin-right: 1.5rem;
+  display: flex;
+  align-items: center;
+  margin-right: 1.5rem;
 
-    button {
-      background-color: transparent;
-      background-repeat: no-repeat;
-      border: none;
-      color: #000;
+  button {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    color: #000;
 
-      &.arrow {
-        transition: background $quickShift ease-in-out;
-        border-radius: .4rem;
-        padding: .1rem .2rem;
+    &.arrow {
+      transition: background $quickShift ease-in-out;
+      border-radius: 0.4rem;
+      padding: 0.1rem 0.2rem;
 
-        &:not(:last-of-type) {
-          margin-right: .2rem;
-        }
+      &:not(:last-of-type) {
+        margin-right: 0.2rem;
+      }
 
-        svg path {
-          fill: $gray600;
-        }
+      svg path {
+        fill: $gray600;
+      }
 
-        &.inactive {
-          path {
-            fill: $gray500;
-          }
-        }
-
-        svg {
-          padding: .2rem;
-          vertical-align: middle;
-        }
-
-        &:not(.inactive):hover {
-          background: $gray300;
+      &.inactive {
+        path {
+          fill: $gray500;
         }
       }
+
+      svg {
+        padding: 0.2rem;
+        vertical-align: middle;
+      }
+
+      &:not(.inactive):hover {
+        background: $gray300;
+      }
     }
+  }
 }
 
 .iframe-container {
-    position: relative;
-    flex-grow: 1;
-    display: flex;
+  position: relative;
+  flex-grow: 1;
+  display: flex;
 
-    &.locked {
-        pointer-events: none;
+  &.locked {
+    pointer-events: none;
 
-        iframe, .canvas, webview {
-            cursor: not-allowed;
-            opacity: .5;
-        }
+    iframe,
+    .canvas,
+    webview {
+      cursor: not-allowed;
+      opacity: 0.5;
     }
+  }
 
-    &.embed {
-        flex-direction: column;
-
-        iframe {
-            width: 100%;
-        }
-    }
+  &.embed {
+    flex-direction: column;
 
     iframe {
-        transition: opacity .3s ease-in-out;
+      width: 100%;
     }
+  }
 
-    .wr-sidebar {
-        z-index: 100;
-    }
+  iframe {
+    transition: opacity 0.3s ease-in-out;
+  }
 
-    // hack for ie, fix flexbox bug where children won't stretch without fixed container height
-    *::-ms-backdrop, iframe {
-        min-height: 100%;
-    }
+  .wr-sidebar {
+    z-index: 100;
+  }
 
-    .react-tabs__tab-panel {
-        min-height: 0;
-    }
+  // hack for ie, fix flexbox bug where children won't stretch without fixed container height
+  *::-ms-backdrop,
+  iframe {
+    min-height: 100%;
+  }
+
+  .react-tabs__tab-panel {
+    min-height: 0;
+  }
 }
 
 @media (max-width: 500px) {
-    .wr-controls {
-        &:not(.public) {
-            flex-wrap: wrap;
+  .wr-controls {
+    &:not(.public) {
+      flex-wrap: wrap;
 
-            .main-bar {
-                flex-basis: 100%;
-            }
-        }
-
-        & > *:not(:last-child) {
-            margin-right: 0;
-        }
+      .main-bar {
+        flex-basis: 100%;
+      }
     }
+
+    & > *:not(:last-child) {
+      margin-right: 0;
+    }
+  }
 }
 
 @media (max-width: 767px) {
-    .wr-controls {
-        .public {
-            justify-content: flex-start;
-        }
+  .wr-controls {
+    .public {
+      justify-content: flex-start;
     }
+  }
 }
