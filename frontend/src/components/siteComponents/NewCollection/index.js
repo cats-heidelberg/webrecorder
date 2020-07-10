@@ -619,7 +619,10 @@ class NewCollection extends Component {
                         marginRight: "4px",
                         display: "inline",
                         float: "left",
-                        color: collTitle || persName ? "black" : "red",
+                        color:
+                          collTitle || persName || creatorList.length > 0
+                            ? "black"
+                            : "red",
                       }}
                     >
                       *Authorship information (Latin alphabet):
