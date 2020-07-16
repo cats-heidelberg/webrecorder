@@ -93,29 +93,29 @@ export default Object.assign({
   months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   passwordRegex: new RegExp(/(?=.*[\d\W])(?=.*[a-z])(?=.*[A-Z]).{8,}/),
   port: process.env.FRONTEND_PORT || 8095,
-  product: 'Webrecorder',
-  productLink: 'https://webrecorder.io',
+  product: 'OpenDACHS',
+  productLink: 'https://wr-app.cats.uni-heidelberg.de/',
   ravenConfig: null,
   saveDelay: 1000,
   storageKey: 'wr__',
-  supportEmail: 'support@webrecorder.io',
+  supportEmail: 'support@wr-app.cats.uni-heidelberg.de',
   supporterPortal: '',
-  tagline: 'Create high-fidelity, interactive web archives of any web site you browse.',
+  tagline: 'Create interactive web archives of any web site you browse and create DOI.',
   truncSentence: new RegExp(/([.!?])/),
   truncWord: new RegExp(/(\s)/),
   untitledEntry: 'Untitled Document',
   userRegex: new RegExp(/[A-Za-z0-9][\w-]{2,15}/),
   app: {
-    title: 'Webrecorder',
+    title: 'OpenDACHS',
     head: {
-      titleTemplate: 'Webrecorder | %s',
+      titleTemplate: 'OpenDACHS | %s',
       meta: [
         { name: 'description', content: '' },
         { charset: 'utf-8' },
         { property: 'og:site_name', content: 'Webrecorder' },
         { property: 'og:locale', content: 'en_US' },
         { property: 'og:title', content: 'Webrecorder' },
-        { property: 'og:description', content: 'Create high-fidelity, interactive web archives of any web site you browse.' },
+        { property: 'og:description', content: 'Create interactive web archives of any web site you browse and create DOI.' },
         { property: 'og:image', content: `${hostScheme}://${appHost}/static/webrecorder-social.png`, width: '1200', height: '630' }
       ]
     }

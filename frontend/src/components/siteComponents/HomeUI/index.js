@@ -186,7 +186,11 @@ class HomeUI extends PureComponent {
                 <div className="col-md-5">
                   <Row className="wr-login-form">
                     {(anonCTA && login[auth.get("loginError")]) || (
-                      <h4>Please sign in to manage collections.</h4>
+                      <div class="card-title">
+                        <h2>Is this your first time here?</h2>
+                        <br />
+                        <h4>Please use your provided Uni-ID( e.g. jb007).</h4>
+                      </div>
                     )}
                     {formError && (
                       <Alert bsStyle="danger">
@@ -269,7 +273,7 @@ class HomeUI extends PureComponent {
                             width: "14px",
                             float: "left",
                           }}
-                          data-tip="You must allow this cookie in your browser to provide continuity and to remain logged in when browsing the site. When you log out or close the browser, this cookie is destroyed (in your browser and on the server).&lt;/p&gt;&lt;p&gt;The other cookie is purely for convenience"
+                          data-tip="You must allow this cookie in your browser to provide continuity and to remain logged in when browsing the site."
                         />
                       </label>
                       <div
@@ -292,9 +296,6 @@ class HomeUI extends PureComponent {
                             name="remember_me"
                           />
                           <label htmlFor="remember_me">Remember me</label>
-                          <Link to="/_forgot" style={{ float: "right" }}>
-                            Forgot password or username?
-                          </Link>
                         </FormGroup>
                       </Form>
                     </div>

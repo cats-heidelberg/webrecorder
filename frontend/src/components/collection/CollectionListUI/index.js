@@ -289,7 +289,7 @@ class CollectionListUI extends Component {
           <Col
             xs={15}
             sm={__DESKTOP__ ? 10 : 9}
-            smOffset={__DESKTOP__ ? 1 : 0}
+            smOffset={__DESKTOP__ ? 2 : 2}
             className="wr-coll-meta"
           >
             {/*
