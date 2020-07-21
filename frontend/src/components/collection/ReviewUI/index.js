@@ -28,11 +28,10 @@ class ReviewUI extends Component {
   static propTypes = {
     activeBrowser: PropTypes.string,
     auth: PropTypes.object,
-    completeRecording: PropTypes.func,
+    completeReview: PropTypes.func,
     collections: PropTypes.object,
     editCollection: PropTypes.func,
     edited: PropTypes.bool,
-    editUser: PropTypes.func,
     onPatch: PropTypes.func,
     match: PropTypes.object,
     orderedCollections: PropTypes.object,
@@ -55,85 +54,9 @@ class ReviewUI extends Component {
     };
   }
 
-  editColl = (
-    collID,
-    title,
-    creatorList,
-    subjectHeaderList,
-    personHeaderList,
-    noteToDachs,
-    publisher,
-    collTitle,
-    publisherOriginal,
-    collYear,
-    copTitle,
-    surName,
-    persName,
-    usermail,
-    selectedGroupName,
-    publishYear,
-    pubTitleOriginal,
-    personHeadingText,
-    subjectHeadingText,
-    listID
-  ) => {
-    const {
-      editCollection,
-      match: {
-        params: { user },
-      },
-    } = this.props;
-    editCollection(
-      user,
-      collID,
-      title,
-      creatorList,
-      subjectHeaderList,
-      personHeaderList,
-      noteToDachs,
-      publisher,
-      collTitle,
-      publisherOriginal,
-      collYear,
-      copTitle,
-      surName,
-      persName,
-      usermail,
-      selectedGroupName,
-      publishYear,
-      pubTitleOriginal,
-      personHeadingText,
-      subjectHeadingText,
-      listID
-    );
-  };
-  completeRec = (collID, ticketState = "pending") => {
-    const {
-      completeRecording,
-      match: {
-        params: { user },
-      },
-    } = this.props;
-    completeRecording(user, collID, ticketState);
-  };
-  editName = (full_name) => {
-    const {
-      editUser,
-      match: {
-        params: { user },
-      },
-    } = this.props;
-    editUser(user, { full_name });
-  };
-
-  editURL = (display_url) => {
-    const {
-      editUser,
-      match: {
-        params: { user },
-      },
-    } = this.props;
-    editUser(user, { display_url });
+  completeReview = (collID, user) => {
+    const { completeReview } = this.props;
+    completeReview(user, collID);
   };
 
   toggle = () => {
@@ -142,16 +65,6 @@ class ReviewUI extends Component {
 
   close = () => {
     this.setState({ showModal: false });
-  };
-
-  updateUser = (description) => {
-    const {
-      editUser,
-      match: {
-        params: { user },
-      },
-    } = this.props;
-    editUser(user, { desc: description });
   };
 
   render() {
@@ -242,8 +155,7 @@ class ReviewUI extends Component {
                           canAdmin={canAdmin}
                           collection={coll}
                           collUser={user}
-                          editCollection={this.editColl}
-                          completeRec={this.completeRec}
+                          completeReview={this.completeReview}
                           error={collections.get("error")}
                           history={history}
                           onPatch={() => {}}

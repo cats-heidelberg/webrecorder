@@ -22,11 +22,10 @@ class CollectionItem extends Component {
     collId: PropTypes.string,
     error: PropTypes.string,
     collUser: PropTypes.string,
-    completeRec: PropTypes.func,
+    completeReview: PropTypes.func,
     id: PropTypes.string,
     isOver: PropTypes.bool,
     collection: PropTypes.object,
-    editCollection: PropTypes.func,
     onPatch: PropTypes.func,
     selected: PropTypes.bool,
     history: PropTypes.string,
@@ -57,64 +56,12 @@ class CollectionItem extends Component {
     this.setState({ showModalFinish: !this.state.showModalFinish });
   };
 
-  editCollectiontemp = (
-    collID,
-    title,
-    creatorList,
-    subjectHeaderList,
-    personHeaderList,
-    noteToDachs,
-    publisher,
-    collTitle,
-    publisherOriginal,
-    collYear,
-    copTitle,
-    surName,
-    persName,
-    usermail,
-    selectedGroupName,
-    publishYear,
-    pubTitleOriginal,
-    personHeadingText,
-    subjectHeadingText,
-    listID
-  ) => {
-    this.props.editCollection(
-      collID,
-      title,
-      creatorList,
-      subjectHeaderList,
-      personHeaderList,
-      noteToDachs,
-      publisher,
-      collTitle,
-      publisherOriginal,
-      collYear,
-      copTitle,
-      surName,
-      persName,
-      usermail,
-      selectedGroupName,
-      publishYear,
-      pubTitleOriginal,
-      personHeadingText,
-      subjectHeadingText,
-      listID
-    );
-  };
+  editCollectiontemp = () => {};
 
-  newSession = () => {
-    //  const { collection } = this.props;
-
-    //this.props.onPatch(collection.get('id'),collection.get('url'));
-    const { collection, history, collUser } = this.props;
-    history.push(
-      `/${collUser.get("username")}/${collection.get("id")}/${collection.get(
-        "recordingTimestamp"
-      )}/${collection.get("recordingUrl")}`
-    );
+  newSession = () => {};
+  sendForDOI = () => {
+    const { completeReview } = this.props;
   };
-  sendForDOI = () => {};
 
   render() {
     const { canAdmin, collection, error } = this.props;
