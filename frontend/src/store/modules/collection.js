@@ -303,7 +303,7 @@ export function completeRecordingDispatch(user, coll, ticketState) {
       }),
   };
 }
-export function completeReviewDispatch(user, coll) {
+export function completeReviewDispatch(user, coll, ticketState) {
   return {
     types: [
       COLL_REVIEWCOMPLETE,
@@ -315,6 +315,7 @@ export function completeReviewDispatch(user, coll) {
         params: { user },
         data: {
           coll,
+          ticketState,
         },
       }),
   };
