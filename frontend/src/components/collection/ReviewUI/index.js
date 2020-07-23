@@ -54,9 +54,9 @@ class ReviewUI extends Component {
     };
   }
 
-  completeReview = (collID, user) => {
+  completeReview = (collID, user, ticketState) => {
     const { completeReview } = this.props;
-    completeReview(user, collID);
+    completeReview(user, collID, ticketState);
   };
 
   toggle = () => {

@@ -59,8 +59,8 @@ const mapStateToProps = ({ app }) => {
 
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    completeReview: (user, collID) => {
-      dispatch(completeReviewDispatch(user, collID));
+    completeReview: (user, collID, ticketState = "denied") => {
+      dispatch(completeReviewDispatch(user, collID, ticketState));
     },
   };
 };
