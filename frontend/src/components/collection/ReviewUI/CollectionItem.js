@@ -44,7 +44,8 @@ class CollectionItem extends Component {
     this.setState({ open: !this.state.open });
   };
   denyArchive = () => {
-    //completeReview(user, collID, "denied");
+    const { completeReview, collection } = this.props;
+    completeReview(collUser, collection.get("COLL_ID"), "denied");
     this.close();
   };
 
@@ -60,8 +61,8 @@ class CollectionItem extends Component {
 
   newSession = () => {};
   sendForDOI = () => {
-    const { completeReview } = this.props;
-    //completeReview(user, collID, "approved");
+    const { completeReview, collection } = this.props;
+    completeReview(collUser, collection.get("COLL_ID"), "approved");
   };
 
   render() {

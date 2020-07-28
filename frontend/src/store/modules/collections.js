@@ -161,26 +161,8 @@ export function loadReviewList(user) {
     promise: (client) =>
       client.get(`${config.apiPath}/review`, {
         params: {
-          user,
-          include_pages: false,
-          include_recordings: false,
-          include_lists: false,
         },
       }),
   };
 }
-export function loadall(admin) {
-  return {
-    types: [COLLS_LOAD, COLLS_LOAD_SUCCESS, COLLS_LOAD_FAIL],
-    accessed: Date.now(),
-    promise: (client) =>
-      client.get(`${config.apiPath}/all_collections`, {
-        params: {
-          admin,
-          include_pages: false,
-          include_recordings: false,
-          include_lists: false,
-        },
-      }),
-  };
-}
+
