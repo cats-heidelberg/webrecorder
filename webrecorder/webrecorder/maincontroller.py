@@ -70,7 +70,8 @@ class MainController(BaseController):
                        ListsController,
                        AutoController,
                        BehaviorMgr,
-                       OdRedirectController
+                       OdRedirectController,
+                       ReviewController
                       ]
 
 
