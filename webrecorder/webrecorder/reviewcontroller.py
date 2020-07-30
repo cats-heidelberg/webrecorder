@@ -15,8 +15,7 @@ class ReviewController(BaseController):
 
         @self.app.post('/api/v1/review')
         @self.api(query=[],
-                  req_desc='review coll',
-                  req=['user', 'coll_id'])
+                  req_desc='review coll')
         def post_review(req):
             print(request.json)
             return ("OK")
