@@ -34,6 +34,7 @@ from webrecorder.appcontroller import AppController
 from webrecorder.autocontroller import AutoController
 from webrecorder.behaviormgr import BehaviorMgr
 from webrecorder.odredirectcontroller import OdRedirectController
+from webrecorder.reviewcontroller import ReviewController
 from webrecorder.browsermanager import BrowserManager
 
 from webrecorder.webreccork import WebRecCork
