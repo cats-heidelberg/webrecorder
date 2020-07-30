@@ -79,8 +79,9 @@ class ReviewUI extends Component {
     } = this.props;
     const { showModal, showModalFinish } = this.state;
     const userParam = params.user;
+
     const displayName = user.get("full_name") || userParam;
-    const canAdmin = auth.getIn(["user", "username"]) === userParam;
+    const canAdmin = auth.getIn(["user", "role"]) === "admin";
 
     const userLink =
       user.get("display_url") &&
@@ -92,15 +93,6 @@ class ReviewUI extends Component {
       console.log(collections.getIn(["error", "error_message"]));
       return (
         <HttpStatus>{collections.getIn(["error", "error_message"])}</HttpStatus>
-      );
-    }
-
-    if (collections.get("loaded") && isAnon && canAdmin) {
-      return (
-        <RedirectWithStatus
-          to={`/${auth.getIn(["user", "username"])}/temp/manage`}
-          status={301}
-        />
       );
     }
 
@@ -116,22 +108,21 @@ class ReviewUI extends Component {
             smOffset={__DESKTOP__ ? 2 : 2}
             className="wr-coll-meta"
           >
-            {isAnon ||
-              (auth.getIn(["user", "role"]) !== "admin" && (
-                <Row>
-                  <Col
-                    xs={15}
-                    className={classNames("collections-index-nav", {
-                      desktop: __DESKTOP__,
-                    })}
-                  >
-                    {__DESKTOP__ && (
-                      <h4>please log in as an admin to review data</h4>
-                    )}
-                  </Col>
-                </Row>
-              ))}
-            {!isAnon && auth.getIn(["user", "role"]) === "admin" && (
+            {(isAnon || canAdmin) && (
+              <Row>
+                <Col
+                  xs={15}
+                  className={classNames("collections-index-nav", {
+                    desktop: __DESKTOP__,
+                  })}
+                >
+                  {__DESKTOP__ && (
+                    <h4>please log in as an admin to review data</h4>
+                  )}
+                </Col>
+              </Row>
+            )}
+            {!isAnon && canAdmin && (
               <Row>
                 <Col
                   xs={15}
@@ -143,28 +134,26 @@ class ReviewUI extends Component {
                 </Col>
               </Row>
             )}
-            {collections &&
-              collections.get("loaded") &&
-              auth.getIn(["user", "role"]) === "admin" && (
-                <Row>
-                  <ul className="list-group collection-list">
-                    {orderedCollections.map((coll) => {
-                      return (
-                        <CollectionItem
-                          key={coll.get("id")}
-                          canAdmin={canAdmin}
-                          collection={coll}
-                          collUser={user}
-                          completeReview={this.completeReview}
-                          error={collections.get("error")}
-                          history={history}
-                          onPatch={() => {}}
-                        />
-                      );
-                    })}
-                  </ul>
-                </Row>
-              )}
+            {collections && collections.get("loaded") && canAdmin && (
+              <Row>
+                <ul className="list-group collection-list">
+                  {orderedCollections.map((coll) => {
+                    return (
+                      <CollectionItem
+                        key={coll.get("id")}
+                        canAdmin={canAdmin}
+                        collection={coll}
+                        collUser={user}
+                        completeReview={this.completeReview}
+                        error={collections.get("error")}
+                        history={history}
+                        onPatch={() => {}}
+                      />
+                    );
+                  })}
+                </ul>
+              </Row>
+            )}
           </Col>
         </Row>
       </React.Fragment>

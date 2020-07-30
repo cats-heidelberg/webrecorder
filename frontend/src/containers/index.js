@@ -34,6 +34,7 @@ export Record from './Record/Record';
 export RemoteBrowser from './RemoteBrowser/RemoteBrowser';
 export RegisterAccount from './RegisterAccount/RegisterAccount';
 export Replay from './Replay/Replay';
+export Review from "./Review/Review";
 export SessionCollapsible from './SessionCollapsible/SessionCollapsible';
 export ShareWidget from './ShareWidget/ShareWidget';
 export Sidebar from './Sidebar/Sidebar';

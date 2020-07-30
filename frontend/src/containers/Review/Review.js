@@ -5,7 +5,10 @@ import { batchActions } from "redux-batched-actions";
 import { saveDelay, appHost } from "config";
 
 import { addUserCollection, incrementCollCount } from "store/modules/auth";
-import { load as loadCollections } from "store/modules/collections";
+import {
+  load as loadCollections,
+  loadReviewList,
+} from "store/modules/collections";
 
 import {
   editCollectionDispatch,
@@ -32,12 +35,16 @@ const preloadCollections = [
       },
       store: { dispatch },
     }) => {
-      return dispatch(loadCollections(user));
+      dispatch(loadUser(user, false)).then((result) => {
+        if (result["user"]["role"] === "admin")
+          return dispatch(loadReviewList(user));
+      });
     },
   },
   {
     promise: ({ match: { params }, store: { dispatch } }) => {
       const { user } = params;
+
       return dispatch(loadUser(user, false));
     },
   },
