@@ -345,11 +345,8 @@ export function reviewDataToRevis(user, collID) {
   return {
     types: [REVIEW_CREATE, REVIEW_CREATE_SUCCESS, REVIEW_CREATE_FAIL],
     promise: (client) =>
-      client.post(`${apiPath}/collection/${collID}/review`, {
-        params: { user },
-        data: {
-          collID,
-        },
+      client.post(`${apiPath}/review`, {
+        params: { user, collID },
       }),
   };
 }
