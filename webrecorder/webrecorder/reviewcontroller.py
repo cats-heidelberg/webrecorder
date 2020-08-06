@@ -12,7 +12,7 @@ class ReviewController(BaseController):
         @self.app.get('/api/v1/review')
         @self.api(resp='reviewcolls')
         def get_review():
-            return json.dumps(redis.smembers(REVIEW_KEY))
+            return json.dumps(self.redis.smembers(REVIEW_KEY))
 
         @self.app.post('/api/v1/review')
         @self.api(query=[],
