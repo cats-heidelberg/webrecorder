@@ -6,14 +6,13 @@ import json
 class ReviewController(BaseController):
     def init_routes(self):
 
-        REVIEW_KEY = 'review'
         # Review
         wr_api_spec.set_curr_tag('review')
 
         @self.app.get('/api/v1/review')
         @self.api(resp='reviewcolls')
         def get_review():
-            return json.dumps(self.redis.smembers(REVIEW_KEY))
+            return json.dumps(self.redis.smembers('review'))
 
         @self.app.post('/api/v1/review')
         @self.api(query=[],
