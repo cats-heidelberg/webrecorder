@@ -4,8 +4,9 @@ import json
 
 # ============================================================================
 class ReviewController(BaseController):
-    REVIEW_KEY = 'review'
     def init_routes(self):
+
+        REVIEW_KEY = 'review'
         # Review
         wr_api_spec.set_curr_tag('review')
 
