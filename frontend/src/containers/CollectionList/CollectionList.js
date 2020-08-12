@@ -12,6 +12,7 @@ import {
 
 import {
   editCollectionDispatch,
+  editCollectionDispatchWARC,
   completeRecordingDispatch,
   reviewDataToRevis,
   shareToDat,
@@ -49,12 +50,14 @@ const preloadCollections = [
 const mapStateToProps = ({ app }) => {
   return {
     activeBrowser: app.getIn(["remoteBrowsers", "activeBrowser"]),
+    activeCollection: app.getIn(["auth", "activeCollection"]),
     auth: app.get("auth"),
     collections: app.get("collections"),
     edited: app.getIn(["user", "edited"]),
     orderedCollections: app.getIn(["collections", "loaded"])
       ? sortCollsByAlpha(app)
       : null,
+    numCollections: app.getIn(["user", "num_collections"]),
     timestamp: app.getIn(["controls", "timestamp"]),
     user: app.get("user"),
   };
@@ -154,6 +157,76 @@ const mapDispatchToProps = (dispatch, { history }) => {
         )
         .catch((err) => console.log(err));
     },
+    createNewCollectionBrowseWarc_old: (
+      user,
+      title,
+      url,
+      isPublic,
+      creatorList,
+      subjectHeaderList,
+      personHeaderList,
+      noteToDachs,
+      publisher,
+      collTitle,
+      publisherOriginal,
+      collYear,
+      copTitle,
+      surName,
+      persName,
+      usermail,
+      selectedGroupName,
+      publishYear,
+      pubTitleOriginal,
+      personHeadingText,
+      subjectHeadingText,
+      listID,
+      ticketState,
+      isCollLoaded,
+      recordingUrl,
+      recordingTimestamp
+    ) => {
+      dispatch(
+        createCollection(
+          user,
+          title,
+          url,
+          isPublic,
+          creatorList,
+          subjectHeaderList,
+          personHeaderList,
+          noteToDachs,
+          publisher,
+          collTitle,
+          publisherOriginal,
+          collYear,
+          copTitle,
+          surName,
+          persName,
+          usermail,
+          selectedGroupName,
+          publishYear,
+          pubTitleOriginal,
+          personHeadingText,
+          subjectHeadingText,
+          listID,
+          ticketState,
+          isCollLoaded,
+          recordingUrl,
+          recordingTimestamp
+        )
+      )
+        .then((res) => {
+          if (res.hasOwnProperty("collection")) {
+            dispatch(
+              batchActions([
+                incrementCollCount(1),
+                addUserCollection(res.collection),
+              ])
+            );
+          }
+        })
+        .catch((err) => console.log("errorwhilecreating" + err));
+    },
     editCollection: (
       user,
       collID,
@@ -175,7 +248,8 @@ const mapDispatchToProps = (dispatch, { history }) => {
       pubTitleOriginal,
       personHeadingText,
       subjectHeadingText,
-      listID
+      listID,
+      url
     ) => {
       dispatch(
         editCollectionDispatch(
@@ -199,7 +273,8 @@ const mapDispatchToProps = (dispatch, { history }) => {
           pubTitleOriginal,
           personHeadingText,
           subjectHeadingText,
-          listID
+          listID,
+          url
         )
       ).then(
         (res) => {
@@ -209,6 +284,67 @@ const mapDispatchToProps = (dispatch, { history }) => {
           console.log(error);
         }
       );
+    },
+    createNewCollectionBrowseWarc: (
+      user,
+      collID,
+      title,
+      creatorList,
+      subjectHeaderList,
+      personHeaderList,
+      noteToDachs,
+      publisher,
+      collTitle,
+      publisherOriginal,
+      collYear,
+      copTitle,
+      surName,
+      persName,
+      usermail,
+      selectedGroupName,
+      publishYear,
+      pubTitleOriginal,
+      personHeadingText,
+      subjectHeadingText,
+      listID,
+      url
+    ) => {
+      dispatch(
+        editCollectionDispatchWARC(
+          user,
+          collID,
+          title,
+          creatorList,
+          subjectHeaderList,
+          personHeaderList,
+          noteToDachs,
+          publisher,
+          collTitle,
+          publisherOriginal,
+          collYear,
+          copTitle,
+          surName,
+          persName,
+          usermail,
+          selectedGroupName,
+          publishYear,
+          pubTitleOriginal,
+          personHeadingText,
+          subjectHeadingText,
+          listID,
+          url
+        )
+      )
+        .then(dispatch(incrementCollCount(1)))
+        .then(() => {
+          const _untidyURL = url;
+          const cleanUrl = addTrailingSlash(fixMalformedUrls(_untidyURL));
+
+          // data to create new recording
+          history.push(`/${user}/${collID}/2016010203000000/${cleanUrl}`);
+        })
+
+        .catch((err) => console.log("error", err));
     },
     completeRecording: (user, collID, ticketState = "pending") => {
       dispatch(completeRecordingDispatch(user, collID, ticketState))

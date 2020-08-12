@@ -2,9 +2,12 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Toggle from "react-toggle";
 import { Alert, ControlLabel, FormGroup, FormControl } from "react-bootstrap";
+import { incrementCollCount } from "store/modules/auth";
 
-import { defaultCollectionTitle } from "config";
-import { collection } from "helpers/userMessaging";
+import { defaultCollectionTitle, apiPath } from "config";
+import { apiFormatUrl } from "helpers/utils";
+
+import { collection, upload as uploadErrors } from "helpers/userMessaging";
 
 import Modal from "components/Modal";
 
@@ -19,18 +22,25 @@ const personHeaderList = [];
 
 class NewCollection extends Component {
   static propTypes = {
+    activeCollection: PropTypes.string,
     close: PropTypes.func,
     createCollection: PropTypes.func,
     creatingCollection: PropTypes.bool,
+    createCollectionBrowseWarc: PropTypes.func,
     error: PropTypes.string,
+    fromCollection: PropTypes.string,
     showModal: PropTypes.bool,
     visible: PropTypes.bool,
   };
 
   constructor(props) {
     super(props);
-
+    this.xhr = null;
+    this.interval = null;
+    this.fileObj = null;
     this.state = {
+      file: "",
+      isUploading: false,
       listID: 0,
       urlValid: false,
       emailValid: false,
@@ -46,7 +56,9 @@ class NewCollection extends Component {
       collYear: "",
       copTitle: "",
       surName: "",
+      status: null,
       persName: "",
+      progress: 0,
       usermail: "",
       creatorList,
       isPublic: false,
@@ -59,10 +71,50 @@ class NewCollection extends Component {
       isCollLoaded: true,
       recordingUrl: "",
       recordingTimestamp: "",
+      targetColl: props.fromCollection ? "chosen" : "auto",
     };
   }
+
+  cancelWarc = () => {
+    this.setState((state) => {
+      return {
+        open: false,
+        file: "",
+        canCancel: true,
+        isUploading: false,
+        status: null,
+        isIndexing: false,
+        progress: 0,
+        targetColl: this.props.fromCollection ? "chosen" : "auto",
+      };
+    });
+  };
+
   checkEmail = () => {
     this.setState({ checkEmail: true });
+  };
+
+  close = () => {
+    const { close } = this.props;
+    if (this.state.isUploading && this.xhr && this.state.canCancel) {
+      this.xhr.upload.removeEventListener("progress", this.uploadProgress);
+      this.xhr.removeEventListener("load", this.uploadSuccess);
+      this.xhr.removeEventListener("loadend", this.uploadComplete);
+      this.xhr.abort();
+    }
+    close();
+  };
+
+  filePicker = (evt) => {
+    if (evt.target.files.length > 0) {
+      this.fileObj = evt.target.files[0]; // eslint-disable-line
+      this.setState((state) => {
+        return {
+          file: this.fileObj.name,
+          urlValid: "",
+        };
+      });
+    }
   };
 
   focusInput = (evt) => {
@@ -89,7 +141,98 @@ class NewCollection extends Component {
     this.setState({ [evt.target.name]: evt.target.value });
     this.setState({ selectedGroupName: evt.target.value });
   };
+  indexing = (data) => {
+    this.setState({ canCancel: false, status: "Indexing..." });
 
+    const url = apiFormatUrl(
+      `${apiPath}/upload/${data.upload_id}?user=${data.user}`
+    );
+
+    this.interval = setInterval(() => {
+      fetch(url, {
+        headers: new Headers({ "x-requested-with": "XMLHttpRequest" }),
+      })
+        .then((res) => res.json())
+        .then(this.indexResponse);
+    }, 75);
+  };
+  indexingComplete = (user, coll) => {
+    const {
+      title,
+      creatorList,
+      noteToDachs,
+      subjectHeaderList,
+      subjectHeadingText,
+      personHeaderList,
+      publisher,
+      publisherOriginal,
+      pubTitleOriginal,
+      personHeadingText,
+      collTitle,
+      collYear,
+      copTitle,
+      surName,
+      persName,
+      usermail,
+      selectedGroupName,
+      publishYear,
+      listID,
+      url,
+    } = this.state;
+
+    this.props.createCollectionBrowseWarc(
+      coll,
+      title,
+      JSON.stringify(creatorList),
+      JSON.stringify(subjectHeaderList),
+      JSON.stringify(personHeaderList),
+      noteToDachs,
+      publisher,
+      collTitle,
+      publisherOriginal,
+      collYear,
+      copTitle,
+      surName,
+      persName,
+      usermail,
+      selectedGroupName,
+      publishYear,
+      pubTitleOriginal,
+      personHeadingText,
+      subjectHeadingText,
+      listID,
+      url
+    );
+    this.props.close();
+  };
+  indexResponse = (data) => {
+    const stateUpdate = {};
+
+    if (data.filename && data.filename !== this.state.file) {
+      stateUpdate.file = data.filename;
+    }
+
+    if (data.total_files > 1) {
+      stateUpdate.status = `Indexing ${data.total_files - data.files} of ${
+        data.total_files
+      }`;
+    }
+
+    if (data.size && data.total_size) {
+      stateUpdate.progress =
+        50 + Math.round((50 * data.size) / data.total_size);
+    }
+
+    // update ui
+    if (Object.keys(stateUpdate).length) {
+      this.setState(stateUpdate);
+    }
+
+    if (data.size >= data.total_size && data.done) {
+      clearInterval(this.interval);
+      this.indexingComplete(data.user, data.coll);
+    }
+  };
   onRemoveItem = (item) => {
     this.setState({
       creatorList: this.state.creatorList.filter((el) => el !== item),
@@ -207,6 +350,7 @@ class NewCollection extends Component {
     evt.stopPropagation();
     evt.preventDefault();
     const {
+      file,
       title,
       url,
       isPublic,
@@ -232,35 +376,96 @@ class NewCollection extends Component {
       isCollLoaded,
       recordingUrl,
       recordingTimestamp,
+      targetColl,
     } = this.state;
-    this.props.createCollection(
-      title,
-      url,
-      isPublic,
-      JSON.stringify(creatorList),
-      JSON.stringify(subjectHeaderList),
-      JSON.stringify(personHeaderList),
-      noteToDachs,
-      publisher,
-      collTitle,
-      publisherOriginal,
-      collYear,
-      copTitle,
-      surName,
-      persName,
-      usermail,
-      selectedGroupName,
-      publishYear,
-      pubTitleOriginal,
-      personHeadingText,
-      subjectHeadingText,
-      listID,
-      ticketState,
-      isCollLoaded,
-      recordingUrl,
-      recordingTimestamp
-    );
+    const { activeCollection } = this.props;
+    if (!file) {
+      this.props.createCollection(
+        title,
+        url,
+        isPublic,
+        JSON.stringify(creatorList),
+        JSON.stringify(subjectHeaderList),
+        JSON.stringify(personHeaderList),
+        noteToDachs,
+        publisher,
+        collTitle,
+        publisherOriginal,
+        collYear,
+        copTitle,
+        surName,
+        persName,
+        usermail,
+        selectedGroupName,
+        publishYear,
+        pubTitleOriginal,
+        personHeadingText,
+        subjectHeadingText,
+        listID,
+        ticketState,
+        isCollLoaded,
+        recordingUrl,
+        recordingTimestamp
+      );
+    } else {
+      this.xhr = new XMLHttpRequest();
+      const target = targetColl === "chosen" ? activeCollection : "";
+      const url = apiFormatUrl(
+        `${apiPath}/upload?force-coll=${target}&filename=${file}`
+      );
+
+      this.xhr.upload.addEventListener("progress", this.uploadProgress);
+      this.xhr.addEventListener("load", this.uploadSuccess);
+      this.xhr.addEventListener("loadend", this.uploadComplete);
+
+      this.xhr.open("PUT", url, true);
+      this.xhr.setRequestHeader("x-requested-with", "XMLHttpRequest");
+
+      this.setState({
+        isUploading: true,
+        status: "Uploading...",
+      });
+
+      this.xhr.send(this.fileObj);
+
+      return this.xhr;
+    }
   };
+  triggerFile = () => {
+    this.fileField.click();
+  };
+
+  uploadComplete = (evt) => {
+    if (!this.xhr) {
+      return;
+    }
+
+    const data = JSON.parse(this.xhr.responseText);
+
+    this.setState({
+      canCancel: true,
+      status: uploadErrors[data.error] || "Error Encountered",
+    });
+    this.xhr.upload.removeEventListener("progress", this.uploadProgress);
+    this.xhr.removeEventListener("load", this.uploadSuccess);
+    this.xhr.removeEventListener("loadend", this.uploadComplete);
+    this.xhr.abort();
+    if (data && data.upload_id) {
+      return this.indexing(data);
+    }
+  };
+  uploadProgress = (evt) => {
+    const progress = Math.round((50.0 * evt.loaded) / evt.total);
+
+    if (evt.loaded >= evt.total) {
+      this.setState({ canCancel: false, progress });
+    } else {
+      this.setState({ progress });
+    }
+  };
+
+  uploadSuccess = (evt) => this.setState({ progress: 50 });
+
   validateEmail = () => {
     const { emailValid, usermail } = this.state;
     /*if (checkEmail && ( email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) === null)) {
@@ -342,26 +547,30 @@ class NewCollection extends Component {
   };
 
   render() {
-    const { close, creatingCollection, error, visible } = this.props;
+    const { creatingCollection, error, visible } = this.props;
     const {
       collTitle,
       collYear,
       emailValid,
+      file,
       surName,
       copTitle,
       isPublic,
+      isUploading,
       noteToDachs,
       title,
       publisherOriginal,
       publishYear,
       usermail,
       persName,
+      progress,
       pubTitleOriginal,
       publisher,
       selectedGroupName,
       subjectHeadingText,
       personHeadingText,
       creatorLegend,
+      status,
       url,
       urlValid,
       creatorList,
@@ -373,7 +582,7 @@ class NewCollection extends Component {
     }
     return (
       <React.Fragment>
-        <Modal closeCb={close} header={text} visible={visible}>
+        <Modal closeCb={this.close} header={text} visible={visible}>
           <form
             onSubmit={this.submit}
             id="create-coll"
@@ -475,7 +684,7 @@ class NewCollection extends Component {
                         color: urlValid ? "black" : "red",
                       }}
                     >
-                      *URL:
+                      *URL(URL of recorded page if WARC provided):
                     </div>
                     <FormControl
                       aria-label="url"
@@ -487,10 +696,58 @@ class NewCollection extends Component {
                       validationState={this.validateURL()}
                       name="url"
                       placeholder="please enter a valid webpage url*"
-                      required
                       value={url}
                       onChange={this.handleInput}
                     />
+
+                    <label htmlFor="upload-file">
+                      WARC/ARC file to upload:{" "}
+                    </label>
+
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        id="upload-file"
+                        value={file}
+                        name="upload-file-text"
+                        className="form-control"
+                        placeholder="Click Pick File to select a web archive file"
+                        readOnly
+                        onClick={this.triggerFile}
+                        style={{ backgroundColor: "white" }}
+                      />
+
+                      <button
+                        aria-label="pick file..."
+                        type="button"
+                        class="btn btn-success"
+                        onClick={this.triggerFile}
+                      >
+                        Pick File...
+                      </button>
+
+                      <input
+                        type="file"
+                        onChange={this.filePicker}
+                        ref={(obj99) => {
+                          this.fileField = obj99;
+                        }}
+                        name="uploadFile"
+                        style={{ display: "none" }}
+                        accept=".gz,.warc,.arc,.har"
+                      />
+                      <button
+                        onClick={this.cancelWarc}
+                        disabled={!this.state.canCancel}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </FormGroup>
+                </div>
+
+                <div>
+                  <FormGroup id="fieldset">
                     <label
                       style={{
                         marginRight: "4px",
@@ -1194,6 +1451,21 @@ class NewCollection extends Component {
                     />
                   </FormGroup>
                 </div>
+
+                {isUploading && (
+                  <React.Fragment>
+                    <div className="wr-progress-bar">
+                      <div
+                        className="progress"
+                        style={{ width: `${progress || 0}%` }}
+                      />
+                      <div className="progress-readout">{`${
+                        progress || 0
+                      }%`}</div>
+                    </div>
+                    {status && <p>{status}</p>}
+                  </React.Fragment>
+                )}
               </span>
             )}
             <button

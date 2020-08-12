@@ -305,6 +305,9 @@ class CollsController(BaseController):
 
             if 'ticketState' in data:
                 collection['ticketState'] = data['ticketState']
+                
+            if 'url' in data:
+                collection['url'] = data['url']    
 
 
             # TODO: notify the user if this is a request from the admin panel

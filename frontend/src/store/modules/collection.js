@@ -414,6 +414,60 @@ export function editCollectionDispatch(
       }),
   };
 }
+export function editCollectionDispatchWARC(
+  user,
+  collID,
+  title,
+  creatorList,
+  subjectHeaderList,
+  personHeaderList,
+  noteToDachs,
+  publisher,
+  collTitle,
+  publisherOriginal,
+  collYear,
+  copTitle,
+  surName,
+  persName,
+  usermail,
+  selectedGroupName,
+  publishYear,
+  pubTitleOriginal,
+  personHeadingText,
+  subjectHeadingText,
+  listID,
+  url
+) {
+  return {
+    types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
+    promise: (client) =>
+      client.post(`${apiPath}/collection/${collID}`, {
+        params: { user },
+        data: {
+          title,
+          creatorList,
+          subjectHeaderList,
+          personHeaderList,
+          noteToDachs,
+          publisher,
+          collTitle,
+          publisherOriginal,
+          collYear,
+          copTitle,
+          surName,
+          persName,
+          usermail,
+          selectedGroupName,
+          publishYear,
+          pubTitleOriginal,
+          personHeadingText,
+          subjectHeadingText,
+          listID,
+          url,
+        },
+      }),
+  };
+}
 
 export function getBookmarkCount(user, coll, list) {
   return {

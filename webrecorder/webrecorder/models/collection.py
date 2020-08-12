@@ -319,7 +319,7 @@ class Collection(PagesMixin, RedisUniqueComponent):
         else:
             return len(self.get_lists())
 
-    def init_new(self, slug, title, url='', creatorList='', noteToDachs='', subjectHeaderList='', personHeaderList='', publisher='', collTitle='', publisherOriginal='', pubTitleOriginal='', personHeadingText='', collYear='', copTitle='', subjectHeadingText='', surName='', persName='', usermail='', selectedGroupName='', publishYear='', listID='', desc='', public=False, public_index=False, ticketState='open', isCollLoaded=True, recordingUrl='', recordingTimestamp=''):
+    def init_new(self, slug, title, url='', creatorList='', noteToDachs='', subjectHeaderList='', personHeaderList='', publisher='', collTitle='', publisherOriginal='', pubTitleOriginal='', personHeadingText='', collYear='', copTitle='', subjectHeadingText='', surName='', persName='', usermail='', selectedGroupName='', publishYear='', listID='', desc='', public=False, public_index=False, ticketState='open', isCollLoaded=True, recordingUrl='', recordingTimestamp='2016010203000000'):
         """Initialize new collection.
 
         :param str title: title
