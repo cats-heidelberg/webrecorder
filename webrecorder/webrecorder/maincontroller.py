@@ -34,6 +34,7 @@ from webrecorder.appcontroller import AppController
 from webrecorder.autocontroller import AutoController
 from webrecorder.behaviormgr import BehaviorMgr
 from webrecorder.odredirectcontroller import OdRedirectController
+from webrecorder.reviewcontroller import ReviewController
 from webrecorder.browsermanager import BrowserManager
 
 from webrecorder.webreccork import WebRecCork
@@ -69,7 +70,8 @@ class MainController(BaseController):
                        ListsController,
                        AutoController,
                        BehaviorMgr,
-                       OdRedirectController
+                       OdRedirectController,
+                       ReviewController
                       ]
 
 
@@ -120,6 +122,7 @@ class MainController(BaseController):
         # Init Browser Mgr
         browser_mgr = BrowserManager(config, browser_redis, user_manager)
 
+
         # Init Dat Share
         DatShare.dat_share = DatShare(self.redis)
 
@@ -148,6 +151,7 @@ class MainController(BaseController):
         # Init Core app controllers
         for controller_type in self.ALL_CONTROLLERS:
             x = controller_type(**kwargs)
+            print(x)
 
         # Set Error Handler
         bottle_app.default_error_handler = self.make_err_handler(
