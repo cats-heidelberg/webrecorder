@@ -14,7 +14,8 @@ class ReviewController(BaseController):
         def get_review():
             collections = list()
             for r in self.redis.smembers('review'):
-                collections.append(self.user_manager.all_users.make_user(r[0]).get_collection_by_name(r[1]))
+                j = json.loads(r)
+                collections.append(self.user_manager.all_users.make_user(j[0]).get_collection_by_name(j[1]))
             print(collections)
             return {'collections': [coll.serialize(**kwargs) for coll in collections]}
 
