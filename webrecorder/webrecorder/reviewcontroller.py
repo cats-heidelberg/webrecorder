@@ -15,7 +15,7 @@ class ReviewController(BaseController):
             j = list()
             for r in self.redis.smembers('review'):
                 j.append(json.loads(r))
-                print(self.user_manager.all_users.make_user(j[0]))
+                print(self.user_manager.all_users.make_user(j[0]).get_collection_by_name(j[1]))
             return json.dumps(j)
 
         @self.app.post('/api/v1/review')
