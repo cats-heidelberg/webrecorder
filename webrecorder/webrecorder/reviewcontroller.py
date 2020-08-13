@@ -18,7 +18,7 @@ class ReviewController(BaseController):
         @self.api(query=[],
                   req_desc='review coll')
         def post_review():
-            print(list(request.query['user'], request.query['collID']))
-            self.redis.sadd('review', json.dumps(list(request.query['user'], request.query['collID'])))
+            print([request.query['user'], request.query['collID']])
+            self.redis.sadd('review', json.dumps([request.query['user'], request.query['collID']]))
 
             return ("OK")
