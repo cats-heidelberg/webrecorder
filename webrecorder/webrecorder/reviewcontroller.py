@@ -12,11 +12,11 @@ class ReviewController(BaseController):
         @self.app.get('/api/v1/review')
         @self.api(resp='reviewcolls')
         def get_review():
-            j = list()
+            collections = list()
             for r in self.redis.smembers('review'):
-                j.append(json.loads(r))
-                print(self.user_manager.all_users.make_user(j[0]).get_collection_by_name(j[1]))
-            return json.dumps(j)
+                collections.append(self.user_manager.all_users.make_user(r[0]).get_collection_by_name(r[1]))
+            print(collections)
+            return {'collections': [coll.serialize(**kwargs) for coll in collections]}
 
         @self.app.post('/api/v1/review')
         @self.api(query=[],
