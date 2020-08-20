@@ -17,7 +17,7 @@ class ReviewController(BaseController):
                 j = json.loads(r)
                 collections.append(self.user_manager.all_users.make_user(j[0]).get_collection_by_name(j[1]))
             print(collections)
-            return {'collections': [coll.serialize(**kwargs) for coll in collections]}
+            return {'collections': [coll.serialize() for coll in collections]}
 
         @self.app.post('/api/v1/review')
         @self.api(query=[],
