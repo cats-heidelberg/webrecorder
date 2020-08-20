@@ -15,6 +15,7 @@ import {
   editCollectionDispatchWARC,
   completeRecordingDispatch,
   reviewDataToRevis,
+  sendMetaDispatch,
   shareToDat,
 } from "store/modules/collection";
 import {
@@ -341,7 +342,7 @@ const mapDispatchToProps = (dispatch, { history }) => {
           const cleanUrl = addTrailingSlash(fixMalformedUrls(_untidyURL));
 
           // data to create new recording
-          history.push(`/${user}/${collID}/2016010203000000/${cleanUrl}`);
+          history.push(`/${user}/${collID}/0000000000000000/${cleanUrl}`);
         })
 
         .catch((err) => console.log("error", err));
