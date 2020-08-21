@@ -41,7 +41,24 @@ export default function collections(state = initialState, action = {}) {
         loaded: false,
         error: action.error,
       });
+    case REVIEW_COLLS_LOAD:
+      return state.set("loading", true);
+    case REVIEW_COLLS_LOAD_SUCCESS:
+      return state.merge({
+        loading: false,
+        loaded: true,
+        accessed: action.accessed,
+        error: null,
 
+        user: fromJS(action.result.user),
+        collections: fromJS(action.result.collections),
+      });
+    case REVIEW_COLLS_LOAD_FAIL:
+      return state.merge({
+        loading: false,
+        loaded: false,
+        error: action.error,
+      });
     case CREATE_COLL:
       console.log("coll create");
       return state.merge({
@@ -52,6 +69,7 @@ export default function collections(state = initialState, action = {}) {
       console.log("coll success");
       return state.merge({
         newCollection: action.result.collection.id,
+        activeCollection: action.result.collection,
         creatingCollection: false,
         error: null,
         // nullify collections cache
@@ -150,7 +168,7 @@ export function load(user) {
       }),
   };
 }
-export function loadReviewList(user) {
+export function loadReviewList() {
   return {
     types: [
       REVIEW_COLLS_LOAD,
@@ -160,9 +178,7 @@ export function loadReviewList(user) {
     accessed: Date.now(),
     promise: (client) =>
       client.get(`${config.apiPath}/review`, {
-        params: {
-        },
+        params: {},
       }),
   };
 }
-

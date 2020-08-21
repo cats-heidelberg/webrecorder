@@ -32,8 +32,10 @@ class ReviewUI extends Component {
     collections: PropTypes.object,
     editCollection: PropTypes.func,
     edited: PropTypes.bool,
+    loadReviewCollections: PropTypes.func,
     onPatch: PropTypes.func,
     match: PropTypes.object,
+    numCollections: PropTypes.number,
     orderedCollections: PropTypes.object,
     match: PropTypes.object,
     history: PropTypes.object,
@@ -50,11 +52,16 @@ class ReviewUI extends Component {
 
     this.state = {
       showModal: false,
+      numCollections: 0,
       showModalFinish: false,
     };
   }
+  componentDidMount() {
+    const { getCollectionsReview } = this.props;
+    getCollectionsReview();
+  }
 
-  completeReview = (collID, user, ticketState) => {
+  completeReview = (user, collID, ticketState) => {
     const { completeReview } = this.props;
     completeReview(user, collID, ticketState);
   };
@@ -77,12 +84,14 @@ class ReviewUI extends Component {
       match: { params },
       user,
     } = this.props;
-    const { showModal, showModalFinish } = this.state;
+    const { collectionsReview, showModal, showModalFinish } = this.state;
     const userParam = params.user;
 
     const displayName = user.get("full_name") || userParam;
     const canAdmin = auth.getIn(["user", "role"]) === "admin";
-
+    collections.get("collections").map((coll) => {
+      console.log("collections" + coll.get("id"));
+    });
     const userLink =
       user.get("display_url") &&
       (!user.get("display_url").match(/^[a-zA-Z]+:\/\//)
@@ -108,7 +117,7 @@ class ReviewUI extends Component {
             smOffset={__DESKTOP__ ? 2 : 2}
             className="wr-coll-meta"
           >
-            {(isAnon || canAdmin) && (
+            {(isAnon || !canAdmin) && (
               <Row>
                 <Col
                   xs={15}
@@ -137,7 +146,7 @@ class ReviewUI extends Component {
             {collections && collections.get("loaded") && canAdmin && (
               <Row>
                 <ul className="list-group collection-list">
-                  {orderedCollections.map((coll) => {
+                  {collections.get("collections").map((coll) => {
                     return (
                       <CollectionItem
                         key={coll.get("id")}

@@ -303,7 +303,7 @@ export function completeRecordingDispatch(user, coll, ticketState) {
       }),
   };
 }
-export function completeReviewDispatch(user, coll, ticketState) {
+export function completeReviewDispatch(user, collID) {
   return {
     types: [
       COLL_REVIEWCOMPLETE,
@@ -311,12 +311,8 @@ export function completeReviewDispatch(user, coll, ticketState) {
       COLL_REVIEWCOMPLETE_FAIL,
     ],
     promise: (client) =>
-      client.delete(`${apiPath}/review`, {
-        params: { user },
-        data: {
-          coll,
-          ticketState,
-        },
+      client.del(`${apiPath}/review`, {
+        params: { user, collID },
       }),
   };
 }

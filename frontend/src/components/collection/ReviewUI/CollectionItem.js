@@ -11,7 +11,7 @@ import { buildDate, getCollectionLink, truncate } from "helpers/utils";
 import SizeFormat from "components/SizeFormat";
 import Modal from "components/Modal";
 
-import { EditMetadata } from "components/siteComponents";
+import { ReviewMetadata } from "components/siteComponents";
 import { DeleteCollection } from "containers";
 import { TrashIcon, PlusIcon, LockIcon } from "components/icons";
 
@@ -45,7 +45,11 @@ class CollectionItem extends Component {
   };
   denyArchive = () => {
     const { completeReview, collection } = this.props;
-    completeReview(collUser, collection.get("COLL_ID"), "denied");
+    completeReview(
+      collection.get("owner"),
+      collection.get("COLL_ID"),
+      "denied"
+    );
     this.close();
   };
 
@@ -62,7 +66,11 @@ class CollectionItem extends Component {
   newSession = () => {};
   sendForDOI = () => {
     const { completeReview, collection } = this.props;
-    completeReview(collUser, collection.get("COLL_ID"), "approved");
+    completeReview(
+      collection.get("owner"),
+      collection.get("COLL_ID"),
+      "approved"
+    );
   };
 
   render() {
@@ -150,10 +158,11 @@ class CollectionItem extends Component {
                     <p>
                       User waiting for review.
                       <br />
-                      Approve if no weird content and pass content to the DOI
-                      generating team.
+                      Approve if no unallowed content and pass content to the
+                      DOI generating team.
                       <br />
-                      If denied user will be notified and has to start again.
+                      If denied user will be notified and has to start from the
+                      beginning.
                     </p>
                   </React.Fragment>
                 )}
@@ -166,7 +175,7 @@ class CollectionItem extends Component {
               xs={5}
               md={2}
             ></Col>
-            <EditMetadata
+            <ReviewMetadata
               coll={collection}
               editCollection={this.editCollectiontemp}
               close={this.closeModal}
