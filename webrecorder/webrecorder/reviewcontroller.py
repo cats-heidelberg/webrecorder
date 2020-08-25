@@ -27,3 +27,10 @@ class ReviewController(BaseController):
             self.redis.sadd('review', json.dumps([request.query['user'], request.query['collID']]))
 
             return ("OK")
+
+        @self.app.delete('/api/v1/review')
+        @self.api(query=[],
+                  req_desc='review coll')
+        def delete_review():
+            print("deleting " + str(request.query['collID']))
+            self.redis.srem('review', json.dumps([request.query['user'], request.query['collID']]))
