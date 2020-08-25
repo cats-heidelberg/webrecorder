@@ -13,6 +13,7 @@ import {
 import {
   editCollectionDispatch,
   completeRecordingDispatch,
+  completeReviewDispatch,
   sendMetaDispatch,
   shareToDat,
 } from "store/modules/collection";
@@ -35,17 +36,7 @@ const preloadCollections = [
       },
       store: { dispatch },
     }) => {
-      dispatch(loadUser(user, false)).then((result) => {
-        if (result["user"]["role"] === "admin")
-          return dispatch(loadReviewList(user));
-      });
-    },
-  },
-  {
-    promise: ({ match: { params }, store: { dispatch } }) => {
-      const { user } = params;
-
-      return dispatch(loadUser(user, false));
+      return dispatch(loadReviewList());
     },
   },
 ];
@@ -67,7 +58,18 @@ const mapStateToProps = ({ app }) => {
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
     completeReview: (user, collID, ticketState = "denied") => {
-      dispatch(completeReviewDispatch(user, collID, ticketState));
+      dispatch(
+        batchActions([
+          completeRecordingDispatch(user, collID, ticketState),
+          dispatch(completeReviewDispatch(user, collID)),
+        ])
+      );
+    },
+    getCollectionsReview: () => {
+      dispatch(loadReviewList()).then((res) => {
+        console.log(res);
+        return res;
+      });
     },
   };
 };
