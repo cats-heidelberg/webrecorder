@@ -170,23 +170,23 @@ class UserManagementUI extends PureComponent {
               <Link to="/_faq">About</Link>
             </li>
           )}
-
-          <li className="hidden-xs">
-            {__DESKTOP__ ? (
-              <button
-                className="button-link"
-                onClick={this.openReview}
-                type="button"
-              >
-                Review
-              </button>
-            ) : (
-              <a href={`${config.appHost}/${username}/review`} target="_self">
-                Review
-              </a>
-            )}
-          </li>
-
+          {auth.getIn(["user", "role"]) === "admin" && (
+            <li className="hidden-xs">
+              {__DESKTOP__ ? (
+                <button
+                  className="button-link"
+                  onClick={this.openReview}
+                  type="button"
+                >
+                  Review
+                </button>
+              ) : (
+                <a href={`${config.appHost}/${username}/review`} target="_self">
+                  Review
+                </a>
+              )}
+            </li>
+          )}
           {!__DESKTOP__ && (
             <li className="navbar-text hidden-xs">
               <button

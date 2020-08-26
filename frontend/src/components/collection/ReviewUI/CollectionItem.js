@@ -45,11 +45,7 @@ class CollectionItem extends Component {
   };
   denyArchive = () => {
     const { completeReview, collection } = this.props;
-    completeReview(
-      collection.get("owner"),
-      collection.get("COLL_ID"),
-      "denied"
-    );
+    completeReview(collection.get("owner"), collection.get("id"), "denied");
     this.close();
   };
 
@@ -66,11 +62,7 @@ class CollectionItem extends Component {
   newSession = () => {};
   sendForDOI = () => {
     const { completeReview, collection } = this.props;
-    completeReview(
-      collection.get("owner"),
-      collection.get("COLL_ID"),
-      "approved"
-    );
+    completeReview(collection.get("owner"), collection.get("id"), "approved");
   };
 
   render() {

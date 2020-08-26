@@ -402,7 +402,6 @@ class ReviewMetadata extends Component {
                       placeholder="email@...uni-heidelberg.de*"
                       autoFocus
                       value={usermail}
-                      disabled={true}
                       onChange={this.handleChange}
                       onBlur={this.checkEmail}
                     />
@@ -449,7 +448,7 @@ class ReviewMetadata extends Component {
 
                     <FormControl
                       type="text"
-                      disabled={true}
+                      required
                       placeholder="original script, e.g. Chinese, Japanese, Korean script."
                       inputRef={(obj) => {
                         this.input = obj;
@@ -497,7 +496,6 @@ class ReviewMetadata extends Component {
 
                     <FormControl
                       type="text"
-                      disabled={true}
                       placeholder="you can change Record Title here"
                       inputRef={(obj) => {
                         this.input = obj;
@@ -555,7 +553,6 @@ class ReviewMetadata extends Component {
                       [corporate/institutional name] or [personal name]:
                     </div>
                     <FormControl
-                      disabled={true}
                       componentClass="select"
                       required
                       placeholder="corporate/institutional name"
@@ -579,7 +576,6 @@ class ReviewMetadata extends Component {
                       <React.Fragment>
                         <FormControl
                           type="text"
-                          disabled={true}
                           placeholder="corporate/institutional name"
                           inputRef={(obj) => {
                             this.input = obj;
@@ -627,7 +623,6 @@ class ReviewMetadata extends Component {
 
                         <FormControl
                           type="text"
-                          disabled={true}
                           placeholder=""
                           inputRef={(obj) => {
                             this.input = obj;
@@ -643,7 +638,6 @@ class ReviewMetadata extends Component {
                       <React.Fragment>
                         <FormControl
                           type="text"
-                          disabled={true}
                           placeholder="Surname, given name"
                           inputRef={(obj) => {
                             this.input = obj;
@@ -656,7 +650,6 @@ class ReviewMetadata extends Component {
                         />
                         <FormControl
                           type="text"
-                          disabled={true}
                           placeholder="YYYY"
                           validationState={this.validateCollYear()}
                           inputRef={(obj) => {
@@ -705,7 +698,6 @@ class ReviewMetadata extends Component {
 
                         <FormControl
                           type="text"
-                          disabled={true}
                           placeholder=""
                           inputRef={(obj) => {
                             this.input = obj;
@@ -745,7 +737,7 @@ class ReviewMetadata extends Component {
                       class="btn btn-success"
                       style={{ float: "right" }}
                       onClick={this.onAddItem}
-                      disabled={true}
+                      disabled={!persName && !collTitle}
                     >
                       Add Additional Creator
                     </button>
@@ -794,7 +786,6 @@ class ReviewMetadata extends Component {
 
                     <FormControl
                       type="text"
-                      disabled={true}
                       placeholder="Publisher"
                       required
                       inputRef={(obj) => {
@@ -843,7 +834,6 @@ class ReviewMetadata extends Component {
 
                     <FormControl
                       type="text"
-                      disabled={true}
                       placeholder="publisherOriginal"
                       inputRef={(obj) => {
                         this.input = obj;
@@ -891,7 +881,6 @@ class ReviewMetadata extends Component {
 
                     <FormControl
                       type="text"
-                      disabled={true}
                       placeholder="Year of publication"
                       validationState={this.validatePublishYear()}
                       inputRef={(obj) => {
@@ -945,7 +934,6 @@ class ReviewMetadata extends Component {
 
                     <React.Fragment>
                       <FormControl
-                        disabled={true}
                         type="text"
                         placeholder="subject"
                         inputRef={(obj) => {
@@ -985,7 +973,7 @@ class ReviewMetadata extends Component {
                       class="btn btn-success"
                       style={{ float: "right" }}
                       onClick={this.onAddSubject}
-                      disabled={true}
+                      disabled={!subjectHeadingText}
                     >
                       Add Additional header
                     </button>
@@ -1029,7 +1017,6 @@ class ReviewMetadata extends Component {
                     <React.Fragment>
                       <FormControl
                         as="textarea"
-                        disabled={true}
                         rows="3"
                         placeholder="person"
                         inputRef={(obj) => {
@@ -1069,7 +1056,7 @@ class ReviewMetadata extends Component {
                       class="btn btn-success"
                       style={{ float: "right" }}
                       onClick={this.onAddPerson}
-                      disabled={true}
+                      disabled={!personHeadingText}
                     >
                       Add Additional header
                     </button>
@@ -1123,7 +1110,6 @@ class ReviewMetadata extends Component {
                       id="noteToDachs"
                       name="noteToDachs"
                       onFocus={this.focusInput}
-                      disabled={true}
                       onChange={this.handleInput}
                       value={noteToDachs}
                     />

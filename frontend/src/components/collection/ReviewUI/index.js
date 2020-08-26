@@ -89,9 +89,7 @@ class ReviewUI extends Component {
 
     const displayName = user.get("full_name") || userParam;
     const canAdmin = auth.getIn(["user", "role"]) === "admin";
-    collections.get("collections").map((coll) => {
-      console.log("collections" + coll.get("id"));
-    });
+
     const userLink =
       user.get("display_url") &&
       (!user.get("display_url").match(/^[a-zA-Z]+:\/\//)

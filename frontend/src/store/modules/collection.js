@@ -287,15 +287,11 @@ export function deleteCollection(user, coll) {
       }),
   };
 }
-export function completeRecordingDispatch(user, coll, ticketState) {
+export function completeRecordingDispatch(user, collID, ticketState) {
   return {
-    types: [
-      COLL_RECORDINGCOMPLETE,
-      COLL_RECORDINGCOMPLETE_SUCCESS,
-      COLL_RECORDINGCOMPLETE_FAIL,
-    ],
+    types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
     promise: (client) =>
-      client.post(`${apiPath}/collection/${coll}`, {
+      client.post(`${apiPath}/collection/${collID}`, {
         params: { user },
         data: {
           ticketState,
@@ -303,6 +299,7 @@ export function completeRecordingDispatch(user, coll, ticketState) {
       }),
   };
 }
+
 export function completeReviewDispatch(user, collID) {
   return {
     types: [
@@ -316,6 +313,7 @@ export function completeReviewDispatch(user, collID) {
       }),
   };
 }
+
 export function editCollectionRecording(
   user,
   collID,

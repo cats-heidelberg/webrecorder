@@ -58,11 +58,8 @@ const mapStateToProps = ({ app }) => {
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
     completeReview: (user, collID, ticketState = "denied") => {
-      dispatch(
-        batchActions([
-          completeRecordingDispatch(user, collID, ticketState),
-          dispatch(completeReviewDispatch(user, collID)),
-        ])
+      dispatch(completeRecordingDispatch(user, collID, ticketState)).then(() =>
+        dispatch(completeReviewDispatch(user, collID))
       );
     },
     getCollectionsReview: () => {
