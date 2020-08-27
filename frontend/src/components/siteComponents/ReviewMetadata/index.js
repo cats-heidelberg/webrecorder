@@ -398,7 +398,7 @@ class ReviewMetadata extends Component {
                       type="email"
                       validationState={this.validateEmail()}
                       name="usermail"
-                      required
+                      disabled={coll.get("ticketState") !== "pending"}
                       placeholder="email@...uni-heidelberg.de*"
                       autoFocus
                       value={usermail}
@@ -448,7 +448,7 @@ class ReviewMetadata extends Component {
 
                     <FormControl
                       type="text"
-                      required
+                      disabled={coll.get("ticketState") !== "pending"}
                       placeholder="original script, e.g. Chinese, Japanese, Korean script."
                       inputRef={(obj) => {
                         this.input = obj;
@@ -505,6 +505,7 @@ class ReviewMetadata extends Component {
                       onFocus={this.focusInput}
                       onChange={this.handleInput}
                       value={pubTitleOriginal}
+                      disabled={coll.get("ticketState") !== "pending"}
                     />
                   </FormGroup>
                   <FormGroup id="fieldset">
@@ -554,7 +555,7 @@ class ReviewMetadata extends Component {
                     </div>
                     <FormControl
                       componentClass="select"
-                      required
+                      disabled={coll.get("ticketState") !== "pending"}
                       placeholder="corporate/institutional name"
                       inputRef={(ref) => {
                         this.state.groupSelect = ref;
@@ -582,6 +583,7 @@ class ReviewMetadata extends Component {
                           }}
                           id="collTitle"
                           name="collTitle"
+                          disabled={coll.get("ticketState") !== "pending"}
                           onFocus={this.focusInput}
                           onChange={this.handleInput}
                           value={collTitle}
@@ -624,6 +626,7 @@ class ReviewMetadata extends Component {
                         <FormControl
                           type="text"
                           placeholder=""
+                          disabled={coll.get("ticketState") !== "pending"}
                           inputRef={(obj) => {
                             this.input = obj;
                           }}
@@ -646,6 +649,7 @@ class ReviewMetadata extends Component {
                           name="persName"
                           onFocus={this.focusInput}
                           onChange={this.handleInput}
+                          disabled={coll.get("ticketState") !== "pending"}
                           value={persName}
                         />
                         <FormControl
@@ -657,6 +661,7 @@ class ReviewMetadata extends Component {
                           }}
                           id="collYear"
                           name="collYear"
+                          disabled={coll.get("ticketState") !== "pending"}
                           onFocus={this.focusInput}
                           onChange={this.handleInput}
                           value={collYear}
@@ -704,6 +709,7 @@ class ReviewMetadata extends Component {
                           }}
                           id="surName"
                           name="surName"
+                          disabled={coll.get("ticketState") !== "pending"}
                           onFocus={this.focusInput}
                           onChange={this.handleInput}
                           value={surName}
@@ -718,6 +724,7 @@ class ReviewMetadata extends Component {
                               <span
                                 className="glyphicon glyphicon-remove glyphicon-button"
                                 value={item}
+                                disabled={coll.get("ticketState") !== "pending"}
                                 onClick={() => this.onRemoveItem(item)}
                                 style={{
                                   marginRight: "4px",
@@ -737,7 +744,11 @@ class ReviewMetadata extends Component {
                       class="btn btn-success"
                       style={{ float: "right" }}
                       onClick={this.onAddItem}
-                      disabled={!persName && !collTitle}
+                      disabled={
+                        !persName &&
+                        !collTitle &&
+                        coll.get("ticketState") !== "pending"
+                      }
                     >
                       Add Additional Creator
                     </button>
@@ -793,6 +804,7 @@ class ReviewMetadata extends Component {
                       }}
                       id="publisher"
                       name="publisher"
+                      disabled={coll.get("ticketState") !== "pending"}
                       onFocus={this.focusInput}
                       onChange={this.handleInput}
                       value={publisher}
@@ -840,6 +852,7 @@ class ReviewMetadata extends Component {
                       }}
                       id="publisherOriginal"
                       name="publisherOriginal"
+                      disabled={coll.get("ticketState") !== "pending"}
                       onFocus={this.focusInput}
                       onChange={this.handleInput}
                       value={publisherOriginal}
@@ -888,6 +901,7 @@ class ReviewMetadata extends Component {
                       }}
                       id="publishYear"
                       name="publishYear"
+                      disabled={coll.get("ticketState") !== "pending"}
                       onFocus={this.focusInput}
                       onChange={this.handleInput}
                       value={publishYear}
@@ -940,6 +954,7 @@ class ReviewMetadata extends Component {
                           this.input = obj;
                         }}
                         id="subjectHeadingText"
+                        disabled={coll.get("ticketState") !== "pending"}
                         name="subjectHeadingText"
                         onFocus={this.focusInput}
                         onChange={this.handleInput}
@@ -954,6 +969,7 @@ class ReviewMetadata extends Component {
                               <span
                                 className="glyphicon glyphicon-remove glyphicon-button"
                                 value={item}
+                                disabled={coll.get("ticketState") !== "pending"}
                                 onClick={() => this.onRemoveSubject(item)}
                                 style={{
                                   marginRight: "4px",
@@ -973,7 +989,10 @@ class ReviewMetadata extends Component {
                       class="btn btn-success"
                       style={{ float: "right" }}
                       onClick={this.onAddSubject}
-                      disabled={!subjectHeadingText}
+                      disabled={
+                        !subjectHeadingText &&
+                        coll.get("ticketState") !== "pending"
+                      }
                     >
                       Add Additional header
                     </button>
@@ -1019,6 +1038,7 @@ class ReviewMetadata extends Component {
                         as="textarea"
                         rows="3"
                         placeholder="person"
+                        disabled={coll.get("ticketState") !== "pending"}
                         inputRef={(obj) => {
                           this.input = obj;
                         }}
@@ -1037,6 +1057,7 @@ class ReviewMetadata extends Component {
                               <span
                                 className="glyphicon glyphicon-remove glyphicon-button"
                                 value={item}
+                                disabled={coll.get("ticketState") !== "pending"}
                                 onClick={() => this.onRemovePerson(item)}
                                 style={{
                                   marginRight: "4px",
@@ -1056,7 +1077,10 @@ class ReviewMetadata extends Component {
                       class="btn btn-success"
                       style={{ float: "right" }}
                       onClick={this.onAddPerson}
-                      disabled={!personHeadingText}
+                      disabled={
+                        !personHeadingText &&
+                        coll.get("ticketState") !== "pending"
+                      }
                     >
                       Add Additional header
                     </button>
@@ -1103,6 +1127,7 @@ class ReviewMetadata extends Component {
                     <textarea
                       className="form-control"
                       rows="3"
+                      disabled={coll.get("ticketState") !== "pending"}
                       placeholder="note to dachs"
                       inputRef={(obj) => {
                         this.input = obj;

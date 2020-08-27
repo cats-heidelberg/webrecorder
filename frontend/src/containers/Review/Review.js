@@ -75,6 +75,9 @@ const mapDispatchToProps = (dispatch, { history }) => {
         return res;
       });
     },
+    Reviewed: (user, collID, ticketState = "approved") => {
+      dispatch(completeRecordingDispatch(user, collID, ticketState));
+    },
   };
 };
 

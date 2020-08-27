@@ -27,6 +27,7 @@ class CollectionItem extends Component {
     isOver: PropTypes.bool,
     collection: PropTypes.object,
     onPatch: PropTypes.func,
+    Reviewed: PropTypes.func,
     selected: PropTypes.bool,
     history: PropTypes.string,
   };
@@ -59,10 +60,24 @@ class CollectionItem extends Component {
 
   editCollectiontemp = () => {};
 
-  newSession = () => {};
+  newSession = () => {
+    //  const { collection } = this.props;
+
+    //this.props.onPatch(collection.get('id'),collection.get('url'));
+    const { collection, history } = this.props;
+    history.push(
+      `/${collection.get("owner")}/${collection.get("id")}/${collection.get(
+        "recordingTimestamp"
+      )}/${collection.get("recordingUrl")}`
+    );
+  };
+  readyApprove = () => {
+    const { Reviewed, collection } = this.props;
+    Reviewed(collection.get("owner"), collection.get("id"), "approved");
+  };
   sendForDOI = () => {
     const { completeReview, collection } = this.props;
-    completeReview(collection.get("owner"), collection.get("id"), "approved");
+    completeReview(collection.get("owner"), collection.get("id"), "completed");
   };
 
   render() {
@@ -87,30 +102,43 @@ class CollectionItem extends Component {
               </p>
               {canAdmin && (
                 <React.Fragment>
-                  {collection.get("ticketState") === "pending" && (
-                    <Button
-                      className="rounded new-session"
-                      onClick={this.closeModal}
-                    >
-                      <span> look at Meta data </span>
-                    </Button>
-                  )}
-                  {collection.get("ticketState") === "pending" && (
-                    <Button
-                      className="rounded new-session"
-                      onClick={this.sendForDOI}
-                    >
-                      <span> Approve </span>
-                    </Button>
-                  )}
-                  {collection.get("ticketState") === "pending" && (
-                    <Button
-                      className="rounded new-session"
-                      onClick={this.toggle}
-                    >
-                      <span> Deny</span>
-                    </Button>
-                  )}
+                  <Button
+                    className="rounded new-session"
+                    onClick={this.newSession}
+                  >
+                    <span> Review </span>
+                  </Button>
+
+                  <Button
+                    className="rounded new-session"
+                    onClick={this.closeModal}
+                  >
+                    <span> look at Meta data </span>
+                  </Button>
+
+                  <Button
+                    className="rounded new-session"
+                    onClick={this.readyApprove}
+                    disabled={collection.get("ticketState") !== "pending"}
+                  >
+                    <span> Approve </span>
+                  </Button>
+
+                  <Button
+                    className="rounded new-session"
+                    onClick={this.toggle}
+                    disabled={collection.get("ticketState") !== "pending"}
+                  >
+                    <span> Deny</span>
+                  </Button>
+
+                  <Button
+                    className="rounded new-session"
+                    onClick={this.sendForDOI}
+                    disabled={collection.get("ticketState") !== "approved"}
+                  >
+                    <span> Complete </span>
+                  </Button>
                   {collection.get("ticketState") === "pending" && (
                     <Modal
                       visible={open}

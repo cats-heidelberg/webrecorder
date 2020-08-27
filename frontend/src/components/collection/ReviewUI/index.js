@@ -39,6 +39,7 @@ class ReviewUI extends Component {
     orderedCollections: PropTypes.object,
     match: PropTypes.object,
     history: PropTypes.object,
+    Reviewed: PropTypes.func,
     timestamp: PropTypes.string,
     user: PropTypes.object,
   };
@@ -64,6 +65,10 @@ class ReviewUI extends Component {
   completeReview = (user, collID, ticketState) => {
     const { completeReview } = this.props;
     completeReview(user, collID, ticketState);
+  };
+  Reviewed = (user, collID, ticketState) => {
+    const { Reviewed } = this.props;
+    Reviewed(user, collID, ticketState);
   };
 
   toggle = () => {
@@ -152,6 +157,7 @@ class ReviewUI extends Component {
                         collection={coll}
                         collUser={user}
                         completeReview={this.completeReview}
+                        Reviewed={this.Reviewed}
                         error={collections.get("error")}
                         history={history}
                         onPatch={() => {}}
