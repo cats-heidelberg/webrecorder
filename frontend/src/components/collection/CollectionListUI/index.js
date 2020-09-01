@@ -589,7 +589,7 @@ class CollectionListUI extends Component {
                     style={{ fontSize: "1.6rem" }}
                   >
                     <span className="glyphicon glyphicon-plus glyphicon-button" />{" "}
-                    New Download
+                    Create New Archive
                   </Button>
                 </Col>
               </Row>

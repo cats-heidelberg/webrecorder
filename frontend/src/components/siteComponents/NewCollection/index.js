@@ -6,6 +6,7 @@ import { incrementCollCount } from "store/modules/auth";
 
 import { defaultCollectionTitle, apiPath } from "config";
 import { apiFormatUrl } from "helpers/utils";
+import { WarcIcon } from "components/icons";
 
 import { collection, upload as uploadErrors } from "helpers/userMessaging";
 
@@ -44,6 +45,7 @@ class NewCollection extends Component {
       listID: 0,
       urlValid: false,
       emailValid: false,
+      isHidden: true,
       publisher: "",
       publisherOriginal: "",
       subjectHeaderList,
@@ -431,6 +433,13 @@ class NewCollection extends Component {
       return this.xhr;
     }
   };
+  toggleHidden = (evt) => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    this.setState({
+      isHidden: !this.state.isHidden,
+    });
+  };
   triggerFile = () => {
     this.fileField.click();
   };
@@ -555,6 +564,7 @@ class NewCollection extends Component {
       file,
       surName,
       copTitle,
+      isHidden,
       isPublic,
       isUploading,
       noteToDachs,
@@ -699,49 +709,58 @@ class NewCollection extends Component {
                       value={url}
                       onChange={this.handleInput}
                     />
-
-                    <label htmlFor="upload-file">
-                      WARC/ARC file to upload:{" "}
-                    </label>
-
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        id="upload-file"
-                        value={file}
-                        name="upload-file-text"
-                        className="form-control"
-                        placeholder="Click Pick File to select a web archive file"
-                        readOnly
-                        onClick={this.triggerFile}
-                        style={{ backgroundColor: "white" }}
-                      />
-
-                      <button
-                        aria-label="pick file..."
-                        type="button"
-                        class="btn btn-success"
-                        onClick={this.triggerFile}
-                      >
-                        Pick File...
+                    <div>
+                      <button onClick={this.toggleHidden}>
+                        <WarcIcon />I already have a Warc file to Upload
                       </button>
+                      {!isHidden && (
+                        <div>
+                          <label htmlFor="upload-file">
+                            <WarcIcon />
+                            WARC/ARC file to upload:{" "}
+                          </label>
 
-                      <input
-                        type="file"
-                        onChange={this.filePicker}
-                        ref={(obj99) => {
-                          this.fileField = obj99;
-                        }}
-                        name="uploadFile"
-                        style={{ display: "none" }}
-                        accept=".gz,.warc,.arc,.har"
-                      />
-                      <button
-                        onClick={this.cancelWarc}
-                        disabled={!this.state.canCancel}
-                      >
-                        Cancel
-                      </button>
+                          <div className="input-group">
+                            <input
+                              type="text"
+                              id="upload-file"
+                              value={file}
+                              name="upload-file-text"
+                              className="form-control"
+                              placeholder="Click Pick File to select a web archive file"
+                              readOnly
+                              onClick={this.triggerFile}
+                              style={{ backgroundColor: "white" }}
+                            />
+
+                            <button
+                              aria-label="pick file..."
+                              type="button"
+                              class="btn btn-success"
+                              onClick={this.triggerFile}
+                            >
+                              Pick File...
+                            </button>
+
+                            <input
+                              type="file"
+                              onChange={this.filePicker}
+                              ref={(obj99) => {
+                                this.fileField = obj99;
+                              }}
+                              name="uploadFile"
+                              style={{ display: "none" }}
+                              accept=".gz,.warc,.arc,.har"
+                            />
+                            <button
+                              onClick={this.cancelWarc}
+                              disabled={!this.state.canCancel}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </FormGroup>
                 </div>
