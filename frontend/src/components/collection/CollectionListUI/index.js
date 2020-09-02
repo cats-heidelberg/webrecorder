@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import classNames from "classnames";
 import { fromJS } from "immutable";
-import { Button, Col, Row } from "react-bootstrap";
+import { Button, Col, Dropdown, Row } from "react-bootstrap";
 
 import { product, apiPath } from "config";
 import { apiFormatUrl } from "helpers/utils";
@@ -65,6 +65,7 @@ class CollectionListUI extends Component {
       showModalFinish: false,
       isUploading: false,
       progress: 0,
+      role: "admin",
       status: "ready...",
       targetUrl: "",
       targetID: "",
@@ -495,7 +496,14 @@ class CollectionListUI extends Component {
   toggle = () => {
     this.setState({ showModal: !this.state.showModal });
   };
-
+  saveRole = () => {
+    const {
+      match: {
+        params: { user },
+      },
+    } = this.props;
+    const { role } = this.state;
+  };
   close = () => {
     this.setState({ showModal: false });
   };
@@ -591,6 +599,33 @@ class CollectionListUI extends Component {
                     <span className="glyphicon glyphicon-plus glyphicon-button" />{" "}
                     Create New Archive
                   </Button>
+                  {/* Update Sort by*/}
+                  <div
+                    className="admin-section update-role"
+                    style={{ float: "right" }}
+                  >
+                    <p>Currently sorted by: {"Date"}</p>
+                    <div>
+                      <Dropdown id="roleDropdown" onSelect={this.setRole}>
+                        <Dropdown.Toggle>{"Change Role"}</Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          {auth.get("roles").map((role) => (
+                            <MenuItem key={role} eventKey={role}>
+                              {role}
+                            </MenuItem>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
+                    <Button
+                      className="top-buffer-md rounded"
+                      bsSize="sm"
+                      onClick={this.saveRole}
+                    >
+                      Update Sorting
+                    </Button>
+                  </div>
+                  {/* Update Sort by*/}
                 </Col>
               </Row>
             )}
