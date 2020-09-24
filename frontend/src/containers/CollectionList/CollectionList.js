@@ -8,6 +8,8 @@ import { addUserCollection, incrementCollCount } from "store/modules/auth";
 import {
   load as loadCollections,
   createCollection,
+  setSort,
+  sortCollections,
 } from "store/modules/collections";
 
 import {
@@ -60,6 +62,7 @@ const mapStateToProps = ({ app }) => {
       : null,
     numCollections: app.getIn(["user", "num_collections"]),
     timestamp: app.getIn(["controls", "timestamp"]),
+    sortBy: app.getIn(["collections", "sortBy"]),
     user: app.get("user"),
   };
 };
@@ -350,12 +353,26 @@ const mapDispatchToProps = (dispatch, { history }) => {
     completeRecording: (user, collID, ticketState = "pending") => {
       dispatch(completeRecordingDispatch(user, collID, ticketState))
         .then(() => dispatch(reviewDataToRevis(user, collID)))
+        .then((res) => console.log(res))
         .then(() => dispatch(sendMetaDispatch(user, collID)));
     },
     editUser: (user, data) => {
       dispatch(editUser(user, data))
         .then((res) => setTimeout(() => dispatch(resetEditState()), saveDelay))
         .then(() => dispatch(loadUser(user, false)));
+    },
+    sortCollections: (sortBy = { sort: "created_at", dir: "DESC" }, user) => {
+      return new Promise((resolve) => {
+        dispatch(setSort(sortBy));
+        resolve();
+      })
+        .then(() => {
+          console.log(sortBy.dir);
+          dispatch(sortCollections());
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   };
 };

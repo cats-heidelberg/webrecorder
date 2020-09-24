@@ -8,6 +8,7 @@ import { addUserCollection, incrementCollCount } from "store/modules/auth";
 import {
   load as loadCollections,
   loadReviewList,
+  sortCollections,
 } from "store/modules/collections";
 
 import {
@@ -47,6 +48,7 @@ const mapStateToProps = ({ app }) => {
     auth: app.get("auth"),
     collections: app.get("collections"),
     edited: app.getIn(["user", "edited"]),
+    sortBy: app.getIn(["collections", "sortBy"]),
     orderedCollections: app.getIn(["collections", "loaded"])
       ? sortCollsByAlpha(app)
       : null,
@@ -71,7 +73,7 @@ const mapDispatchToProps = (dispatch, { history }) => {
     },
     getCollectionsReview: () => {
       dispatch(loadReviewList()).then((res) => {
-        console.log(res);
+        dispatch(sortCollections());
         return res;
       });
     },

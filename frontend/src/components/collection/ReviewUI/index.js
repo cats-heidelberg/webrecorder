@@ -53,6 +53,7 @@ class ReviewUI extends Component {
 
     this.state = {
       showModal: false,
+      _sortBy: { sort: "created_at", dir: "ASC" },
       numCollections: 0,
       showModalFinish: false,
     };
@@ -61,7 +62,14 @@ class ReviewUI extends Component {
     const { getCollectionsReview } = this.props;
     getCollectionsReview();
   }
-
+  componentDidUpdate(prevProps) {
+    if (prevProps.sortBy !== this.props.sortBy) {
+      console.log(
+        "Collections sort changed" + JSON.stringify(this.props.sortBy, null, 2)
+      );
+      this.setState({ _sortBy: this.props.sortBy });
+    }
+  }
   completeReview = (user, collID, ticketState) => {
     const { completeReview } = this.props;
     completeReview(user, collID, ticketState);

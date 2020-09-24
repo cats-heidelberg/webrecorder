@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import classNames from "classnames";
 import { fromJS } from "immutable";
-import { Button, Col, Dropdown, Row } from "react-bootstrap";
+import { Button, Col, Dropdown, MenuItem, Row } from "react-bootstrap";
 
 import { product, apiPath } from "config";
 import { apiFormatUrl } from "helpers/utils";
@@ -45,6 +45,7 @@ class CollectionListUI extends Component {
     orderedCollections: PropTypes.object,
     match: PropTypes.object,
     history: PropTypes.object,
+    sortCollections: PropTypes.func,
     timestamp: PropTypes.string,
     user: PropTypes.object,
   };
@@ -59,6 +60,7 @@ class CollectionListUI extends Component {
     this.interval = null;
     this.state = {
       canCancel: true,
+      _sortBy: { sort: "created_at", dir: "ASC" },
       isUploading: false,
       numCollections: 0,
       showModal: false,
@@ -73,11 +75,15 @@ class CollectionListUI extends Component {
     };
   }
   componentDidUpdate(prevProps) {
-    console.log(this.props.activeCollection + "PREVPROPSnumCollections");
-
     if (prevProps.numCollections !== this.props.numCollections) {
       console.log(this.props.numCollections + "THISnumCollections");
       this.setState({ numCollections: this.props.numCollection });
+    }
+    if (prevProps.sortBy !== this.props.sortBy) {
+      console.log(
+        "Collections sort changed" + JSON.stringify(this.props.sortBy, null, 2)
+      );
+      this.setState({ _sortBy: this.props.sortBy });
     }
   }
 
@@ -216,8 +222,6 @@ class CollectionListUI extends Component {
     }, 75);
   };
   indexingComplete = (user, coll) => {
-    console.log(user);
-    console.log(coll);
     const { targetID, targetUrl } = this.state;
     const cleanUrl = addTrailingSlash(fixMalformedUrls(targetUrl));
 
@@ -496,13 +500,43 @@ class CollectionListUI extends Component {
   toggle = () => {
     this.setState({ showModal: !this.state.showModal });
   };
-  saveRole = () => {
+  reOrder = (evt) => {
     const {
+      collections,
       match: {
         params: { user },
       },
+      sortCollections,
     } = this.props;
-    const { role } = this.state;
+    let sort = "";
+    let sortDirection = "";
+    switch (evt) {
+      case "1":
+        sort = "created_at";
+        sortDirection = "DESC";
+        break;
+      case "2":
+        sort = "created_at";
+        sortDirection = "ASC";
+        break;
+      case "3":
+        sort = "title";
+        sortDirection = "DESC";
+        break;
+      case "4":
+        sort = "title";
+        sortDirection = "ASC";
+        break;
+      default:
+        sort = "created_at";
+        sortDirection = "DESC";
+    }
+    const prevSort = collections.getIn(["sortBy", "sort"]);
+    const prevDir = collections.getIn(["sortBy", "dir"]);
+
+    if (prevSort !== sort || prevDir !== sortDirection) {
+      sortCollections({ sort: sort, dir: sortDirection }, user);
+    }
   };
   close = () => {
     this.setState({ showModal: false });
@@ -604,26 +638,25 @@ class CollectionListUI extends Component {
                     className="admin-section update-role"
                     style={{ float: "right" }}
                   >
-                    <p>Currently sorted by: {"Date"}</p>
                     <div>
-                      <Dropdown id="roleDropdown" onSelect={this.setRole}>
-                        <Dropdown.Toggle>{"Change Role"}</Dropdown.Toggle>
+                      <Dropdown id="roleDropdown" onSelect={this.reOrder}>
+                        <Dropdown.Toggle>{"Change Sorting"}</Dropdown.Toggle>
                         <Dropdown.Menu>
-                          {auth.get("roles").map((role) => (
-                            <MenuItem key={role} eventKey={role}>
-                              {role}
-                            </MenuItem>
-                          ))}
+                          <MenuItem key="created_atDESC" eventKey="1">
+                            "Created At Descending"
+                          </MenuItem>
+                          <MenuItem key="created_atASC" eventKey="2">
+                            "Created At Ascending"
+                          </MenuItem>
+                          <MenuItem key="titleDESC" eventKey="3">
+                            "Title Descending"
+                          </MenuItem>
+                          <MenuItem key="titleASC" eventKey="4">
+                            "Title Ascending"
+                          </MenuItem>
                         </Dropdown.Menu>
                       </Dropdown>
                     </div>
-                    <Button
-                      className="top-buffer-md rounded"
-                      bsSize="sm"
-                      onClick={this.saveRole}
-                    >
-                      Update Sorting
-                    </Button>
                   </div>
                   {/* Update Sort by*/}
                 </Col>
