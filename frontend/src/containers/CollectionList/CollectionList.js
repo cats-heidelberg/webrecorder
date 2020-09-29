@@ -361,14 +361,16 @@ const mapDispatchToProps = (dispatch, { history }) => {
         .then((res) => setTimeout(() => dispatch(resetEditState()), saveDelay))
         .then(() => dispatch(loadUser(user, false)));
     },
-    sortCollections: (sortBy = { sort: "created_at", dir: "DESC" }, user) => {
+    sortCollections: (
+      sortBy = { sort: "created_at", dir: "DESC" },
+      collections
+    ) => {
       return new Promise((resolve) => {
         dispatch(setSort(sortBy));
         resolve();
       })
         .then(() => {
-          console.log(sortBy.dir);
-          dispatch(sortCollections());
+          dispatch(sortCollections(collections));
         })
         .catch((error) => {
           console.log(error);

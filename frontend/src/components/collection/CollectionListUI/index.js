@@ -45,6 +45,7 @@ class CollectionListUI extends Component {
     orderedCollections: PropTypes.object,
     match: PropTypes.object,
     history: PropTypes.object,
+    sortBy: PropTypes.object,
     sortCollections: PropTypes.func,
     timestamp: PropTypes.string,
     user: PropTypes.object,
@@ -60,7 +61,7 @@ class CollectionListUI extends Component {
     this.interval = null;
     this.state = {
       canCancel: true,
-      _sortBy: { sort: "created_at", dir: "ASC" },
+      _sortBy: JSON.parse(JSON.stringify(this.props.sortBy)),
       isUploading: false,
       numCollections: 0,
       showModal: false,
@@ -74,6 +75,13 @@ class CollectionListUI extends Component {
       targetObj: null,
     };
   }
+
+  componentDidMount() {
+    const { sortCollections, sortBy, collections } = this.props;
+    const { _sortBy } = this.state;
+    sortCollections(_sortBy, collections.get("collections"));
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.numCollections !== this.props.numCollections) {
       console.log(this.props.numCollections + "THISnumCollections");
@@ -83,7 +91,7 @@ class CollectionListUI extends Component {
       console.log(
         "Collections sort changed" + JSON.stringify(this.props.sortBy, null, 2)
       );
-      this.setState({ _sortBy: this.props.sortBy });
+      this.setState({ _sortBy: JSON.parse(JSON.stringify(this.props.sortBy)) });
     }
   }
 
@@ -506,8 +514,11 @@ class CollectionListUI extends Component {
       match: {
         params: { user },
       },
+      orderedCollections,
       sortCollections,
+      sortBy,
     } = this.props;
+    const { _sortBy } = this.state;
     let sort = "";
     let sortDirection = "";
     switch (evt) {
@@ -531,11 +542,14 @@ class CollectionListUI extends Component {
         sort = "created_at";
         sortDirection = "DESC";
     }
-    const prevSort = collections.getIn(["sortBy", "sort"]);
-    const prevDir = collections.getIn(["sortBy", "dir"]);
+    const prevSort = _sortBy.sort;
+    const prevDir = _sortBy.dir;
 
     if (prevSort !== sort || prevDir !== sortDirection) {
-      sortCollections({ sort: sort, dir: sortDirection }, user);
+      sortCollections(
+        { sort: sort, dir: sortDirection },
+        collections.get("collections")
+      );
     }
   };
   close = () => {
@@ -568,6 +582,7 @@ class CollectionListUI extends Component {
       progress,
       status,
       isUploading,
+      _sortBy,
     } = this.state;
     const userParam = params.user;
     const displayName = user.get("full_name") || userParam;
@@ -640,7 +655,11 @@ class CollectionListUI extends Component {
                   >
                     <div>
                       <Dropdown id="roleDropdown" onSelect={this.reOrder}>
-                        <Dropdown.Toggle>{"Change Sorting"}</Dropdown.Toggle>
+                        <Dropdown.Toggle>
+                          {_sortBy
+                            ? "" + _sortBy.sort + " " + _sortBy.dir
+                            : "Change Sorting"}
+                        </Dropdown.Toggle>
                         <Dropdown.Menu>
                           <MenuItem key="created_atDESC" eventKey="1">
                             "Created At Descending"
@@ -665,7 +684,7 @@ class CollectionListUI extends Component {
             {collections && collections.get("loaded") && (
               <Row>
                 <ul className="list-group collection-list">
-                  {orderedCollections.map((coll) => {
+                  {collections.get("collections").map((coll) => {
                     return (
                       <CollectionItem
                         key={coll.get("id")}

@@ -71,10 +71,9 @@ const mapDispatchToProps = (dispatch, { history }) => {
           console.log(error);
         });
     },
-    getCollectionsReview: () => {
+    getCollectionsReview: (collections) => {
       dispatch(loadReviewList()).then((res) => {
-        dispatch(sortCollections());
-        return res;
+        dispatch(sortCollections(collections));
       });
     },
     Reviewed: (user, collID, ticketState = "approved") => {

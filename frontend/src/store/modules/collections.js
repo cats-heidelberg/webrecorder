@@ -17,14 +17,13 @@ const COLL_SET_SORT = "wr/coll/COLL_SET_SORT";
 
 const COLLECTIONS_REORDER = "wr/coll/COLL_REORDER";
 
-export const defaultSort = { sort: "title", dir: "ASC" };
 const initialState = fromJS({
   loading: false,
   loaded: false,
   error: null,
   creatingCollection: false,
   accessed: null,
-  sortBy: defaultSort,
+  sortBy: fromJS({ sort: "title", dir: "ASC" }),
 });
 
 export default function collections(state = initialState, action = {}) {
@@ -39,7 +38,9 @@ export default function collections(state = initialState, action = {}) {
         error: null,
 
         user: fromJS(action.result.user),
-        collections: fromJS(action.result.collections),
+        collections: fromJS(action.result.collections).sort((a, b) =>
+          sortFn(a, b, state.get("sortBy"))
+        ),
       });
     case COLLS_LOAD_FAIL:
       return state.merge({
@@ -48,60 +49,18 @@ export default function collections(state = initialState, action = {}) {
         error: action.error,
       });
     case COLL_SET_SORT:
-      console.log("actionSortBy" + JSON.stringify(action.sortBy, null, 2));
-      return state.set("sortBy", action.sortBy);
-
-    case COLLECTIONS_REORDER:
       return state.set(
-        "collections",
-        fromJS(
-          state.get("collections").sort((a, b) => {
-            console.log("imReorder" + state.getIn(["sortBy", "dir"]));
-            if (
-              state.getIn(["sortBy", "dir"]) === "DESC" &&
-              a.get("title") &&
-              b.get("title") &&
-              state.getIn(["sortBy", "sort"]) === "title"
-            ) {
-              console.log("in slug" + a.get("title"));
-              return a.get("title").localeCompare(b.get("title"));
-            } else if (
-              state.getIn(["sortBy", "dir"]) === "ASC" &&
-              a.get("title") &&
-              b.get("title") &&
-              state.getIn(["sortBy", "sort"]) === "title"
-            ) {
-              console.log("in slugASC" + a.get("title"));
-              return !a.get("title").localeCompare(b.get("title"));
-            } else if (
-              state.getIn(["sortBy", "dir"]) === "DESC" &&
-              a.get("created_at") &&
-              b.get("created_at") &&
-              state.getIn(["sortBy", "sort"]) === "created_at"
-            ) {
-              console.log(
-                "in created_at" + a.get("created_at") < b.get("created_at")
-                  ? -1
-                  : 1
-              );
-              return a.get("created_at") < b.get("created_at") ? -1 : 1;
-            } else if (
-              state.getIn(["sortBy", "dir"]) === "ASC" &&
-              a.get("created_at") &&
-              b.get("created_at") &&
-              state.getIn(["sortBy", "sort"]) === "created_at"
-            ) {
-              console.log(
-                "in created_at" + a.get("created_at") > b.get("created_at")
-                  ? -1
-                  : 1
-              );
-              return a.get("created_at") > b.get("created_at") ? -1 : 1;
-            }
-          })
-        )
+        "sortBy",
+        fromJS(JSON.parse(JSON.stringify(action.sortBy)))
       );
 
+    case COLLECTIONS_REORDER:
+      console.log(action.collections);
+      return state.merge({
+        collections: action.collections.sort((a, b) =>
+          sortFn(a, b, state.get("sortBy"))
+        ),
+      });
     case REVIEW_COLLS_LOAD:
       return state.set("loading", true);
     case REVIEW_COLLS_LOAD_SUCCESS:
@@ -112,49 +71,7 @@ export default function collections(state = initialState, action = {}) {
         error: null,
 
         user: fromJS(action.result.user),
-        collections: fromJS(
-          action.result.collections.sort((a, b) => {
-            console.log(state.getIn(["sortBy", "dir"]));
-            console.log(state.getIn(["sortBy", "sort"]));
-            if (
-              state.getIn(["sortBy", "dir"]) === "DESC" &&
-              a.title &&
-              b.title &&
-              state.getIn(["sortBy", "sort"]) === "title"
-            ) {
-              console.log("in slugDESC" + a.title);
-              return a.title.localeCompare(b.title);
-            } else if (
-              state.getIn(["sortBy", "dir"]) === "ASC" &&
-              a.title &&
-              b.title &&
-              state.getIn(["sortBy", "sort"]) === "title"
-            ) {
-              console.log("in slugASC" + a.title);
-              return !a.title.localeCompare(b.title);
-            } else if (
-              state.getIn(["sortBy", "dir"]) === "DESC" &&
-              a.created_at &&
-              b.created_at &&
-              state.getIn(["sortBy", "sort"]) === "created_at"
-            ) {
-              console.log(
-                "in created_at" + a.created_at < b.created_at ? -1 : 1
-              );
-              return a.created_at < b.created_at ? -1 : 1;
-            } else if (
-              state.getIn(["sortBy", "dir"]) === "ASC" &&
-              a.created_at &&
-              b.created_at &&
-              state.getIn(["sortBy", "sort"]) === "created_at"
-            ) {
-              console.log(
-                "in created_at" + a.created_at > b.created_at ? -1 : 1
-              );
-              return a.created_at > b.created_at ? -1 : 1;
-            }
-          })
-        ),
+        collections: fromJS(action.result.collections),
       });
     case REVIEW_COLLS_LOAD_FAIL:
       return state.merge({
@@ -285,7 +202,19 @@ export function loadReviewList() {
       }),
   };
 }
-
+const sortFn = (a, b, by = null) => {
+  console.log(by.get("dir"));
+  if (by) {
+    if (a.get(by.get("sort")) > b.get(by.get("sort")))
+      return by.get("dir") === "DESC" ? -1 : 1;
+    if (a.get(by.get("sort")) < b.get(by.get("sort")))
+      return by.get("dir") === "DESC" ? 1 : -1;
+  } else {
+    if (a > b) return by.get("dir") === "DESC" ? -1 : 1;
+    if (a < b) return by.get("dir") === "DESC" ? 1 : -1;
+  }
+  return 0;
+};
 export function setSort(sortBy) {
   return {
     type: COLL_SET_SORT,
@@ -293,8 +222,9 @@ export function setSort(sortBy) {
   };
 }
 
-export function sortCollections() {
+export function sortCollections(collections) {
   return {
     type: COLLECTIONS_REORDER,
+    collections,
   };
 }

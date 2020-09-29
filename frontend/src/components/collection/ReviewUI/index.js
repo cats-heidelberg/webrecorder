@@ -40,6 +40,7 @@ class ReviewUI extends Component {
     match: PropTypes.object,
     history: PropTypes.object,
     Reviewed: PropTypes.func,
+    sortBy: PropTypes.object,
     timestamp: PropTypes.string,
     user: PropTypes.object,
   };
@@ -53,14 +54,14 @@ class ReviewUI extends Component {
 
     this.state = {
       showModal: false,
-      _sortBy: { sort: "created_at", dir: "ASC" },
+      _sortBy: this.props.sortBy,
       numCollections: 0,
       showModalFinish: false,
     };
   }
   componentDidMount() {
-    const { getCollectionsReview } = this.props;
-    getCollectionsReview();
+    const { getCollectionsReview, collections } = this.props;
+    getCollectionsReview(collections.get("collections"));
   }
   componentDidUpdate(prevProps) {
     if (prevProps.sortBy !== this.props.sortBy) {
