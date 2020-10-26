@@ -1492,7 +1492,8 @@ class NewCollection extends Component {
               onClick={this.submit}
               disabled={
                 !emailValid ||
-                (!collTitle && !surName && !creatorList.length > 0) ||
+                (!collTitle && !surName) ||
+                !creatorList.length > 0 ||
                 !urlValid ||
                 !title ||
                 !publisher ||

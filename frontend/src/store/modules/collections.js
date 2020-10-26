@@ -16,6 +16,15 @@ const CREATE_COLL_FAIL = "wr/coll/CREATE_COLL_FAIL";
 const COLL_SET_SORT = "wr/coll/COLL_SET_SORT";
 
 const COLLECTIONS_REORDER = "wr/coll/COLL_REORDER";
+const COLLECTIONS_REORDER_RĘVIEW = "wr/coll/COLL_REORDER_RĘVIEW";
+
+const itemOrder = {
+  open: 1,
+  pending: 2,
+  approved: 3,
+  completed: 4,
+  denied: 5,
+};
 
 const initialState = fromJS({
   loading: false,
@@ -23,7 +32,14 @@ const initialState = fromJS({
   error: null,
   creatingCollection: false,
   accessed: null,
-  sortBy: fromJS({ sort: "title", dir: "ASC" }),
+  sortBy: fromJS({
+    sort: "created_at",
+    dir: "DESC",
+  }),
+  sortByReview: fromJS({
+    sort: "title",
+    dir: "DESC",
+  }),
 });
 
 export default function collections(state = initialState, action = {}) {
@@ -38,9 +54,9 @@ export default function collections(state = initialState, action = {}) {
         error: null,
 
         user: fromJS(action.result.user),
-        collections: fromJS(action.result.collections).sort((a, b) =>
-          sortFn(a, b, state.get("sortBy"))
-        ),
+        collections: fromJS(action.result.collections)
+          .sort((a, b) => sortFn(a, b, state.get("sortBy")))
+          .sort((a, b) => sortByStatus(a, b)),
       });
     case COLLS_LOAD_FAIL:
       return state.merge({
@@ -49,17 +65,21 @@ export default function collections(state = initialState, action = {}) {
         error: action.error,
       });
     case COLL_SET_SORT:
-      return state.set(
-        "sortBy",
-        fromJS(JSON.parse(JSON.stringify(action.sortBy)))
-      );
+      console.log("COLL_SET_SORT" + JSON.stringify(action.sortBy, null, 2));
+      return state.merge({ sortBy: action.sortBy });
 
     case COLLECTIONS_REORDER:
       console.log(action.collections);
       return state.merge({
-        collections: action.collections.sort((a, b) =>
-          sortFn(a, b, state.get("sortBy"))
-        ),
+        collections: action.collections
+          .sort((a, b) => sortFn(a, b, state.get("sortBy")))
+          .sort((a, b) => sortByStatus(a, b)),
+      });
+    case COLLECTIONS_REORDER_RĘVIEW:
+      return state.merge({
+        collections: action.collections
+          .sort((a, b) => sortFn(a, b, state.get("sortByReview")))
+          .sort((a, b) => sortByStatus(a, b)),
       });
     case REVIEW_COLLS_LOAD:
       return state.set("loading", true);
@@ -203,16 +223,22 @@ export function loadReviewList() {
   };
 }
 const sortFn = (a, b, by = null) => {
-  console.log(by.get("dir"));
   if (by) {
     if (a.get(by.get("sort")) > b.get(by.get("sort")))
       return by.get("dir") === "DESC" ? -1 : 1;
     if (a.get(by.get("sort")) < b.get(by.get("sort")))
       return by.get("dir") === "DESC" ? 1 : -1;
   } else {
-    if (a > b) return by.get("dir") === "DESC" ? -1 : 1;
-    if (a < b) return by.get("dir") === "DESC" ? 1 : -1;
+    if (a > b) return -1;
+    if (a < b) return 1;
   }
+  return 0;
+};
+const sortByStatus = (statusA, statusB) => {
+  var a = itemOrder[statusA.get("ticketState")];
+  var b = itemOrder[statusB.get("ticketState")];
+  if (a > b) return 1;
+  if (a < b) return -1;
   return 0;
 };
 export function setSort(sortBy) {
@@ -225,6 +251,12 @@ export function setSort(sortBy) {
 export function sortCollections(collections) {
   return {
     type: COLLECTIONS_REORDER,
+    collections,
+  };
+}
+export function sortCollectionsReview(collections) {
+  return {
+    type: COLLECTIONS_REORDER_RĘVIEW,
     collections,
   };
 }
