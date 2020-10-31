@@ -45,7 +45,7 @@ class ModeSelectorUI extends PureComponent {
     const username = auth.getIn(["user", "username"]);
     const ownername = collection.get("owner");
     const isOwner = username === ownername;
-    if (!isOwner) {
+    if (!isOwner || collection.get("reviewing")) {
       //this.props.history.push('/');
       this.props.history.push(`/${user}/review`);
     } else if (this.context.currMode === "live") {
