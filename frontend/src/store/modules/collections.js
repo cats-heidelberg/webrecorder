@@ -37,8 +37,8 @@ const initialState = fromJS({
     dir: "DESC",
   }),
   sortByReview: fromJS({
-    sort: "title",
-    dir: "DESC",
+    sort: "created_at",
+    dir: "ASC",
   }),
 });
 
@@ -91,7 +91,9 @@ export default function collections(state = initialState, action = {}) {
         error: null,
 
         user: fromJS(action.result.user),
-        collections: fromJS(action.result.collections),
+        collections: fromJS(action.result.collections).sort((a, b) =>
+          sortFn(a, b, state.get("sortByReview"))
+        ),
       });
     case REVIEW_COLLS_LOAD_FAIL:
       return state.merge({

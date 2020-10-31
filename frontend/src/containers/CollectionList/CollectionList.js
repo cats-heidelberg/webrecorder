@@ -16,6 +16,7 @@ import {
   editCollectionDispatch,
   editCollectionDispatchWARC,
   completeRecordingDispatch,
+  resetEditReview,
   reviewDataToRevis,
   sendMetaDispatch,
   shareToDat,
@@ -32,6 +33,16 @@ import { addTrailingSlash, apiFetch, fixMalformedUrls } from "helpers/utils";
 import CollectionListUI from "components/collection/CollectionListUI";
 
 const preloadCollections = [
+  {
+    promise: ({
+      match: {
+        params: { user },
+      },
+      store: { dispatch },
+    }) => {
+      return dispatch(resetEditReview());
+    },
+  },
   {
     promise: ({
       match: {
@@ -361,10 +372,7 @@ const mapDispatchToProps = (dispatch, { history }) => {
         .then((res) => setTimeout(() => dispatch(resetEditState()), saveDelay))
         .then(() => dispatch(loadUser(user, false)));
     },
-    sortCollections: (
-      sortBy = { sort: "created_at", dir: "DESC" },
-      collections
-    ) => {
+    sortCollections: (sortBy, collections) => {
       return new Promise((resolve) => {
         dispatch(setSort(sortBy));
         resolve();

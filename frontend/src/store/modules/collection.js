@@ -22,12 +22,16 @@ const COLL_EDIT_SUCCESS = "wr/coll/COLL_EDIT_SUCCESS";
 const COLL_EDIT_FAIL = "wr/coll/COLL_EDIT_FAIL";
 const RESET_EDIT_STATE = "wr/coll/RESET_EDIT_STATE";
 
+const REVIEW_EDIT = "wr/coll/REVIEW_EDIT";
+const REVIEW_EDIT_SUCCESS = "wr/coll/REVIEW_EDIT_SUCCESS";
+const REVIEW_EDIT_FAIL = "wr/coll/REVIEW_EDIT_FAIL";
+const RESET_REVIEW_EDIT_STATE = "wr/coll/RESET_REVIEW_EDIT_STATE";
+
 const COLL_STATUSCHANGE = "wr/coll/COLL_STATUSCHANGE";
 const COLL_STATUSCHANGE_SUCCESS = "wr/coll/COLL_STATUSCHANGE_SUCCESS";
 const COLL_STATUSCHANGE_FAIL = "wr/coll/COLL_STATUSCHANGE_FAIL";
 const RESET_STATUSCHANGE_STATE = "wr/coll/RESET_STATUSCHANGE_STATE";
 
-const COLL_SET_SORT = "wr/coll/COLL_SET_SORT";
 const COLL_SET_PUBLIC = "wr/coll/SET_PUBLIC";
 const COLL_SET_PUBLIC_SUCCESS = "wr/coll/SET_PUBLIC_SUCCESS";
 const COLL_SET_PUBLIC_FAIL = "wr/coll/SET_PUBLIC_FAIL";
@@ -59,9 +63,9 @@ const REVIEW_CREATE = "wr/coll/REVIEW_CREATE_COUNT";
 const REVIEW_CREATE_SUCCESS = "wr/coll/REVIEW_CREATE_COUNT_SUCCESS";
 const REVIEW_CREATE_FAIL = "wr/coll/REVIEW_CREATE_COUNT_FAIL";
 
-export const defaultSort = { sort: "timestamp", dir: "DESC" };
 const initialState = fromJS({
   editing: false,
+  reviewing: false,
   datProcessing: false,
   datError: null,
   edited: false,
@@ -69,7 +73,6 @@ const initialState = fromJS({
   error: null,
   loading: false,
   loaded: false,
-  sortBy: defaultSort,
 });
 
 export default function collection(state = initialState, action = {}) {
@@ -119,9 +122,15 @@ export default function collection(state = initialState, action = {}) {
       });
     case COLL_EDIT:
       return state.set("editing", true);
+
+    case REVIEW_EDIT:
+      console.log(state.get("reviewing") + "review true");
+      return state.set("reviewing", true);
+
     case COLL_LOAD:
       return state.set("loading", true);
     case COLL_EDIT_SUCCESS:
+    case REVIEW_EDIT_SUCCESS:
     case COLL_LOAD_SUCCESS: {
       const {
         collection: {
@@ -223,10 +232,6 @@ export default function collection(state = initialState, action = {}) {
     case COLL_SET_PUBLIC_SUCCESS:
       return state.set("public", action.result.is_public);
 
-    case COLL_SET_SORT:
-      return state.merge({
-        sortBy: action.sortBy,
-      });
     case DAT_SHARE:
       return state.set("datProcessing", true);
     case DAT_SHARE_SUCCESS:
@@ -268,6 +273,10 @@ export default function collection(state = initialState, action = {}) {
       });
     case RESET_EDIT_STATE:
       return state.set("edited", false);
+
+    case RESET_REVIEW_EDIT_STATE:
+      console.log(state.get("reviewing") + "reset");
+      return state.set("reviewing", false);
 
     case LISTS_LOAD_FAIL:
     case LISTS_LOAD:
@@ -518,6 +527,14 @@ export function resetEditState() {
   return { type: RESET_EDIT_STATE };
 }
 
+export function resetEditReview() {
+  return { type: RESET_REVIEW_EDIT_STATE };
+}
+export function reviewCollection() {
+  return {
+    type: REVIEW_EDIT,
+  };
+}
 export function shareToDat(user, coll) {
   return {
     types: [DAT_SHARE, DAT_SHARE_SUCCESS, DAT_SHARE_FAIL],
@@ -525,13 +542,6 @@ export function shareToDat(user, coll) {
       client.post(`${apiPath}/collection/${coll}/dat/share`, {
         params: { user },
       }),
-  };
-}
-
-export function setSort(sortBy) {
-  return {
-    type: COLL_SET_SORT,
-    sortBy,
   };
 }
 

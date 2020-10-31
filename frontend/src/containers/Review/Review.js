@@ -8,13 +8,15 @@ import { addUserCollection, incrementCollCount } from "store/modules/auth";
 import {
   load as loadCollections,
   loadReviewList,
-  sortCollections,
+  setSort,
+  sortCollectionsReview,
 } from "store/modules/collections";
 
 import {
   editCollectionDispatch,
   completeRecordingDispatch,
   completeReviewDispatch,
+  reviewCollection,
   sendMetaDispatch,
   shareToDat,
 } from "store/modules/collection";
@@ -38,6 +40,16 @@ const preloadCollections = [
       store: { dispatch },
     }) => {
       return dispatch(loadReviewList());
+    },
+  },
+  {
+    promise: ({
+      match: {
+        params: { user },
+      },
+      store: { dispatch },
+    }) => {
+      return dispatch(reviewCollection());
     },
   },
 ];
@@ -71,9 +83,9 @@ const mapDispatchToProps = (dispatch, { history }) => {
           console.log(error);
         });
     },
-    getCollectionsReview: (collections) => {
-      dispatch(loadReviewList()).then((res) => {
-        dispatch(sortCollections(collections));
+    getCollectionsReview: (collections, sortBy) => {
+      dispatch(loadReviewList()).then(() => {
+        //mussdochnicht umsortiert werden dispatch(sortCollectionsReview(collections));
       });
     },
     Reviewed: (user, collID, ticketState = "approved") => {
