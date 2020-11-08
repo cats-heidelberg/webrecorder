@@ -896,7 +896,11 @@ class NewCollection extends Component {
                         display: "inline",
                         float: "left",
                         color:
-                          collTitle || persName || creatorList.length > 0
+                          selectedGroupName === "corporate/institutional name"
+                            ? collTitle || creatorList.length > 0
+                              ? "black"
+                              : "red"
+                            : persName || creatorList.length > 0
                             ? "black"
                             : "red",
                       }}
@@ -1009,19 +1013,7 @@ class NewCollection extends Component {
                           onChange={this.handleInput}
                           value={persName}
                         />
-                        <FormControl
-                          type="text"
-                          placeholder="YYYY"
-                          validationState={this.validateCollYear()}
-                          inputRef={(obj) => {
-                            this.input = obj;
-                          }}
-                          id="collYear"
-                          name="collYear"
-                          onFocus={this.focusInput}
-                          onChange={this.handleInput}
-                          value={collYear}
-                        />
+
                         <label
                           style={{
                             marginRight: "4px",
@@ -1492,12 +1484,13 @@ class NewCollection extends Component {
               onClick={this.submit}
               disabled={
                 !emailValid ||
-                (!collTitle && !surName) ||
-                !creatorList.length > 0 ||
                 !urlValid ||
                 !title ||
                 !publisher ||
-                (creatingCollection && !error)
+                (creatingCollection && !error) ||
+                (selectedGroupName === "corporate/institutional name"
+                  ? !(collTitle || creatorList.length > 0)
+                  : !(persName || creatorList.length > 0))
               }
               type="button"
             >
