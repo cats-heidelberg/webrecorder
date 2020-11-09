@@ -61,7 +61,7 @@ class CollectionListUI extends Component {
     this.interval = null;
     this.state = {
       canCancel: true,
-      _sortBy: JSON.parse(JSON.stringify(this.props.sortBy)),
+      _sortBy: this.props.sortBy,
       isUploading: false,
       numCollections: 0,
       showModal: false,
@@ -79,7 +79,9 @@ class CollectionListUI extends Component {
   componentDidMount() {
     const { sortCollections, sortBy, collections } = this.props;
     const { _sortBy } = this.state;
-    sortCollections(_sortBy, collections.get("collections"));
+    if (_sortBy !== null) {
+      //  sortCollections(_sortBy, collections.get("collections"));
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -91,7 +93,7 @@ class CollectionListUI extends Component {
       console.log(
         "Collections sort changed" + JSON.stringify(this.props.sortBy, null, 2)
       );
-      this.setState({ _sortBy: JSON.parse(JSON.stringify(this.props.sortBy)) });
+      this.setState({ _sortBy: this.props.sortBy });
     }
   }
 
@@ -112,6 +114,7 @@ class CollectionListUI extends Component {
     persName,
     usermail,
     selectedGroupName,
+    projektcode,
     publishYear,
     pubTitleOriginal,
     personHeadingText,
@@ -146,6 +149,7 @@ class CollectionListUI extends Component {
       persName,
       usermail,
       selectedGroupName,
+      projektcode,
       publishYear,
       pubTitleOriginal,
       personHeadingText,
@@ -294,6 +298,7 @@ class CollectionListUI extends Component {
     persName,
     usermail,
     selectedGroupName,
+    projektcode,
     publishYear,
     pubTitleOriginal,
     personHeadingText,
@@ -334,6 +339,7 @@ class CollectionListUI extends Component {
       persName,
       usermail,
       selectedGroupName,
+      projektcode,
       publishYear,
       pubTitleOriginal,
       personHeadingText,
@@ -361,6 +367,7 @@ class CollectionListUI extends Component {
     persName,
     usermail,
     selectedGroupName,
+    projektcode,
     publishYear,
     pubTitleOriginal,
     personHeadingText,
@@ -390,6 +397,7 @@ class CollectionListUI extends Component {
       persName,
       usermail,
       selectedGroupName,
+      projektcode,
       publishYear,
       pubTitleOriginal,
       personHeadingText,
@@ -413,6 +421,7 @@ class CollectionListUI extends Component {
     persName,
     usermail,
     selectedGroupName,
+    projektcode,
     publishYear,
     pubTitleOriginal,
     personHeadingText,
@@ -443,6 +452,7 @@ class CollectionListUI extends Component {
       persName,
       usermail,
       selectedGroupName,
+      projektcode,
       publishYear,
       pubTitleOriginal,
       personHeadingText,
@@ -542,12 +552,12 @@ class CollectionListUI extends Component {
         sort = "created_at";
         sortDirection = "DESC";
     }
-    const prevSort = _sortBy.sort;
-    const prevDir = _sortBy.dir;
+    const prevSort = _sortBy ? _sortBy.get("sort") : "";
+    const prevDir = _sortBy ? _sortBy.get("dir") : "";
 
     if (prevSort !== sort || prevDir !== sortDirection) {
       sortCollections(
-        { sort: sort, dir: sortDirection },
+        fromJS({ sort: sort, dir: sortDirection }),
         collections.get("collections")
       );
     }
@@ -657,7 +667,10 @@ class CollectionListUI extends Component {
                       <Dropdown id="roleDropdown" onSelect={this.reOrder}>
                         <Dropdown.Toggle>
                           {_sortBy
-                            ? "" + _sortBy.sort + " " + _sortBy.dir
+                            ? "" +
+                              _sortBy.get("sort") +
+                              " " +
+                              _sortBy.get("dir")
                             : "Change Sorting"}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>

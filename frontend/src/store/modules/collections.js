@@ -27,6 +27,7 @@ const itemOrder = {
 };
 
 const initialState = fromJS({
+  collections: null,
   loading: false,
   loaded: false,
   error: null,
@@ -84,6 +85,7 @@ export default function collections(state = initialState, action = {}) {
     case REVIEW_COLLS_LOAD:
       return state.set("loading", true);
     case REVIEW_COLLS_LOAD_SUCCESS:
+      console.log("review load success");
       return state.merge({
         loading: false,
         loaded: true,
@@ -91,9 +93,9 @@ export default function collections(state = initialState, action = {}) {
         error: null,
 
         user: fromJS(action.result.user),
-        collections: fromJS(action.result.collections).sort((a, b) =>
-          sortFn(a, b, state.get("sortByReview"))
-        ),
+        collections: fromJS(action.result.collections)
+          .sort((a, b) => sortFn(a, b, state.get("sortByReview")))
+          .sort((a, b) => sortByStatus(a, b)),
       });
     case REVIEW_COLLS_LOAD_FAIL:
       return state.merge({
@@ -147,6 +149,7 @@ export function createCollection(
   persName,
   usermail,
   selectedGroupName,
+  projektcode,
   publishYear,
   pubTitleOriginal,
   personHeadingText,
@@ -181,6 +184,7 @@ export function createCollection(
           persName,
           usermail,
           selectedGroupName,
+          projektcode,
           publishYear,
           pubTitleOriginal,
           personHeadingText,
@@ -225,6 +229,7 @@ export function loadReviewList() {
   };
 }
 const sortFn = (a, b, by = null) => {
+  console.log("im sortFn");
   if (by) {
     if (a.get(by.get("sort")) > b.get(by.get("sort")))
       return by.get("dir") === "DESC" ? -1 : 1;
@@ -237,6 +242,7 @@ const sortFn = (a, b, by = null) => {
   return 0;
 };
 const sortByStatus = (statusA, statusB) => {
+  console.log("imSortByStatus");
   var a = itemOrder[statusA.get("ticketState")];
   var b = itemOrder[statusB.get("ticketState")];
   if (a > b) return 1;

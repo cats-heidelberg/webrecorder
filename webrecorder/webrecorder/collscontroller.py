@@ -30,7 +30,7 @@ class CollsController(BaseController):
             user = self.get_user(api=True, redir_check=False)
 
             data = request.json or {}
-
+            print(data)
             title = data.get('title', '')
 
             #if not title:
@@ -95,6 +95,8 @@ class CollsController(BaseController):
 
             selectedGroupName = data.get('selectedGroupName', '')
 
+            projektcode = data.get('projektcode', '')
+
             publishYear = data.get('publishYear', '')
 
             listID = data.get('listID', 0)
@@ -123,7 +125,7 @@ class CollsController(BaseController):
                 self._raise_error(400, 'duplicate_name')
 
             try:
-                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal, pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, publishYear=publishYear, listID=listID, desc='', public=is_public, public_index=is_public_index, ticketState=ticketState, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp)
+                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal, pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear, listID=listID, desc='', public=is_public, public_index=is_public_index, ticketState=ticketState, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp)
 
                 if is_external:
                     collection.set_external(True)
@@ -140,15 +142,15 @@ class CollsController(BaseController):
                 print(ve)
                 self.flash_message(str(ve))
                 self._raise_error(400, 'duplicate_name')
-
+            print(resp)
             return resp
+
 
         @self.app.get('/api/v1/collections')
         @self.api(query=['user', 'include_recordings', 'include_lists', 'include_pages'],
                   resp='collections')
         def get_collections():
             user = self.get_user(api=True, redir_check=False)
-
             kwargs = {'include_recordings': get_bool(request.query.get('include_recordings')),
                       'include_lists': get_bool(request.query.get('include_lists')),
                       'include_pages': get_bool(request.query.get('include_pages')),
@@ -284,6 +286,9 @@ class CollsController(BaseController):
             if 'selectedGroupName' in data:
                 collection['selectedGroupName'] = data['selectedGroupName']
 
+            if 'projektcode' in data:
+                collection['projektcode'] = data['projektcode']
+
             if 'publishYear' in data:
                 collection['publishYear'] = data['publishYear']
 
@@ -305,9 +310,8 @@ class CollsController(BaseController):
 
             if 'ticketState' in data:
                 collection['ticketState'] = data['ticketState']
-                
             if 'url' in data:
-                collection['url'] = data['url']    
+                collection['url'] = data['url']
 
 
             # TODO: notify the user if this is a request from the admin panel
@@ -344,12 +348,13 @@ class CollsController(BaseController):
         @self.app.post('/api/v1/collection/<coll_name>/dat/share')
         def dat_do_share(coll_name):
             user, collection = self.load_user_coll(coll_name=coll_name)
-
+            print(user)
             # BETA only
             self.require_admin_beta_access(collection)
 
             try:
                 data = request.json or {}
+                print(data)
                 result = DatShare.dat_share.share(collection, data.get('always_update', False))
             except Exception as e:
                 result = {'error': 'api_error', 'details': str(e)}
@@ -375,6 +380,19 @@ class CollsController(BaseController):
                 self._raise_error(400, result['error'])
 
             return result
+
+
+        @self.app.post('/api/v1/collection/<coll_name>/sendmeta')
+        @self.api(query=['user'],
+                  resp='reviewed')
+        def send_meta(coll_name):
+            user, collection = self.load_user_coll(coll_name=coll_name)
+            # Serializing json
+            json_object = json.dumps(collection, indent = 4)
+            print(json_object)
+            # Writing to sample.json
+            with open("sample.json", "w") as outfile:
+                outfile.write(json_object)
 
         @self.app.post('/api/v1/collection/<coll_name>/commit')
         def commit_file(coll_name):

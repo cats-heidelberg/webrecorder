@@ -67,6 +67,7 @@ class NewCollection extends Component {
       creatorLegend,
       noteToDachs: "",
       publishYear: "",
+      projektcode: "",
       selectedGroupName: "corporate/institutional name",
       url: "",
       ticketState: "open",
@@ -177,6 +178,7 @@ class NewCollection extends Component {
       persName,
       usermail,
       selectedGroupName,
+      projektcode,
       publishYear,
       listID,
       url,
@@ -198,6 +200,7 @@ class NewCollection extends Component {
       persName,
       usermail,
       selectedGroupName,
+      projektcode,
       publishYear,
       pubTitleOriginal,
       personHeadingText,
@@ -369,6 +372,7 @@ class NewCollection extends Component {
       persName,
       usermail,
       selectedGroupName,
+      projektcode,
       publishYear,
       pubTitleOriginal,
       personHeadingText,
@@ -399,6 +403,7 @@ class NewCollection extends Component {
         persName,
         usermail,
         selectedGroupName,
+        projektcode,
         publishYear,
         pubTitleOriginal,
         personHeadingText,
@@ -577,6 +582,7 @@ class NewCollection extends Component {
       pubTitleOriginal,
       publisher,
       selectedGroupName,
+      projektcode,
       subjectHeadingText,
       personHeadingText,
       creatorLegend,
@@ -849,6 +855,54 @@ class NewCollection extends Component {
                       }}
                     >
                       Title (original script):
+                    </div>
+
+                    <FormControl
+                      type="text"
+                      required
+                      placeholder="default."
+                      inputRef={(obj) => {
+                        this.input = obj;
+                      }}
+                      id="projektcode"
+                      name="projektcode"
+                      onFocus={this.focusInput}
+                      onChange={this.handleInput}
+                      value={projektcode}
+                    />
+                    <label
+                      style={{
+                        marginRight: "4px",
+                        display: "inline",
+                        float: "left",
+                      }}
+                      onMouseOver={() => {
+                        ReactTooltip.show(this.fooRef24);
+                      }}
+                      onMouseOut={() => {
+                        ReactTooltip.hide(this.fooRef24);
+                      }}
+                    >
+                      <span
+                        className="glyphicon glyphicon-info-sign"
+                        ref={(ref) => (this.fooRef24 = ref)}
+                        style={{
+                          marginRight: "4px",
+                          display: "inline",
+                          width: "14px",
+                          float: "left",
+                        }}
+                        data-tip="Not obligatory, but can be used to sort archives under a topic."
+                      />
+                    </label>
+                    <div
+                      style={{
+                        marginRight: "4px",
+                        display: "inline",
+                        float: "left",
+                      }}
+                    >
+                      Projektcode (to join arcives under a topic ):
                     </div>
 
                     <FormControl
