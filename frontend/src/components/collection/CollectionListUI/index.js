@@ -578,6 +578,8 @@ class CollectionListUI extends Component {
 
   render() {
     const { isAnon } = this.context;
+    let headlinelast = "";
+    let headline = "";
     const {
       auth,
       collections,
@@ -698,6 +700,21 @@ class CollectionListUI extends Component {
               <Row>
                 <ul className="list-group collection-list">
                   {collections.get("collections").map((coll) => {
+                    let temp =
+                      coll.get("ticketState") !== headline &&
+                      coll.get("ticketState") !== headlinelast
+                        ? coll.get("ticketState")
+                        : headline !== headlinelast &&
+                          coll.get("ticketState") !== headline &&
+                          coll.get("ticketState") === headlinelast
+                        ? coll.get("ticketState")
+                        : "";
+                    coll.get("ticketState") !== headline
+                      ? (headline = coll.get("ticketState"))
+                      : headline !== headlinelast
+                      ? (headlinelast = headline)
+                      : null;
+
                     return (
                       <CollectionItem
                         key={coll.get("id")}
@@ -709,6 +726,7 @@ class CollectionListUI extends Component {
                         error={collections.get("error")}
                         history={history}
                         onPatch={this.onPatch}
+                        headline={temp}
                       />
                     );
                   })}

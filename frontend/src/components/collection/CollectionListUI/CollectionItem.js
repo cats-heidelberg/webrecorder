@@ -25,6 +25,7 @@ class CollectionItem extends Component {
     completeRec: PropTypes.func,
     id: PropTypes.string,
     isOver: PropTypes.bool,
+    headline: PropTypes.string,
     collection: PropTypes.object,
     editCollection: PropTypes.func,
     onPatch: PropTypes.func,
@@ -122,7 +123,7 @@ class CollectionItem extends Component {
   sendForReview = () => {};
 
   render() {
-    const { canAdmin, collection, error } = this.props;
+    const { canAdmin, collection, error, headline } = this.props;
     const { showModalFinish, open, ticketState } = this.state;
     const descClasses = classNames("left-buffer list-group-item", {
       "has-description": collection.get("desc"),
@@ -144,6 +145,19 @@ class CollectionItem extends Component {
                 : "#FFF",
           }}
         >
+          {"" !== headline && (
+            <h2
+              style={{
+                display: "flex",
+                flexGrow: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                lineHeight: "40px",
+              }}
+            >
+              Ticket State: {collection.get("ticketState").toUpperCase()}
+            </h2>
+          )}
           <Row>
             <Col sm={15} md={12}>
               <h3>{collection.get("title")}</h3>
