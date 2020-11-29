@@ -35,9 +35,14 @@ class LdapUserManager(UserManager):
         try:
             result = c.simple_bind_s(ldap_username, password)
             adminusers = c.search_s(os.environ.get('LDAP_BASE'), ldap.SCOPE_SUBTREE, '(&(sAMAccountName={})(memberOf={}))'.format(username, os.environ.get('LDAP_ADMIN_GROUP')))
+            loginusers = c.search_s(os.environ.get('LDAP_BASE'), ldap.SCOPE_SUBTREE, '(&(sAMAccountName={})(memberOf={}))'.format(username, os.environ.get('LDAP_LOGIN_GROUP')))
             is_admin = len([dn for (dn, attrs) in adminusers if dn]) == 1
+            can_login = len([dn for (dn, attrs) in loginusers if dn]) == 1
 
             escaped_username = username.replace(".", "_")
+
+            if not can_login:
+                return None
 
             try:
                 self.cork.is_authenticate(escaped_username, password)
