@@ -85,7 +85,16 @@ class ModeSelectorUI extends PureComponent {
   onPatch = () => {
     if (this.context.currMode === "record") return;
     console.log(this.props.collection.get("ticketState"));
-    if (this.props.collection.get("ticketState") == "pending") return;
+    if (
+      this.props.collection.get("ticketState") !== "open" &&
+      !this.props.collection.get("reviewing")
+    )
+      return;
+    if (
+      this.props.collection.get("ticketState") !== "pending" &&
+      this.props.collection.get("reviewing")
+    )
+      return;
     const {
       activeBrowser,
       history,
@@ -336,15 +345,21 @@ class ModeSelectorUI extends PureComponent {
                       disabled:
                         isRecord ||
                         isLive ||
-                        collection.get("ticketState") == "pending",
+                        (collection.get("ticketState") !== "pending" &&
+                          collection.get("reviewing")) ||
+                        (collection.get("ticketState") !== "open" &&
+                          !collection.get("reviewing")),
                     })}
                     onClick={this.onPatch}
                     role="button"
                     title={
                       isRecord
-                        ? collection.get("ticketState") == "pending"
-                          ? "Not possible since Collection is in Review"
-                          : "Only available from replay after finishing a recording"
+                        ? "Only available from replay after finishing a recording"
+                        : (collection.get("ticketState") !== "open" &&
+                            !collection.get("reviewing")) ||
+                          (collection.get("ticketState") !== "pending" &&
+                            collection.get("reviewing"))
+                        ? "Not possible since Collection is in Review"
                         : "Record elements that are not yet in the collection"
                     }
                   >
@@ -355,7 +370,10 @@ class ModeSelectorUI extends PureComponent {
                       <h5>
                         {isPatch
                           ? "Currently Patching"
-                          : collection.get("ticketState") == "pending"
+                          : (collection.get("ticketState") !== "open" &&
+                              !collection.get("reviewing")) ||
+                            (collection.get("ticketState") !== "pending" &&
+                              collection.get("reviewing"))
                           ? "already in review"
                           : "Patch this URL"}
                       </h5>
