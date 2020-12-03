@@ -107,7 +107,8 @@ const mapDispatchToProps = (dispatch, { history }) => {
       ticketState,
       isCollLoaded,
       recordingUrl,
-      recordingTimestamp
+      recordingTimestamp,
+      doi
     ) => {
       dispatch(
         createCollection(
@@ -137,7 +138,8 @@ const mapDispatchToProps = (dispatch, { history }) => {
           ticketState,
           isCollLoaded,
           recordingUrl,
-          recordingTimestamp
+          recordingTimestamp,
+          doi
         )
       )
         .then((res) => {
@@ -201,7 +203,8 @@ const mapDispatchToProps = (dispatch, { history }) => {
       ticketState,
       isCollLoaded,
       recordingUrl,
-      recordingTimestamp
+      recordingTimestamp,
+      doi
     ) => {
       dispatch(
         createCollection(
@@ -231,7 +234,8 @@ const mapDispatchToProps = (dispatch, { history }) => {
           ticketState,
           isCollLoaded,
           recordingUrl,
-          recordingTimestamp
+          recordingTimestamp,
+          doi
         )
       )
         .then((res) => {

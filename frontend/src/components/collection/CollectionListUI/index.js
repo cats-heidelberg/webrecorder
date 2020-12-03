@@ -61,7 +61,7 @@ class CollectionListUI extends Component {
     this.interval = null;
     this.state = {
       canCancel: true,
-      _sortBy: this.props.sortBy,
+      _sortBy: ["sorted by state"],
       isUploading: false,
       numCollections: 0,
       showModal: false,
@@ -79,11 +79,22 @@ class CollectionListUI extends Component {
   componentDidMount() {
     const { sortCollections, sortBy, collections } = this.props;
     const { _sortBy } = this.state;
-    if (_sortBy !== null) {
-      //  sortCollections(_sortBy, collections.get("collections"));
+    if (_sortBy !== null && collections && collections.get("loaded")) {
+      collections.get("collections").map((coll) => {
+        console.log("imcollectionlistui_sort" + coll.get("projektcode"));
+        if (
+          coll.get("projektcode") !== undefined &&
+          coll.get("projektcode") !== ""
+        )
+          this.setState({
+            _sortBy: [...this.state._sortBy, coll.get("projektcode")],
+          });
+      });
     }
+    //  sortCollections(_sortBy, collections.get("collections"));
   }
 
+  /*
   componentDidUpdate(prevProps) {
     if (prevProps.numCollections !== this.props.numCollections) {
       console.log(this.props.numCollections + "THISnumCollections");
@@ -95,7 +106,7 @@ class CollectionListUI extends Component {
       );
       this.setState({ _sortBy: this.props.sortBy });
     }
-  }
+  }*/
 
   createCollection = (
     pubTitle,
@@ -123,7 +134,8 @@ class CollectionListUI extends Component {
     ticketState = "open",
     isCollLoaded = true,
     recordingUrl = "",
-    recordingTimestamp = ""
+    recordingTimestamp = "",
+    doi = ""
   ) => {
     const {
       createNewCollection,
@@ -158,7 +170,8 @@ class CollectionListUI extends Component {
       ticketState,
       isCollLoaded,
       recordingUrl,
-      recordingTimestamp
+      recordingTimestamp,
+      doi
     );
   };
   warcIndexing = () => {
@@ -308,7 +321,8 @@ class CollectionListUI extends Component {
     isCollLoaded = true,
     recordingUrl = "",
     recordingTimestamp = "",
-    file
+    file,
+    doi
   ) => {
     const {
       createNewCollectionBrowseWarc,
@@ -348,7 +362,8 @@ class CollectionListUI extends Component {
       ticketState,
       isCollLoaded,
       recordingUrl,
-      recordingTimestamp
+      recordingTimestamp,
+      doi
     );
   };
   editColl = (
@@ -519,7 +534,7 @@ class CollectionListUI extends Component {
     this.setState({ showModal: !this.state.showModal });
   };
   reOrder = (evt) => {
-    const {
+    /*const {
       collections,
       match: {
         params: { user },
@@ -561,6 +576,7 @@ class CollectionListUI extends Component {
         collections.get("collections")
       );
     }
+    */
   };
   close = () => {
     this.setState({ showModal: false });
@@ -668,26 +684,14 @@ class CollectionListUI extends Component {
                     <div>
                       <Dropdown id="roleDropdown" onSelect={this.reOrder}>
                         <Dropdown.Toggle>
-                          {_sortBy
-                            ? "" +
-                              _sortBy.get("sort") +
-                              " " +
-                              _sortBy.get("dir")
-                            : "Change Sorting"}
+                          {_sortBy ? _sortBy[0] : "Change Sorting"}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          <MenuItem key="created_atDESC" eventKey="1">
-                            "Created At Descending"
-                          </MenuItem>
-                          <MenuItem key="created_atASC" eventKey="2">
-                            "Created At Ascending"
-                          </MenuItem>
-                          <MenuItem key="titleDESC" eventKey="3">
-                            "Title Descending"
-                          </MenuItem>
-                          <MenuItem key="titleASC" eventKey="4">
-                            "Title Ascending"
-                          </MenuItem>
+                          {_sortBy.map((sort) => (
+                            <MenuItem key={sort} eventKey="1">
+                              {sort}
+                            </MenuItem>
+                          ))}
                         </Dropdown.Menu>
                       </Dropdown>
                     </div>

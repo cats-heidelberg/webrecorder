@@ -319,7 +319,7 @@ class Collection(PagesMixin, RedisUniqueComponent):
         else:
             return len(self.get_lists())
 
-    def init_new(self, slug, title, url='', creatorList='', noteToDachs='', subjectHeaderList='', personHeaderList='', publisher='', collTitle='', publisherOriginal='', pubTitleOriginal='', personHeadingText='', collYear='', copTitle='', subjectHeadingText='', surName='', persName='', usermail='', selectedGroupName='', projektcode='', publishYear='', listID='', desc='', public=False, public_index=False, ticketState='open', isCollLoaded=True, recordingUrl='', recordingTimestamp='2016010203000000'):
+    def init_new(self, slug, title, url='', creatorList='', noteToDachs='', subjectHeaderList='', personHeaderList='', publisher='', collTitle='', publisherOriginal='', pubTitleOriginal='', personHeadingText='', collYear='', copTitle='', subjectHeadingText='', surName='', persName='', usermail='', selectedGroupName='', projektcode='', publishYear='', listID='', desc='', public=False, public_index=False, ticketState='open', isCollLoaded=True, recordingUrl='', recordingTimestamp='2016010203000000', doi=''):
         """Initialize new collection.
 
         :param str title: title
@@ -362,7 +362,8 @@ class Collection(PagesMixin, RedisUniqueComponent):
                      'recordingUrl': recordingUrl,
                      'recordingTimestamp': recordingTimestamp,
                      'public': self._from_bool(public),
-                     'public_index': self._from_bool(public_index)
+                     'public_index': self._from_bool(public_index),
+                     'doi': doi,
                     }
 
         self._init_new()

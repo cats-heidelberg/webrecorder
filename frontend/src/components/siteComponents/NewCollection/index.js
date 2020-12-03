@@ -75,6 +75,7 @@ class NewCollection extends Component {
       recordingUrl: "",
       recordingTimestamp: "",
       targetColl: props.fromCollection ? "chosen" : "auto",
+      doi: "",
     };
   }
 
@@ -182,6 +183,7 @@ class NewCollection extends Component {
       publishYear,
       listID,
       url,
+      doi,
     } = this.state;
 
     this.props.createCollectionBrowseWarc(
@@ -206,7 +208,8 @@ class NewCollection extends Component {
       personHeadingText,
       subjectHeadingText,
       listID,
-      url
+      url,
+      doi
     );
     this.props.close();
   };

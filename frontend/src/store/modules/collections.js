@@ -159,7 +159,8 @@ export function createCollection(
   isCollLoaded,
   recordingUrl,
   recordingTimestamp,
-  makePublic = false
+  makePublic = false,
+  doi = ""
 ) {
   return {
     types: [CREATE_COLL, CREATE_COLL_SUCCESS, CREATE_COLL_FAIL],
@@ -194,6 +195,7 @@ export function createCollection(
           isCollLoaded,
           recordingUrl,
           recordingTimestamp,
+          doi,
         },
       }),
   };

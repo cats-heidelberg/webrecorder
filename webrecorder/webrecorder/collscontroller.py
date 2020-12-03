@@ -46,6 +46,8 @@ class CollsController(BaseController):
             if not coll_name:
                 self._raise_error(400, 'invalid_coll_name')
 
+            doi = data.get('doi', '')
+
             is_public = data.get('public', False)
 
             is_public_index = data.get('public_index', False)
@@ -125,7 +127,7 @@ class CollsController(BaseController):
                 self._raise_error(400, 'duplicate_name')
 
             try:
-                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal, pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear, listID=listID, desc='', public=is_public, public_index=is_public_index, ticketState=ticketState, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp)
+                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal, pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear, listID=listID, desc='', public=is_public, public_index=is_public_index, ticketState=ticketState, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp, doi=doi)
 
                 if is_external:
                     collection.set_external(True)
@@ -239,6 +241,9 @@ class CollsController(BaseController):
 
             if 'creatorList' in data:
                 collection['creatorList'] = data['creatorList']
+
+            if 'doi' in data:
+                collection['doi'] = data['doi']
 
             if 'subjectHeaderList' in data:
                 collection['subjectHeaderList'] = data['subjectHeaderList']

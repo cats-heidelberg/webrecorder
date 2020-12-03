@@ -40,7 +40,7 @@ class ReviewUI extends Component {
     match: PropTypes.object,
     history: PropTypes.object,
     Reviewed: PropTypes.func,
-    sortBy: PropTypes.object,
+    sortByReview: PropTypes.object,
     timestamp: PropTypes.string,
     user: PropTypes.object,
   };
@@ -54,26 +54,28 @@ class ReviewUI extends Component {
 
     this.state = {
       showModal: false,
-      _sortBy: this.props.sortBy,
+      _sortBy: this.props.sortByReview,
       numCollections: 0,
       showModalFinish: false,
     };
   }
   componentDidMount() {
-    const { getCollectionsReview, collections } = this.props;
-    getCollectionsReview(collections.get("collections"));
+    const { getCollectionsReview, collections, sortCollections } = this.props;
+    const { _sortBy } = this.state;
+    getCollectionsReview(collections.get("collections"), _sortBy);
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.sortBy !== this.props.sortBy) {
+    if (prevProps.sortByReview !== this.props.sortByReview) {
       console.log(
-        "Collections sort changed" + JSON.stringify(this.props.sortBy, null, 2)
+        "Collections sort changed" +
+          JSON.stringify(this.props.sortByReview, null, 2)
       );
-      this.setState({ _sortBy: this.props.sortBy });
+      this.setState({ _sortBy: this.props.sortByReview });
     }
   }
-  completeReview = (user, collID, ticketState) => {
+  completeReview = (user, collID, ticketState, doi) => {
     const { completeReview } = this.props;
-    completeReview(user, collID, ticketState);
+    completeReview(user, collID, ticketState, doi);
   };
   Reviewed = (user, collID, ticketState) => {
     const { Reviewed } = this.props;

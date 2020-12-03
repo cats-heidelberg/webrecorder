@@ -281,10 +281,14 @@ class CollectionItem extends Component {
                     Your recording has been reviewed by the library team and has
                     been approved.
                     <br />
-                    A DOI has been created and the archive is visible on our
-                    server.
+                    A DOI has been created.
                     <br />
-                    The permanent link has been sent to you by mail.
+                    <h4 style={{ color: "black" }}>
+                      {collection.get("doi") !== undefined &&
+                      collection.get("doi") !== null
+                        ? collection.get("doi")
+                        : "there is a problem with the DOI please contact an OpenDachs admin"}
+                    </h4>
                     <br />
                     Thank you for your patience and for chosing openDachs.
                     <br />

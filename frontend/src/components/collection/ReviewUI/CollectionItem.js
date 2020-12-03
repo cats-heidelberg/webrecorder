@@ -36,7 +36,9 @@ class CollectionItem extends Component {
 
     this.state = {
       showModalFinish: false,
+      modalSessionSave: false,
       open: false,
+      doi: "",
       ticketState: "open",
     };
   }
@@ -57,6 +59,9 @@ class CollectionItem extends Component {
   closeModal = () => {
     this.setState({ showModalFinish: !this.state.showModalFinish });
   };
+  toggleSessionSave = () => {
+    this.setState({ modalSessionSave: !this.state.modalSessionSave });
+  };
 
   editCollectiontemp = () => {};
 
@@ -76,13 +81,22 @@ class CollectionItem extends Component {
     Reviewed(collection.get("owner"), collection.get("id"), "approved");
   };
   sendForDOI = () => {
+    const { doi } = this.state;
     const { completeReview, collection } = this.props;
-    completeReview(collection.get("owner"), collection.get("id"), "completed");
+    completeReview(
+      collection.get("owner"),
+      collection.get("id"),
+      "completed",
+      doi
+    );
+  };
+  handleInput = (event) => {
+    this.setState({ doi: event.target.value });
   };
 
   render() {
     const { canAdmin, collection, error } = this.props;
-    const { showModalFinish, open, ticketState } = this.state;
+    const { showModalFinish, open, ticketState, doi } = this.state;
     const descClasses = classNames("left-buffer list-group-item", {
       "has-description": collection.get("desc"),
     });
@@ -131,15 +145,54 @@ class CollectionItem extends Component {
                   >
                     <span> Deny</span>
                   </Button>
-
                   <Button
                     className="rounded new-session"
-                    onClick={this.sendForDOI}
-                    disabled={collection.get("ticketState") !== "approved"}
+                    onClick={this.toggleSessionSave}
                   >
-                    <span> Complete </span>
+                    <CheckIcon />
+                    <span className="hidden-xs"> Complete and add DOI </span>
                   </Button>
-                  {collection.get("ticketState") === "pending" && (
+                  {collection.get("ticketState") === "approved" && (
+                    <Modal
+                      visible={this.state.modalSessionSave}
+                      closeCb={this.state.toggleSessionSave}
+                      header="Please confirm DOI generation."
+                      dialogClassName="table-header-modal dat-modal"
+                    >
+                      {
+                        <React.Fragment>
+                          <h4>Attention</h4>
+                          <p>
+                            If you submit this archive as completed user or
+                            admin won't be able to do further changes.
+                            <br /> <br />
+                            Create DOI?{" "}
+                          </p>
+                          <input
+                            onChange={this.handleInput}
+                            placeholder="Enter DOI link"
+                          />
+                          <Button
+                            className="rounded new-session"
+                            onClick={this.sendForDOI}
+                            disabled={
+                              collection.get("ticketState") !== "approved"
+                            }
+                          >
+                            <span> Confirm </span>
+                          </Button>
+                        </React.Fragment>
+                      }
+                      <Button
+                        onClick={this.toggleSessionSave}
+                        className="rectangular"
+                      >
+                        Close
+                      </Button>
+                    </Modal>
+                  )}
+
+                  {collection.get("ticketState") === "approved" && (
                     <Modal
                       visible={open}
                       closeCb={this.close}
