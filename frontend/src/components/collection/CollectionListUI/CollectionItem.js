@@ -5,7 +5,8 @@ import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { Button, Col, Row, Tooltip } from "react-bootstrap";
 import { CheckIcon } from "components/icons";
-
+import config from "config";
+import { DownloadIcon } from "components/icons";
 import { buildDate, getCollectionLink, truncate } from "helpers/utils";
 
 import SizeFormat from "components/SizeFormat";
@@ -60,7 +61,12 @@ class CollectionItem extends Component {
   closeModal = () => {
     this.setState({ showModalFinish: !this.state.showModalFinish });
   };
-
+  downloadAction = (evt) => {
+    const { collection } = this.props;
+    window.location.href = `${config.appHost}/${getCollectionLink(
+      collection
+    )}/$download`;
+  };
   editCollectiontemp = (
     collID,
     title,
@@ -194,6 +200,18 @@ class CollectionItem extends Component {
                         <span> Edit Metadata</span>
                       </Button>
                     )}
+                  <Button
+                    className="rounded new-session"
+                    onClick={this.downloadAction}
+                  >
+                    <span>
+                      {" "}
+                      <DownloadIcon /> {__DESKTOP__
+                        ? "Export"
+                        : "Download"}{" "}
+                      Collection{" "}
+                    </span>
+                  </Button>
                   {(collection.get("ticketState") === "open" ||
                     collection.get("ticketState") === "denied") &&
                     (ticketState === "open" ||

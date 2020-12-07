@@ -375,7 +375,7 @@ class ModeSelectorUI extends PureComponent {
                             (collection.get("ticketState") !== "pending" &&
                               collection.get("reviewing"))
                           ? "already in review"
-                          : "Patch this URL"}
+                          : "Add more Content"}
                       </h5>
                     </li>
                   </ul>
