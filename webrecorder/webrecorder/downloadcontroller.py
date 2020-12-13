@@ -120,8 +120,8 @@ class DownloadController(BaseController):
         return self.create_warcinfo(user, isPartOf_name, metadata, recording, serialized, filename)
 
     def handle_download(self, user, coll_name, recs):
-        user, collection = self.user_manager.get_user_coll(user, coll_name)
-
+        user=self.user_manager.get_user(user)
+        collection = user.get_collection_by_name(coll_name)
         if not collection:
             self._raise_error(404, 'no_such_collection')
 

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import removeMd from "remove-markdown";
 import classNames from "classnames";
+import config from "config";
+import { DownloadIcon } from "components/icons";
 import { Link } from "react-router-dom";
 import { Button, Col, Row, Tooltip } from "react-bootstrap";
 import { CheckIcon } from "components/icons";
@@ -58,6 +60,12 @@ class CollectionItem extends Component {
 
   closeModal = () => {
     this.setState({ showModalFinish: !this.state.showModalFinish });
+  };
+  downloadAction = (evt) => {
+    const { collection } = this.props;
+    window.location.href = `${config.appHost}/${getCollectionLink(
+      collection
+    )}/$download`;
   };
   toggleSessionSave = () => {
     this.setState({ modalSessionSave: !this.state.modalSessionSave });
@@ -122,7 +130,18 @@ class CollectionItem extends Component {
                   >
                     <span> Review </span>
                   </Button>
-
+                  <Button
+                    className="rounded new-session"
+                    onClick={this.downloadAction}
+                  >
+                    <span>
+                      {" "}
+                      <DownloadIcon /> {__DESKTOP__
+                        ? "Export"
+                        : "Download"}{" "}
+                      Collection{" "}
+                    </span>
+                  </Button>
                   <Button
                     className="rounded new-session"
                     onClick={this.closeModal}

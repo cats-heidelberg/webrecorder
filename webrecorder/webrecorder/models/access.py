@@ -122,20 +122,23 @@ class SessionAccessCache(BaseAccess):
         """
         return self.session_user.is_owner(collection.get_owner())
 
-    def check_write_access(self, collection):
+    def check_write_access(self, collection, allow_superuser=True):
         """Return whether current user has right to modify collection.
 
         :param Collection collection: collection
 
         :returns: whether user has right to modify collection
         :rtype: bool
+        hier ää
         """
         if not collection:
             return False
 
         if self.is_coll_owner(collection):
             return True
-
+        # if superuser is allowed, then can read
+        if allow_superuser and self.is_superuser():
+            return True
         return collection.get_prop(self.WRITE_PREFIX + self.session_user.my_id) != None
 
     def check_read_access_public(self, collection, allow_superuser=True):
@@ -195,9 +198,7 @@ class SessionAccessCache(BaseAccess):
         :returns: whether current user has right
         :rtype: bool
         """
-        if collection['ticketState']=='pending':
-            return False
-        else:
+        if collection:
             return self.check_write_access(collection)
 
     def assert_can_write_coll(self, collection):
