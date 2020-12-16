@@ -56,6 +56,7 @@ class CollectionItem extends Component {
 
   close = () => {
     this.setState({ open: false });
+    this.refresh();
   };
 
   closeModal = () => {
@@ -125,6 +126,9 @@ class CollectionItem extends Component {
         "recordingTimestamp"
       )}/${collection.get("recordingUrl")}`
     );
+  };
+  refresh = () => {
+    window.location.reload();
   };
   sendForReview = () => {};
 

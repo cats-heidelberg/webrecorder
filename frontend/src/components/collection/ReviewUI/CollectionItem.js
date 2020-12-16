@@ -56,6 +56,7 @@ class CollectionItem extends Component {
 
   close = () => {
     this.setState({ open: false });
+    this.refresh();
   };
 
   closeModal = () => {
@@ -84,9 +85,15 @@ class CollectionItem extends Component {
       )}/${collection.get("recordingUrl")}`
     );
   };
+
+  refresh = () => {
+    window.location.reload();
+  };
+
   readyApprove = () => {
     const { Reviewed, collection } = this.props;
     Reviewed(collection.get("owner"), collection.get("id"), "approved");
+    this.refresh();
   };
   sendForDOI = () => {
     const { doi } = this.state;
