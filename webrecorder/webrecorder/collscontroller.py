@@ -325,7 +325,11 @@ class CollsController(BaseController):
             if 'url' in data:
                 collection['url'] = data['url']
 
-
+            if ticketStateChanged:
+                if data['ticketState'] == 'pending':
+                    pass # send review pending mail
+                elif data['ticketState'] == 'complete':
+                    pass # send complete mail
 
 
             # TODO: notify the user if this is a request from the admin panel
