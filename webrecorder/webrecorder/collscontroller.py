@@ -333,6 +333,7 @@ class CollsController(BaseController):
                         coll_name=coll_name
                     )
                     reviewerMailTitle = 'Webrecorder: New collection awaiting review!'
+                    reviewerMail = os.environ.get('REVIEW_EMAIL')
                     self.cork.mailer.send_email(reviewerMail, reviewerMailTitle, reviewerMailText)
                 elif data['ticketState'] == 'complete':
                     print('sending complete mail')
