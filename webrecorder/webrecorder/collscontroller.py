@@ -1,4 +1,4 @@
-from bottle import request, response
+from bottle import request, response, template
 from six.moves.urllib.parse import quote
 import os
 
@@ -327,9 +327,21 @@ class CollsController(BaseController):
 
             if ticketStateChanged:
                 if data['ticketState'] == 'pending':
-                    pass # send review pending mail
+                    print('sending review mail')
+                    reviewerMailText = template(
+                        'webrecorder/templates/pending_mail.html',
+                        coll_name=coll_name
+                    )
+                    reviewerMailTitle = 'Webrecorder: New collection awaiting review!'
+                    self.cork.mailer.send_email(reviewerMail, reviewerMailTitle, reviewerMailText)
                 elif data['ticketState'] == 'complete':
-                    pass # send complete mail
+                    print('sending complete mail')
+                    completeMailText = template(
+                        'webrecorder/templates/complete_mail.html',
+                        coll_name=coll_name
+                    )
+                    completeMailTitle = 'Webrecorder: Your collection has been reviewed!'
+                    self.cork.mailer.send_email(collection['usermail'] + ', ' + user.email_addr, completeMailTitle, completeMailText)
 
 
             # TODO: notify the user if this is a request from the admin panel
