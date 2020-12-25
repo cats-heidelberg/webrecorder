@@ -76,12 +76,12 @@ const mapDispatchToProps = (dispatch, { history }) => {
         .then(() => {
           dispatch(completeReviewDispatch(user, collID));
         })
-        .then(() => {
-          dispatch(loadReviewList());
-        })
         .catch((error) => {
           console.log(error);
         });
+      setTimeout(() => {
+        history.push(`/${user}/review`);
+      }, 100);
     },
     getCollectionsReview: (collections, sortBy) => {
       dispatch(loadReviewList()).then(() => {
@@ -89,7 +89,14 @@ const mapDispatchToProps = (dispatch, { history }) => {
       });
     },
     Reviewed: (user, collID, ticketState = "approved", doi = "") => {
-      dispatch(completeRecordingDispatch(user, collID, ticketState, doi));
+      dispatch(completeRecordingDispatch(user, collID, ticketState, doi)).catch(
+        (error) => {
+          console.log(error);
+        }
+      );
+      setTimeout(() => {
+        history.push(`/${user}/review`);
+      }, 100);
     },
   };
 };

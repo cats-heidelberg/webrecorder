@@ -81,7 +81,6 @@ class CollectionListUI extends Component {
     const { _sortBy } = this.state;
     if (_sortBy !== null && collections && collections.get("loaded")) {
       collections.get("collections").map((coll) => {
-        console.log("imcollectionlistui_sort" + coll.get("projektcode"));
         if (
           coll.get("projektcode") !== undefined &&
           coll.get("projektcode") !== ""
@@ -93,20 +92,6 @@ class CollectionListUI extends Component {
     }
     //  sortCollections(_sortBy, collections.get("collections"));
   }
-
-  /*
-  componentDidUpdate(prevProps) {
-    if (prevProps.numCollections !== this.props.numCollections) {
-      console.log(this.props.numCollections + "THISnumCollections");
-      this.setState({ numCollections: this.props.numCollection });
-    }
-    if (prevProps.sortBy !== this.props.sortBy) {
-      console.log(
-        "Collections sort changed" + JSON.stringify(this.props.sortBy, null, 2)
-      );
-      this.setState({ _sortBy: this.props.sortBy });
-    }
-  }*/
 
   createCollection = (
     pubTitle,
@@ -182,7 +167,7 @@ class CollectionListUI extends Component {
     const url = apiFormatUrl(
       `${apiPath}/upload?force-coll=${target}&filename=${targetObj}`
     );
-    console.log("fileLocation" + url);
+
     this.xhr.upload.addEventListener("progress", this.uploadProgress);
     this.xhr.addEventListener("load", this.uploadSuccess);
     this.xhr.addEventListener("loadend", this.uploadComplete);
@@ -331,7 +316,7 @@ class CollectionListUI extends Component {
       },
     } = this.props;
     this.setState({ targetObj: file, targetID: collTitle, targetUrl: url });
-    console.log(this.props.numCollections);
+
     setTimeout(() => {
       this.warcIndexing();
     }, 3075);
@@ -731,6 +716,7 @@ class CollectionListUI extends Component {
                         history={history}
                         onPatch={this.onPatch}
                         headline={temp}
+                        ticketState={coll.get("ticketState")}
                       />
                     );
                   })}

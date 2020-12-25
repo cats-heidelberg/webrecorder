@@ -47,6 +47,7 @@ class CollectionItem extends Component {
 
   toggle = () => {
     this.setState({ open: !this.state.open });
+    console.log(this.state.open);
   };
   denyArchive = () => {
     const { completeReview, collection } = this.props;
@@ -93,7 +94,6 @@ class CollectionItem extends Component {
   readyApprove = () => {
     const { Reviewed, collection } = this.props;
     Reviewed(collection.get("owner"), collection.get("id"), "approved");
-    this.refresh();
   };
   sendForDOI = () => {
     const { doi } = this.state;
@@ -222,7 +222,7 @@ class CollectionItem extends Component {
                     <Modal
                       visible={open}
                       closeCb={this.close}
-                      header="To finish recording please confirm."
+                      header="To deny archive please confirm."
                       dialogClassName="table-header-modal dat-modal"
                     >
                       {

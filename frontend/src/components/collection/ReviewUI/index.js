@@ -66,10 +66,6 @@ class ReviewUI extends Component {
   }
   componentDidUpdate(prevProps) {
     if (prevProps.sortByReview !== this.props.sortByReview) {
-      console.log(
-        "Collections sort changed" +
-          JSON.stringify(this.props.sortByReview, null, 2)
-      );
       this.setState({ _sortBy: this.props.sortByReview });
     }
   }

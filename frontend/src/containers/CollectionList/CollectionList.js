@@ -374,10 +374,12 @@ const mapDispatchToProps = (dispatch, { history }) => {
         .catch((err) => console.log("error", err));
     },
     completeRecording: (user, collID, ticketState = "pending") => {
-      dispatch(completeRecordingDispatch(user, collID, ticketState))
-        .then(() => dispatch(reviewDataToRevis(user, collID)))
-        .then((res) => console.log(res))
-        .then(() => dispatch(sendMetaDispatch(user, collID)));
+      dispatch(
+        completeRecordingDispatch(user, collID, ticketState, "")
+      ).then(() => dispatch(reviewDataToRevis(user, collID)));
+      setTimeout(() => {
+        history.push(`/${user}`);
+      }, 100);
     },
     editUser: (user, data) => {
       dispatch(editUser(user, data))

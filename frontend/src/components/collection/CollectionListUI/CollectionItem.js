@@ -32,6 +32,7 @@ class CollectionItem extends Component {
     onPatch: PropTypes.func,
     selected: PropTypes.bool,
     history: PropTypes.string,
+    ticketState: PropTypes.string,
   };
   constructor(props) {
     super(props);
@@ -39,24 +40,31 @@ class CollectionItem extends Component {
     this.state = {
       showModalFinish: false,
       open: false,
-      ticketState: "open",
+      ticketState: this.props.ticketState,
     };
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.ticketState !== this.props.ticketState ||
+      prevState.ticketState !== this.state.ticketState
+    ) {
+      this.setState({ ticketState: this.state.ticketState });
+    }
   }
 
   toggle = () => {
     this.setState({ open: !this.state.open });
   };
   sendArchive = () => {
+    console.log("im send Archive collectionItem");
     const { collection, completeRec } = this.props;
     const collID = collection.get("id");
-    this.setState({ ticketState: "pending" });
     completeRec(collID, "pending");
-    this.close();
+    this.setState({ ticketState: "pending" });
   };
 
   close = () => {
     this.setState({ open: false });
-    this.refresh();
   };
 
   closeModal = () => {
@@ -127,14 +135,12 @@ class CollectionItem extends Component {
       )}/${collection.get("recordingUrl")}`
     );
   };
-  refresh = () => {
-    window.location.reload();
-  };
+
   sendForReview = () => {};
 
   render() {
     const { canAdmin, collection, error, headline } = this.props;
-    const { showModalFinish, open, ticketState } = this.state;
+    const { showModalFinish, open } = this.state;
     const descClasses = classNames("left-buffer list-group-item", {
       "has-description": collection.get("desc"),
     });
@@ -180,10 +186,7 @@ class CollectionItem extends Component {
               </p>
               {canAdmin && (
                 <React.Fragment>
-                  {(collection.get("ticketState") === "open" ||
-                    collection.get("ticketState") === "denied") &&
-                  (ticketState === "open" ||
-                    collection.get("ticketState") === "denied") ? (
+                  {collection.get("ticketState") === "open" ? (
                     <Button className="rounded" onClick={this.newSession}>
                       Review and Edit
                     </Button>
@@ -193,17 +196,14 @@ class CollectionItem extends Component {
                     </Button>
                   )}
 
-                  {(collection.get("ticketState") === "open" ||
-                    collection.get("ticketState") === "denied") &&
-                    (ticketState === "open" ||
-                      collection.get("ticketState") === "denied") && (
-                      <Button
-                        className="rounded new-session"
-                        onClick={this.closeModal}
-                      >
-                        <span> Edit Metadata</span>
-                      </Button>
-                    )}
+                  {collection.get("ticketState") === "open" && (
+                    <Button
+                      className="rounded new-session"
+                      onClick={this.closeModal}
+                    >
+                      <span> Edit Metadata</span>
+                    </Button>
+                  )}
                   <Button
                     className="rounded new-session"
                     onClick={this.downloadAction}
@@ -216,71 +216,63 @@ class CollectionItem extends Component {
                       Collection{" "}
                     </span>
                   </Button>
-                  {(collection.get("ticketState") === "open" ||
-                    collection.get("ticketState") === "denied") &&
-                    (ticketState === "open" ||
-                      collection.get("ticketState") === "denied") && (
-                      <Button
-                        className="rounded new-session"
-                        onClick={this.toggle}
-                      >
-                        <span> Complete</span>
+                  {collection.get("ticketState") === "open" && (
+                    <Button
+                      className="rounded new-session"
+                      onClick={this.toggle}
+                    >
+                      <span> Complete</span>
+                    </Button>
+                  )}
+                  {collection.get("ticketState") === "open" && (
+                    <Modal
+                      visible={open}
+                      closeCb={this.close}
+                      header="To finish recording please confirm."
+                      dialogClassName="table-header-modal dat-modal"
+                    >
+                      {
+                        <React.Fragment>
+                          <h4>Attention</h4>
+                          <p>
+                            If you submit your archive for DOI creation you
+                            won't be able to record more content.
+                            <br /> <br />
+                            End recording archive?{" "}
+                            <a href="https://datproject.org/" target="_blank">
+                              Learn more
+                            </a>
+                          </p>
+                          <Button
+                            className="rounded new-session"
+                            onClick={this.sendArchive}
+                          >
+                            <CheckIcon />
+                            <span className="hidden-xs">confirm.</span>
+                          </Button>
+                        </React.Fragment>
+                      }
+                      <Button onClick={this.close} className="rectangular">
+                        Close
                       </Button>
-                    )}
-                  {(collection.get("ticketState") === "open" ||
-                    collection.get("ticketState") === "denied") &&
-                    (ticketState === "open" ||
-                      collection.get("ticketState") === "denied") && (
-                      <Modal
-                        visible={open}
-                        closeCb={this.close}
-                        header="To finish recording please confirm."
-                        dialogClassName="table-header-modal dat-modal"
-                      >
-                        {
-                          <React.Fragment>
-                            <h4>Attention</h4>
-                            <p>
-                              If you submit your archive for DOI creation you
-                              won't be able to record more content.
-                              <br /> <br />
-                              End recording archive?{" "}
-                              <a href="https://datproject.org/" target="_blank">
-                                Learn more
-                              </a>
-                            </p>
-                            <Button
-                              className="rounded new-session"
-                              onClick={this.sendArchive}
-                            >
-                              <CheckIcon />
-                              <span className="hidden-xs">confirm.</span>
-                            </Button>
-                          </React.Fragment>
-                        }
-                        <Button onClick={this.close} className="rectangular">
-                          Close
-                        </Button>
-                      </Modal>
-                    )}
+                    </Modal>
+                  )}
                 </React.Fragment>
               )}
-              {canAdmin &&
-                (collection.get("ticketState") === "pending" ||
-                  ticketState === "pending") && (
-                  <React.Fragment>
-                    <p>
-                      Your recording is getting reviewed by the library team.
-                      <br />
-                      Please keep track of this message since we will update it.
-                      <br />
-                      once the review process has been completed.
-                      <br />
-                      Thank you for your patience and for chosing openDachs.
-                      <br />
-                    </p>
-                  </React.Fragment>
-                )}
+              {canAdmin && collection.get("ticketState") === "pending" && (
+                <React.Fragment>
+                  <p>
+                    Your recording is getting reviewed by the library team.
+                    <br />
+                    Please keep track of this message since we will update it.
+                    <br />
+                    once the review process has been completed.
+                    <br />
+                    Thank you for your patience and for chosing openDachs.
+                    <br />
+                  </p>
+                </React.Fragment>
+              )}
               {canAdmin && collection.get("ticketState") === "denied" && (
                 <React.Fragment>
                   <p>
@@ -329,8 +321,7 @@ class CollectionItem extends Component {
               {canAdmin &&
                 (collection.get("ticketState") === "open" ||
                   collection.get("ticketState") === "denied") &&
-                (ticketState === "open" ||
-                  collection.get("ticketState") === "denied") && (
+                collection.get("ticketState") === "denied" && (
                   <React.Fragment>
                     <DeleteCollection collection={collection}>
                       <TrashIcon />

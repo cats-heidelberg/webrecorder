@@ -279,6 +279,18 @@ export default function collection(state = initialState, action = {}) {
       console.log(state.get("reviewing") + "reset");
       return state.set("reviewing", false);
 
+    case REVIEW_CREATE:
+      return state.set("datProcessing", true);
+    case REVIEW_CREATE_SUCCESS:
+      return state.merge({
+        datProcessing: false,
+        ...action.result,
+      });
+    case REVIEW_CREATE_FAIL:
+      return state.merge({
+        datProcessing: false,
+        datError: action.error,
+      });
     case LISTS_LOAD_FAIL:
     case LISTS_LOAD:
     case COLL_SET_PUBLIC:
@@ -297,7 +309,7 @@ export function deleteCollection(user, coll) {
       }),
   };
 }
-export function completeRecordingDispatch(user, collID, ticketState, doi) {
+export function completeRecordingDispatch(user, collID, ticketState, doi = "") {
   return {
     types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
     promise: (client) =>
