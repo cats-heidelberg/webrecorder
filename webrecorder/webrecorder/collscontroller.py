@@ -1,6 +1,7 @@
 from bottle import request, response, template
 from six.moves.urllib.parse import quote
 import os
+import pprint
 
 from webrecorder.basecontroller import BaseController, wr_api_spec
 from webrecorder.webreccork import ValidationException
@@ -335,6 +336,7 @@ class CollsController(BaseController):
             if ticketStateChanged:
                 if data['ticketState'] == 'pending':
                     print('sending review mail')
+                    pprint.pprint(dict(os.environ), width = 1)
                     reviewerMailText = template(
                         'webrecorder/templates/pending_mail.html',
                         coll_name=coll_name
