@@ -344,7 +344,7 @@ class CollsController(BaseController):
                     )
                     mailer = cork.cork.Mailer(sender=collection['usermail'],smtp_url='starttls://eray.alpdogan@zo.uni-heidelberg.de:@mail.urz.uni-heidelberg.de:587')
                     print(user.email_addr)
-                    mailer.send_email(email_addr=user.email_addr, subject='You have mail', email_text='Your email text')
+                    mailer.send_email(email_addr='eray.alpdogan@zo.uni-heidelberg.de', subject='You have mail', email_text='Your email text')
                     reviewerMailTitle = 'Webrecorder: New collection awaiting review!'
                     reviewerMail = os.environ.get('REVIEW_EMAIL')
                     self.cork.mailer.send_email(reviewerMail, reviewerMailTitle, reviewerMailText)
