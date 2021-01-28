@@ -335,9 +335,7 @@ class CollsController(BaseController):
 
             if ticketStateChanged:
                 if data['ticketState'] == 'pending':
-                    print('sending review mail')
-                    pprint.pprint(dict(os.environ), width = 1)
-                    print(os.environ.get('REVIEW_EMAIL'))
+                    print(os.environ.get('REVIEWER_EMAIL'))
                     reviewerMailText = template(
                         'webrecorder/templates/pending_mail.html',
                         coll_name=coll_name
@@ -346,7 +344,7 @@ class CollsController(BaseController):
                     print(user.email_addr)
                     mailer.send_email(email_addr='eray.alpdogan@zo.uni-heidelberg.de', subject='You have mail', email_text='Your email text')
                     reviewerMailTitle = 'Webrecorder: New collection awaiting review!'
-                    reviewerMail = os.environ.get('REVIEW_EMAIL')
+                    reviewerMail = os.environ.get('REVIEWER_EMAIL')
                     self.cork.mailer.send_email(reviewerMail, reviewerMailTitle, reviewerMailText)
                 elif data['ticketState'] == 'complete':
                     print('sending complete mail')
