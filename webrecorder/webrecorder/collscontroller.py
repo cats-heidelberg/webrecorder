@@ -343,7 +343,7 @@ class CollsController(BaseController):
                     reviewerMailTitle = 'Webrecorder: New collection awaiting review!'
                     reviewerMail = os.environ.get('REVIEWER_EMAIL')
                     print(reviewerMail)
-                    self.cork.mailer = Mailer('eray.alpdogan@zo.uni-heidelberg.de', 'smtp://relays.uni-heidelberg.de:25')
+                    #self.cork.mailer = Mailer('eray.alpdogan@zo.uni-heidelberg.de', 'smtp://relays.uni-heidelberg.de:25')
                     self.cork.mailer.send_email('eray.alpdogan@zo.uni-heidelberg.de', reviewerMailTitle, reviewerMailText)
                 elif data['ticketState'] == 'complete':
                     print('sending complete mail')
