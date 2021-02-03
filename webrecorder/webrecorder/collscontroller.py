@@ -339,7 +339,7 @@ class CollsController(BaseController):
                         'webrecorder/templates/pending_mail.html',
                         coll_name=coll_name
                     )
-                    print(user.email_addr)
+                    
                     reviewerMailTitle = 'Webrecorder: New collection awaiting review!'
                     reviewerMail = os.environ.get('REVIEWER_EMAIL')
                     print(reviewerMail)
