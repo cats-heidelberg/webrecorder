@@ -358,7 +358,7 @@ class CollsController(BaseController):
                         username = user.username
                     else:
                         username = ''
-                    host = os.environ.get('os.environ.get('EMAIL_SMTP_URL')')
+                    host = os.environ.get('EMAIL_SMTP_URL')
 
                     try:
                         self.cork.mailer.send_email(username=username,
