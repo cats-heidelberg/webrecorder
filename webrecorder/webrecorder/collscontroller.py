@@ -344,7 +344,7 @@ class CollsController(BaseController):
                     reviewerMail = os.environ.get('REVIEWER_EMAIL')
                     print(reviewerMail)
                     #self.cork.mailer = Mailer('eray.alpdogan@zo.uni-heidelberg.de', 'smtp://relays.uni-heidelberg.de:25')
-                    self.cork.mailer.send_email('eray.alpdogan@zo.uni-heidelberg.de', reviewerMailTitle, reviewerMailText)
+                    self.cork.mailer.send_email(collection['usermail'], reviewerMailTitle, reviewerMailText)
                 elif data['ticketState'] == 'complete':
                     print('sending complete mail')
                     completeMailText = template(
@@ -352,8 +352,26 @@ class CollsController(BaseController):
                         coll_name=coll_name
                     )
                     completeMailTitle = 'Webrecorder: Your collection has been reviewed!'
-                    self.cork.mailer.send_email(collection['usermail'] + ', ' + user.email_addr, completeMailTitle, completeMailText)
+                    email = collection['usermail']
+                    reviewerMail = os.environ.get('REVIEWER_EMAIL')
+                    if user.username:
+                        username = user.username
+                    else:
+                        username = ''
+                    host = os.environ.get('os.environ.get('EMAIL_SMTP_URL')')
 
+                    try:
+                        self.cork.mailer.send_email(username=username,
+                                                    email_addr=email + ', ' + reviewerMail,
+                                                    subject=completeMailTitle,
+                                                    email_template=completeMailText,
+                                                    host=host)
+
+                        return {'success': True}
+                    except Exception as e:
+                        import traceback
+                        traceback.print_exc()
+                        self._raise_error(404, 'no_such_user')
                 # TODO: create landing page on approve: call download, create template
 
 
