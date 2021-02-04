@@ -68,6 +68,7 @@ class NewCollection extends Component {
       noteToDachs: "",
       publishYear: "",
       projektcode: "",
+      projektcodeValid: false,
       selectedGroupName: "corporate/institutional name",
       url: "",
       ticketState: "open",
@@ -496,6 +497,21 @@ class NewCollection extends Component {
       this.setState({ emailValid: false });
     }
   };
+
+  ValidateProjektcode = () => {
+    const { projektcodeValid, projektcode } = this.state;
+    /*if (checkEmail && ( email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) === null)) {
+      return 'error';
+    }
+    return null;*/
+    const myTest = /^[A-Za-z0-9 ]{1,8}$/;
+    if (myTest.test(projektcode) === true && !projektcodeValid) {
+      this.setState({ projektcodeValid: true });
+    } else if (myTest.test(projektcode) === false && projektcodeValid) {
+      this.setState({ projektcodeValid: false });
+    }
+  };
+
   validateURL = () => {
     const { url, urlValid } = this.state;
     ///^((http[s]?|ftp):\/)?\/?([^:\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?$/
@@ -586,6 +602,7 @@ class NewCollection extends Component {
       publisher,
       selectedGroupName,
       projektcode,
+      projektcodeValid,
       subjectHeadingText,
       personHeadingText,
       creatorLegend,
@@ -819,6 +836,9 @@ class NewCollection extends Component {
                       inputRef={(obj) => {
                         this.input = obj;
                       }}
+                      style={{
+                        border: title ? "1px solid black" : "1px solid #ff1a1a",
+                      }}
                       id="title"
                       name="title"
                       onFocus={this.focusInput}
@@ -862,23 +882,19 @@ class NewCollection extends Component {
 
                     <FormControl
                       type="text"
-                      required
-                      placeholder="default."
+                      placeholder="you can change Record Title here"
                       inputRef={(obj) => {
                         this.input = obj;
                       }}
-                      id="projektcode"
-                      name="projektcode"
+                      id="pubTitleOriginal"
+                      name="pubTitleOriginal"
                       onFocus={this.focusInput}
                       onChange={this.handleInput}
-                      value={projektcode}
+                      value={pubTitleOriginal}
                     />
+
                     <label
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
+                      style={{ display: "inline", float: "left" }}
                       onMouseOver={() => {
                         ReactTooltip.show(this.fooRef24);
                       }}
@@ -895,7 +911,7 @@ class NewCollection extends Component {
                           width: "14px",
                           float: "left",
                         }}
-                        data-tip="Not obligatory, but can be used to sort archives under a topic."
+                        data-tip="obligatory and choose wisely since projektcode is used to sort archives under a topic."
                       />
                     </label>
                     <div
@@ -903,22 +919,27 @@ class NewCollection extends Component {
                         marginRight: "4px",
                         display: "inline",
                         float: "left",
+                        color: projektcodeValid ? "black" : "red",
                       }}
                     >
-                      Projektcode (to join arcives under a topic ):
+                      *Projektcode (to join arcives under a topic ):
                     </div>
 
+                    <ControlLabel srOnly>projektcode:</ControlLabel>
                     <FormControl
-                      type="text"
-                      placeholder="you can change Record Title here"
-                      inputRef={(obj) => {
-                        this.input = obj;
+                      style={{
+                        border: projektcodeValid
+                          ? "1px solid black"
+                          : "1px solid #ff1a1a",
                       }}
-                      id="pubTitleOriginal"
-                      name="pubTitleOriginal"
-                      onFocus={this.focusInput}
-                      onChange={this.handleInput}
-                      value={pubTitleOriginal}
+                      aria-label="text"
+                      validationState={this.ValidateProjektcode()}
+                      name="projektcode"
+                      placeholder="*"
+                      autoFocus
+                      required
+                      value={projektcode}
+                      onChange={this.handleChange}
                     />
                   </FormGroup>
                   <FormGroup id="fieldset">
@@ -1001,6 +1022,12 @@ class NewCollection extends Component {
                           inputRef={(obj) => {
                             this.input = obj;
                           }}
+                          style={{
+                            border:
+                              collTitle || creatorList.length > 0
+                                ? "1px solid black"
+                                : "1px solid #ff1a1a",
+                          }}
                           id="collTitle"
                           name="collTitle"
                           onFocus={this.focusInput}
@@ -1063,6 +1090,12 @@ class NewCollection extends Component {
                           placeholder="Surname, given name"
                           inputRef={(obj) => {
                             this.input = obj;
+                          }}
+                          style={{
+                            border:
+                              persName || creatorList.length > 0
+                                ? "1px solid black"
+                                : "1px solid #ff1a1a",
                           }}
                           id="persName"
                           name="persName"
@@ -1200,6 +1233,11 @@ class NewCollection extends Component {
                       validationState={this.validatePublisher()}
                       inputRef={(obj) => {
                         this.input = obj;
+                      }}
+                      style={{
+                        border: publisher
+                          ? "1px solid black"
+                          : "1px solid #ff1a1a",
                       }}
                       id="publisher"
                       name="publisher"
@@ -1542,6 +1580,7 @@ class NewCollection extends Component {
               disabled={
                 !emailValid ||
                 !urlValid ||
+                !projektcodeValid ||
                 !title ||
                 !publisher ||
                 (creatingCollection && !error) ||

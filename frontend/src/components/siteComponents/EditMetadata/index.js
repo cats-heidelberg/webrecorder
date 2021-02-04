@@ -47,12 +47,14 @@ class EditMetadata extends Component {
       surName: "",
       persName: "",
       usermail: "",
+      emailValid: true,
       creatorList,
       isPublic: false,
       creatorLegend,
       noteToDachs: "",
       publishYear: "",
       projektcode: "",
+      projektcodeValid: true,
       selectedGroupName: "corporate/institutional name",
       url: "",
       ticketState: "open",
@@ -65,21 +67,18 @@ class EditMetadata extends Component {
   componentDidMount(prevProps) {
     const self = this;
     const promise1 = new Promise(function (resolve, reject) {
-      console.log(self.props.coll.get("personHeaderList"));
       var didSucceed = JSON.parse(
         self.props.coll.get("personHeaderList").replace(/'/g, '"')
       );
       resolve(didSucceed);
     });
     const promise2 = new Promise(function (resolve, reject) {
-      console.log(self.props.coll.get("subjectHeaderList"));
       var didSucceed = JSON.parse(
         self.props.coll.get("subjectHeaderList").replace(/'/g, '"')
       );
       resolve(didSucceed);
     });
     const promise3 = new Promise(function (resolve, reject) {
-      console.log(self.props.coll.get("creatorList"));
       var didSucceed = JSON.parse(
         self.props.coll.get("creatorList").replace(/'/g, '"')
       );
@@ -238,9 +237,17 @@ class EditMetadata extends Component {
     this.setState({ list: [] });
   };
   validateEmail = () => {
-    const { checkEmail, email } = this.state;
-    const myTest = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return myTest.test(email);
+    const { emailValid, usermail } = this.state;
+    /*if (checkEmail && ( email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) === null)) {
+      return 'error';
+    }
+    return null;*/
+    const myTest = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+    if (myTest.test(usermail) === true && !emailValid) {
+      this.setState({ emailValid: true });
+    } else if (myTest.test(usermail) === false && emailValid) {
+      this.setState({ emailValid: false });
+    }
   };
 
   validateCollYear = () => {
@@ -248,7 +255,19 @@ class EditMetadata extends Component {
     const myTest = /[0-9]{4}( - [0-9]{4})?/;
     return myTest.test(collYear);
   };
-
+  ValidateProjektcode = () => {
+    const { projektcodeValid, projektcode } = this.state;
+    /*if (checkEmail && ( email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) === null)) {
+      return 'error';
+    }
+    return null;*/
+    const myTest = /^[A-Za-z0-9 ]{1,8}$/;
+    if (myTest.test(projektcode) === true && !projektcodeValid) {
+      this.setState({ projektcodeValid: true });
+    } else if (myTest.test(projektcode) === false && projektcodeValid) {
+      this.setState({ projektcodeValid: false });
+    }
+  };
   validatePublishYear = () => {
     const { publishYear } = this.state;
     const myTest = /[0-9]{4}([0-9]{2})?([0-9]{2})?/;
@@ -324,6 +343,7 @@ class EditMetadata extends Component {
       collYear,
       surName,
       copTitle,
+      emailValid,
       isPublic,
       noteToDachs,
       title,
@@ -335,6 +355,7 @@ class EditMetadata extends Component {
       publisher,
       selectedGroupName,
       projektcode,
+      projektcodeValid,
       subjectHeadingText,
       personHeadingText,
       creatorLegend,
@@ -362,11 +383,7 @@ class EditMetadata extends Component {
                 <div>
                   <FormGroup id="fieldset">
                     <label
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
+                      style={{ display: "inline", float: "left" }}
                       onMouseOver={() => {
                         ReactTooltip.show(this.fooRef);
                       }}
@@ -383,7 +400,7 @@ class EditMetadata extends Component {
                           width: "14px",
                           float: "left",
                         }}
-                        data-tip="Any further information regarding your OpenDACHS request will be sent to this e-mail address.'."
+                        data-tip="Any further information regarding your OpenDACHS request will be sent to this e-mail address."
                       />
                     </label>
                     <div
@@ -391,21 +408,25 @@ class EditMetadata extends Component {
                         marginRight: "4px",
                         display: "inline",
                         float: "left",
-                        color: usermail ? "black" : "red",
+                        color: emailValid ? "black" : "red",
                       }}
                     >
                       *Your e-mail address:
                     </div>
 
-                    <ControlLabel srOnly>Email address:</ControlLabel>
+                    <ControlLabel srOnly>email address:</ControlLabel>
                     <FormControl
+                      style={{
+                        border: emailValid
+                          ? "1px solid black"
+                          : "1px solid #ff1a1a",
+                      }}
                       aria-label="email"
-                      type="email"
                       validationState={this.validateEmail()}
                       name="usermail"
-                      required
-                      placeholder="email@...uni-heidelberg.de*"
+                      placeholder="please enter your email*"
                       autoFocus
+                      required
                       value={usermail}
                       onChange={this.handleChange}
                       onBlur={this.checkEmail}
@@ -458,6 +479,9 @@ class EditMetadata extends Component {
                       inputRef={(obj) => {
                         this.input = obj;
                       }}
+                      style={{
+                        border: title ? "1px solid black" : "1px solid #ff1a1a",
+                      }}
                       id="title"
                       name="title"
                       onFocus={this.focusInput}
@@ -501,23 +525,19 @@ class EditMetadata extends Component {
 
                     <FormControl
                       type="text"
-                      required
-                      placeholder="default."
+                      placeholder="you can change Record Title here"
                       inputRef={(obj) => {
                         this.input = obj;
                       }}
-                      id="projektcode"
-                      name="projektcode"
+                      id="pubTitleOriginal"
+                      name="pubTitleOriginal"
                       onFocus={this.focusInput}
                       onChange={this.handleInput}
-                      value={projektcode}
+                      value={pubTitleOriginal}
                     />
+
                     <label
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
+                      style={{ display: "inline", float: "left" }}
                       onMouseOver={() => {
                         ReactTooltip.show(this.fooRef24);
                       }}
@@ -534,7 +554,7 @@ class EditMetadata extends Component {
                           width: "14px",
                           float: "left",
                         }}
-                        data-tip="Not obligatory, but can be used to sort archives under a topic."
+                        data-tip="obligatory and choose wisely since projektcode is used to sort archives under a topic."
                       />
                     </label>
                     <div
@@ -542,22 +562,27 @@ class EditMetadata extends Component {
                         marginRight: "4px",
                         display: "inline",
                         float: "left",
+                        color: projektcodeValid ? "black" : "red",
                       }}
                     >
-                      Projektcode (to join arcives under a topic ):
+                      *Projektcode (to join arcives under a topic ):
                     </div>
 
+                    <ControlLabel srOnly>projektcode:</ControlLabel>
                     <FormControl
-                      type="text"
-                      placeholder="you can change Record Title here"
-                      inputRef={(obj) => {
-                        this.input = obj;
+                      style={{
+                        border: projektcodeValid
+                          ? "1px solid black"
+                          : "1px solid #ff1a1a",
                       }}
-                      id="pubTitleOriginal"
-                      name="pubTitleOriginal"
-                      onFocus={this.focusInput}
-                      onChange={this.handleInput}
-                      value={pubTitleOriginal}
+                      aria-label="text"
+                      validationState={this.ValidateProjektcode()}
+                      name="projektcode"
+                      placeholder="*"
+                      autoFocus
+                      required
+                      value={projektcode}
+                      onChange={this.handleChange}
                     />
                   </FormGroup>
                   <FormGroup id="fieldset">
@@ -633,6 +658,12 @@ class EditMetadata extends Component {
                           inputRef={(obj) => {
                             this.input = obj;
                           }}
+                          style={{
+                            border:
+                              collTitle || creatorList.length > 0
+                                ? "1px solid black"
+                                : "1px solid #ff1a1a",
+                          }}
                           id="collTitle"
                           name="collTitle"
                           onFocus={this.focusInput}
@@ -694,6 +725,12 @@ class EditMetadata extends Component {
                           placeholder="Surname, given name"
                           inputRef={(obj) => {
                             this.input = obj;
+                          }}
+                          style={{
+                            border:
+                              persName || creatorList.length > 0
+                                ? "1px solid black"
+                                : "1px solid #ff1a1a",
                           }}
                           id="persName"
                           name="persName"
@@ -843,6 +880,11 @@ class EditMetadata extends Component {
                       required
                       inputRef={(obj) => {
                         this.input = obj;
+                      }}
+                      style={{
+                        border: publisher
+                          ? "1px solid black"
+                          : "1px solid #ff1a1a",
                       }}
                       id="publisher"
                       name="publisher"
