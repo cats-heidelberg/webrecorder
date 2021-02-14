@@ -90,7 +90,7 @@ class WebRecCork(Cork):
 
         email_sender = os.path.expandvars(config.get('email_sender', ''))
         smtp_url = os.path.expandvars(config.get('email_smtp_url', ''))
-
+        print(smtp_url)
         cork = WebRecCork(backend=backend,
                     email_sender=email_sender,
                     smtp_url=smtp_url,
