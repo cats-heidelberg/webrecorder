@@ -1,7 +1,6 @@
 from bottle import request, response, template
 from six.moves.urllib.parse import quote
 import os
-import pprint
 
 from webrecorder.basecontroller import BaseController, wr_api_spec
 from webrecorder.webreccork import ValidationException
@@ -10,6 +9,9 @@ from webrecorder.models.base import DupeNameException
 from webrecorder.models.datshare import DatShare
 from webrecorder.utils import get_bool
 
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 # ============================================================================
 class CollsController(BaseController):
@@ -47,9 +49,7 @@ class CollsController(BaseController):
             if not coll_name:
                 self._raise_error(400, 'invalid_coll_name')
 
-            doi = data.get('doi', '') # TODO: generate doi here
-            #
-            #TODO: add redis object, key: jahr.monat, value: counter
+            doi = data.get('doi', '')
 
             is_public = data.get('public', False)
 
@@ -100,7 +100,7 @@ class CollsController(BaseController):
 
             selectedGroupName = data.get('selectedGroupName', '')
 
-            projektcode = data.get('projektcode', '') # TODO: validate projektcode
+            projektcode = data.get('projektcode', '')
 
             publishYear = data.get('publishYear', '')
 
@@ -130,12 +130,7 @@ class CollsController(BaseController):
                 self._raise_error(400, 'duplicate_name')
 
             try:
-                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList,
-                                                    personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal,
-                                                    pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText,
-                                                    surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear,
-                                                    listID=listID, desc='', public=is_public, public_index=is_public_index, ticketState=ticketState, isCollLoaded=isCollLoaded,
-                                                    recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp, doi=doi)
+                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList, personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal, pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText, surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear, listID=listID, desc='', public=is_public, public_index=is_public_index, ticketState=ticketState, isCollLoaded=isCollLoaded, recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp, doi=doi)
 
                 if is_external:
                     collection.set_external(True)
@@ -231,9 +226,9 @@ class CollsController(BaseController):
 
             self.access.assert_can_admin_coll(collection)
 
-            data = request.json or {}
-
             ticketStateChanged = False
+
+            data = request.json or {}
 
             if 'title' in data:
                 new_coll_title = data['title']
@@ -339,40 +334,25 @@ class CollsController(BaseController):
                         'webrecorder/templates/pending_mail.html',
                         coll_name=coll_name
                     )
-                    
-                    reviewerMailTitle = 'Webrecorder: New collection awaiting review!'
-                    reviewerMail = os.environ.get('REVIEWER_EMAIL')
-                    print(reviewerMail)
+
+                    mail = MIMEMultipart()
+                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    mail['TO'] = collection['usermail']
+                    mail['subject'] = 'Webrecorder: New collection awaiting review!'
+
+                    host = "relays.uni-heidelberg.de"
+                    mailServer = smtplib.SMTP(host)
+                    MSG = "Your archives state has been changesd from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
+                    mail.attach(MIMEText(reviewerMailText, "html"))
+                    msgBody = mail.as_string()
+                    #part1 = MIMEText(MSG, 'plain')
+                    #part2 = MIMEText(html, 'html')
+                    #mail.attach(part1)
+                    #mail.attach(part2)
+                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
+                    mailServer.quit()
+
                     #self.cork.mailer = Mailer('eray.alpdogan@zo.uni-heidelberg.de', 'smtp://relays.uni-heidelberg.de:25')
-                    self.cork.mailer.send_email(collection['usermail'], reviewerMailTitle, reviewerMailText)
-                elif data['ticketState'] == 'complete':
-                    print('sending complete mail')
-                    completeMailText = template(
-                        'webrecorder/templates/complete_mail.html',
-                        coll_name=coll_name
-                    )
-                    completeMailTitle = 'Webrecorder: Your collection has been reviewed!'
-                    email = collection['usermail']
-                    reviewerMail = os.environ.get('REVIEWER_EMAIL')
-                    if user.username:
-                        username = user.username
-                    else:
-                        username = ''
-                    host = os.environ.get('EMAIL_SMTP_URL')
-
-                    try:
-                        self.cork.mailer.send_email(username=username,
-                                                    email_addr=email + ', ' + reviewerMail,
-                                                    subject=completeMailTitle,
-                                                    email_template=completeMailText,
-                                                    host=host)
-
-                        return {'success': True}
-                    except Exception as e:
-                        import traceback
-                        traceback.print_exc()
-                        self._raise_error(404, 'no_such_user')
-                # TODO: create landing page on approve: call download, create template
 
 
             # TODO: notify the user if this is a request from the admin panel
