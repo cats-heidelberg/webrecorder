@@ -330,13 +330,46 @@ class CollsController(BaseController):
                     prevState = collection['ticketState']
                     newState = data['ticketState']
                     ticketStateChanged = True
-                    print("Ticket State changed from {} to {}".format(prevState, newState))
+                    print("Ticket State changed from {} to {}".format(collection['title'], newState))
                 collection['ticketState'] = data['ticketState']
             if 'url' in data:
                 collection['url'] = data['url']
 
             if ticketStateChanged:
-                if data['ticketState'] == 'pending':
+                if data['ticketState'] == 'complete':
+                    reviewerMailText = template(
+                        'webrecorder/templates/complete_mail.html',
+                        coll_name=coll_name,
+                        coll_doi=collection['doi']
+                    )
+
+                    mail = MIMEMultipart()
+                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    mail['TO'] = collection['usermail']
+                    mail['subject'] = 'Webrecorder: DOI creation has been completed!'
+                    host = "relays.uni-heidelberg.de"
+                    mailServer = smtplib.SMTP(host)
+                    mail.attach(MIMEText(reviewerMailText, "html"))
+                    msgBody = mail.as_string()
+                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
+                    mailServer.quit()
+                elif data['ticketState'] == 'denied':
+                    reviewerMailText = template(
+                        'webrecorder/templates/deny_mail.html',
+                        coll_name=coll_name
+                    )
+
+                    mail = MIMEMultipart()
+                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    mail['TO'] = collection['usermail']
+                    mail['subject'] = 'Webrecorder: Your archive request has been reviewed and denied!'
+                    host = "relays.uni-heidelberg.de"
+                    mailServer = smtplib.SMTP(host)
+                    mail.attach(MIMEText(reviewerMailText, "html"))
+                    msgBody = mail.as_string()
+                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
+                    mailServer.quit()
+                elif data['ticketState'] == 'pending':
                     reviewerMailText = template(
                         'webrecorder/templates/pending_mail.html',
                         coll_name=coll_name

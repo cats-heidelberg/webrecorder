@@ -318,19 +318,16 @@ class CollectionItem extends Component {
               xs={5}
               md={2}
             >
-              {canAdmin &&
-                (collection.get("ticketState") === "open" ||
-                  collection.get("ticketState") === "denied") &&
-                collection.get("ticketState") === "denied" && (
-                  <React.Fragment>
-                    <DeleteCollection collection={collection}>
-                      <TrashIcon />
-                      <Tooltip placement="top" className="in" id="tooltip-top">
-                        DELETE
-                      </Tooltip>
-                    </DeleteCollection>
-                  </React.Fragment>
-                )}
+              {canAdmin && (
+                <React.Fragment>
+                  <DeleteCollection collection={collection}>
+                    <TrashIcon />
+                    <Tooltip placement="top" className="in" id="tooltip-top">
+                      DELETE
+                    </Tooltip>
+                  </DeleteCollection>
+                </React.Fragment>
+              )}
             </Col>
             <EditMetadata
               coll={collection}

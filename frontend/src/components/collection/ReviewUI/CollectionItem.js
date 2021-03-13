@@ -40,6 +40,7 @@ class CollectionItem extends Component {
       showModalFinish: false,
       modalSessionSave: false,
       open: false,
+      openDeny: false,
       doi: "",
       ticketState: "open",
     };
@@ -47,16 +48,14 @@ class CollectionItem extends Component {
 
   toggle = () => {
     this.setState({ open: !this.state.open });
-    console.log(this.state.open);
   };
-  denyArchive = () => {
-    const { completeReview, collection } = this.props;
-    completeReview(collection.get("owner"), collection.get("id"), "denied");
-    this.close();
+  toggleDeny = () => {
+    this.setState({ openDeny: !this.state.openDeny });
   };
 
   close = () => {
     this.setState({ open: false });
+    this.setState({ openDeny: false });
     this.refresh();
   };
 
@@ -105,13 +104,18 @@ class CollectionItem extends Component {
       doi
     );
   };
+  denyArchive = () => {
+    const { doi } = this.state;
+    const { completeReview, collection } = this.props;
+    completeReview(collection.get("owner"), collection.get("id"), "denied", "");
+  };
   handleInput = (event) => {
     this.setState({ doi: event.target.value });
   };
 
   render() {
     const { canAdmin, collection, error } = this.props;
-    const { showModalFinish, open, ticketState, doi } = this.state;
+    const { showModalFinish, open, openDeny, ticketState, doi } = this.state;
     const descClasses = classNames("left-buffer list-group-item", {
       "has-description": collection.get("desc"),
     });
@@ -166,7 +170,7 @@ class CollectionItem extends Component {
 
                   <Button
                     className="rounded new-session"
-                    onClick={this.toggle}
+                    onClick={this.toggleDeny}
                     disabled={collection.get("ticketState") !== "pending"}
                   >
                     <span> Deny</span>
@@ -218,9 +222,9 @@ class CollectionItem extends Component {
                     </Modal>
                   )}
 
-                  {collection.get("ticketState") === "approved" && (
+                  {collection.get("ticketState") === "pending" && (
                     <Modal
-                      visible={open}
+                      visible={openDeny}
                       closeCb={this.close}
                       header="To deny archive please confirm."
                       dialogClassName="table-header-modal dat-modal"
@@ -269,11 +273,7 @@ class CollectionItem extends Component {
             <Col className="collection-time" xs={6} md={2}>
               Created {buildDate(collection.get("created_at"), false, true)}
             </Col>
-            <Col
-              className="collection-delete-action col-xs-offset-7 col-md-offset-0"
-              xs={5}
-              md={2}
-            ></Col>
+
             <ReviewMetadata
               coll={collection}
               editCollection={this.editCollectiontemp}
