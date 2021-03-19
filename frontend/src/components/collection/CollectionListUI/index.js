@@ -61,7 +61,9 @@ class CollectionListUI extends Component {
     this.interval = null;
     this.state = {
       canCancel: true,
+      _collectionsSorted: null,
       _sortBy: ["sorted by state"],
+      sortByActive: "sorted by state",
       isUploading: false,
       numCollections: 0,
       showModal: false,
@@ -78,20 +80,37 @@ class CollectionListUI extends Component {
 
   componentDidMount() {
     const { sortCollections, sortBy, collections } = this.props;
+    const { _sortBy, _collectionsSorted } = this.state;
+
+    this.updateSort();
+    //  sortCollections(_sortBy, collections.get("collections"));
+  }
+  updateSort = () => {
+    const { sortCollections, sortBy, collections } = this.props;
     const { _sortBy } = this.state;
-    if (_sortBy !== null && collections && collections.get("loaded")) {
+
+    let soLangsamEy = ["sorted by state"];
+    var promise = new Promise(function (resolve, reject) {
       collections.get("collections").map((coll) => {
         if (
           coll.get("projektcode") !== undefined &&
-          coll.get("projektcode") !== ""
-        )
-          this.setState({
-            _sortBy: [...this.state._sortBy, coll.get("projektcode")],
-          });
+          coll.get("projektcode") !== "" &&
+          !_sortBy.includes(coll.get("projektcode"))
+        ) {
+          soLangsamEy.push(coll.get("projektcode"));
+        } else {
+          console.log(coll.get("title") + "projektcode undefined");
+        }
       });
-    }
-    //  sortCollections(_sortBy, collections.get("collections"));
-  }
+
+      resolve(true);
+    });
+    promise.then((bool) =>
+      this.setState({
+        _sortBy: soLangsamEy,
+      })
+    );
+  };
 
   createCollection = (
     pubTitle,
@@ -519,6 +538,31 @@ class CollectionListUI extends Component {
     this.setState({ showModal: !this.state.showModal });
   };
   reOrder = (evt) => {
+    this.setState({ sortByActive: this.state._sortBy[evt] });
+    const { _collectionsSorted, _sortBy } = this.state;
+    const { collections } = this.props;
+    let temp = [{}];
+    let code = _sortBy[evt];
+
+    var promise = new Promise(function (resolve, reject) {
+      // call resolve if the method succeeds
+
+      collections.get("collections").map((element) => {
+        try {
+          if (element.get("projektcode") == code) temp.unshift(element);
+        } catch (e) {
+          console.log(e);
+        }
+        try {
+          if (element.get("projektcode") != code) temp.push(element);
+        } catch (e) {
+          console.log(e);
+        }
+      });
+      resolve(temp);
+    });
+    promise.then((temp) => this.setState({ _collectionsSorted: fromJS(temp) }));
+
     /*const {
       collections,
       match: {
@@ -590,12 +634,14 @@ class CollectionListUI extends Component {
       user,
     } = this.props;
     const {
+      _collectionsSorted,
       showModal,
       showModalFinish,
       progress,
       status,
       isUploading,
       _sortBy,
+      sortByActive,
     } = this.state;
     const userParam = params.user;
     const displayName = user.get("full_name") || userParam;
@@ -667,13 +713,14 @@ class CollectionListUI extends Component {
                     style={{ float: "right" }}
                   >
                     <div>
+                      Sort list:
                       <Dropdown id="roleDropdown" onSelect={this.reOrder}>
                         <Dropdown.Toggle>
-                          {_sortBy ? _sortBy[0] : "Change Sorting"}
+                          {_sortBy ? sortByActive : "Sorting unavailable"}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
-                          {_sortBy.map((sort) => (
-                            <MenuItem key={sort} eventKey="1">
+                          {_sortBy.map((sort, index) => (
+                            <MenuItem key={sort} eventKey={index}>
                               {sort}
                             </MenuItem>
                           ))}
@@ -688,38 +735,100 @@ class CollectionListUI extends Component {
             {collections && collections.get("loaded") && (
               <Row>
                 <ul className="list-group collection-list">
-                  {collections.get("collections").map((coll) => {
-                    let temp =
-                      coll.get("ticketState") !== headline &&
-                      coll.get("ticketState") !== headlinelast
-                        ? coll.get("ticketState")
-                        : headline !== headlinelast &&
-                          coll.get("ticketState") !== headline &&
-                          coll.get("ticketState") === headlinelast
-                        ? coll.get("ticketState")
-                        : "";
-                    coll.get("ticketState") !== headline
-                      ? (headline = coll.get("ticketState"))
-                      : headline !== headlinelast
-                      ? (headlinelast = headline)
-                      : null;
+                  {(() => {
+                    switch (sortByActive) {
+                      case "sorted by state":
+                        return collections.get("collections").map((coll) => {
+                          let temp =
+                            coll.get("ticketState") !== headline &&
+                            coll.get("ticketState") !== headlinelast
+                              ? coll.get("ticketState")
+                              : headline !== headlinelast &&
+                                coll.get("ticketState") !== headline &&
+                                coll.get("ticketState") === headlinelast
+                              ? coll.get("ticketState")
+                              : "";
+                          coll.get("ticketState") !== headline
+                            ? (headline = coll.get("ticketState"))
+                            : headline !== headlinelast
+                            ? (headlinelast = headline)
+                            : null;
 
-                    return (
-                      <CollectionItem
-                        key={coll.get("id")}
-                        canAdmin={canAdmin}
-                        collection={coll}
-                        collUser={user}
-                        editCollection={this.editColl}
-                        completeRec={this.completeRec}
-                        error={collections.get("error")}
-                        history={history}
-                        onPatch={this.onPatch}
-                        headline={temp}
-                        ticketState={coll.get("ticketState")}
-                      />
-                    );
-                  })}
+                          return (
+                            <CollectionItem
+                              key={coll.get("id")}
+                              canAdmin={canAdmin}
+                              collection={coll}
+                              collUser={user}
+                              editCollection={this.editColl}
+                              completeRec={this.completeRec}
+                              error={collections.get("error")}
+                              history={history}
+                              onPatch={this.onPatch}
+                              headline={temp}
+                              ticketState={coll.get("ticketState")}
+                            />
+                          );
+                        });
+
+                      default:
+                        return _collectionsSorted !== null
+                          ? _collectionsSorted.map((coll, index) => {
+                              let temp = "";
+                              if (
+                                coll.get("id") &&
+                                coll.get("id") !== null &&
+                                typeof coll.get("id") !== "undefined"
+                              ) {
+                                try {
+                                  if (
+                                    coll.get("projektcode") &&
+                                    coll.get("projektcode") !== null &&
+                                    typeof coll.get("projektcode") !==
+                                      "undefined"
+                                  ) {
+                                    temp =
+                                      coll.get("projektcode") !== headline &&
+                                      coll.get("projektcode") !== headlinelast
+                                        ? coll.get("projektcode")
+                                        : headline !== headlinelast &&
+                                          coll.get("projektcode") !==
+                                            headline &&
+                                          coll.get("projektcode") ===
+                                            headlinelast
+                                        ? coll.get("projektcode")
+                                        : "";
+                                    coll.get("projektcode") !== headline
+                                      ? (headline = coll.get("projektcode"))
+                                      : headline !== headlinelast
+                                      ? (headlinelast = headline)
+                                      : null;
+                                  }
+                                } catch (e) {
+                                  console.log(e);
+                                }
+                                return (
+                                  <CollectionItem
+                                    key={coll.get("id")}
+                                    canAdmin={canAdmin}
+                                    collection={coll}
+                                    collUser={user}
+                                    editCollection={this.editColl}
+                                    completeRec={this.completeRec}
+                                    error={collections.get("error")}
+                                    history={history}
+                                    onPatch={this.onPatch}
+                                    headline={temp}
+                                    ticketState={coll.get("ticketState")}
+                                  />
+                                );
+                              } else {
+                                return <div></div>;
+                              }
+                            })
+                          : null;
+                    }
+                  })()}
                 </ul>
               </Row>
             )}

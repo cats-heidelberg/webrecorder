@@ -171,7 +171,7 @@ class CollectionItem extends Component {
                 lineHeight: "40px",
               }}
             >
-              Ticket State: {collection.get("ticketState").toUpperCase()}
+              {headline.toUpperCase()}
             </h2>
           )}
           <Row>
