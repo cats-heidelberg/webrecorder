@@ -253,157 +253,111 @@ class ModeSelectorUI extends PureComponent {
     const isLiveMsg = isLive ? "Start Capturing" : "Capture this URL again";
 
     return (
-      <OutsideClick handleClick={this.close}>
-        <div className="mode-selector">
-          <div className={modeSelectorClasses}>
-            <button
-              onClick={this.onStop}
-              className="btn btn-default wr-mode-message content-action"
-              aria-label={`Finish ${modeMessage} session`}
-              type="button"
-            >
-              <span className="btn-content">
-                <span className="glyphicon glyphicon-stop" />{" "}
-                <span className="hidden-xs">Stop</span>
+      <React.Fragment>
+        <button
+          onClick={this.onStop}
+          className="btn btn-default wr-mode-message content-action"
+          aria-label={`Finish ${modeMessage} session`}
+          type="button"
+        >
+          <span className="btn-content">
+            <span className="glyphicon glyphicon-stop" />{" "}
+            <span className="hidden-xs">Stop</span>
+          </span>
+        </button>
+        {currMode == "replay" ? (
+          <button
+            onClick={this.onPatch}
+            disabled={
+              isRecord ||
+              isLive ||
+              (collection.get("ticketState") !== "pending" &&
+                collection.get("reviewing")) ||
+              (collection.get("ticketState") !== "open" &&
+                !collection.get("reviewing"))
+            }
+            className="btn btn-default wr-mode-message content-action"
+            title={
+              isRecord
+                ? "Only available from replay after finishing a recording"
+                : (collection.get("ticketState") !== "open" &&
+                    !collection.get("reviewing")) ||
+                  (collection.get("ticketState") !== "pending" &&
+                    collection.get("reviewing"))
+                ? "Not possible since Collection is in Review"
+                : "Record elements that are not yet in the collection"
+            }
+            type="button"
+          >
+            <span className="btn-content">
+              <PatchIcon />{" "}
+              <span className="hidden-xs">
+                {isPatch
+                  ? "Currently Patching"
+                  : (collection.get("ticketState") !== "open" &&
+                      !collection.get("reviewing")) ||
+                    (collection.get("ticketState") !== "pending" &&
+                      collection.get("reviewing"))
+                  ? "already in review"
+                  : "Add more Content"}
               </span>
-              {modeMarkup}
-              {isWrite && <SizeCounter />}
-            </button>
-            <button
-              onClick={this.toggle}
-              type="button"
-              className="btn btn-default dropdown-toggle"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <span className="glyphicon glyphicon-triangle-bottom" />
-            </button>
-
-            <div className="dropdown-menu">
-              {isLive && (
-                <div className="wr-modes">
-                  <ul
-                    className={classNames("row wr-mode")}
-                    onClick={this.onRecord}
-                    role="button"
-                    title="Stop preview mode and begin capturing"
-                  >
-                    <li className="col-xs-3">
-                      <span
-                        className="glyphicon glyphicon-dot-sm glyphicon-recording-status wr-mode-icon"
-                        aria-hidden="true"
-                      />
-                    </li>
-                    <li className="col-xs-9">
-                      <h5>Start Capture</h5>
-                    </li>
-                  </ul>
-                </div>
-              )}
-
-              {!isLive && (
-                <div className="wr-modes">
-                  <ul
-                    className={classNames("row wr-mode", { active: isRecord })}
-                    onClick={this.onStop}
-                    role="button"
-                    title="Stop editing current URL"
-                  >
-                    <li className="col-xs-3">
-                      <span className="glyphicon glyphicon-stop" />
-                    </li>
-                    <li className="col-xs-9">
-                      <h5>{true ? "Stop" : isLiveMsg}</h5>
-                    </li>
-                  </ul>
-                  <ul
-                    className={classNames("row wr-mode", {
-                      active: isReplay,
-                      disabled: isLive,
-                    })}
-                    onClick={this.onReplay}
-                    role="button"
-                    title="Access an archived version of this URL"
-                  >
-                    <li className="col-xs-3">
-                      <span
-                        className="glyphicon glyphicon-play-circle wr-mode-icon"
-                        aria-hidden="true"
-                      />
-                    </li>
-                    <li className="col-xs-9">
-                      <h5>
-                        {isReplay ? "Currently Browsing" : "Browse this URL"}
-                      </h5>
-                    </li>
-                  </ul>
-
-                  <ul
-                    className={classNames("row wr-mode", {
-                      active: isPatch,
-                      disabled:
-                        isRecord ||
-                        isLive ||
-                        (collection.get("ticketState") !== "pending" &&
-                          collection.get("reviewing")) ||
-                        (collection.get("ticketState") !== "open" &&
-                          !collection.get("reviewing")),
-                    })}
-                    onClick={this.onPatch}
-                    role="button"
-                    title={
-                      isRecord
-                        ? "Only available from replay after finishing a recording"
-                        : (collection.get("ticketState") !== "open" &&
-                            !collection.get("reviewing")) ||
-                          (collection.get("ticketState") !== "pending" &&
-                            collection.get("reviewing"))
-                        ? "Not possible since Collection is in Review"
-                        : "Record elements that are not yet in the collection"
-                    }
-                  >
-                    <li className="col-xs-3">
-                      <PatchIcon />
-                    </li>
-                    <li className="col-xs-9">
-                      <h5>
-                        {isPatch
-                          ? "Currently Patching"
-                          : (collection.get("ticketState") !== "open" &&
-                              !collection.get("reviewing")) ||
-                            (collection.get("ticketState") !== "pending" &&
-                              collection.get("reviewing"))
-                          ? "already in review"
-                          : "Add more Content"}
-                      </h5>
-                    </li>
-                  </ul>
-
-                  {isExtract && (
-                    <ul
-                      className={classNames("row wr-mode", {
-                        active: isExtract,
-                      })}
-                      title="Start a new extraction at the current URL"
-                    >
-                      <li className="col-xs-3">
-                        <span
-                          className="glyphicon glyphicon-save glyphicon-recording-status wr-mode-icon"
-                          aria-hidden="true"
-                        />
-                      </li>
-                      <li className="col-xs-9">
-                        <h5>Currently Extracting</h5>
-                      </li>
-                    </ul>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </OutsideClick>
+            </span>
+          </button>
+        ) : currMode == "patch" ? (
+          <button
+            onClick={this.onReplay}
+            className="btn btn-default wr-mode-message content-action"
+            aria-label={`Finish ${modeMessage} session`}
+            type="button"
+          >
+            <span className="btn-content">
+              <span
+                className="glyphicon glyphicon-play-circle wr-mode-icon"
+                aria-hidden="true"
+              />{" "}
+              {isReplay ? "Currently Browsing" : "Browse this URL"}
+            </span>
+          </button>
+        ) : (
+          <button
+            onClick={this.onPatch}
+            disabled={
+              isRecord ||
+              isLive ||
+              (collection.get("ticketState") !== "pending" &&
+                collection.get("reviewing")) ||
+              (collection.get("ticketState") !== "open" &&
+                !collection.get("reviewing"))
+            }
+            className="btn btn-default wr-mode-message content-action"
+            title={
+              isRecord
+                ? "Only available from replay after finishing a recording"
+                : (collection.get("ticketState") !== "open" &&
+                    !collection.get("reviewing")) ||
+                  (collection.get("ticketState") !== "pending" &&
+                    collection.get("reviewing"))
+                ? "Not possible since Collection is in Review"
+                : "Record elements that are not yet in the collection"
+            }
+            type="button"
+          >
+            <span className="btn-content">
+              <PatchIcon />{" "}
+              <span className="hidden-xs">
+                {isPatch
+                  ? "Currently Patching"
+                  : (collection.get("ticketState") !== "open" &&
+                      !collection.get("reviewing")) ||
+                    (collection.get("ticketState") !== "pending" &&
+                      collection.get("reviewing"))
+                  ? "already in review"
+                  : "Add more Content"}
+              </span>
+            </span>
+          </button>
+        )}
+      </React.Fragment>
     );
   }
 }
