@@ -9,7 +9,8 @@ import { apiFormatUrl } from "helpers/utils";
 import { WarcIcon } from "components/icons";
 
 import { collection, upload as uploadErrors } from "helpers/userMessaging";
-
+import PersonHeading from "./PersonHeading";
+import AuthorshipItem from "./AuthorshipItem";
 import Modal from "components/Modal";
 
 import ReactTooltip from "react-tooltip";
@@ -1153,28 +1154,6 @@ class NewCollection extends Component {
                         />
                       </React.Fragment>
                     )}
-                    {this.state.creatorList.length > 0 && (
-                      <ul>
-                        {this.state.creatorList.map((item) => (
-                          <li key={item.id}>
-                            <React.Fragment>
-                              <span
-                                className="glyphicon glyphicon-remove glyphicon-button"
-                                value={item}
-                                onClick={() => this.onRemoveItem(item)}
-                                style={{
-                                  marginRight: "4px",
-                                  display: "inline",
-                                  width: "14px",
-                                  float: "left",
-                                }}
-                              />
-                              <div>{item.htmlText}</div>
-                            </React.Fragment>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
                     <button
                       type="button"
                       class="btn btn-success"
@@ -1184,6 +1163,18 @@ class NewCollection extends Component {
                     >
                       Add Creator
                     </button>
+                    {this.state.creatorList.length > 0 && (
+                      <ul className="firstChildSpecial">
+                        {this.state.creatorList.map((item) => (
+                          <AuthorshipItem
+                            id={item.id}
+                            htmlText={item.htmlText}
+                            item={item}
+                            onRemoveItem={this.onRemoveItem}
+                          />
+                        ))}
+                      </ul>
+                    )}
                   </FormGroup>
                 </div>
                 <React.Fragment>
@@ -1375,42 +1366,19 @@ class NewCollection extends Component {
                       Subject headings (in English):
                     </div>
 
-                    <React.Fragment>
-                      <FormControl
-                        type="text"
-                        placeholder="subject"
-                        inputRef={(obj) => {
-                          this.input = obj;
-                        }}
-                        id="subjectHeadingText"
-                        name="subjectHeadingText"
-                        onFocus={this.focusInput}
-                        onChange={this.handleInput}
-                        value={subjectHeadingText}
-                      />
-                    </React.Fragment>
-                    {this.state.subjectHeaderList.length > 0 && (
-                      <ul>
-                        {this.state.subjectHeaderList.map((item) => (
-                          <li key={item.id}>
-                            <React.Fragment>
-                              <span
-                                className="glyphicon glyphicon-remove glyphicon-button"
-                                value={item}
-                                onClick={() => this.onRemoveSubject(item)}
-                                style={{
-                                  marginRight: "4px",
-                                  display: "inline",
-                                  width: "14px",
-                                  float: "left",
-                                }}
-                              />
-                              <div>{item.htmlText}</div>
-                            </React.Fragment>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    <FormControl
+                      type="text"
+                      placeholder="subject"
+                      inputRef={(obj) => {
+                        this.input = obj;
+                      }}
+                      id="subjectHeadingText"
+                      name="subjectHeadingText"
+                      onFocus={this.focusInput}
+                      onChange={this.handleInput}
+                      value={subjectHeadingText}
+                    />
+
                     <button
                       type="button"
                       class="btn btn-success"
@@ -1420,6 +1388,18 @@ class NewCollection extends Component {
                     >
                       Add header
                     </button>
+                    {this.state.subjectHeaderList.length > 0 && (
+                      <ul className="firstChildSpecial">
+                        {this.state.subjectHeaderList.map((item) => (
+                          <PersonHeading
+                            id={item.id}
+                            htmlText={item.htmlText}
+                            item={item}
+                            onRemovePerson={this.onRemovePerson}
+                          />
+                        ))}
+                      </ul>
+                    )}
                   </FormGroup>
                   <FormGroup id="fieldset">
                     <label
@@ -1457,42 +1437,18 @@ class NewCollection extends Component {
                       Person headings:
                     </div>
 
-                    <React.Fragment>
-                      <FormControl
-                        type="text"
-                        placeholder="person"
-                        inputRef={(obj) => {
-                          this.input = obj;
-                        }}
-                        id="personHeadingText"
-                        name="personHeadingText"
-                        onFocus={this.focusInput}
-                        onChange={this.handleInput}
-                        value={personHeadingText}
-                      />
-                    </React.Fragment>
-                    {this.state.personHeaderList.length > 0 && (
-                      <ul>
-                        {this.state.personHeaderList.map((item) => (
-                          <li key={item.id}>
-                            <React.Fragment>
-                              <span
-                                className="glyphicon glyphicon-remove glyphicon-button"
-                                value={item}
-                                onClick={() => this.onRemovePerson(item)}
-                                style={{
-                                  marginRight: "4px",
-                                  display: "inline",
-                                  width: "14px",
-                                  float: "left",
-                                }}
-                              />
-                              <div>{item.htmlText}</div>
-                            </React.Fragment>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    <FormControl
+                      type="text"
+                      placeholder="person"
+                      inputRef={(obj) => {
+                        this.input = obj;
+                      }}
+                      id="personHeadingText"
+                      name="personHeadingText"
+                      onFocus={this.focusInput}
+                      onChange={this.handleInput}
+                      value={personHeadingText}
+                    />
                     <button
                       type="button"
                       class="btn btn-success"
@@ -1502,6 +1458,19 @@ class NewCollection extends Component {
                     >
                       Add header
                     </button>
+
+                    {this.state.personHeaderList.length > 0 && (
+                      <ul className="firstChildSpecial">
+                        {this.state.personHeaderList.map((item) => (
+                          <PersonHeading
+                            id={item.id}
+                            htmlText={item.htmlText}
+                            item={item}
+                            onRemovePerson={this.onRemovePerson}
+                          />
+                        ))}
+                      </ul>
+                    )}
                   </FormGroup>
                 </div>
                 <div>
