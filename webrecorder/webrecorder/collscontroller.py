@@ -33,9 +33,8 @@ class CollsController(BaseController):
             user = self.get_user(api=True, redir_check=False)
 
             data = request.json or {}
-            print(data)
             title = data.get('title', '')
-
+            coll_name = self.sanitize_title(title)
             #if not title:
             #    title._raise_error(400, 'please enter a title to record')
 
@@ -44,7 +43,7 @@ class CollsController(BaseController):
             #if not url:
             #    self._raise_error(400, 'please enter a URL to record')
 
-            coll_name = self.sanitize_title(title)
+
 
             if not coll_name:
                 self._raise_error(400, 'invalid_coll_name')
@@ -154,8 +153,160 @@ class CollsController(BaseController):
                 print(ve)
                 self.flash_message(str(ve))
                 self._raise_error(400, 'duplicate_name')
-            print(resp)
             return resp
+
+
+        @self.app.post('/api/v1/collectionsduplicate')
+        @self.api(query=['user'],
+                  req=['title'],
+                  resp='collection')
+        def create_collection_with_Warc():
+            user = self.get_user(api=True, redir_check=False)
+
+            data = request.json or {}
+            title = data.get('title', '')
+            coll_name = self.sanitize_title(title)
+            resp = None
+            collection = None
+            collections= user.get_collections()
+            for _col in collections:
+                print(_col.get('title'))
+                if _col.get('title') == coll_name:
+                    coll_name += "_duplicate"
+                    title = coll_name
+                    #if not title:
+                    #    title._raise_error(400, 'please enter a title to record')
+
+                    url = _col.get('url', '')
+
+                    #if not url:
+                    #    self._raise_error(400, 'please enter a URL to record')
+
+                    coll_name = title
+
+                    if not coll_name:
+                        self._raise_error(400, 'invalid_coll_name')
+
+                    doi = _col.get('doi', '') # TODO: generate doi here
+                    #
+                    #TODO: add redis object, key: jahr.monat, value: counter
+
+                    is_public = _col.get('public', False)
+
+                    is_public_index = _col.get('public_index', False)
+
+                    is_external = _col.get('external', False)
+
+                    is_anon = self.access.is_anon(user)
+
+                    creatorList = _col.get('creatorList', '')
+
+                    subjectHeaderList = _col.get('subjectHeaderList', '')
+
+                    personHeaderList = _col.get('personHeaderList', '')
+
+                    publisher = _col.get('publisher', '')
+
+                    #if not publisher:
+                    #    self._raise_error(400, 'please enter the publisher of the resource')
+
+                    personHeadingText = _col.get('personHeadingText', '')
+
+                    collTitle = _col.get('collTitle', '')
+
+                    #if not collTitle:
+                    #    self._raise_error(400, 'please enter the authership information of the resource')
+
+                    noteToDachs = _col.get('noteToDachs', '')
+
+                    publisherOriginal = _col.get('publisherOriginal', '')
+
+                    pubTitleOriginal = _col.get('pubTitleOriginal', '')
+
+                    collYear = _col.get('collYear', '')
+
+                    copTitle = _col.get('copTitle', '')
+
+                    subjectHeadingText = _col.get('subjectHeadingText', '')
+
+                    surName = _col.get('surName', '')
+
+                    persName = _col.get('persName', '')
+
+                    usermail = _col.get('usermail', '')
+
+                    #if not usermail:
+                    #    self._raise_error(400, 'invalid email adress')
+
+                    selectedGroupName = _col.get('selectedGroupName', '')
+
+                    projektcode = _col.get('projektcode', '')
+
+                    publishYear = _col.get('publishYear', '')
+
+                    listID = _col.get('listID', 0)
+
+                    ticketState = _col.get('ticketState')
+
+                    isCollLoaded = _col.get('isCollLoaded', True)
+
+                    recordingUrl = _col.get('recordingUrl', '')
+
+                    recordingTimestamp = _col.get('recordingTimestamp', '')
+
+
+                    if is_external:
+                        if not self.allow_external:
+                            self._raise_error(403, 'external_not_allowed')
+
+                        #if not is_anon:
+                        #    self._raise_error(400, 'not_valid_for_external')
+
+                    elif is_anon:
+                        if coll_name != 'temp':
+                            self._raise_error(400, 'invalid_temp_coll_name')
+
+                    if user.has_collection(coll_name):
+                        self._raise_error(400, 'duplicate_name')
+
+                    try:
+                        collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList,
+                                                            personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal,
+                                                            pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText,
+                                                            surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear,
+                                                            listID=listID, desc='', public=is_public, public_index=is_public_index, ticketState=ticketState, isCollLoaded=isCollLoaded,
+                                                            recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp, doi=doi)
+
+                        if is_external:
+                            collection.set_external(True)
+
+                        user.mark_updated()
+
+                        self.flash_message('Created collection <b>{0}</b>!'.format(collection.get_prop('title')), 'success')
+                        resp = {'collection': collection.serialize()}
+
+                    except DupeNameException as de:
+                        self._raise_error(400, 'duplicate_name')
+
+                    except Exception as ve:
+                        print(ve)
+                        self.flash_message(str(ve))
+                        self._raise_error(400, 'duplicate_name')
+
+                    
+
+                    for recording in _col.get_recordings(load=True):
+                        _col.copy_recording(recording,collection)
+                        #for n, warc_path in recording.iter_all_files():
+                        #    print(warc_path)
+
+
+
+
+                    return resp
+
+
+            self._raise_error(400, 'object to duplicate not found')
 
 
         @self.app.get('/api/v1/collections')

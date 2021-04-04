@@ -4,7 +4,7 @@ import removeMd from "remove-markdown";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { Button, Col, Row, Tooltip } from "react-bootstrap";
-import { CheckIcon } from "components/icons";
+import { CheckIcon, Collection } from "components/icons";
 import config from "config";
 import { DownloadIcon } from "components/icons";
 import { buildDate, getCollectionLink, truncate } from "helpers/utils";
@@ -28,6 +28,7 @@ class CollectionItem extends Component {
     isOver: PropTypes.bool,
     headline: PropTypes.string,
     collection: PropTypes.object,
+    duplicateCollection: PropTypes.func,
     editCollection: PropTypes.func,
     onPatch: PropTypes.func,
     selected: PropTypes.bool,
@@ -72,9 +73,14 @@ class CollectionItem extends Component {
   };
   downloadAction = (evt) => {
     const { collection } = this.props;
+    console.log(getCollectionLink(collection));
     window.location.href = `${config.appHost}/${getCollectionLink(
       collection
     )}/$download`;
+  };
+  duplicateAction = () => {
+    const { collection } = this.props;
+    this.props.duplicateCollection(collection.get("title"));
   };
   editCollectiontemp = (
     collID,
@@ -204,6 +210,15 @@ class CollectionItem extends Component {
                       <span> Edit Metadata</span>
                     </Button>
                   )}
+                  <Button
+                    className="rounded new-session"
+                    onClick={this.duplicateAction}
+                  >
+                    <span>
+                      {" "}
+                      <Collection /> Duplicate Collection{" "}
+                    </span>
+                  </Button>
                   <Button
                     className="rounded new-session"
                     onClick={this.downloadAction}

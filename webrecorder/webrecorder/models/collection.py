@@ -111,6 +111,22 @@ class Collection(PagesMixin, RedisUniqueComponent):
 
         return recording
 
+    def copy_recording(self, obj, new_collection):
+        """Copy recording into new collection.
+
+        :param Recording obj: recording
+        :param new_collection: new collection
+
+        :returns: name of new recording or None
+        :rtype: str or None
+        """
+        new_recording = new_collection.create_recording()
+
+        if new_recording.copy_data_from_recording(obj, delete_source=False):
+            return new_recording.name
+
+        return None
+
     def move_recording(self, obj, new_collection):
         """Move recording into new collection.
 

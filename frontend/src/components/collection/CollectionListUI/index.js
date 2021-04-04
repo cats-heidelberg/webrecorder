@@ -35,6 +35,7 @@ class CollectionListUI extends Component {
     completeRecording: PropTypes.func,
     collections: PropTypes.object,
     createNewCollection: PropTypes.func,
+    _duplicateCollection: PropTypes.func,
     createNewCollectionBrowseWarc: PropTypes.func,
     editCollection: PropTypes.func,
     edited: PropTypes.bool,
@@ -177,6 +178,15 @@ class CollectionListUI extends Component {
       recordingTimestamp,
       doi
     );
+  };
+  duplicateCollection = (title) => {
+    const {
+      _duplicateCollection,
+      match: {
+        params: { user },
+      },
+    } = this.props;
+    _duplicateCollection(user, title);
   };
   warcIndexing = () => {
     const { targetObj } = this.state;
@@ -760,6 +770,7 @@ class CollectionListUI extends Component {
                               canAdmin={canAdmin}
                               collection={coll}
                               collUser={user}
+                              duplicateCollection={this.duplicateCollection}
                               editCollection={this.editColl}
                               completeRec={this.completeRec}
                               error={collections.get("error")}
@@ -813,6 +824,9 @@ class CollectionListUI extends Component {
                                     canAdmin={canAdmin}
                                     collection={coll}
                                     collUser={user}
+                                    duplicateCollection={
+                                      this.duplicateCollection
+                                    }
                                     editCollection={this.editColl}
                                     completeRec={this.completeRec}
                                     error={collections.get("error")}

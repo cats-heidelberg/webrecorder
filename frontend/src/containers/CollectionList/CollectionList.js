@@ -8,6 +8,7 @@ import { addUserCollection, incrementCollCount } from "store/modules/auth";
 import {
   load as loadCollections,
   createCollection,
+  create_collection_with_Warc,
   setSort,
   sortCollections,
 } from "store/modules/collections";
@@ -174,6 +175,23 @@ const mapDispatchToProps = (dispatch, { history }) => {
           },
           (err) => console.log(err)
         )
+        .catch((err) => console.log(err));
+    },
+    _duplicateCollection: (user, title) => {
+      dispatch(create_collection_with_Warc(user, title))
+        .then((res) => {
+          if (res.hasOwnProperty("collection")) {
+            dispatch(
+              batchActions([
+                incrementCollCount(1),
+                addUserCollection(res.collection),
+              ])
+            );
+            history.push(`/${user}`);
+          }
+          //return res;
+        })
+
         .catch((err) => console.log(err));
     },
     createNewCollectionBrowseWarc_old: (

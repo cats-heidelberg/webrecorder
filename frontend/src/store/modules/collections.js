@@ -201,6 +201,19 @@ export function createCollection(
   };
 }
 
+export function create_collection_with_Warc(user, title) {
+  return {
+    types: [CREATE_COLL, CREATE_COLL_SUCCESS, CREATE_COLL_FAIL],
+    promise: (client) =>
+      client.post(`${config.apiPath}/collectionsduplicate`, {
+        params: { user },
+        data: {
+          title,
+        },
+      }),
+  };
+}
+
 export function load(user) {
   return {
     types: [COLLS_LOAD, COLLS_LOAD_SUCCESS, COLLS_LOAD_FAIL],
@@ -231,7 +244,6 @@ export function loadReviewList() {
   };
 }
 const sortFn = (a, b, by = null) => {
-  console.log("im sortFn");
   if (by) {
     if (a.get(by.get("sort")) > b.get(by.get("sort")))
       return by.get("dir") === "DESC" ? -1 : 1;
@@ -244,7 +256,6 @@ const sortFn = (a, b, by = null) => {
   return 0;
 };
 const sortByStatus = (statusA, statusB) => {
-  console.log("imSortByStatus");
   var a = itemOrder[statusA.get("ticketState")];
   var b = itemOrder[statusB.get("ticketState")];
   if (a > b) return 1;
