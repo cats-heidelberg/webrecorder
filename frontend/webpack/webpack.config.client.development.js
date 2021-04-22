@@ -20,7 +20,7 @@ const devConfig = {
   mode: 'development',
   entry: {
     main: [
-      `webpack-hot-middleware/client?path=http://${host}:${port}/__webpack_hmr&quiet=true`,
+      `webpack-hot-middleware/client?path=https://${host}:${port}/__webpack_hmr&quiet=true`,
       './config/polyfills',
       'bootstrap-loader',
       './src/client.js'
@@ -105,7 +105,7 @@ const devConfig = {
   },
 
   output: {
-    publicPath: `http://${host}:${port}${baseConfig.output.publicPath}`
+    publicPath: `https://${host}:${port}${baseConfig.output.publicPath}`
   },
 
   plugins: [
