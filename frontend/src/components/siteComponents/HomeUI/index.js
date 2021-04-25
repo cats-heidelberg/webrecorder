@@ -189,7 +189,7 @@ class HomeUI extends PureComponent {
                       <div class="card-title">
                         <h2>Is this your first time here?</h2>
                         <br />
-                        <h4>Please use your provided Uni-ID( e.g. jb007).</h4>
+                        <h4>Please use your provided Uni-ID (e.g. jb007).</h4>
                       </div>
                     )}
                     {formError && (
