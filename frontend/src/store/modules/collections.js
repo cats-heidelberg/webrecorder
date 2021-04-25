@@ -39,7 +39,7 @@ const initialState = fromJS({
   }),
   sortByReview: fromJS({
     sort: "created_at",
-    dir: "ASC",
+    dir: "DESC",
   }),
 });
 
@@ -56,8 +56,7 @@ export default function collections(state = initialState, action = {}) {
 
         user: fromJS(action.result.user),
         collections: fromJS(action.result.collections)
-          .sort((a, b) => sortFn(a, b, state.get("sortBy")))
-          .sort((a, b) => sortByStatus(a, b)),
+          .sort((a, b) => sortByCreatedWithinStatus(a, b)),
       });
     case COLLS_LOAD_FAIL:
       return state.merge({
@@ -94,8 +93,7 @@ export default function collections(state = initialState, action = {}) {
 
         user: fromJS(action.result.user),
         collections: fromJS(action.result.collections)
-          .sort((a, b) => sortFn(a, b, state.get("sortByReview")))
-          .sort((a, b) => sortByStatus(a, b)),
+          .sort((a, b) => sortByCreatedWithinStatus(a, b)),
       });
     case REVIEW_COLLS_LOAD_FAIL:
       return state.merge({
@@ -262,6 +260,14 @@ const sortByStatus = (statusA, statusB) => {
   if (a < b) return -1;
   return 0;
 };
+
+const sortByCreatedWithinStatus = (a,b) => {
+  var t = itemOrder[a.get("ticketState")] - itemOrder[b.get("ticketState")];
+   if (t == 0)
+       return a.get("created_at") < b.get("created_at");
+   else
+       return t;
+}
 export function setSort(sortBy) {
   return {
     type: COLL_SET_SORT,
