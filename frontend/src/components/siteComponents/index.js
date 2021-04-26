@@ -14,6 +14,5 @@ export TempUserAlertUI from './TempUserAlertUI';
 export TermsAndPolicies from './TermsAndPolicies';
 export UploadUI from './UploadUI';
 export UserManagementUI from './UserManagementUI';
-export UserSettingsUI from './UserSettingsUI';
 export UserSignup from './UserSignup';
 export ReviewUI from './ReviewUI';

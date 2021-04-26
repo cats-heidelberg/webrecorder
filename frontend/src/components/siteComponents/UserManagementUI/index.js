@@ -90,11 +90,6 @@ class UserManagementUI extends PureComponent {
     this.props.history.push("/_logout");
   };
 
-  goToSettings = () => {
-    const { auth, history } = this.props;
-    history.push(`/${auth.getIn(["user", "username"])}/_settings`);
-  };
-
   goToSignup = () => {
     this.props.history.push("/_register");
   };
