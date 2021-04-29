@@ -122,7 +122,13 @@ class CollectionItem extends Component {
 
     return (
       <React.Fragment>
-        <li className={descClasses} key={collection.get("id")}>
+        <li className={descClasses} key={collection.get("id")} style={{
+          backgroundColor:collection.get("ticketState") === "pending"
+              ? "#FFF"
+              : collection.get("ticketState") === "approved"
+              ? "#c3e5aa"
+              : "#ececec",
+        }}>
           <Row>
             <Col sm={15} md={12}>
               <h3>{collection.get("title")}</h3>
