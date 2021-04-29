@@ -278,13 +278,6 @@ class UserManagementUI extends PureComponent {
 
                 {__DESKTOP__ && <MenuItem divider />}
 
-                {!isAnon && (
-                  <MenuItem onClick={this.goToSettings}>
-                    <span className="glyphicon glyphicon-wrench" />{" "}
-                    {__DESKTOP__ ? "App" : "Account"} Settings
-                  </MenuItem>
-                )}
-
                 {!__DESKTOP__ && (
                   <React.Fragment>
                     <MenuItem divider />
@@ -303,12 +296,6 @@ class UserManagementUI extends PureComponent {
                     <MenuItem divider />
                     <MenuItem onClick={this.goToFAQ}>
                       About Webrecorder
-                    </MenuItem>
-                    <MenuItem
-                      href="https://blog.webrecorder.io"
-                      target="_blank"
-                    >
-                      Webrecorder Blog
                     </MenuItem>
                   </React.Fragment>
                 )}
