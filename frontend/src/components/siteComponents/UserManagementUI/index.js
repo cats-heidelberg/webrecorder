@@ -94,6 +94,10 @@ class UserManagementUI extends PureComponent {
     this.props.history.push("/_register");
   };
 
+  // goToUserGuide = () => {
+  //   this.props.history.push("/_guide");
+  // };
+
   openDesktopHelp = (evt) => {
     evt.preventDefault();
     shell.openExternal(
@@ -160,11 +164,12 @@ class UserManagementUI extends PureComponent {
     return (
       <React.Fragment>
         <ul className="navbar-user-links">
-          {isAnon && (
-            <li>
-              <Link to="/_faq">About</Link>
-            </li>
-          )}
+          <li>
+            <Link to="/_faq">About</Link>
+          </li>
+          <li>
+            <Link to="/_guide">Guide</Link>
+          </li>
           {auth.getIn(["user", "role"]) === "admin" && (
             <li className="hidden-xs">
               {__DESKTOP__ ? (
@@ -182,18 +187,6 @@ class UserManagementUI extends PureComponent {
               )}
             </li>
           )}
-          {!__DESKTOP__ && (
-            <li className="navbar-text hidden-xs">
-              <button
-                onClick={this.toggleBugModal}
-                className="borderless custom-report"
-                type="button"
-              >
-                Report Bug
-              </button>
-            </li>
-          )}
-
           <li className="hidden-xs">
             {__DESKTOP__ ? (
               <button
@@ -201,11 +194,11 @@ class UserManagementUI extends PureComponent {
                 onClick={this.openDesktopHelp}
                 type="button"
               >
-                Help
+                Contact<br />Support
               </button>
             ) : (
               <a href="https://guide.webrecorder.io/" target="_blank">
-                Help
+                Contact<br />Support
               </a>
             )}
           </li>
@@ -220,9 +213,6 @@ class UserManagementUI extends PureComponent {
 
           {!auth.get("loaded") || !username || (isAnon && collCount === 0) ? (
             <React.Fragment>
-              <li>
-                <Link to="/_register">Sign Up</Link>
-              </li>
               <li>
                 <button
                   className="rounded login-link"
@@ -280,19 +270,6 @@ class UserManagementUI extends PureComponent {
 
                 {!__DESKTOP__ && (
                   <React.Fragment>
-                    <MenuItem divider />
-                    <MenuItem
-                      href="https://guide.webrecorder.io/"
-                      target="_blank"
-                    >
-                      User Guide
-                    </MenuItem>
-                    <MenuItem
-                      href="mailto:support@webrecorder.io"
-                      target="_blank"
-                    >
-                      Contact Support
-                    </MenuItem>
                     <MenuItem divider />
                     <MenuItem onClick={this.goToFAQ}>
                       About Webrecorder

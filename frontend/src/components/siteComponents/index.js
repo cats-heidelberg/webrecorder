@@ -13,6 +13,7 @@ export TempUsageUI from './TempUsageUI';
 export TempUserAlertUI from './TempUserAlertUI';
 export TermsAndPolicies from './TermsAndPolicies';
 export UploadUI from './UploadUI';
+export UserGuide from './UserGuide';
 export UserManagementUI from './UserManagementUI';
 export UserSignup from './UserSignup';
 export ReviewUI from './ReviewUI';

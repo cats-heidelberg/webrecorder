@@ -3,6 +3,7 @@ import {
   ApiDocs,
   Documentation,
   FAQ,
+  UserGuide,
   TermsAndPolicies,
 } from "components/siteComponents";
 import { product } from "config";
@@ -269,6 +270,14 @@ const infoRoutes = [
     exact: true,
     footer: true,
     name: "FAQ",
+  },
+  {
+    path: "/_guide",
+    breadcrumb: "User Guide",
+    component: UserGuide,
+    exact: true,
+    footer: true,
+    name: "User Guide",
   },
   {
     path: "/_policies",
