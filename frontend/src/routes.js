@@ -3,6 +3,7 @@ import {
   ApiDocs,
   Documentation,
   FAQ,
+  UserGuide,
   TermsAndPolicies,
 } from "components/siteComponents";
 import { product } from "config";
@@ -33,10 +34,6 @@ import {
   UserSignup,
 } from "./containers";
 
-const SettingsUI = __DESKTOP__
-  ? require("containers/DesktopSettings/DesktopSettings")
-  : require("containers/UserSettings/UserSettings");
-
 const userPath = "/:user([^_][A-Za-z0-9-_]+)";
 const userRoutes = [
   /* collection */
@@ -55,14 +52,6 @@ const userRoutes = [
     exact: true,
     footer: true,
     name: "Commander",
-  },
-  {
-    path: `${userPath}/_settings`,
-    breadcrumb: "Settings",
-    component: SettingsUI,
-    exact: true,
-    footer: true,
-    name: "settings",
   },
   {
     path: `${userPath}/:coll`,
@@ -281,6 +270,14 @@ const infoRoutes = [
     exact: true,
     footer: true,
     name: "FAQ",
+  },
+  {
+    path: "/_guide",
+    breadcrumb: "User Guide",
+    component: UserGuide,
+    exact: true,
+    footer: true,
+    name: "User Guide",
   },
   {
     path: "/_policies",

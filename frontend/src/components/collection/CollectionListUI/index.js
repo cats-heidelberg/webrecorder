@@ -723,7 +723,7 @@ class CollectionListUI extends Component {
                     style={{ float: "right" }}
                   >
                     <div>
-                      Sort list:
+                      Sort list: 
                       <Dropdown id="roleDropdown" onSelect={this.reOrder}>
                         <Dropdown.Toggle>
                           {_sortBy ? sortByActive : "Sorting unavailable"}
