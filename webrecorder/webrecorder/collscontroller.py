@@ -455,7 +455,7 @@ class CollsController(BaseController):
             if 'selectedGroupName' in data:
                 collection['selectedGroupName'] = data['selectedGroupName']
 
-            if 'projektcode' in data && data['projektcode'] != "":
+            if 'projektcode' in data and data['projektcode'] != "":
                 collection['projektcode'] = data['projektcode']
                 today = datetime.utcnow()
 
