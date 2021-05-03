@@ -31,7 +31,6 @@ import {
   RegisterAccount,
   Replay,
   Review,
-  UserSignup,
 } from "./containers";
 
 const userPath = "/:user([^_][A-Za-z0-9-_]+)";
@@ -310,14 +309,6 @@ export default [
     name: "landing",
     exact: true,
     footer: true,
-  },
-  {
-    path: "/_register",
-    breadcrumb: "Register",
-    component: UserSignup,
-    exact: true,
-    footer: true,
-    name: "registration",
   },
   {
     path: "/_valreg/:registration",

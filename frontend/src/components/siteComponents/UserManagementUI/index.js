@@ -90,10 +90,6 @@ class UserManagementUI extends PureComponent {
     this.props.history.push("/_logout");
   };
 
-  goToSignup = () => {
-    this.props.history.push("/_register");
-  };
-
   // goToUserGuide = () => {
   //   this.props.history.push("/_guide");
   // };
@@ -287,13 +283,6 @@ class UserManagementUI extends PureComponent {
                       />{" "}
                       Logout
                     </MenuItem>
-                  </React.Fragment>
-                )}
-                {isAnon && (
-                  <React.Fragment>
-                    <MenuItem divider />
-                    <MenuItem onClick={this.goToSignup}>Sign Up</MenuItem>
-                    <MenuItem onClick={this.showLogin}>Login</MenuItem>
                   </React.Fragment>
                 )}
               </DropdownButton>

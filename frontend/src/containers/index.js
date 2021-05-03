@@ -47,5 +47,4 @@ export Temp404 from './Temp404/Temp404';
 export TempUsage from './TempUsage/TempUsage';
 export TempUserAlert from './TempUserAlert/TempUserAlert';
 export Upload from './Upload/Upload';
-export UserSignup from './UserSignup/UserSignup';
 export UserManagement from './UserManagement/UserManagement';
