@@ -34,7 +34,6 @@ class UserManagementUI extends PureComponent {
     reportModal: PropTypes.bool,
     route: PropTypes.object,
     showModal: PropTypes.func,
-    toggleBugModal: PropTypes.func,
   };
 
   constructor(options) {
@@ -111,12 +110,6 @@ class UserManagementUI extends PureComponent {
   save = (data) => {
     this.setState({ formError: false });
     this.props.loginFn(data);
-  };
-
-  toggleBugModal = () => {
-    const { route, reportModal } = this.props;
-    const mode = /record|replay|extract|patch/.test(route.name) ? "dnlr" : "ui";
-    this.props.toggleBugModal(reportModal !== null ? null : mode);
   };
 
   toggleDropdown = (isOpen) => {

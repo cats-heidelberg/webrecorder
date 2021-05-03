@@ -25,7 +25,6 @@ import {
   Logout,
   NewPassword,
   NewRecording,
-  PasswordReset,
   Patch,
   Record,
   RegisterAccount,
@@ -317,14 +316,6 @@ export default [
     exact: true,
     footer: true,
     name: "Registering",
-  },
-  {
-    path: "/_forgot",
-    breadcrumb: "Password Reset",
-    component: PasswordReset,
-    exact: true,
-    footer: true,
-    name: "Password Reset",
   },
   {
     path: "/_resetpassword/:resetCode",
