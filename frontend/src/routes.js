@@ -25,13 +25,11 @@ import {
   Logout,
   NewPassword,
   NewRecording,
-  PasswordReset,
   Patch,
   Record,
   RegisterAccount,
   Replay,
   Review,
-  UserSignup,
 } from "./containers";
 
 const userPath = "/:user([^_][A-Za-z0-9-_]+)";
@@ -312,28 +310,12 @@ export default [
     footer: true,
   },
   {
-    path: "/_register",
-    breadcrumb: "Register",
-    component: UserSignup,
-    exact: true,
-    footer: true,
-    name: "registration",
-  },
-  {
     path: "/_valreg/:registration",
     breadcrumb: "Registering",
     component: RegisterAccount,
     exact: true,
     footer: true,
     name: "Registering",
-  },
-  {
-    path: "/_forgot",
-    breadcrumb: "Password Reset",
-    component: PasswordReset,
-    exact: true,
-    footer: true,
-    name: "Password Reset",
   },
   {
     path: "/_resetpassword/:resetCode",

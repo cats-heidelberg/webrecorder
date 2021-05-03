@@ -21,7 +21,7 @@ import { StandaloneRecorder } from "containers";
 import RedirectWithStatus from "components/RedirectWithStatus";
 import {
   HomepageAnnouncement,
-  HomepageMessage,
+  // HomepageMessage,
 } from "components/siteComponents";
 
 import "./style.scss";
@@ -127,10 +127,6 @@ class HomeUI extends PureComponent {
     this.props.loginFn(data);
   };
 
-  signup = () => {
-    this.props.history.push("/_register");
-  };
-
   validateUsername = () => {
     const pattern = userRegex;
     if (typeof this.state.username !== "undefined") {
@@ -158,17 +154,6 @@ class HomeUI extends PureComponent {
         <Helmet>
           <title>Homepage</title>
         </Helmet>
-
-        {!anonDisabled && (
-          <div className="top-buffer">
-            <StandaloneRecorder />
-            <div className="top-buffer">
-              {user.get("anon") && user.get("num_collections") > 0 && (
-                <HomepageMessage auth={auth} showModal={showModalCB} />
-              )}
-            </div>
-          </div>
-        )}
 
         {/* new login screen */}
         <div className="col-xs-8 col-xs-offset-2">
@@ -229,7 +214,7 @@ class HomeUI extends PureComponent {
                           id="password"
                           name="password"
                           className="form-control"
-                          placeholder="Password"
+                          placeholder="password"
                           required
                         />
                       </FormGroup>

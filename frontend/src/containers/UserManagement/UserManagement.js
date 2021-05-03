@@ -24,7 +24,6 @@ const mapDispatchToProps = (dispatch) => {
     loadAuth: () => dispatch(load()),
     loginFn: data => dispatch(login(data)),
     showModal: b => dispatch(showModal(b)),
-    toggleBugModal: b => dispatch(toggleModal(b, 'ui'))
   };
 };
 
