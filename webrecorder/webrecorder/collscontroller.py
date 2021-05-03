@@ -9,6 +9,7 @@ from webrecorder.models.base import DupeNameException
 from webrecorder.models.datshare import DatShare
 from webrecorder.utils import get_bool
 
+from datetime import datetime
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -405,8 +406,8 @@ class CollsController(BaseController):
             if 'creatorList' in data:
                 collection['creatorList'] = data['creatorList']
 
-            if 'doi' in data:
-                collection['doi'] = data['doi']
+            #if 'doi' in data:
+            #    collection['doi'] = data['doi']
 
             if 'subjectHeaderList' in data:
                 collection['subjectHeaderList'] = data['subjectHeaderList']
@@ -454,8 +455,18 @@ class CollsController(BaseController):
             if 'selectedGroupName' in data:
                 collection['selectedGroupName'] = data['selectedGroupName']
 
-            if 'projektcode' in data:
+            if 'projektcode' in data && data['projektcode'] != "":
                 collection['projektcode'] = data['projektcode']
+                today = datetime.utcnow()
+
+                if self.redis.sismember('doimodel', ""+data['projektcode']+str(today.year)+str(today.month)+"1") == 0:
+                    self.redis.sadd('doimodel', ""+data['projektcode']+str(today.year)+str(today.month)+"1")
+                    collection['doi'] = ""+data['projektcode']+str(today.year)+str(today.month)+"1"
+                    print("reviewControllerpost"+""+data['projektcode']+str(today.year)+str(today.month)+"1")
+                elif self.redis.sismember('doimodel', ""+""+data['projektcode']+str(today.year)+str(today.month)+"2") == 0:
+                    self.redis.sadd('doimodel', ""+""+data['projektcode']+str(today.year)+str(today.month)+"2")
+                    collection['doi'] = ""+data['projektcode']+str(today.year)+str(today.month)+"1"
+                    print("reviewControllerpost"+""+data['projektcode']+str(today.year)+str(today.month)+"2")
 
             if 'publishYear' in data:
                 collection['publishYear'] = data['publishYear']

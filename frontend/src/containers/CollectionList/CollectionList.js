@@ -391,9 +391,9 @@ const mapDispatchToProps = (dispatch, { history }) => {
 
         .catch((err) => console.log("error", err));
     },
-    completeRecording: (user, collID, ticketState = "pending") => {
+    completeRecording: (user, collID, ticketState = "pending",projektcode="") => {
       dispatch(
-        completeRecordingDispatch(user, collID, ticketState, "")
+        completeRecordingDispatch(user, collID, ticketState, projektcode)
       ).then(() => dispatch(reviewDataToRevis(user, collID)));
       setTimeout(() => {
         history.push(`/${user}`);

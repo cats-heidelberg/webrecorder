@@ -71,8 +71,8 @@ const mapStateToProps = ({ app }) => {
 
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    completeReview: (user, collID, ticketState = "denied", doi = "") => {
-      dispatch(completeRecordingDispatch(user, collID, ticketState, doi))
+    completeReview: (user, collID, ticketState = "denied") => {
+      dispatch(completeRecordingDispatch(user, collID, ticketState))
         .then(() => {
           dispatch(completeReviewDispatch(user, collID));
         })
@@ -88,8 +88,8 @@ const mapDispatchToProps = (dispatch, { history }) => {
         //mussdochnicht umsortiert werden dispatch(sortCollectionsReview(collections));
       });
     },
-    Reviewed: (user, collID, ticketState = "approved", doi = "") => {
-      dispatch(completeRecordingDispatch(user, collID, ticketState, doi)).catch(
+    Reviewed: (user, collID, ticketState = "approved") => {
+      dispatch(completeRecordingDispatch(user, collID, ticketState)).catch(
         (error) => {
           console.log(error);
         }

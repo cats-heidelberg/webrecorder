@@ -64,6 +64,7 @@ class CollectionItem extends Component {
   };
   downloadAction = (evt) => {
     const { collection } = this.props;
+    console.log(getCollectionLink(collection));
     window.location.href = `${config.appHost}/${getCollectionLink(
       collection
     )}/$download`;
@@ -95,13 +96,12 @@ class CollectionItem extends Component {
     Reviewed(collection.get("owner"), collection.get("id"), "approved");
   };
   sendForDOI = () => {
-    const { doi } = this.state;
+
     const { completeReview, collection } = this.props;
     completeReview(
       collection.get("owner"),
       collection.get("id"),
       "completed",
-      doi
     );
   };
   denyArchive = () => {
@@ -201,13 +201,10 @@ class CollectionItem extends Component {
                           <p>
                             If you submit this archive as completed user or
                             admin won't be able to do further changes.
-                            <br /> <br />
-                            Create DOI?{" "}
+                            <br />Please take note that this DOI is not editable:<br />
+                            Create DOI?{" "}{collection.get("doi")}
                           </p>
-                          <input
-                            onChange={this.handleInput}
-                            placeholder="Enter DOI link"
-                          />
+
                           <Button
                             className="rounded new-session"
                             onClick={this.sendForDOI}

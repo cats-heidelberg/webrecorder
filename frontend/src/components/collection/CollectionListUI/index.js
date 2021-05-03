@@ -490,14 +490,14 @@ class CollectionListUI extends Component {
       url
     );
   };
-  completeRec = (collID, ticketState = "pending") => {
+  completeRec = (collID, ticketState = "pending", projektcode="") => {
     const {
       completeRecording,
       match: {
         params: { user },
       },
     } = this.props;
-    completeRecording(user, collID, ticketState);
+    completeRecording(user, collID, ticketState, projektcode);
   };
   editName = (full_name) => {
     const {

@@ -60,7 +60,8 @@ class CollectionItem extends Component {
     console.log("im send Archive collectionItem");
     const { collection, completeRec } = this.props;
     const collID = collection.get("id");
-    completeRec(collID, "pending");
+    const projektcode = collection.get("projektcode");
+    completeRec(collID, "pending", projektcode);
     this.setState({ ticketState: "pending" });
   };
 

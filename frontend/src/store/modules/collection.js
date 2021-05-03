@@ -309,7 +309,7 @@ export function deleteCollection(user, coll) {
       }),
   };
 }
-export function completeRecordingDispatch(user, collID, ticketState, doi = "") {
+export function completeRecordingDispatch(user, collID, ticketState, projektcode = "") {
   return {
     types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
     promise: (client) =>
@@ -317,7 +317,7 @@ export function completeRecordingDispatch(user, collID, ticketState, doi = "") {
         params: { user },
         data: {
           ticketState,
-          doi,
+          projektcode,
         },
       }),
   };
