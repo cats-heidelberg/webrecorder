@@ -9,6 +9,7 @@ const initialState = fromJS({
   open: false
 });
 
+// reducer checks for the action.type (= its name) and executes what the action means to do
 export default function userLogin(state = initialState, action = {}) {
   switch (action.type) {
     case ASSIGN_NEXT:
@@ -24,6 +25,7 @@ export default function userLogin(state = initialState, action = {}) {
   }
 }
 
+// action
 export function assignNext(next) {
   return {
     type: ASSIGN_NEXT,
@@ -31,6 +33,7 @@ export function assignNext(next) {
   };
 }
 
+// action: returns type (which is its name)
 export function showModal(bool, cta = false, next = null) {
   return {
     type: SHOW_MODAL,

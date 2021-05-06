@@ -5,7 +5,7 @@ import querystring from 'querystring';
 
 import { product } from 'config';
 
-import LoginForm from 'components/siteComponents/UserManagementUI/loginForm';
+// import LoginForm from 'components/siteComponents/UserManagementUI/loginForm';
 
 import './style.scss';
 
@@ -27,23 +27,27 @@ class LoginUI extends Component {
   }
 
   render() {
-    const { auth } = this.props;
-
-    return (
-      <div className="wr-login">
-        <Helmet>
-          <title>Log in to {product}</title>
-        </Helmet>
-        <div className="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3">
-          <h2>{ product } Login</h2>
-          <LoginForm
-            auth={auth}
-            cb={this.props.loginFn}
-            error={auth.get('loginError')} />
-        </div>
-      </div>
-    );
+    return (<div></div>)
   }
+
+  // render() {
+  //   const { auth } = this.props;
+  //
+  //   return (
+  //     <div className="wr-login">
+  //       <Helmet>
+  //         <title>Log in to {product}</title>
+  //       </Helmet>
+  //       <div className="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3">
+  //         <h2>{ product } LoginUI (this can be removed)</h2>
+  //         <LoginForm
+  //           auth={auth}
+  //           cb={this.props.loginFn}
+  //           error={auth.get('loginError')} />
+  //       </div>
+  //     </div>
+  //   );
+  // }
 }
 
 

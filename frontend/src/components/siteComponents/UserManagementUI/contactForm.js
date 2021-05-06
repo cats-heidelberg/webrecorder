@@ -9,7 +9,7 @@ import { login } from 'helpers/userMessaging';
 import { TempUsage } from 'containers';
 
 
-class LoginForm extends Component {
+class ContactForm extends Component {
   static propTypes = {
     anonCTA: PropTypes.bool,
     auth: PropTypes.object,
@@ -22,40 +22,42 @@ class LoginForm extends Component {
     super(props);
 
     this.state = {
-      moveTemp: true,
-      toColl: 'New Collection',
-      remember_me: false,
-      username: '',
-      password: ''
+      name: '',
+      email: '', // maybe default to user email if logged in?
+      subject: '',
+      message: ''
     };
   }
 
   save = (evt) => {
     evt.preventDefault();
     const { auth } = this.props;
-    const { moveTemp, password, toColl, username } = this.state;
+    const { name, email, subject, message } = this.state;
 
-    let data = { username, password };
+    // below is from usage as login form
+    // TODO: do stuff with name, email, subject, message
 
-    if (this.state.remember_me) {
-      data.remember_me = '1';
-    }
+    // let data = { username, password };
+    //
+    //
+    // // check for anon usage
+    // if (auth.getIn(['user', 'anon']) && auth.getIn(['user', 'num_collections']) > 0) {
+    //   data = { ...data, toColl };
+    // }
+    //
 
-    // check for anon usage
-    if (auth.getIn(['user', 'anon']) && auth.getIn(['user', 'num_collections']) > 0) {
-      data = { ...data, moveTemp, toColl };
-    }
-
+    let data = { name, email, subject, message };
     this.props.cb(data);
   }
 
-  validateUsername = () => {
-    const pattern = userRegex;
-    if (typeof this.state.username !== 'undefined') {
-      return this.state.username.match(pattern) === this.state.username ? null : 'warning';
-    }
-    return null;
-  }
+  // // below is username validation from usage as login form. maybe we want e.g. email validation?
+  // validateUsername = () => {
+  //   const pattern = userRegex;
+  //   if (typeof this.state.username !== 'undefined') {
+  //     return this.state.username.match(pattern) === this.state.username ? null : 'warning';
+  //   }
+  //   return null;
+  // }
 
   handleChange = (evt) => {
     if (evt.target.type === 'radio') {
@@ -67,53 +69,56 @@ class LoginForm extends Component {
 
   render() {
     const { anonCTA, auth, closeLogin, error } = this.props;
-    const { moveTemp, password, toColl, username } = this.state;
+    const { name, email, subject, message } = this.state;
 
     return (
       <React.Fragment>
         <Row className="wr-login-form">
-          {
-            anonCTA &&
-              <h4>Please sign in to manage collections.</h4>
-          }
-          {
+          <h4>Contact us!</h4>
+          {/*
             error &&
               <Alert bsStyle="danger">
                 {
                   login[auth.get('loginError')] || <span>Invalid Login. Please Try Again</span>
                 }
               </Alert>
-          }
+          */}
           <Form id="loginform" onSubmit={this.save}>
             <FormGroup
-              key="username">
-              <label htmlFor="username" className="sr-only">Username</label>
-              <FormControl aria-label="username" onChange={this.handleChange} value={username} type="text" id="username" name="username" className="form-control" placeholder="username" required autoFocus />
+              key="username" controlId="formName">
+              <FormControl aria-label="name" onChange={this.handleChange} value={name} type="text" id="name" name="name" className="form-control" placeholder="Enter your name" required autoFocus />
               <div className="help-block with-errors" />
             </FormGroup>
 
-            <FormGroup key="password">
-              <label htmlFor="inputPassword" className="sr-only">Password</label>
-              <FormControl aria-label="password" onChange={this.handleChange} value={password} type="password" id="password" name="password" className="form-control" placeholder="Password" required />
+            <FormGroup key="email" controlId="formEmail">
+              <FormControl aria-label="email" onChange={this.handleChange} value={email} type="email" id="email" name="email" className="form-control" placeholder="name@example.com" required />
             </FormGroup>
 
-            <FormGroup key="remember">
+            <FormGroup key="subject" controlId="formSubject">
+              <FormControl aria-label="subject" onChange={this.handleChange} value={subject} type="text" id="subject" name="subject" className="form-control" placeholder="What do you need help with?" required />
+            </FormGroup>
+
+            <FormGroup key="message" controlId="formMessage">
+              <FormControl as="textarea" rows={5} aria-label="message" onChange={this.handleChange} value={message} type="text" id="message" name="message" className="form-control" placeholder="Please describe your issue." required />
+            </FormGroup>
+
+            {/*<FormGroup key="remember">
               <input onChange={this.handleChange} type="checkbox" id="remember_me" name="remember_me" />
               <label htmlFor="remember_me">Remember me</label>
 
               <Link to="/_forgot" onClick={closeLogin} style={{ float: 'right' }}>Forgot password or username?</Link>
-            </FormGroup>
-            {
+            </FormGroup>*/}
+            {/*
               auth.getIn(['user', 'anon']) && auth.getIn(['user', 'num_collections']) > 0 &&
                 <TempUsage
                   handleInput={this.handleChange}
                   moveTemp={moveTemp}
                   toColl={toColl} />
-            }
-            <Button bsSize="lg" bsStyle="primary" type="submit" block>Sign in</Button>
+            */}
+            <Button bsSize="lg" bsStyle="primary" type="submit" block>Submit</Button>
           </Form>
         </Row>
-        {
+        {/*removing this breaks stuff, idk why*/
           anonCTA &&
             <div className="anon-cta">
               <h5>New to {product}? <Link to="/_register" onClick={closeLogin}>Sign up &raquo;</Link></h5>
@@ -126,4 +131,4 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+export default ContactForm;

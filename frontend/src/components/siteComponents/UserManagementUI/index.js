@@ -13,7 +13,7 @@ import { UserIcon } from "components/icons";
 
 import config from "config";
 
-import LoginForm from "./loginForm";
+import ContactForm from "./contactForm";
 import "./style.scss";
 
 let shell;
@@ -34,6 +34,7 @@ class UserManagementUI extends PureComponent {
     reportModal: PropTypes.bool,
     route: PropTypes.object,
     showModal: PropTypes.func,
+    toggleBugModal: PropTypes.func,
   };
 
   constructor(options) {
@@ -67,7 +68,7 @@ class UserManagementUI extends PureComponent {
     }
   }
 
-  showLogin = () => {
+  showContactForm = () => {
     this.props.showModal(true);
   };
 
@@ -89,6 +90,10 @@ class UserManagementUI extends PureComponent {
     this.props.history.push("/_logout");
   };
 
+  // goToSignup = () => {
+  //   this.props.history.push("/_register");
+  // };
+
   // goToUserGuide = () => {
   //   this.props.history.push("/_guide");
   // };
@@ -109,7 +114,15 @@ class UserManagementUI extends PureComponent {
 
   save = (data) => {
     this.setState({ formError: false });
-    this.props.loginFn(data);
+    // this.props.loginFn(data);
+    // TODO: do stuff when contact form is submitted
+    console.log("yeah!")
+  };
+
+  toggleBugModal = () => {
+    const { route, reportModal } = this.props;
+    const mode = /record|replay|extract|patch/.test(route.name) ? "dnlr" : "ui";
+    this.props.toggleBugModal(reportModal !== null ? null : mode);
   };
 
   toggleDropdown = (isOpen) => {
@@ -123,7 +136,7 @@ class UserManagementUI extends PureComponent {
     const { formError } = this.state;
 
     const form = (
-      <LoginForm
+      <ContactForm
         anonCTA={anonCTA}
         auth={auth}
         cb={this.save}
@@ -177,19 +190,13 @@ class UserManagementUI extends PureComponent {
             </li>
           )}
           <li className="hidden-xs">
-            {__DESKTOP__ ? (
               <button
                 className="button-link"
-                onClick={this.openDesktopHelp}
+                onClick={this.showContactForm}
                 type="button"
               >
                 Contact<br />Support
               </button>
-            ) : (
-              <a href="https://guide.webrecorder.io/" target="_blank">
-                Contact<br />Support
-              </a>
-            )}
           </li>
 
           {supporterPortal && (
@@ -205,7 +212,7 @@ class UserManagementUI extends PureComponent {
               <li>
                 <button
                   className="rounded login-link"
-                  onClick={this.showLogin}
+                  onClick={this.showContactForm}
                   type="button"
                 >
                   Login
