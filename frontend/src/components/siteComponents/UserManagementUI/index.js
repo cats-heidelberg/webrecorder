@@ -189,13 +189,13 @@ class UserManagementUI extends PureComponent {
               )}
             </li>
           )}
-          <li className="hidden-xs">
+          <li className="navbar-text">
               <button
                 className="button-link"
                 onClick={this.showContactForm}
                 type="button"
               >
-                Contact<br />Support
+                Contact
               </button>
           </li>
 
