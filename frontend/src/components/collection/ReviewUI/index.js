@@ -37,7 +37,6 @@ class ReviewUI extends Component {
     match: PropTypes.object,
     numCollections: PropTypes.number,
     orderedCollections: PropTypes.object,
-    match: PropTypes.object,
     history: PropTypes.object,
     Reviewed: PropTypes.func,
     sortByReview: PropTypes.object,
@@ -59,20 +58,24 @@ class ReviewUI extends Component {
       showModalFinish: false,
     };
   }
+
   componentDidMount() {
     const { getCollectionsReview, collections, sortCollections } = this.props;
     const { _sortBy } = this.state;
     getCollectionsReview(collections.get("collections"), _sortBy);
   }
+
   componentDidUpdate(prevProps) {
     if (prevProps.sortByReview !== this.props.sortByReview) {
       this.setState({ _sortBy: this.props.sortByReview });
     }
   }
+
   completeReview = (user, collID, ticketState, doi) => {
     const { completeReview } = this.props;
     completeReview(user, collID, ticketState, doi);
   };
+
   Reviewed = (user, collID, ticketState) => {
     const { Reviewed } = this.props;
     Reviewed(user, collID, ticketState);

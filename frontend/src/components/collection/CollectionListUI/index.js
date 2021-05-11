@@ -1,3 +1,7 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable indent */
+/* eslint-disable no-unused-expressions */
+
 import React, { Component, useState } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
@@ -41,7 +45,6 @@ class CollectionListUI extends Component {
     edited: PropTypes.bool,
     editUser: PropTypes.func,
     onPatch: PropTypes.func,
-    match: PropTypes.object,
     numCollections: PropTypes.number,
     orderedCollections: PropTypes.object,
     match: PropTypes.object,
@@ -69,7 +72,6 @@ class CollectionListUI extends Component {
       numCollections: 0,
       showModal: false,
       showModalFinish: false,
-      isUploading: false,
       progress: 0,
       role: "admin",
       status: "ready...",
@@ -86,12 +88,13 @@ class CollectionListUI extends Component {
     this.updateSort();
     //  sortCollections(_sortBy, collections.get("collections"));
   }
+
   updateSort = () => {
     const { sortCollections, sortBy, collections } = this.props;
     const { _sortBy } = this.state;
 
-    let soLangsamEy = ["sorted by state"];
-    var promise = new Promise(function (resolve, reject) {
+    const soLangsamEy = ["sorted by state"];
+    var promise = new Promise((resolve, reject) => {
       collections.get("collections").map((coll) => {
         if (
           coll.get("projektcode") !== undefined &&
@@ -106,11 +109,11 @@ class CollectionListUI extends Component {
 
       resolve(true);
     });
-    promise.then((bool) =>
+    promise.then((bool) => {
       this.setState({
         _sortBy: soLangsamEy,
-      })
-    );
+      });
+    });
   };
 
   createCollection = (
@@ -179,6 +182,7 @@ class CollectionListUI extends Component {
       doi
     );
   };
+
   duplicateCollection = (title) => {
     const {
       _duplicateCollection,
@@ -188,6 +192,7 @@ class CollectionListUI extends Component {
     } = this.props;
     _duplicateCollection(user, title);
   };
+
   warcIndexing = () => {
     const { targetObj } = this.state;
     const { activeCollection } = this.props;
@@ -223,7 +228,7 @@ class CollectionListUI extends Component {
 
     this.setState({
       canCancel: true,
-      status: uploadErrors[data.error] || "Error Encountered",
+      status: "Error Encountered",
     });
     this.xhr.upload.removeEventListener("progress", this.uploadProgress);
     this.xhr.removeEventListener("load", this.uploadSuccess);
@@ -233,6 +238,7 @@ class CollectionListUI extends Component {
       return this.indexing(data);
     }
   };
+
   uploadProgress = (evt) => {
     const progress = Math.round((50.0 * evt.loaded) / evt.total);
 
@@ -243,7 +249,9 @@ class CollectionListUI extends Component {
     }
   };
 
-  uploadSuccess = (evt) => this.setState({ progress: 50 });
+  uploadSuccess = (evt) => {
+    this.setState({ progress: 50 });
+  };
 
   indexing = (data) => {
     this.setState({ canCancel: false, status: "Indexing..." });
@@ -256,13 +264,17 @@ class CollectionListUI extends Component {
       fetch(url, {
         headers: new Headers({ "x-requested-with": "XMLHttpRequest" }),
       })
-        .then((res) => res.json())
+        .then((res) => {
+          res.json();
+        })
         .then(this.indexResponse);
     }, 75);
   };
+
   indexingComplete = (user, coll) => {
     const { targetID, targetUrl } = this.state;
-    const cleanUrl = addTrailingSlash(fixMalformedUrls(targetUrl));
+    const { config } = this.props;
+    const cleanUrl = targetUrl;
 
     // data to create new recording
     const data = {
@@ -273,12 +285,17 @@ class CollectionListUI extends Component {
 
     // generate recording url
     apiFetch("/new", data, { method: "POST" })
-      .then((res) => res.json())
-      .then(({ url }) =>
-        this.props.history.push(url.replace(config.appHost, ""))
-      )
-      .catch((err) => console.log("error", err));
+      .then((res) => {
+        res.json();
+      })
+      .then(({ url }) => {
+        this.props.history.push(url.replace(config.appHost, ""));
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
   };
+
   indexResponse = (data) => {
     const stateUpdate = {};
 
@@ -380,6 +397,7 @@ class CollectionListUI extends Component {
       doi
     );
   };
+
   editColl = (
     collID,
     title,
@@ -434,6 +452,7 @@ class CollectionListUI extends Component {
       listID
     );
   };
+
   createCollectionWarc = (
     collID,
     title,
@@ -490,7 +509,8 @@ class CollectionListUI extends Component {
       url
     );
   };
-  completeRec = (collID, ticketState = "pending", projektcode="") => {
+
+  completeRec = (collID, ticketState = "pending", projektcode = "") => {
     const {
       completeRecording,
       match: {
@@ -499,6 +519,7 @@ class CollectionListUI extends Component {
     } = this.props;
     completeRecording(user, collID, ticketState, projektcode);
   };
+
   editName = (full_name) => {
     const {
       editUser,
@@ -537,24 +558,29 @@ class CollectionListUI extends Component {
 
     // generate recording url
     apiFetch("/new", data, { method: "POST" })
-      .then((res) => res.json())
+      .then((res) => {
+        res.json();
+      })
       .then(({ url }) => {
         history.push(url.replace(appHost, ""));
       })
-      .catch((err) => console.log("error", err));
+      .catch((err) => {
+        console.log("error", err);
+      });
   };
 
   toggle = () => {
     this.setState({ showModal: !this.state.showModal });
   };
+
   reOrder = (evt) => {
     this.setState({ sortByActive: this.state._sortBy[evt] });
     const { _collectionsSorted, _sortBy } = this.state;
     const { collections } = this.props;
-    let temp = [{}];
-    let code = _sortBy[evt];
+    const temp = [{}];
+    const code = _sortBy[evt];
 
-    var promise = new Promise(function (resolve, reject) {
+    var promise = new Promise((resolve, reject) => {
       // call resolve if the method succeeds
 
       collections.get("collections").map((element) => {
@@ -571,7 +597,9 @@ class CollectionListUI extends Component {
       });
       resolve(temp);
     });
-    promise.then((temp) => this.setState({ _collectionsSorted: fromJS(temp) }));
+    promise.then((temp) => {
+      this.setState({ _collectionsSorted: fromJS(temp) });
+    });
 
     /*const {
       collections,
@@ -617,6 +645,7 @@ class CollectionListUI extends Component {
     }
     */
   };
+
   close = () => {
     this.setState({ showModal: false });
   };
@@ -723,7 +752,7 @@ class CollectionListUI extends Component {
                     style={{ float: "right" }}
                   >
                     <div>
-                      Sort list: 
+                      Sort list:
                       <Dropdown id="roleDropdown" onSelect={this.reOrder}>
                         <Dropdown.Toggle>
                           {_sortBy ? sortByActive : "Sorting unavailable"}
@@ -749,7 +778,7 @@ class CollectionListUI extends Component {
                     switch (sortByActive) {
                       case "sorted by state":
                         return collections.get("collections").map((coll) => {
-                          let temp =
+                          const temp =
                             coll.get("ticketState") !== headline &&
                             coll.get("ticketState") !== headlinelast
                               ? coll.get("ticketState")
@@ -837,7 +866,7 @@ class CollectionListUI extends Component {
                                   />
                                 );
                               } else {
-                                return <div></div>;
+                                return <div />;
                               }
                             })
                           : null;

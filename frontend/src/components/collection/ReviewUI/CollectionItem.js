@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable indent */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import removeMd from "remove-markdown";
@@ -33,6 +35,7 @@ class CollectionItem extends Component {
     selected: PropTypes.bool,
     history: PropTypes.string,
   };
+
   constructor(props) {
     super(props);
 
@@ -49,6 +52,7 @@ class CollectionItem extends Component {
   toggle = () => {
     this.setState({ open: !this.state.open });
   };
+
   toggleDeny = () => {
     this.setState({ openDeny: !this.state.openDeny });
   };
@@ -62,6 +66,7 @@ class CollectionItem extends Component {
   closeModal = () => {
     this.setState({ showModalFinish: !this.state.showModalFinish });
   };
+
   downloadAction = (evt) => {
     const { collection } = this.props;
     console.log(getCollectionLink(collection));
@@ -69,6 +74,7 @@ class CollectionItem extends Component {
       collection
     )}/$download`;
   };
+
   toggleSessionSave = () => {
     this.setState({ modalSessionSave: !this.state.modalSessionSave });
   };
@@ -95,20 +101,18 @@ class CollectionItem extends Component {
     const { Reviewed, collection } = this.props;
     Reviewed(collection.get("owner"), collection.get("id"), "approved");
   };
-  sendForDOI = () => {
 
+  sendForDOI = () => {
     const { completeReview, collection } = this.props;
-    completeReview(
-      collection.get("owner"),
-      collection.get("id"),
-      "completed",
-    );
+    completeReview(collection.get("owner"), collection.get("id"), "completed");
   };
+
   denyArchive = () => {
     const { doi } = this.state;
     const { completeReview, collection } = this.props;
     completeReview(collection.get("owner"), collection.get("id"), "denied", "");
   };
+
   handleInput = (event) => {
     this.setState({ doi: event.target.value });
   };
@@ -122,13 +126,18 @@ class CollectionItem extends Component {
 
     return (
       <React.Fragment>
-        <li className={descClasses} key={collection.get("id")} style={{
-          backgroundColor:collection.get("ticketState") === "pending"
-              ? "#FFF"
-              : collection.get("ticketState") === "approved"
-              ? "#c3e5aa"
-              : "#ececec",
-        }}>
+        <li
+          className={descClasses}
+          key={collection.get("id")}
+          style={{
+            backgroundColor:
+              collection.get("ticketState") === "pending"
+                ? "#FFF"
+                : collection.get("ticketState") === "approved"
+                ? "#c3e5aa"
+                : "#ececec",
+          }}
+        >
           <Row>
             <Col sm={15} md={12}>
               <h3>{collection.get("title")}</h3>
@@ -201,8 +210,10 @@ class CollectionItem extends Component {
                           <p>
                             If you submit this archive as completed user or
                             admin won't be able to do further changes.
-                            <br />Please take note that this DOI is not editable:<br />
-                            Create DOI?{" "}{collection.get("doi")}
+                            <br />
+                            Please take note that this DOI is not editable:
+                            <br />
+                            Create DOI? {collection.get("doi")}
                           </p>
 
                           <Button
