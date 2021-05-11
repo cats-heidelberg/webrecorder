@@ -161,7 +161,7 @@ class HomeUI extends PureComponent {
             <h2 className="card-header text-center">
               <img
                 src={require("shared/images/homepage/hd_logo_standard_16cm_rgb.png")}
-                class="img-fluid"
+                className="img-fluid"
                 title="UNIVERSITÄT HEIDELBERG"
                 alt="UNIVERSITÄT HEIDELBERG"
               />
@@ -171,7 +171,7 @@ class HomeUI extends PureComponent {
                 <div className="col-md-5">
                   <Row className="wr-login-form">
                     {(anonCTA && login[auth.get("loginError")]) || (
-                      <div class="card-title">
+                      <div className="card-title">
                         <h2>Is this your first time here?</h2>
                         <br />
                         <h4>Please use your provided Uni-ID (e.g. jb007).</h4>
@@ -219,14 +219,6 @@ class HomeUI extends PureComponent {
                         />
                       </FormGroup>
 
-                      {auth.getIn(["user", "anon"]) &&
-                        auth.getIn(["user", "num_collections"]) > 0 && (
-                          <TempUsage
-                            handleInput={this.handleChange}
-                            moveTemp={moveTemp}
-                            toColl={toColl}
-                          />
-                        )}
                       <Button bsSize="lg" bsStyle="primary" type="submit" block>
                         Sign in
                       </Button>
@@ -251,7 +243,9 @@ class HomeUI extends PureComponent {
                       >
                         <span
                           className="glyphicon glyphicon-info-sign"
-                          ref={(ref) => (this.fooRef6 = ref)}
+                          ref={(ref) => {
+                            this.fooRef6 = ref;
+                          }}
                           style={{
                             marginRight: "4px",
                             display: "inline",

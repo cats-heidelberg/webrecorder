@@ -15,6 +15,7 @@
     "curly": 0,
     "eqeqeq": 1,
     "global-require": 0,
+    "no-nested-ternary": "off",
     "implicit-arrow-linebreak": 1,
     "import/no-extraneous-dependencies": 0,
     "import/extensions": 0,
