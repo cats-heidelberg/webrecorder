@@ -454,14 +454,14 @@ class CollsController(BaseController):
 
             if 'selectedGroupName' in data:
                 collection['selectedGroupName'] = data['selectedGroupName']
-            if 'projektcode' in data and data['projektcode'] != "" and collection['doi'] is None:
+            if 'ticketState' in data and data['ticketState'] == "approved" and 'projektcode' in data and data['projektcode'] != "" and collection['doi'] is None:
                 collection['projektcode'] = data['projektcode']
                 today = datetime.utcnow()
-                possibleDOIBase = "10.25354"+data['projektcode']+str(today.year)+str(today.month)
-                possibleDOI = "10.25354"+data['projektcode']+str(today.year)+str(today.month)
+                possibleDOIBase = "10.25354/"+data['projektcode']+"."+str(today.year)+"."+str(today.month)
+                possibleDOI = "10.25354/"+data['projektcode']+"."+str(today.year)+"."+str(today.month)
                 tempInc = 1
                 while self.redis.sismember('doimodel', possibleDOI) == 1:
-                    possibleDOI = possibleDOIBase+str(tempInc)
+                    possibleDOI = possibleDOIBase+"-"+str(tempInc)
                     tempInc += 1
                 self.redis.sadd('doimodel', possibleDOI)
                 collection['doi'] = possibleDOI

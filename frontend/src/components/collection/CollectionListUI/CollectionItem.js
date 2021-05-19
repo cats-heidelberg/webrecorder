@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import removeMd from "remove-markdown";
@@ -35,6 +36,7 @@ class CollectionItem extends Component {
     history: PropTypes.string,
     ticketState: PropTypes.string,
   };
+
   constructor(props) {
     super(props);
 
@@ -44,6 +46,7 @@ class CollectionItem extends Component {
       ticketState: this.props.ticketState,
     };
   }
+
   componentDidUpdate(prevProps, prevState) {
     if (
       prevProps.ticketState !== this.props.ticketState ||
@@ -56,6 +59,7 @@ class CollectionItem extends Component {
   toggle = () => {
     this.setState({ open: !this.state.open });
   };
+
   sendArchive = () => {
     console.log("im send Archive collectionItem");
     const { collection, completeRec } = this.props;
@@ -72,6 +76,7 @@ class CollectionItem extends Component {
   closeModal = () => {
     this.setState({ showModalFinish: !this.state.showModalFinish });
   };
+
   downloadAction = (evt) => {
     const { collection } = this.props;
     console.log(getCollectionLink(collection));
@@ -79,10 +84,12 @@ class CollectionItem extends Component {
       collection
     )}/$download`;
   };
+
   duplicateAction = () => {
     const { collection } = this.props;
     this.props.duplicateCollection(collection.get("title"));
   };
+
   editCollectiontemp = (
     collID,
     title,
@@ -168,7 +175,7 @@ class CollectionItem extends Component {
                 : "#FFF",
           }}
         >
-          {"" !== headline && (
+          {headline !== "" && (
             <h2
               style={{
                 display: "flex",

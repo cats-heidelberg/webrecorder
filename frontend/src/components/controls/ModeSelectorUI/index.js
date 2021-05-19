@@ -1,3 +1,6 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable nonblock-statement-body-position */
+/* eslint-disable indent */
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
@@ -119,9 +122,13 @@ class ModeSelectorUI extends PureComponent {
     }
     // generate recording url
     apiFetch("/new", data, { method: "POST" })
-      .then((res) => res.json())
+      .then((res) => {
+        res.json();
+      })
       .then(({ url }) => history.push(url.replace(config.appHost, "")))
-      .catch((err) => console.log("error", err));
+      .catch((err) => {
+        console.log("error", err);
+      });
   };
 
   onRecord = () => {
@@ -147,9 +154,15 @@ class ModeSelectorUI extends PureComponent {
     }
     // generate recording url
     apiFetch("/new", data, { method: "POST" })
-      .then((res) => res.json())
-      .then(({ url }) => history.push(url.replace(config.appHost, "")))
-      .catch((err) => console.log("error", err));
+      .then((res) => {
+        res.json();
+      })
+      .then(({ url }) => {
+        history.push(url.replace(config.appHost, ""));
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
   };
 
   onStaticCopy = () => {};

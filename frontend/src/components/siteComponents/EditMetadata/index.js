@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable array-callback-return */
+/* eslint-disable indent */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Toggle from "react-toggle";
@@ -66,19 +69,19 @@ class EditMetadata extends Component {
 
   componentDidMount(prevProps) {
     const self = this;
-    const promise1 = new Promise(function (resolve, reject) {
+    const promise1 = new Promise((resolve, reject) => {
       var didSucceed = JSON.parse(
         self.props.coll.get("personHeaderList").replace(/'/g, '"')
       );
       resolve(didSucceed);
     });
-    const promise2 = new Promise(function (resolve, reject) {
+    const promise2 = new Promise((resolve, reject) => {
       var didSucceed = JSON.parse(
         self.props.coll.get("subjectHeaderList").replace(/'/g, '"')
       );
       resolve(didSucceed);
     });
-    const promise3 = new Promise(function (resolve, reject) {
+    const promise3 = new Promise((resolve, reject) => {
       var didSucceed = JSON.parse(
         self.props.coll.get("creatorList").replace(/'/g, '"')
       );
@@ -86,7 +89,7 @@ class EditMetadata extends Component {
     });
 
     Promise.all([promise1, promise2, promise3])
-      .then(function (values) {
+      .then((values) => {
         self.setState((state) => {
           return {
             personHeaderList: values[0],
@@ -95,7 +98,9 @@ class EditMetadata extends Component {
           };
         });
       })
-      .catch((err) => console.log("There was an error:" + err));
+      .catch((err) => {
+        console.log("There was an error:" + err);
+      });
 
     this.setState((state) => {
       return {
@@ -120,6 +125,7 @@ class EditMetadata extends Component {
       };
     });
   }
+
   checkEmail = () => {
     this.setState({ checkEmail: true });
   };
@@ -131,6 +137,7 @@ class EditMetadata extends Component {
   handleInput = (evt) => {
     this.setState({ [evt.target.name]: evt.target.value });
   };
+
   handleChange = (evt) => {
     if (evt.target.type === "radio") {
       this.setState({ [evt.target.name]: evt.target.value === "yes" });
@@ -146,21 +153,28 @@ class EditMetadata extends Component {
 
   onRemoveItem = (item) => {
     this.setState({
-      creatorList: this.state.creatorList.filter((el) => el !== item),
+      creatorList: this.state.creatorList.filter((el) => {
+        el !== item;
+      }),
     });
   };
+
   onRemoveSubject = (item) => {
     this.setState({
-      subjectHeaderList: this.state.subjectHeaderList.filter(
-        (el) => el !== item
-      ),
+      subjectHeaderList: this.state.subjectHeaderList.filter((el) => {
+        el !== item;
+      }),
     });
   };
+
   onRemovePerson = (item) => {
     this.setState({
-      personHeaderList: this.state.personHeaderList.filter((el) => el !== item),
+      personHeaderList: this.state.personHeaderList.filter((el) => {
+        el !== item;
+      }),
     });
   };
+
   onAddItem = () => {
     this.setState({ listID: this.state.listID + 1 });
     if (this.state.selectedGroupName === "corporate/institutional name") {
@@ -217,6 +231,7 @@ class EditMetadata extends Component {
       };
     });
   };
+
   onAddPerson = () => {
     this.setState({ listID: this.state.listID + 1 });
 
@@ -236,6 +251,7 @@ class EditMetadata extends Component {
   onClearArray = () => {
     this.setState({ list: [] });
   };
+
   validateEmail = () => {
     const { emailValid, usermail } = this.state;
     /*if (checkEmail && ( email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) === null)) {
@@ -255,6 +271,7 @@ class EditMetadata extends Component {
     const myTest = /[0-9]{4}( - [0-9]{4})?/;
     return myTest.test(collYear);
   };
+
   ValidateProjektcode = () => {
     const { projektcodeValid, projektcode } = this.state;
     /*if (checkEmail && ( email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) === null)) {
@@ -268,11 +285,13 @@ class EditMetadata extends Component {
       this.setState({ projektcodeValid: false });
     }
   };
+
   validatePublishYear = () => {
     const { publishYear } = this.state;
     const myTest = /[0-9]{4}([0-9]{2})?([0-9]{2})?/;
     return myTest.test(publishYear);
   };
+
   rebuildTooltip = () => {
     ReactTooltip.rebuild();
   };
@@ -332,6 +351,7 @@ class EditMetadata extends Component {
   titleValidation = () => {
     return this.props.error ? "error" : null;
   };
+
   togglePublic = (evt) => {
     this.setState({ isPublic: !this.state.isPublic });
   };
@@ -393,7 +413,9 @@ class EditMetadata extends Component {
                     >
                       <span
                         className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef = ref)}
+                        ref={(ref) => {
+                          this.fooRef = ref;
+                        }}
                         style={{
                           marginRight: "4px",
                           display: "inline",
@@ -451,7 +473,9 @@ class EditMetadata extends Component {
                     >
                       <span
                         className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef1 = ref)}
+                        ref={(ref) => {
+                          this.fooRef1 = ref;
+                        }}
                         style={{
                           marginRight: "4px",
                           display: "inline",
@@ -503,7 +527,9 @@ class EditMetadata extends Component {
                     >
                       <span
                         className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef2 = ref)}
+                        ref={(ref) => {
+                          this.fooRef2 = ref;
+                        }}
                         style={{
                           marginRight: "4px",
                           display: "inline",
@@ -547,7 +573,9 @@ class EditMetadata extends Component {
                     >
                       <span
                         className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef24 = ref)}
+                        ref={(ref) => {
+                          this.fooRef24 = ref;
+                        }}
                         style={{
                           marginRight: "4px",
                           display: "inline",
@@ -601,7 +629,9 @@ class EditMetadata extends Component {
                     >
                       <span
                         className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef3 = ref)}
+                        ref={(ref) => {
+                          this.fooRef3 = ref;
+                        }}
                         style={{
                           marginRight: "4px",
                           display: "inline",
@@ -639,15 +669,15 @@ class EditMetadata extends Component {
                       }}
                       onChange={this.groupSelect}
                     >
-                      {this.state.creatorLegend.map((group) => (
+                      {this.state.creatorLegend.map((group) => {
                         <option
                           key={group}
                           value={group}
                           selected={this.state.selectedGroupName == group}
                         >
                           {group}
-                        </option>
-                      ))}
+                        </option>;
+                      })}
                     </FormControl>
                     {this.state.selectedGroupName ==
                     "corporate/institutional name" ? (
@@ -685,7 +715,9 @@ class EditMetadata extends Component {
                         >
                           <span
                             className="glyphicon glyphicon-info-sign"
-                            ref={(ref) => (this.fooRef4 = ref)}
+                            ref={(ref) => {
+                              this.fooRef4 = ref;
+                            }}
                             style={{
                               marginRight: "4px",
                               display: "inline",
@@ -766,7 +798,9 @@ class EditMetadata extends Component {
                         >
                           <span
                             className="glyphicon glyphicon-info-sign"
-                            ref={(ref) => (this.fooRef5 = ref)}
+                            ref={(ref) => {
+                              this.fooRef5 = ref;
+                            }}
                             style={{
                               marginRight: "4px",
                               display: "inline",
@@ -802,7 +836,7 @@ class EditMetadata extends Component {
                     )}
                     {this.state.creatorList.length > 0 && (
                       <ul>
-                        {this.state.creatorList.map((item) => (
+                        {this.state.creatorList.map((item) => {
                           <li key={item.id}>
                             <React.Fragment>
                               <span
@@ -818,13 +852,13 @@ class EditMetadata extends Component {
                               />
                               <div>{item.htmlText}</div>
                             </React.Fragment>
-                          </li>
-                        ))}
+                          </li>;
+                        })}
                       </ul>
                     )}
                     <button
                       type="button"
-                      class="btn btn-success"
+                      className="btn btn-success"
                       style={{ float: "right" }}
                       onClick={this.onAddItem}
                       disabled={!persName && !collTitle}
@@ -853,7 +887,9 @@ class EditMetadata extends Component {
                     >
                       <span
                         className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef6 = ref)}
+                        ref={(ref) => {
+                          this.fooRef6 = ref;
+                        }}
                         style={{
                           marginRight: "4px",
                           display: "inline",
@@ -907,7 +943,9 @@ class EditMetadata extends Component {
                     >
                       <span
                         className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef7 = ref)}
+                        ref={(ref) => {
+                          this.fooRef7 = ref;
+                        }}
                         style={{
                           marginRight: "4px",
                           display: "inline",
@@ -954,7 +992,9 @@ class EditMetadata extends Component {
                     >
                       <span
                         className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef8 = ref)}
+                        ref={(ref) => {
+                          this.fooRef8 = ref;
+                        }}
                         style={{
                           marginRight: "4px",
                           display: "inline",
@@ -1007,7 +1047,9 @@ class EditMetadata extends Component {
                     >
                       <span
                         className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef9 = ref)}
+                        ref={(ref) => {
+                          this.fooRef9 = ref;
+                        }}
                         style={{
                           marginRight: "4px",
                           display: "inline",
@@ -1043,7 +1085,7 @@ class EditMetadata extends Component {
                     </React.Fragment>
                     {this.state.subjectHeaderList.length > 0 && (
                       <ul>
-                        {this.state.subjectHeaderList.map((item) => (
+                        {this.state.subjectHeaderList.map((item) => {
                           <li key={item.id}>
                             <React.Fragment>
                               <span
@@ -1059,13 +1101,13 @@ class EditMetadata extends Component {
                               />
                               <div>{item.htmlText}</div>
                             </React.Fragment>
-                          </li>
-                        ))}
+                          </li>;
+                        })}
                       </ul>
                     )}
                     <button
                       type="button"
-                      class="btn btn-success"
+                      className="btn btn-success"
                       style={{ float: "right" }}
                       onClick={this.onAddSubject}
                       disabled={!subjectHeadingText}
@@ -1089,7 +1131,9 @@ class EditMetadata extends Component {
                     >
                       <span
                         className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef10 = ref)}
+                        ref={(ref) => {
+                          this.fooRef10 = ref;
+                        }}
                         style={{
                           marginRight: "4px",
                           display: "inline",
@@ -1126,7 +1170,7 @@ class EditMetadata extends Component {
                     </React.Fragment>
                     {this.state.personHeaderList.length > 0 && (
                       <ul>
-                        {this.state.personHeaderList.map((item) => (
+                        {this.state.personHeaderList.map((item) => {
                           <li key={item.id}>
                             <React.Fragment>
                               <span
@@ -1142,13 +1186,13 @@ class EditMetadata extends Component {
                               />
                               <div>{item.htmlText}</div>
                             </React.Fragment>
-                          </li>
-                        ))}
+                          </li>;
+                        })}
                       </ul>
                     )}
                     <button
                       type="button"
-                      class="btn btn-success"
+                      className="btn btn-success"
                       style={{ float: "right" }}
                       onClick={this.onAddPerson}
                       disabled={!personHeadingText}
@@ -1174,7 +1218,9 @@ class EditMetadata extends Component {
                     >
                       <span
                         className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef11 = ref)}
+                        ref={(ref) => {
+                          this.fooRef11 = ref;
+                        }}
                         style={{
                           marginRight: "4px",
                           display: "inline",
