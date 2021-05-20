@@ -103,7 +103,7 @@ class ContactForm extends Component {
 
             <FormGroup key="message" controlId="formMessage">
               <ControlLabel>Message:</ControlLabel>
-              <textarea rows={4} aria-label="message" onChange={this.handleChange} value={message} type="text" id="message" name="message" className="form-control" placeholder="Please describe your issue." required />
+              <FormControl componentClass="textarea" rows={4} aria-label="message" onChange={this.handleChange} value={message} id="msg" name="msg" className="form-control" placeholder="Please describe your issue." required />
             </FormGroup>
 
             {/*<FormGroup key="remember">
