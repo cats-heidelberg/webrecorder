@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Toggle from "react-toggle";
-import { Alert, ControlLabel, FormGroup, FormControl } from "react-bootstrap";
+import Alert from 'react-bootstrap/Alert';
+import FormGroup from 'react-bootstrap/FormGroup';
+import FormControl from 'react-bootstrap/FormControl';
 import { incrementCollCount } from "store/modules/auth";
 
 import { defaultCollectionTitle, apiPath } from "config";
@@ -491,7 +493,7 @@ class NewCollection extends Component {
       return 'error';
     }
     return null;*/
-    const myTest = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+    const myTest = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[]|\\[])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[]|\\[])+)\])/;
     if (myTest.test(usermail) === true && !emailValid) {
       this.setState({ emailValid: true });
     } else if (myTest.test(usermail) === false && emailValid) {
@@ -666,7 +668,7 @@ class NewCollection extends Component {
                       *Your e-mail address:
                     </div>
 
-                    <ControlLabel srOnly>email address:</ControlLabel>
+                    <p>email address:</p>
                     <FormControl
                       style={{
                         border: emailValid
@@ -926,7 +928,7 @@ class NewCollection extends Component {
                       *Projektcode (to join arcives under a topic ):
                     </div>
 
-                    <ControlLabel srOnly>projektcode:</ControlLabel>
+                    <p >projektcode:</p>
                     <FormControl
                       style={{
                         border: projektcodeValid
@@ -1002,7 +1004,7 @@ class NewCollection extends Component {
                         this.state.groupSelect = ref;
                       }}
                       onChange={this.groupSelect}
-                    >
+                    />
                       {this.state.creatorLegend.map((group) => (
                         <option
                           key={group}
@@ -1012,7 +1014,7 @@ class NewCollection extends Component {
                           {group}
                         </option>
                       ))}
-                    </FormControl>
+
                     {this.state.selectedGroupName ==
                     "corporate/institutional name" ? (
                       <React.Fragment>
@@ -1510,7 +1512,7 @@ class NewCollection extends Component {
                       Note to DACHS team:
                     </div>
 
-                    <ControlLabel srOnly>Note to DACHS team:</ControlLabel>
+                    <p >Note to DACHS team:</p>
                     <textarea
                       className="form-control"
                       rows="3"

@@ -13,6 +13,7 @@ import { UserIcon } from "components/icons";
 
 import config from "config";
 
+import LoginForm from "./loginForm";
 import ContactForm from "./contactForm";
 import "./style.scss";
 
@@ -42,6 +43,7 @@ class UserManagementUI extends PureComponent {
 
     this.state = {
       formError: null,
+      contactVisible: false,
     };
   }
 
@@ -68,13 +70,25 @@ class UserManagementUI extends PureComponent {
     }
   }
 
-  showContactForm = () => {
+  showLogin = () => {
     this.props.showModal(true);
   };
 
   closeLogin = () => {
     this.props.showModal(false);
     this.setState({ formError: false });
+  };
+
+  showContactForm = () => {
+    this.setState({ contactVisible: true });
+  };
+
+  closeContactForm = () => {
+    this.setState({ contactVisible: false });
+  };
+
+  toggleContactForm = () => {
+    this.setState({ contactVisible: !this.state.contactVisible });
   };
 
   goToCollections = () => {
@@ -107,6 +121,7 @@ class UserManagementUI extends PureComponent {
 
   openReview = (evt) => {
     evt.preventDefault();
+    const { auth } = this.props;
     const user = auth.get("user");
     const username = user.get("username");
     window.location.href = `${config.appHost}/${username}/review`;
@@ -133,10 +148,10 @@ class UserManagementUI extends PureComponent {
 
   render() {
     const { anonCTA, auth, canAdmin, open } = this.props;
-    const { formError } = this.state;
+    const { formError, contactVisible } = this.state;
 
     const form = (
-      <ContactForm
+      <LoginForm
         anonCTA={anonCTA}
         auth={auth}
         cb={this.save}
@@ -144,6 +159,9 @@ class UserManagementUI extends PureComponent {
         closeLogin={this.closeLogin}
       />
     );
+    const contactForm = (
+      <ContactForm />
+    )
     const collCount = auth.getIn(["user", "num_collections"]);
     const user = auth.get("user");
     const username = user.get("username");
@@ -212,7 +230,7 @@ class UserManagementUI extends PureComponent {
               <li>
                 <button
                   className="rounded login-link"
-                  onClick={this.showContactForm}
+                  onClick={this.showLogin}
                   type="button"
                 >
                   Login
@@ -289,6 +307,14 @@ class UserManagementUI extends PureComponent {
             </li>
           )}
         </ul>
+
+        <Modal
+          dialogClassName="wr-login-modal"
+          header={anonCTA ? null : `${product} Login`}
+          body={contactForm}
+          visible={contactVisible}
+          closeCb={this.closeContactForm}
+        />
 
         <Modal
           dialogClassName="wr-login-modal"

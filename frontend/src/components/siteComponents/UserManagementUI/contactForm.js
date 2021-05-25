@@ -86,20 +86,24 @@ class ContactForm extends Component {
           <Form id="loginform" onSubmit={this.save}>
             <FormGroup
               key="username" controlId="formName">
+              <label>Name:</label>
               <FormControl aria-label="name" onChange={this.handleChange} value={name} type="text" id="name" name="name" className="form-control" placeholder="Enter your name" required autoFocus />
               <div className="help-block with-errors" />
             </FormGroup>
 
             <FormGroup key="email" controlId="formEmail">
+              <label>E-mail:</label>
               <FormControl aria-label="email" onChange={this.handleChange} value={email} type="email" id="email" name="email" className="form-control" placeholder="name@example.com" required />
             </FormGroup>
 
             <FormGroup key="subject" controlId="formSubject">
+              <label>Subject:</label>
               <FormControl aria-label="subject" onChange={this.handleChange} value={subject} type="text" id="subject" name="subject" className="form-control" placeholder="What do you need help with?" required />
             </FormGroup>
 
             <FormGroup key="message" controlId="formMessage">
-              <FormControl as="textarea" rows={5} aria-label="message" onChange={this.handleChange} value={message} type="text" id="message" name="message" className="form-control" placeholder="Please describe your issue." required />
+              <label>Message:</label>
+              <FormControl componentClass="textarea" rows={4} aria-label="message" onChange={this.handleChange} value={message} id="msg" name="msg" className="form-control" placeholder="Please describe your issue." required />
             </FormGroup>
 
             {/*<FormGroup key="remember">
