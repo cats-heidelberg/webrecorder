@@ -292,7 +292,6 @@ class UserManagementUI extends PureComponent {
 
         <Modal
           dialogClassName="wr-login-modal"
-          header={anonCTA ? null : `${product} Login`}
           body={form}
           visible={open}
           closeCb={this.closeLogin}
