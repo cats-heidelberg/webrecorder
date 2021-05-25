@@ -4,7 +4,7 @@ import React from 'react';
 function LogoIcon({ darkMode }) {
   return (
   <svg xmlns="http://www.w3.org/2000/svg" width="1.42222in" height="1.42222in" viewBox="0 0 128 128" style={{ width: '42px', height: '42px' }}>
-  <path id="path854" stroke="black" stroke-width="1" f fill={darkMode ? '#FFF' : '#F00'}
+  <path id="path854" stroke="black" strokeWidth="1" f fill={darkMode ? '#FFF' : '#F00'}
         d="M 81.27,51.53
            C 93.98,52.05 103.11,61.77 103.69,76.92
              104.28,92.06 93.34,104.72 79.25,105.19
