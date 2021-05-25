@@ -30,7 +30,7 @@
 }
 
 .alert {
-  margin-top: rem(2.5rem);
+  margin-top: rem(2.5px);
 }
 
 .caret {
@@ -61,28 +61,28 @@
 button.btn-cta {
   background: $pine;
   color: $slate;
-  border: solid rem(.3rem) transparent;
+  border: solid rem(.3px) transparent;
   box-sizing: border-box;
   transition: border-color .25s ease-in-out;
   font-weight: 600;
-  font-size: rem(1.4rem);
+  font-size: rem(1.4px);
 
   &:hover {
-    border: solid rem(.3rem) $dusty-pine;
+    border: solid rem(.3px) $dusty-pine;
   }
 }
 
 button.primary {
     background-color: $gray600;
-    border: solid rem(.3rem) transparent;
+    border: solid rem(.3px) transparent;
     transition: border-color .25s ease-in-out;
     box-sizing: border-box;
     color: $white;
     font-weight: 600;
-    font-size: rem(1.4rem);
+    font-size: rem(1.4px);
 
     &:hover {
-      border: solid rem(.3rem) $gray700;
+      border: solid rem(.3px) $gray700;
     }
 }
 
@@ -95,19 +95,19 @@ button.primary {
 
 .click-highlight {
   transition: box-shadow .25s ease-in-out, border-color .25s ease-in-out;
-  border: solid rem(.1rem) transparent;
-  border-radius: rem(.5rem);
-  padding: rem(.3rem);
+  border: solid rem(.1px) transparent;
+  border-radius: rem(.5px);
+  padding: rem(.3px);
   cursor: pointer;
 
   &:hover {
     border-color: #E0E3E3;
-    box-shadow: 0 0 rem(.5rem) #E0E3E3;
+    box-shadow: 0 0 rem(.5px) #E0E3E3;
   }
 }
 
 .react-tabs__tab:first-of-type {
-    margin-left: rem(1rem);
+    margin-left: rem(1px);
 }
 
 .form-group-recorder-url {
@@ -123,51 +123,51 @@ button.primary {
 }
 
 .top-buffer-sm {
-    margin-top: rem(.5rem);
+    margin-top: rem(.5px);
 }
 
 .top-buffer-md {
-    margin-top: rem(1rem);
+    margin-top: rem(1px);
 }
 
 .top-buffer {
-    margin-top: rem(2rem);
+    margin-top: rem(2px);
 }
 
 .top-buffer-lg {
-    margin-top: rem(4rem);
+    margin-top: rem(4px);
 }
 
 .left-buffer {
-    margin-left: rem(2rem);
+    margin-left: rem(2px);
 }
 
 .left-buffer-md {
-    margin-left: rem(1rem);
+    margin-left: rem(1px);
 }
 
 .left-buffer-sm {
-  margin-left: rem(.5rem);
+  margin-left: rem(.5px);
 }
 
 .left-buffer-xs {
-    margin-left: rem(.1rem);
+    margin-left: rem(.1px);
 }
 
 .right-padding {
-  padding-right: rem(2rem);
+  padding-right: rem(2px);
 }
 
 .right-buffer {
-  margin-right: rem(2rem);
+  margin-right: rem(2px);
 }
 
 .right-buffer-sm {
-  margin-right: rem(.5rem);
+  margin-right: rem(.5px);
 }
 
 .bottom-buffer-lg {
-  margin-bottom: rem(4rem);
+  margin-bottom: rem(4px);
 }
 
 .glyphicon.glyphicon-dot:before {
@@ -197,13 +197,13 @@ button.primary {
 }
 
 .ra-mode-badge {
-  padding: 0 rem(.5rem);
-  font-size: rem(1.3rem);
-  border-radius: rem(.2rem);
+  padding: 0 rem(.5px);
+  font-size: rem(1.3px);
+  border-radius: rem(.2px);
   text-transform: uppercase;
   color: #FFF;
   font-weight: 300;
-  letter-spacing: rem(.1rem);
+  letter-spacing: rem(.1px);
 }
 
 .wr-content {
@@ -233,8 +233,8 @@ button.primary {
 .rounded {
   color: $gray600;
   border-radius: 0;
-  padding: rem(0.7rem) rem(3rem);
-  font-size: rem(1.15rem);
+  padding: rem(0.7px) rem(3px);
+  font-size: rem(1.15px);
   background: transparent;
 }
 
@@ -316,8 +316,8 @@ button.primary {
 }
 
 #wr-popover-delete {
-    max-width: rem(40rem);
-    min-width: rem(20rem);
+    max-width: rem(40px);
+    min-width: rem(20px);
 
     h4 {
         font-weight: 300;
@@ -325,7 +325,7 @@ button.primary {
 
     .warning {
         color: $warning;
-        margin: rem(1rem) 0;
+        margin: rem(1px) 0;
     }
 
     .action-row {
@@ -333,14 +333,14 @@ button.primary {
         justify-content: flex-end;
 
         button + button {
-            margin-left: rem(1rem);
+            margin-left: rem(1px);
         }
     }
 
     .wr-loader {
         vertical-align: middle;
-        width: rem(1.8rem);
-        height: rem(1.8rem);
+        width: rem(1.8px);
+        height: rem(1.8px);
 
         path {
             fill: #FFF;

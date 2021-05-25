@@ -53,8 +53,8 @@
         position: absolute;
         top: .5rem;
         left: .5rem;
-        width: calc(100% - 1rem);
-        height: calc(100% - 5rem);
+        width: calc(100% - 1px);
+        height: calc(100% - 5px);
         border: none;
         resize: none;
         background: #FFF;
@@ -67,7 +67,7 @@
     }
 
     &.no-buttons .markdown-editor {
-        height: calc(100% - 1rem);
+        height: calc(100% - 1px);
     }
 
     .public-DraftEditor-content {

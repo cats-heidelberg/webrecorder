@@ -7,7 +7,7 @@
 
     span {
         font-style: italic;
-        margin-left: rem(1rem);
+        margin-left: rem(1px);
     }
 }
 
@@ -26,43 +26,43 @@
             border-color: $pine;
         }
 
-        margin-bottom: rem(5rem);
+        margin-bottom: rem(5px);
     }
 
     .admin-options {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        grid-gap: rem(1.5rem);
-        margin-top: rem(2.5rem);
+        grid-gap: rem(1.5px);
+        margin-top: rem(2.5px);
 
         h5 {
-            border-bottom: solid rem(.1rem);
-            padding-bottom: rem(.5rem);
-            margin-bottom: rem(1.5rem);
+            border-bottom: solid rem(.1px);
+            padding-bottom: rem(.5px);
+            margin-bottom: rem(1.5px);
         }
 
         .admin-section {
             &.suspend {
                 p {
-                    width: rem(20rem);
+                    width: rem(20px);
                 }
             }
 
             &.update-role {
                 h5 {
-                    margin-bottom: rem(1rem);
+                    margin-bottom: rem(1px);
                 }
             }
         }
     }
 
     .settings-block {
-        margin-bottom: rem(5rem);
+        margin-bottom: rem(5px);
 
         h3 {
-            padding: 0 0 rem(.5rem) rem(1.5rem);
-            margin-left: rem(-1.5rem);
-            border-bottom: solid rem(.1rem) $mgmt-gray;
+            padding: 0 0 rem(.5px) rem(1.5px);
+            margin-left: rem(-1.5px);
+            border-bottom: solid rem(.1px) $mgmt-gray;
         }
 
         .progress-bar {
@@ -72,19 +72,19 @@
         .upgrade {
             display: flex;
             justify-content: space-between;
-            margin-top: rem(1.5rem);
+            margin-top: rem(1.5px);
         }
     }
 
     .profile {
         .username {
-            margin: rem(1.5rem) 0;
+            margin: rem(1.5px) 0;
         }
     }
 
     .security {
         .account-email {
-            margin: rem(1.5rem) 0;
+            margin: rem(1.5px) 0;
         }
     }
 

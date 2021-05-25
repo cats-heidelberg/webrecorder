@@ -37,7 +37,7 @@
 .arrow_box:before {
     bottom: 100%;
     /* 100% - width of share button divided by 2 */
-    left: calc(100% - 2rem);
+    left: calc(100% - 2px);
     border: solid transparent;
     content: " ";
     height: 0;
