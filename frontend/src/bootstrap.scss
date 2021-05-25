@@ -134,13 +134,13 @@ $font-family-base: $sans;
     }
 
     &.btn-secondary {
-        border: solid rem(.3rem) transparent;
+        border: solid rem(.3px) transparent;
         box-sizing: border-box;
         transition: border-color .25s ease-in-out;
         font-weight: 600;
 
         #{$bs-button-interactive} {
-          border: solid rem(.3rem) $gray650;
+          border: solid rem(.3px) $gray650;
           background-color: $gray600;
           box-shadow: none;
         }
