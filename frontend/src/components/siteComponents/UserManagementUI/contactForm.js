@@ -92,7 +92,7 @@ class ContactForm extends Component {
             </FormGroup>
 
             <FormGroup key="email" controlId="formEmail">
-             <label>E-mail:</label>
+              <label>E-mail:</label>
               <FormControl aria-label="email" onChange={this.handleChange} value={email} type="email" id="email" name="email" className="form-control" placeholder="name@example.com" required />
             </FormGroup>
 
@@ -102,7 +102,7 @@ class ContactForm extends Component {
             </FormGroup>
 
             <FormGroup key="message" controlId="formMessage">
-             <label>Message:</label>
+              <label>Message:</label>
               <FormControl componentClass="textarea" rows={4} aria-label="message" onChange={this.handleChange} value={message} id="msg" name="msg" className="form-control" placeholder="Please describe your issue." required />
             </FormGroup>
 
