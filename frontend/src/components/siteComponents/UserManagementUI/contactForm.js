@@ -86,8 +86,8 @@ class ContactForm extends Component {
           <Form id="loginform" onSubmit={this.save}>
             <FormGroup
               key="username" controlId="formName">
-              <ControlLabel>Name:</ControlLabel>
-              <FormControl aria-label="name" onChange={this.handleChange} value={name} type="text" id="name" name="name" className="form-control" placeholder="Enter your name" required autoFocus />
+              <label>Name:</label>
+              <FormControl aria-label="name" onChange={this.handleChange} value={name} type="text" id="name" name="name" className="form-control" placeholder="Enter your name!" required autoFocus />
               <div className="help-block with-errors" />
             </FormGroup>
 
