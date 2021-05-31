@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { DropdownButton, MenuItem } from "react-bootstrap";
+import { DropdownButton, Dropdown } from "react-bootstrap";
 
 import { product, supporterPortal } from "config";
 
@@ -131,7 +131,7 @@ class UserManagementUI extends PureComponent {
     this.setState({ formError: false });
     // this.props.loginFn(data);
     // TODO: do stuff when contact form is submitted
-    console.log("yeah!")
+    console.log("yeah!");
   };
 
   toggleBugModal = () => {
@@ -159,9 +159,7 @@ class UserManagementUI extends PureComponent {
         closeLogin={this.closeLogin}
       />
     );
-    const contactForm = (
-      <ContactForm />
-    )
+    const contactForm = <ContactForm />;
     const collCount = auth.getIn(["user", "num_collections"]);
     const user = auth.get("user");
     const username = user.get("username");
@@ -208,13 +206,13 @@ class UserManagementUI extends PureComponent {
             </li>
           )}
           <li className="navbar-text">
-              <button
-                className="button-link"
-                onClick={this.showContactForm}
-                type="button"
-              >
-                Contact
-              </button>
+            <button
+              className="button-link"
+              onClick={this.showContactForm}
+              type="button"
+            >
+              Contact
+            </button>
           </li>
 
           {supporterPortal && (
@@ -259,10 +257,10 @@ class UserManagementUI extends PureComponent {
                 )}
 
                 {hasCollections && (
-                  <MenuItem onClick={this.goToCollections}>
+                  <Dropdown.Item onClick={this.goToCollections}>
                     Your Collections
                     <span className="num-collection">{collCount}</span>
-                  </MenuItem>
+                  </Dropdown.Item>
                 )}
                 {hasCollections && (
                   <li className="display">
@@ -280,27 +278,27 @@ class UserManagementUI extends PureComponent {
                   </li>
                 )}
 
-                {__DESKTOP__ && <MenuItem divider />}
+                {__DESKTOP__ && <Dropdown.Item divider />}
 
                 {!__DESKTOP__ && (
                   <React.Fragment>
-                    <MenuItem divider />
-                    <MenuItem onClick={this.goToFAQ}>
+                    <Dropdown.Item divider />
+                    <Dropdown.Item onClick={this.goToFAQ}>
                       About Webrecorder
-                    </MenuItem>
+                    </Dropdown.Item>
                   </React.Fragment>
                 )}
 
                 {!isAnon && !__DESKTOP__ && (
                   <React.Fragment>
-                    <MenuItem divider />
-                    <MenuItem onClick={this.goToLogout}>
+                    <Dropdown.Item divider />
+                    <Dropdown.Item onClick={this.goToLogout}>
                       <span
                         className="glyphicon glyphicon-log-out"
                         title="Logout"
                       />{" "}
                       Logout
-                    </MenuItem>
+                    </Dropdown.Item>
                   </React.Fragment>
                 )}
               </DropdownButton>
