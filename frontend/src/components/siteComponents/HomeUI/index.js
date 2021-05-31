@@ -138,8 +138,8 @@ class HomeUI extends PureComponent {
   };
 
   render() {
-    const { anonCTA, auth, showModalCB, closeLogin, formError } = this.props;
-    const { moveTemp, password, toColl, username } = this.state;
+    const { anonCTA, auth, showModalCB, closeLogin } = this.props;
+    const { moveTemp, password, toColl, username, formError } = this.state;
 
     const user = auth.get("user");
 
