@@ -71,24 +71,24 @@ class LoginForm extends Component {
 
     return (
       <React.Fragment>
-        <Row className="wr-login-form">
+        <Row className="mx-1 my-3">
           {
             anonCTA &&
               <h4>Please sign in to manage collections.</h4>
           }
           {
             error &&
-              <Alert bsStyle="danger">
+              <Alert variant="danger">
                 {
-                  login[auth.get('loginError')] || <span>Invalid Login. Please Try Again</span>
+                  login[auth.get('loginError')] || <span>Invalid login. Please try again.</span>
                 }
               </Alert>
           }
-          <Form id="loginform" onSubmit={this.save}>
+          <Form id="loginform" className="col-12" onSubmit={this.save}>
             <FormGroup
               key="username">
               <label htmlFor="username" className="sr-only">Username</label>
-              <FormControl aria-label="username" onChange={this.handleChange} value={username} type="text" id="username" name="username" className="form-control" placeholder="username" required autoFocus />
+              <FormControl aria-label="username" onChange={this.handleChange} value={username} type="text" id="username" name="username" className="form-control" placeholder="Username" required autoFocus />
               <div className="help-block with-errors" />
             </FormGroup>
 
@@ -98,10 +98,15 @@ class LoginForm extends Component {
             </FormGroup>
 
             <FormGroup key="remember">
-              <input onChange={this.handleChange} type="checkbox" id="remember_me" name="remember_me" />
-              <label htmlFor="remember_me">Remember me</label>
+              <input
+                onChange={this.handleChange}
+                type="checkbox"
+                id="remember_me"
+                name="remember_me"
+                style={{marginRight: "10px"}}
+              />
+              <label htmlFor="remember_me">Remember me (Cookies must be enabled.)</label>
 
-              <Link to="/_forgot" onClick={closeLogin} style={{ float: 'right' }}>Forgot password or username?</Link>
             </FormGroup>
             {
               auth.getIn(['user', 'anon']) && auth.getIn(['user', 'num_collections']) > 0 &&

@@ -129,9 +129,7 @@ class UserManagementUI extends PureComponent {
 
   save = (data) => {
     this.setState({ formError: false });
-    // this.props.loginFn(data);
-    // TODO: do stuff when contact form is submitted
-    console.log("yeah!");
+    this.props.loginFn(data);
   };
 
   toggleBugModal = () => {
@@ -308,7 +306,7 @@ class UserManagementUI extends PureComponent {
 
         <Modal
           dialogClassName="wr-login-modal"
-          header={anonCTA ? null : `${product} Login`}
+          header="Contact Us!"
           body={contactForm}
           visible={contactVisible}
           closeCb={this.closeContactForm}
@@ -316,7 +314,7 @@ class UserManagementUI extends PureComponent {
 
         <Modal
           dialogClassName="wr-login-modal"
-          header={anonCTA ? null : `${product} Login`}
+          header={anonCTA ? null : `Webrecorder Login`}
           body={form}
           visible={open}
           closeCb={this.closeLogin}
