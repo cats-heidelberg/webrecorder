@@ -104,7 +104,7 @@ class CollectionItem extends Component {
 
   sendForDOI = () => {
     const { completeReview, collection } = this.props;
-    completeReview(collection.get("owner"), collection.get("id"), "completed");
+    completeReview(collection.get("owner"), collection.get("id"), "completed", collection.get("doi"));
   };
 
   denyArchive = () => {

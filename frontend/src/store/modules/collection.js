@@ -17,6 +17,10 @@ const COLL_REVIEWCOMPLETE = "wr/coll/COLL_REVIEWCOMPLETE";
 const COLL_REVIEWCOMPLETE_SUCCESS = "wr/coll/COLL_REVIEWCOMPLETE_SUCCESS";
 const COLL_REVIEWCOMPLETE_FAIL = "wr/coll/COLL_REVIEWCOMPLETE_FAIL";
 
+const WARC_DOWNLOAD = "wr/coll/WARC_DOWNLOAD";
+const WARC_DOWNLOAD_SUCCESS = "wr/coll/WARC_DOWNLOAD_SUCCESS";
+const WARC_DOWNLOAD_FAIL = "wr/coll/WARC_DOWNLOAD_FAIL";
+
 const COLL_EDIT = "wr/coll/COLL_EDIT";
 const COLL_EDIT_SUCCESS = "wr/coll/COLL_EDIT_SUCCESS";
 const COLL_EDIT_FAIL = "wr/coll/COLL_EDIT_FAIL";
@@ -330,7 +334,7 @@ export function completeRecordingDispatch(
   };
 }
 
-export function completeReviewDispatch(user, collID) {
+export function completeReviewDispatch(user, collID, doi) {
   return {
     types: [
       COLL_REVIEWCOMPLETE,
@@ -339,7 +343,20 @@ export function completeReviewDispatch(user, collID) {
     ],
     promise: (client) =>
       client.del(`${apiPath}/review`, {
-        params: { user, collID },
+        params: { user, collID, doi },
+      }),
+  };
+}
+export function pushWarcToServerDispatch(user, collID, doi) {
+  return {
+    types: [
+      WARC_DOWNLOAD,
+      WARC_DOWNLOAD_SUCCESS,
+      WARC_DOWNLOAD_FAIL,
+    ],
+    promise: (client) =>
+      client.get(`${apiPath}/${user}/${collID}/$download_warc`, {
+        params: {doi},
       }),
   };
 }

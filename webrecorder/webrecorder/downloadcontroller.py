@@ -48,6 +48,13 @@ class DownloadController(BaseController):
             self.redir_host()
 
             return self.handle_download(user, coll, '*')
+        @self.app.get('/<user>/<coll>/$download_warc')
+        @self.api(query=[],
+                  req_desc='download WARC TO SDS')
+        def logged_in_download_coll_warc(user, coll):
+            self.redir_host()
+
+            return self.handle_download_name(user, coll, '*', request.query['doi'])
 
         @self.app.get('/api/v1/download/webdata')
         @self.api(
@@ -68,6 +75,8 @@ class DownloadController(BaseController):
 
         wr_api_spec.set_curr_tag(None)
 
+    def printline(print_line):
+        print(print_line)
     def create_warcinfo(self, creator, name, metadata, source, serialized, filename):
         for key, value in iteritems(serialized):
             if key in self.COPY_FIELDS:
@@ -197,6 +206,84 @@ class DownloadController(BaseController):
             response.headers['Transfer-Encoding'] = 'chunked'
 
             return read_all(iter_infos())
+    def handle_download_name(self, user, coll_name, recs, warc_name):
+        user=self.user_manager.get_user(user)
+        collection = user.get_collection_by_name(coll_name)
+        if not collection:
+            self._raise_error(404, 'no_such_collection')
+
+        self.access.assert_can_write_coll(collection)
+
+        # collection['uid'] = coll
+        collection.load()
+
+        Stats(self.redis).incr_download(collection)
+
+        now = timestamp_now()
+
+        name = coll_name
+        if recs != '*':
+            rec_list = recs.split(',')
+            if len(rec_list) == 1:
+                name = recs
+            else:
+                name += '-' + recs
+        else:
+            rec_list = None
+
+        filename = warc_name
+        loader = BlockLoader()
+
+        coll_info = self.create_coll_warcinfo(user, collection, filename)
+
+        def iter_infos():
+            for recording in collection.get_recordings(load=True):
+                if rec_list and recording.name not in rec_list:
+                    continue
+
+                warcinfo = self.create_rec_warcinfo(user,
+                                                    collection,
+                                                    recording,
+                                                    filename)
+
+                size = len(warcinfo)
+                size += recording.size
+                yield recording, warcinfo, size
+
+        def read_all(infos):
+            yield coll_info
+
+            for recording, warcinfo, _ in infos:
+                yield warcinfo
+
+                for n, warc_path in recording.iter_all_files():
+                    try:
+                        fh = loader.load(warc_path)
+                    except Exception:
+                        print('Skipping invalid ' + warc_path)
+                        continue
+
+                    for chunk in StreamIter(fh):
+                        yield chunk
+
+        response.headers['Content-Type'] = 'application/octet-stream'
+        response.headers['Content-Disposition'] = "attachment; filename*=UTF-8''" + filename
+
+        # if not transfer-encoding, store infos and calculate total size
+        if not self.download_chunk_encoded:
+            size = len(coll_info)
+            infos = list(iter_infos())
+            size += sum(size for r, i, size in infos)
+
+            response.headers['Content-Length'] = size
+            return read_all(infos)
+
+        else:
+            # stream everything
+            response.headers['Transfer-Encoding'] = 'chunked'
+
+            return read_all(iter_infos())
+
 
     def _get_wasapi_user(self, username=''):
         basic_auth = request.auth
