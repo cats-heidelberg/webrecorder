@@ -459,6 +459,8 @@ class Collection(PagesMixin, RedisUniqueComponent):
         :return: The full path or URL to the WARC
         :rtype: str
         """
+        print(name)
+        print(self.get_warc_key())
         return self.redis.hget(self.get_warc_key(), name)
 
     def commit_all(self, commit_id=None):

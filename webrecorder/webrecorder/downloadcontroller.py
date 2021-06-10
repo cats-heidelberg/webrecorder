@@ -1,5 +1,9 @@
 from warcio.timeutils import timestamp_now
 from warcio.warcwriter import BufferWARCWriter
+from warcio import WARCWriter
+from warcio.archiveiterator import ArchiveIterator
+import os
+
 
 from pywb.utils.loaders import BlockLoader
 from pywb.utils.io import StreamIter, chunk_encode_iter
@@ -48,13 +52,14 @@ class DownloadController(BaseController):
             self.redir_host()
 
             return self.handle_download(user, coll, '*')
-        @self.app.get('/<user>/<coll>/$download_warc')
-        @self.api(query=[],
-                  req_desc='download WARC TO SDS')
-        def logged_in_download_coll_warc(user, coll):
-            self.redir_host()
-
-            return self.handle_download_name(user, coll, '*', request.query['doi'])
+        @self.app.get('/api/v1/download/$download_warc')
+        @self.api(
+            query=['?user', '?collection'],
+            resp='handle_download_name',
+            description='save Warc to SDS'
+        )
+        def download_warc_sds():
+            return self.handle_download_name()
 
         @self.app.get('/api/v1/download/webdata')
         @self.api(
@@ -206,83 +211,48 @@ class DownloadController(BaseController):
             response.headers['Transfer-Encoding'] = 'chunked'
 
             return read_all(iter_infos())
-    def handle_download_name(self, user, coll_name, recs, warc_name):
-        user=self.user_manager.get_user(user)
-        collection = user.get_collection_by_name(coll_name)
-        if not collection:
-            self._raise_error(404, 'no_such_collection')
+    def handle_download_name(self):
+        username = request.query.getunicode('user')
 
-        self.access.assert_can_write_coll(collection)
+        # some clients use collection rather than coll_name so we must check for both
+        coll_name = request.query.getunicode('collection')
 
-        # collection['uid'] = coll
-        collection.load()
+        user = self._get_wasapi_user()
 
-        Stats(self.redis).incr_download(collection)
+        self.access.assert_is_curr_user(user)
 
-        now = timestamp_now()
+        colls = None
 
-        name = coll_name
-        if recs != '*':
-            rec_list = recs.split(',')
-            if len(rec_list) == 1:
-                name = recs
+        if coll_name:
+            collection = user.get_collection_by_name(coll_name)
+            if collection:
+                colls = [collection]
             else:
-                name += '-' + recs
-        else:
-            rec_list = None
-
-        filename = warc_name
-        loader = BlockLoader()
-
-        coll_info = self.create_coll_warcinfo(user, collection, filename)
-
-        def iter_infos():
-            for recording in collection.get_recordings(load=True):
-                if rec_list and recording.name not in rec_list:
-                    continue
-
-                warcinfo = self.create_rec_warcinfo(user,
-                                                    collection,
-                                                    recording,
-                                                    filename)
-
-                size = len(warcinfo)
-                size += recording.size
-                yield recording, warcinfo, size
-
-        def read_all(infos):
-            yield coll_info
-
-            for recording, warcinfo, _ in infos:
-                yield warcinfo
-
-                for n, warc_path in recording.iter_all_files():
-                    try:
-                        fh = loader.load(warc_path)
-                    except Exception:
-                        print('Skipping invalid ' + warc_path)
-                        continue
-
-                    for chunk in StreamIter(fh):
-                        yield chunk
-
-        response.headers['Content-Type'] = 'application/octet-stream'
-        response.headers['Content-Disposition'] = "attachment; filename*=UTF-8''" + filename
-
-        # if not transfer-encoding, store infos and calculate total size
-        if not self.download_chunk_encoded:
-            size = len(coll_info)
-            infos = list(iter_infos())
-            size += sum(size for r, i, size in infos)
-
-            response.headers['Content-Length'] = size
-            return read_all(infos)
+                self._raise_error(404, 'no_such_collection')
 
         else:
-            # stream everything
-            response.headers['Transfer-Encoding'] = 'chunked'
+            colls = user.get_collections()
 
-            return read_all(iter_infos())
+        files = []
+        download_path = self.get_origin() + '/api/v1/download/{user}/{coll}/{filename}'
+        local_storage = LocalFileStorage(self.redis)
+
+        for collection in colls:
+            commit_storage = collection.get_storage()
+
+            for recording in collection.get_recordings():
+                is_committed = recording.is_fully_committed()
+                is_open = not is_committed and recording.get_pending_count() > 0
+                storage = commit_storage if is_committed else local_storage
+                with open(os.path.join(os.environ['RECORD_ROOT'],"eray", "loool"), 'wb') as output:
+                    writer = WARCWriter(output, gzip=True)
+                    for name, path in recording.iter_all_files(include_index=False):
+                        print(name)
+                        local_download = download_path.format(user=user.name, coll=collection.name, filename=name)
+                        with open(os.path.join(os.environ['RECORD_ROOT'],user.name, name), 'rb') as stream:
+                            for record in ArchiveIterator(stream):
+                                writer.write_record (record)
+
 
 
     def _get_wasapi_user(self, username=''):
