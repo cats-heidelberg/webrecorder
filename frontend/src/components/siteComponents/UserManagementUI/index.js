@@ -166,7 +166,9 @@ class UserManagementUI extends PureComponent {
     const userDropdown = (
       <React.Fragment>
         <UserIcon dark={canAdmin} />
-        {isAnon ? "Temporary Account" : username}
+          <div className="username-btn">
+           {isAnon ? "Temporary Account" : username}
+          </div>
       </React.Fragment>
     );
     const usage =
