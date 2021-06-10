@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { DropdownButton, MenuItem } from "react-bootstrap";
+import { DropdownButton, Dropdown } from "react-bootstrap";
 
 import { product, supporterPortal } from "config";
 
@@ -13,6 +13,7 @@ import { UserIcon } from "components/icons";
 
 import config from "config";
 
+import LoginForm from "./loginForm";
 import ContactForm from "./contactForm";
 import "./style.scss";
 
@@ -42,6 +43,7 @@ class UserManagementUI extends PureComponent {
 
     this.state = {
       formError: null,
+      contactVisible: false,
     };
   }
 
@@ -68,13 +70,25 @@ class UserManagementUI extends PureComponent {
     }
   }
 
-  showContactForm = () => {
+  showLogin = () => {
     this.props.showModal(true);
   };
 
   closeLogin = () => {
     this.props.showModal(false);
     this.setState({ formError: false });
+  };
+
+  showContactForm = () => {
+    this.setState({ contactVisible: true });
+  };
+
+  closeContactForm = () => {
+    this.setState({ contactVisible: false });
+  };
+
+  toggleContactForm = () => {
+    this.setState({ contactVisible: !this.state.contactVisible });
   };
 
   goToCollections = () => {
@@ -107,6 +121,7 @@ class UserManagementUI extends PureComponent {
 
   openReview = (evt) => {
     evt.preventDefault();
+    const { auth } = this.props;
     const user = auth.get("user");
     const username = user.get("username");
     window.location.href = `${config.appHost}/${username}/review`;
@@ -114,9 +129,7 @@ class UserManagementUI extends PureComponent {
 
   save = (data) => {
     this.setState({ formError: false });
-    // this.props.loginFn(data);
-    // TODO: do stuff when contact form is submitted
-    console.log("yeah!")
+    this.props.loginFn(data);
   };
 
   toggleBugModal = () => {
@@ -133,10 +146,10 @@ class UserManagementUI extends PureComponent {
 
   render() {
     const { anonCTA, auth, canAdmin, open } = this.props;
-    const { formError } = this.state;
+    const { formError, contactVisible } = this.state;
 
     const form = (
-      <ContactForm
+      <LoginForm
         anonCTA={anonCTA}
         auth={auth}
         cb={this.save}
@@ -144,6 +157,7 @@ class UserManagementUI extends PureComponent {
         closeLogin={this.closeLogin}
       />
     );
+    const contactForm = <ContactForm />;
     const collCount = auth.getIn(["user", "num_collections"]);
     const user = auth.get("user");
     const username = user.get("username");
@@ -190,13 +204,13 @@ class UserManagementUI extends PureComponent {
             </li>
           )}
           <li className="navbar-text">
-              <button
-                className="button-link"
-                onClick={this.showContactForm}
-                type="button"
-              >
-                Contact
-              </button>
+            <button
+              className="button-link"
+              onClick={this.showContactForm}
+              type="button"
+            >
+              Contact
+            </button>
           </li>
 
           {supporterPortal && (
@@ -212,7 +226,7 @@ class UserManagementUI extends PureComponent {
               <li>
                 <button
                   className="rounded login-link"
-                  onClick={this.showContactForm}
+                  onClick={this.showLogin}
                   type="button"
                 >
                   Login
@@ -241,10 +255,10 @@ class UserManagementUI extends PureComponent {
                 )}
 
                 {hasCollections && (
-                  <MenuItem onClick={this.goToCollections}>
+                  <Dropdown.Item onClick={this.goToCollections}>
                     Your Collections
                     <span className="num-collection">{collCount}</span>
-                  </MenuItem>
+                  </Dropdown.Item>
                 )}
                 {hasCollections && (
                   <li className="display">
@@ -262,27 +276,27 @@ class UserManagementUI extends PureComponent {
                   </li>
                 )}
 
-                {__DESKTOP__ && <MenuItem divider />}
+                {__DESKTOP__ && <Dropdown.Item divider />}
 
                 {!__DESKTOP__ && (
                   <React.Fragment>
-                    <MenuItem divider />
-                    <MenuItem onClick={this.goToFAQ}>
+                    <Dropdown.Item divider />
+                    <Dropdown.Item onClick={this.goToFAQ}>
                       About Webrecorder
-                    </MenuItem>
+                    </Dropdown.Item>
                   </React.Fragment>
                 )}
 
                 {!isAnon && !__DESKTOP__ && (
                   <React.Fragment>
-                    <MenuItem divider />
-                    <MenuItem onClick={this.goToLogout}>
+                    <Dropdown.Item divider />
+                    <Dropdown.Item onClick={this.goToLogout}>
                       <span
                         className="glyphicon glyphicon-log-out"
                         title="Logout"
                       />{" "}
                       Logout
-                    </MenuItem>
+                    </Dropdown.Item>
                   </React.Fragment>
                 )}
               </DropdownButton>
@@ -292,6 +306,15 @@ class UserManagementUI extends PureComponent {
 
         <Modal
           dialogClassName="wr-login-modal"
+          header="Contact Us!"
+          body={contactForm}
+          visible={contactVisible}
+          closeCb={this.closeContactForm}
+        />
+
+        <Modal
+          dialogClassName="wr-login-modal"
+          header={anonCTA ? null : `Webrecorder Login`}
           body={form}
           visible={open}
           closeCb={this.closeLogin}

@@ -156,132 +156,86 @@ class HomeUI extends PureComponent {
         </Helmet>
 
         {/* new login screen */}
-        <div className="col-xs-8 col-xs-offset-2">
-          <div className="card">
-            <h2 className="card-header text-center">
-              <img
-                src={require("shared/images/homepage/hd_logo_standard_16cm_rgb.png")}
-                className="img-fluid"
-                title="UNIVERSITÄT HEIDELBERG"
-                alt="UNIVERSITÄT HEIDELBERG"
-              />
-            </h2>
-            <div className="card-body">
-              <div className="row" style={{ justifyContent: "center" }}>
-                <div className="col-md-5">
-                  <Row className="wr-login-form">
-                    {(anonCTA && login[auth.get("loginError")]) || (
-                      <div className="card-title">
-                        <h2>Is this your first time here?</h2>
-                        <br />
-                        <h4>Please use your provided Uni-ID (e.g. jb007).</h4>
-                      </div>
-                    )}
-                    {formError && (
-                      <Alert bsStyle="danger">
-                        {<span>Invalid Login. Please Try Again</span>}
-                      </Alert>
-                    )}
-                    <Form id="loginform" onSubmit={this.save}>
-                      <FormGroup key="username">
-                        <label htmlFor="username" className="sr-only">
-                          Username
-                        </label>
-                        <FormControl
-                          aria-label="username"
-                          onChange={this.handleChange}
-                          value={username}
-                          type="text"
-                          id="username"
-                          name="username"
-                          className="form-control"
-                          placeholder="username"
-                          required
-                          autoFocus
-                        />
-                        <div className="help-block with-errors" />
-                      </FormGroup>
-
-                      <FormGroup key="password">
-                        <label htmlFor="inputPassword" className="sr-only">
-                          Password
-                        </label>
-                        <FormControl
-                          aria-label="password"
-                          onChange={this.handleChange}
-                          value={password}
-                          type="password"
-                          id="password"
-                          name="password"
-                          className="form-control"
-                          placeholder="password"
-                          required
-                        />
-                      </FormGroup>
-
-                      <Button bsSize="lg" bsStyle="primary" type="submit" block>
-                        Sign in
-                      </Button>
-                    </Form>
-                  </Row>
+        <div style={{margin: "0 -15px"}}> {/*get rid of 15px margin from wr-content*/}
+          <h2 className="card-header text-center">
+            <img
+              src={require("shared/images/homepage/hd_logo_standard_16cm_rgb.png")}
+              className="img-fluid"
+              title="UNIVERSITÄT HEIDELBERG"
+              alt="UNIVERSITÄT HEIDELBERG"
+            />
+          </h2>
+          <div className="card-body mx-auto col-sm-10 col-md-8 col-lg-6">
+            <Row className="m-3">
+              {(anonCTA && login[auth.get("loginError")]) || (
+                <div className="card-title" style={{padding: "0"}}>
+                  <h3>Is this your first time here?</h3>
+                  <h5>Please <a href="#">register</a> first.</h5>
+                  <br />
+                  <h3>Already registered?</h3>
+                  <h5>Please log in with your Uni-ID (e.g. jb007).</h5>
                 </div>
-                <div className="col-md-5">
-                  <Row className="wr-login-form">
-                    <div className="mt-3">
-                      <label
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          float: "left",
-                        }}
-                        onMouseOver={() => {
-                          ReactTooltip.show(this.fooRef6);
-                        }}
-                        onMouseOut={() => {
-                          ReactTooltip.hide(this.fooRef6);
-                        }}
-                      >
-                        <span
-                          className="glyphicon glyphicon-info-sign"
-                          ref={(ref) => {
-                            this.fooRef6 = ref;
-                          }}
-                          style={{
-                            marginRight: "4px",
-                            display: "inline",
-                            width: "14px",
-                            float: "left",
-                          }}
-                          data-tip="You must allow this cookie in your browser to provide continuity and to remain logged in when browsing the site."
-                        />
-                      </label>
-                      <div
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          float: "left",
-                        }}
-                      >
-                        Cookies must be enabled in your browser
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <Form id="loginform">
-                        <FormGroup key="remember">
-                          <input
-                            onChange={this.handleChange}
-                            type="checkbox"
-                            id="remember_me"
-                            name="remember_me"
-                          />
-                          <label htmlFor="remember_me">Remember me</label>
-                        </FormGroup>
-                      </Form>
-                    </div>
-                  </Row>
-                </div>
-              </div>
-            </div>
+              )}
+              {formError && (
+                <Alert variant="danger">
+                  {<span>Invalid login. Please try again.</span>}
+                </Alert>
+              )}
+            </Row>
+            <Row className="m-3">
+              <Form id="loginform" className="col" style={{padding: "0"}} onSubmit={this.save}>
+                <FormGroup key="username">
+                  <label htmlFor="username" className="sr-only">
+                    Username
+                  </label>
+                  <FormControl
+                    aria-label="username"
+                    onChange={this.handleChange}
+                    value={username}
+                    type="text"
+                    id="username"
+                    name="username"
+                    className="form-control"
+                    placeholder="Username"
+                    required
+                    autoFocus
+                  />
+                  <div className="help-block with-errors" />
+                </FormGroup>
+
+                <FormGroup key="password">
+                  <label htmlFor="inputPassword" className="sr-only">
+                    Password
+                  </label>
+                  <FormControl
+                    aria-label="password"
+                    onChange={this.handleChange}
+                    value={password}
+                    type="password"
+                    id="password"
+                    name="password"
+                    className="form-control"
+                    placeholder="Password"
+                    required
+                  />
+                </FormGroup>
+
+                <FormGroup key="remember">
+                  <input
+                    onChange={this.handleChange}
+                    type="checkbox"
+                    id="remember_me"
+                    name="remember_me"
+                    style={{marginRight: "10px"}}
+                  />
+                  <label htmlFor="remember_me">Remember me (Cookies must be enabled.)</label>
+                </FormGroup>
+
+                <Button bsSize="lg" bsStyle="primary" type="submit" block>
+                  Sign in
+                </Button>
+              </Form>
+            </Row>
           </div>
         </div>
         <ReactTooltip

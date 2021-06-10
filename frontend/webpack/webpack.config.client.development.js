@@ -20,9 +20,8 @@ const devConfig = {
   mode: 'development',
   entry: {
     main: [
-      `webpack-hot-middleware/client?path=https://${host}:${port}/__webpack_hmr&quiet=true`,
+      `webpack-hot-middleware/client?path=http://${host}:${port}/__webpack_hmr&quiet=true`,
       './config/polyfills',
-      'bootstrap-loader',
       './src/client.js'
     ]
   },
@@ -104,14 +103,21 @@ const devConfig = {
     ]
   },
 
+  resolve: {
+    alias: {
+      'react-dom$': 'react-dom/profiling',
+      'scheduler/tracing': 'scheduler/tracing-profiling'
+    }
+  },
+
   output: {
-    publicPath: `https://${host}:${port}${baseConfig.output.publicPath}`
+    publicPath: `http://${host}:${port}${baseConfig.output.publicPath}`
   },
 
   plugins: [
     new CopyWebpackPlugin([
-      'src/shared/images/favicon.png',
-      'src/shared/images/webrecorder-social.png'
+      'src/shared/images/favicon.ico',
+      'src/shared/images/conifer-social.jpg'
     ]),
     new CircularDependencyPlugin({
       exclude: /node_modules/,
