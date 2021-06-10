@@ -714,12 +714,7 @@ class CollectionListUI extends Component {
           <title>{`${displayName}'s Collections`}</title>
         </Helmet>
         <Row>
-          <Col
-            xs={15}
-            sm={__DESKTOP__ ? 10 : 9}
-            smOffset={__DESKTOP__ ? 2 : 2}
-            className="wr-coll-meta"
-          >
+          <Col className="mx-auto col-sm-10 col-lg-8">
             {/*
               canAdmin &&
                 <Row className="collection-start-form">
@@ -730,10 +725,10 @@ class CollectionListUI extends Component {
                 </Row>
             */}
             {!isAnon && canAdmin && (
-              <Row>
+              <Row className="mt-5 align-items-end">
                 <Col
                   xs={15}
-                  className={classNames("collections-index-nav", {
+                  className={classNames("collections-index-nav m-0 p-0", {
                     desktop: __DESKTOP__,
                   })}
                 >
@@ -741,39 +736,33 @@ class CollectionListUI extends Component {
                   <Button
                     onClick={this.toggle}
                     className="rounded"
-                    style={{ fontSize: "1.6rem" }}
                   >
                     <span className="glyphicon glyphicon-plus glyphicon-button" />{" "}
-                    Create New Archive
+                    + create new archive
                   </Button>
                   {/* Update Sort by*/}
-                  <div
-                    className="admin-section update-role"
-                    style={{ float: "right" }}
-                  >
-                    <div>
-                      Sort list:
-                      <Dropdown id="roleDropdown" onSelect={this.reOrder}>
-                        <Dropdown.Toggle>
-                          {_sortBy ? sortByActive : "Sorting unavailable"}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {_sortBy.map((sort, index) => (
-                            <MenuItem key={sort} eventKey={index}>
-                              {sort}
-                            </MenuItem>
-                          ))}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </div>
-                  </div>
                   {/* Update Sort by*/}
+                </Col>
+                <Col className="admin-section update-role p-0" style={{ textAlign: "right" }}>
+                  <div className="sort-list m-2">Sort list:</div>
+                  <Dropdown id="roleDropdown" onSelect={this.reOrder} className="sort-list">
+                    <Dropdown.Toggle>
+                      {_sortBy ? sortByActive : "Sorting unavailable"}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {_sortBy.map((sort, index) => (
+                        <MenuItem key={sort} eventKey={index}>
+                          {sort}
+                        </MenuItem>
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </Col>
               </Row>
             )}
             {collections && collections.get("loaded") && (
-              <Row>
-                <ul className="list-group collection-list">
+              <Row className="mb-5">
+                <ul className="collection-list mt-3 pl-0">
                   {(() => {
                     switch (sortByActive) {
                       case "sorted by state":
