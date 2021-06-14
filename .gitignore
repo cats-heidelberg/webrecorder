@@ -51,6 +51,7 @@ nosetests.xml
 .idea
 
 # webrecorder specific
+wr.env
 wr.env-e
 webrecorder/keys/
 data/
