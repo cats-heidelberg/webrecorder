@@ -355,8 +355,11 @@ export function pushWarcToServerDispatch(user, collID, doi) {
       WARC_DOWNLOAD_FAIL,
     ],
     promise: (client) =>
-      client.get(`${apiPath}/${user}/${collID}/$download_warc`, {
-        params: {doi},
+      client.post(`${apiPath}/${collID}/$download_warc`, {
+        params: {user},
+        data: {
+          doi
+        },
       }),
   };
 }
