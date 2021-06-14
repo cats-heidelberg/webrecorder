@@ -1,0 +1,109 @@
+@import 'src/vars';
+
+.pw-reset {
+    .panel-title {
+        display: inline-block;
+    }
+
+    span {
+        font-style: italic;
+        margin-left: rem(1px);
+    }
+}
+
+
+.space-block {
+    em {
+        opacity: .65;
+    }
+}
+
+.user-settings {
+    .panel-default {
+        .panel-heading {
+            background-color: $lightBlue;
+            color: $pine;
+            border-color: $pine;
+        }
+
+        margin-bottom: rem(5px);
+    }
+
+    .admin-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: rem(1.5px);
+        margin-top: rem(2.5px);
+
+        h5 {
+            border-bottom: solid rem(.1px);
+            padding-bottom: rem(.5px);
+            margin-bottom: rem(1.5px);
+        }
+
+        .admin-section {
+            &.suspend {
+                p {
+                    width: rem(20px);
+                }
+            }
+
+            &.update-role {
+                h5 {
+                    margin-bottom: rem(1px);
+                }
+            }
+        }
+    }
+
+    .settings-block {
+        margin-bottom: rem(5px);
+
+        h3 {
+            padding: 0 0 rem(.5px) rem(1.5px);
+            margin-left: rem(-1.5px);
+            border-bottom: solid rem(.1px) $mgmt-gray;
+        }
+
+        .progress-bar {
+            background-color: $pine;
+        }
+
+        .upgrade {
+            display: flex;
+            justify-content: space-between;
+            margin-top: rem(1.5px);
+        }
+    }
+
+    .profile {
+        .username {
+            margin: rem(1.5px) 0;
+        }
+    }
+
+    .security {
+        .account-email {
+            margin: rem(1.5px) 0;
+        }
+    }
+
+    .profile, .security {
+        form {
+            max-width: 60%;
+        }
+    }
+
+    .panel-danger {
+        border: none;
+        border-radius: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+
+        & > .panel-heading {
+            background: $lightWarning;
+            color: $warning;
+            border-radius: 0;
+        }
+    }
+}

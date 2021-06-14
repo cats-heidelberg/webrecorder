@@ -72,7 +72,7 @@
 
     & > li:not(:last-of-type) {
         margin-right: 5rem;
-        font-size: 1.6rem;
+        font-size: 1.3rem;
     }
 
     .custom-report {
@@ -80,7 +80,12 @@
     }
 
     .login-link {
-        padding: .7rem 1rem;
+        padding: 0.2rem 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    .username-btn {
+      font-size: 1.1rem;
     }
 
     .dropdown {

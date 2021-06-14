@@ -11,7 +11,7 @@ const assetPort = Number(port) + 1;
 const config = {
   mode: 'development',
   output: {
-    publicPath: `https://${host}:${assetPort}${baseConfig.output.publicPath}`
+    publicPath: `http://${host}:${assetPort}${baseConfig.output.publicPath}`
   },
 
   module: {

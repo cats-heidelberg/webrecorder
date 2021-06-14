@@ -173,6 +173,7 @@ class CollectionItem extends Component {
                 : collection.get("ticketState") === "completed"
                 ? "#c3e5aa"
                 : "#FFF",
+              borderBottom: "3px solid #DDD",
           }}
         >
           {headline !== "" && (
@@ -182,16 +183,16 @@ class CollectionItem extends Component {
                 flexGrow: 1,
                 justifyContent: "center",
                 alignItems: "center",
-                lineHeight: "40px",
+                lineHeight: "60px",
               }}
             >
               {headline.toUpperCase()}
             </h2>
           )}
-          <Row>
-            <Col sm={15} md={12}>
+          <Row className="m-0 mt-3">
+            <Col className="p-0 col-12">
               <h3>{collection.get("title")}</h3>
-              <p className="collection-list-description">
+              <p className="collection-list-description mb-2">
                 {truncate(
                   removeMd(collection.get("desc"), { useImgAltText: false }),
                   3,
@@ -201,25 +202,25 @@ class CollectionItem extends Component {
               {canAdmin && (
                 <React.Fragment>
                   {collection.get("ticketState") === "open" ? (
-                    <Button className="rounded" onClick={this.newSession}>
-                      Review and Edit
+                    <Button className="collection-options" onClick={this.newSession}>
+                      <span>Review and Edit</span>
                     </Button>
                   ) : (
-                    <Button className="rounded" onClick={this.newSession}>
-                      Review
+                    <Button className="collection-options" onClick={this.newSession}>
+                      <span>Review</span>
                     </Button>
                   )}
 
                   {collection.get("ticketState") === "open" && (
                     <Button
-                      className="rounded new-session"
+                      className="collection-options new-session"
                       onClick={this.closeModal}
                     >
                       <span> Edit Metadata</span>
                     </Button>
                   )}
                   <Button
-                    className="rounded new-session"
+                    className="collection-options new-session"
                     onClick={this.duplicateAction}
                   >
                     <span>
@@ -228,7 +229,7 @@ class CollectionItem extends Component {
                     </span>
                   </Button>
                   <Button
-                    className="rounded new-session"
+                    className="collection-options new-session"
                     onClick={this.downloadAction}
                   >
                     <span>
@@ -241,7 +242,7 @@ class CollectionItem extends Component {
                   </Button>
                   {collection.get("ticketState") === "open" && (
                     <Button
-                      className="rounded new-session"
+                      className="collection-options new-session"
                       onClick={this.toggle}
                     >
                       <span> Complete</span>
@@ -333,14 +334,11 @@ class CollectionItem extends Component {
                 </React.Fragment>
               )}
             </Col>
-            <Col className="collection-time" xs={6} md={2}>
+            <div className="collection-time">
               Created {buildDate(collection.get("created_at"), false, true)}
-            </Col>
-            <Col
-              className="collection-delete-action col-xs-offset-7 col-md-offset-0"
-              xs={5}
-              md={2}
-            >
+            </div>
+            <div
+              className="collection-delete-action">
               {canAdmin && (
                 <React.Fragment>
                   <DeleteCollection collection={collection}>
@@ -351,7 +349,7 @@ class CollectionItem extends Component {
                   </DeleteCollection>
                 </React.Fragment>
               )}
-            </Col>
+            </div>
             <EditMetadata
               coll={collection}
               editCollection={this.editCollectiontemp}
