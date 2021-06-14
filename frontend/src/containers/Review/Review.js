@@ -76,8 +76,8 @@ const mapDispatchToProps = (dispatch, { history }) => {
       dispatch(completeRecordingDispatch(user, collID, ticketState))
         .then(() => {
           dispatch(completeReviewDispatch(user, collID, doi));
-        }).then(() => {ticketState=="completed"?
-          dispatch(pushWarcToServerDispatch(user, collID, doi)):none;
+        }).then(() => { ticketState=="completed" ?
+          dispatch(pushWarcToServerDispatch(user, collID, doi)) : {};
         })
         .catch((error) => {
           console.log(error);
