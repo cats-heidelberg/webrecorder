@@ -1,5 +1,9 @@
 from warcio.timeutils import timestamp_now
 from warcio.warcwriter import BufferWARCWriter
+from warcio import WARCWriter
+from warcio.archiveiterator import ArchiveIterator
+import os
+
 
 from pywb.utils.loaders import BlockLoader
 from pywb.utils.io import StreamIter, chunk_encode_iter
@@ -48,6 +52,14 @@ class DownloadController(BaseController):
             self.redir_host()
 
             return self.handle_download(user, coll, '*')
+        @self.app.get('/api/v1/download/$download_warc')
+        @self.api(
+            query=['?user', '?collection'],
+            resp='handle_download_name',
+            description='save Warc to SDS'
+        )
+        def download_warc_sds():
+            return self.handle_download_name()
 
         @self.app.get('/api/v1/download/webdata')
         @self.api(
@@ -68,6 +80,8 @@ class DownloadController(BaseController):
 
         wr_api_spec.set_curr_tag(None)
 
+    def printline(print_line):
+        print(print_line)
     def create_warcinfo(self, creator, name, metadata, source, serialized, filename):
         for key, value in iteritems(serialized):
             if key in self.COPY_FIELDS:
@@ -197,6 +211,49 @@ class DownloadController(BaseController):
             response.headers['Transfer-Encoding'] = 'chunked'
 
             return read_all(iter_infos())
+    def handle_download_name(self):
+        username = request.query.getunicode('user')
+
+        # some clients use collection rather than coll_name so we must check for both
+        coll_name = request.query.getunicode('collection')
+
+        user = self._get_wasapi_user()
+
+        self.access.assert_is_curr_user(user)
+
+        colls = None
+
+        if coll_name:
+            collection = user.get_collection_by_name(coll_name)
+            if collection:
+                colls = [collection]
+            else:
+                self._raise_error(404, 'no_such_collection')
+
+        else:
+            colls = user.get_collections()
+
+        files = []
+        download_path = self.get_origin() + '/api/v1/download/{user}/{coll}/{filename}'
+        local_storage = LocalFileStorage(self.redis)
+
+        for collection in colls:
+            commit_storage = collection.get_storage()
+
+            for recording in collection.get_recordings():
+                is_committed = recording.is_fully_committed()
+                is_open = not is_committed and recording.get_pending_count() > 0
+                storage = commit_storage if is_committed else local_storage
+                with open(os.path.join(os.environ['RECORD_ROOT'],"eray", "loool"), 'wb') as output:
+                    writer = WARCWriter(output, gzip=True)
+                    for name, path in recording.iter_all_files(include_index=False):
+                        print(name)
+                        local_download = download_path.format(user=user.name, coll=collection.name, filename=name)
+                        with open(os.path.join(os.environ['RECORD_ROOT'],user.name, name), 'rb') as stream:
+                            for record in ArchiveIterator(stream):
+                                writer.write_record (record)
+
+
 
     def _get_wasapi_user(self, username=''):
         basic_auth = request.auth

@@ -17,6 +17,10 @@ const COLL_REVIEWCOMPLETE = "wr/coll/COLL_REVIEWCOMPLETE";
 const COLL_REVIEWCOMPLETE_SUCCESS = "wr/coll/COLL_REVIEWCOMPLETE_SUCCESS";
 const COLL_REVIEWCOMPLETE_FAIL = "wr/coll/COLL_REVIEWCOMPLETE_FAIL";
 
+const WARC_DOWNLOAD = "wr/coll/WARC_DOWNLOAD";
+const WARC_DOWNLOAD_SUCCESS = "wr/coll/WARC_DOWNLOAD_SUCCESS";
+const WARC_DOWNLOAD_FAIL = "wr/coll/WARC_DOWNLOAD_FAIL";
+
 const COLL_EDIT = "wr/coll/COLL_EDIT";
 const COLL_EDIT_SUCCESS = "wr/coll/COLL_EDIT_SUCCESS";
 const COLL_EDIT_FAIL = "wr/coll/COLL_EDIT_FAIL";
@@ -143,6 +147,7 @@ export default function collection(state = initialState, action = {}) {
           dat_key,
           dat_share,
           desc,
+          doi,
           duration,
           featured_list,
           id,
@@ -205,6 +210,7 @@ export default function collection(state = initialState, action = {}) {
         dat_key,
         dat_share,
         desc,
+        doi,
         duration,
         id,
         featured_list,
@@ -309,7 +315,12 @@ export function deleteCollection(user, coll) {
       }),
   };
 }
-export function completeRecordingDispatch(user, collID, ticketState, projektcode = "") {
+export function completeRecordingDispatch(
+  user,
+  collID,
+  ticketState,
+  projektcode = ""
+) {
   return {
     types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
     promise: (client) =>
@@ -323,7 +334,7 @@ export function completeRecordingDispatch(user, collID, ticketState, projektcode
   };
 }
 
-export function completeReviewDispatch(user, collID) {
+export function completeReviewDispatch(user, collID, doi) {
   return {
     types: [
       COLL_REVIEWCOMPLETE,
@@ -332,7 +343,20 @@ export function completeReviewDispatch(user, collID) {
     ],
     promise: (client) =>
       client.del(`${apiPath}/review`, {
-        params: { user, collID },
+        params: { user, collID, doi },
+      }),
+  };
+}
+export function pushWarcToServerDispatch(user, collID, doi) {
+  return {
+    types: [
+      WARC_DOWNLOAD,
+      WARC_DOWNLOAD_SUCCESS,
+      WARC_DOWNLOAD_FAIL,
+    ],
+    promise: (client) =>
+      client.get(`${apiPath}/${user}/${collID}/$download_warc`, {
+        params: {doi},
       }),
   };
 }
@@ -358,12 +382,12 @@ export function editCollectionRecording(
   };
 }
 
-export function reviewDataToRevis(user, collID) {
+export function reviewDataToRevis(user, collID, doi) {
   return {
     types: [REVIEW_CREATE, REVIEW_CREATE_SUCCESS, REVIEW_CREATE_FAIL],
     promise: (client) =>
       client.post(`${apiPath}/review`, {
-        params: { user, collID },
+        params: { user, collID, doi },
       }),
   };
 }

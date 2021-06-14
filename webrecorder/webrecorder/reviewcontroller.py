@@ -17,15 +17,15 @@ class ReviewController(BaseController):
                 j = json.loads(r)
                 if self.user_manager.all_users.make_user(j[0]).get_collection_by_name(j[1]):
                     collections.append(self.user_manager.all_users.make_user(j[0]).get_collection_by_name(j[1]))
-            
+
             return {'collections': [coll.serialize() for coll in collections]}
 
         @self.app.post('/api/v1/review')
         @self.api(query=[],
                   req_desc='review coll')
         def post_review():
-            print("reviewControllerpost"+request.query.get('collID'))
-            self.redis.sadd('review', json.dumps([request.query['user'], request.query['collID']]))
+            print("reviewControllerpostDOI"+request.query.get('doi'))
+            self.redis.sadd('review', json.dumps([request.query['user'], request.query['collID'], request.query['doi']]))
 
             return ("OK")
 

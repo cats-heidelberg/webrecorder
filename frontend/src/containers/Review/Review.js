@@ -16,6 +16,7 @@ import {
   editCollectionDispatch,
   completeRecordingDispatch,
   completeReviewDispatch,
+  pushWarcToServerDispatch,
   reviewCollection,
   sendMetaDispatch,
   shareToDat,
@@ -71,10 +72,12 @@ const mapStateToProps = ({ app }) => {
 
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    completeReview: (user, collID, ticketState = "denied") => {
+    completeReview: (user, collID, ticketState = "denied", doi) => {
       dispatch(completeRecordingDispatch(user, collID, ticketState))
         .then(() => {
-          dispatch(completeReviewDispatch(user, collID));
+          dispatch(completeReviewDispatch(user, collID, doi));
+        }).then(() => {ticketState=="completed"?
+          dispatch(pushWarcToServerDispatch(user, collID, doi)):none;
         })
         .catch((error) => {
           console.log(error);
