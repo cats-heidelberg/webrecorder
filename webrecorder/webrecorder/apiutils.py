@@ -24,6 +24,9 @@ class WRAPISpec(object):
         {'name': 'Collections',
          'description': 'Collection API'},
 
+        {'name': 'doi',
+         'description': 'DOI API'},
+
         {'name': 'Recordings',
          'description': 'Recording Sessions Management API'},
 
@@ -77,6 +80,7 @@ class WRAPISpec(object):
         'coll': 'Collection Slug',
         'coll_name': 'Collection Slug',
         'collection': 'Collection Slug',
+        'doi': 'DOI Slug',
         'rec': 'Session Id',
         'reqid': 'Remote Browser Request Id',
         'new_coll_name': 'New Collection Name',
