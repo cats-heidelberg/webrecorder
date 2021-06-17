@@ -751,9 +751,9 @@ class CollectionListUI extends Component {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       {_sortBy.map((sort, index) => (
-                        <MenuItem key={sort} eventKey={index}>
+                        <Dropdown.Item key={sort} eventKey={index}>
                           {sort}
-                        </MenuItem>
+                        </Dropdown.Item>
                       ))}
                     </Dropdown.Menu>
                   </Dropdown>

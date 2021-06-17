@@ -2,7 +2,7 @@ import React from 'react';
 
 function Collection() {
   return (
-    <svg width="13px" height="11px" viewBox="0 0 13 11" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
         <g id="03-Nav-Rollover-States" transform="translate(-6.000000, -101.000000)" fill="#AEAEAE">
           <g id="Group-12" transform="translate(0.000000, 100.000000)">

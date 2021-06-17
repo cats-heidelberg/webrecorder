@@ -1,5 +1,5 @@
 import HttpStatus from 'components/HttpStatus';
-import { ApiDocs, Documentation, FAQ, TermsAndPolicies } from 'components/siteComponents';
+import { ApiDocs, Documentation, FAQ, UserGuide, TermsAndPolicies } from 'components/siteComponents';
 import { product } from 'config';
 
 import {
@@ -261,6 +261,14 @@ const infoRoutes = [
     exact: true,
     footer: true,
     name: 'FAQ'
+  },
+  {
+    path: '/_guide',
+    breadcrumb: 'Guide',
+    component: UserGuide,
+    exact: true,
+    footer: true,
+    name: 'Guide'
   },
   {
     path: '/_policies',
