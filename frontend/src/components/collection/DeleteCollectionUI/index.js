@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, ControlLabel, FormControl, FormGroup, HelpBlock } from 'react-bootstrap';
+import { Row, Button, Form, HelpBlock } from 'react-bootstrap';
 
 import { getCollectionLink } from 'helpers/utils';
 import { collection as collectionErr } from 'helpers/userMessaging';
@@ -85,8 +85,33 @@ class DeleteCollectionUI extends Component {
           closeCb={this.toggleDeleteModal}
           dialogClassName="wr-delete-modal"
           header={<h4>Confirm Delete Collection</h4>}
-          footer={
+          body={
             <React.Fragment>
+            <Row className="mx-3 my-3">
+              <p>Are you sure you want to delete the collection <b>{collection.get('title')}</b> ({getCollectionLink(collection)})?
+              If you confirm, <b>all recordings will be permanently deleted</b>.
+              Be sure to download the collection first if you would like to keep any data.</p>
+              {
+                !isAnon &&
+                  <Form.Group validationState={this.validateConfirmDelete()}>
+                    <Form.Label>Type the collection title to confirm:</Form.Label>
+                    <Form.Control
+                      autoFocus
+                      disabled={deleting}
+                      id="confirm-delete"
+                      name="confirmDelete"
+                      onChange={this.handleChange}
+                      placeholder={collection.get('title')}
+                      type="text"
+                      value={this.state.confirmDelete} />
+                  </Form.Group>
+              }
+              {
+                error &&
+                  <HelpBlock style={{ color: 'red' }}>{ collectionErr[error] || 'Error encountered' }</HelpBlock>
+              }
+              </Row>
+              <Row className="mx-3 my-3">
               <Button onClick={!deleting ? this.toggleDeleteModal : undefined} disabled={deleting} style={{ marginRight: 5 }}>Cancel</Button>
               <Button onClick={!deleting ? this.deleteCollection : undefined} disabled={!isAnon && (deleting || this.validateConfirmDelete() !== 'success')} bsStyle="danger">
                 {
@@ -95,31 +120,9 @@ class DeleteCollectionUI extends Component {
                 }
                 <span>Confirm Delete</span>
               </Button>
+              </Row>
             </React.Fragment>
-          }>
-          <p>Are you sure you want to delete the collection <b>{collection.get('title')}</b> {getCollectionLink(collection)}?</p>
-          <p>If you confirm, <b>all recordings will be permanently deleted</b>.</p>
-          <p>Be sure to download the collection first if you would like to keep any data.</p>
-          {
-            !isAnon &&
-              <FormGroup validationState={this.validateConfirmDelete()}>
-                <ControlLabel>Type the collection title to confirm:</ControlLabel>
-                <FormControl
-                  autoFocus
-                  disabled={deleting}
-                  id="confirm-delete"
-                  name="confirmDelete"
-                  onChange={this.handleChange}
-                  placeholder={collection.get('title')}
-                  type="text"
-                  value={this.state.confirmDelete} />
-              </FormGroup>
-          }
-          {
-            error &&
-              <HelpBlock style={{ color: 'red' }}>{ collectionErr[error] || 'Error encountered' }</HelpBlock>
-          }
-        </Modal>
+          } />
       </React.Fragment>
     );
   }
