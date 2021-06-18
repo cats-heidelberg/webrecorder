@@ -288,11 +288,9 @@ class CollectionItem extends Component {
                   <p>
                     Your recording is getting reviewed by the library team.
                     <br />
-                    Please keep track of this message since we will update it.
+                    Please keep track of this message since we will update it
                     <br />
                     once the review process has been completed.
-                    <br />
-                    Thank you for your patience and for chosing openDachs.
                     <br />
                   </p>
                 </React.Fragment>
@@ -305,10 +303,10 @@ class CollectionItem extends Component {
                     It has content which is not approved.
                     <br />
                     An admin has been assigned and a mail with further
-                    information has been sent by mail to you.
+                    information has been sent to you.
                     <br />
-                    After reading the instructions, please review archive and
-                    complete it so we can review.
+                    After reading the instructions, please review the archive and
+                    complete it so we can re-check it.
                     <br />
                   </p>
                 </React.Fragment>
@@ -325,10 +323,8 @@ class CollectionItem extends Component {
                       {collection.get("doi") !== undefined &&
                       collection.get("doi") !== null
                         ? collection.get("doi")
-                        : "there is a problem with the DOI please contact an OpenDachs admin"}
+                        : "There is a problem with the DOI, please contact an OpenDachs admin."}
                     </h4>
-                    <br />
-                    Thank you for your patience and for chosing openDachs.
                     <br />
                   </p>
                 </React.Fragment>
