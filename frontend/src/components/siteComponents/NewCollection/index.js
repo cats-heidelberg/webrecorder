@@ -1334,8 +1334,8 @@ class NewCollection extends Component {
 
                 <Row>
                   <Form.Group id="fieldset" style={{"width": "100%"}}>
-                    <Row>
-                      <Col xs={9}>
+                    <Row className="mx-0">
+                      <Col xs={9} className="px-2">
                         <label
                           style={{
                             marginRight: "4px",
@@ -1387,20 +1387,19 @@ class NewCollection extends Component {
 
                       </Col>
                       <Col className="mt-auto px-0">
-
-                      <button
-                        type="button"
-                        class="btn btn-success"
-                        onClick={this.onAddSubject}
-                        disabled={!subjectHeadingText}
-                      >
-                        Add subject
-                      </button>
-
+                        <button
+                          type="button"
+                          class="btn btn-success"
+                          onClick={this.onAddSubject}
+                          disabled={!subjectHeadingText}
+                          style={{ width: "100%"}}
+                        >
+                          Add subject
+                        </button>
                       </Col>
                     </Row>
                     {this.state.subjectHeaderList.length > 0 && (
-                      <ul className="m-0 px-2">
+                      <React.Fragment>
                         {this.state.subjectHeaderList.map((item) => (
                           <PersonHeading
                             id={item.id}
@@ -1409,12 +1408,12 @@ class NewCollection extends Component {
                             onRemovePerson={this.onRemoveSubject}
                           />
                         ))}
-                      </ul>
+                      </React.Fragment>
                     )}
                   </Form.Group>
                   <Form.Group id="fieldset" style={{"width": "100%"}}>
-                    <Row>
-                      <Col xs={9}>
+                    <Row className="mx-0">
+                      <Col xs={9} className="px-2">
                         <label
                           style={{
                             marginRight: "4px",
@@ -1469,6 +1468,7 @@ class NewCollection extends Component {
                           class="btn btn-success"
                           onClick={this.onAddPerson}
                           disabled={!personHeadingText}
+                          style={{ width: "100%" }}
                         >
                           Add Person
                         </button>
@@ -1476,7 +1476,7 @@ class NewCollection extends Component {
                       </Col>
                     </Row>
                     {this.state.personHeaderList.length > 0 && (
-                      <ul className="firstChildSpecial">
+                      <React.Fragment>
                         {this.state.personHeaderList.map((item) => (
                           <PersonHeading
                             id={item.id}
@@ -1485,7 +1485,7 @@ class NewCollection extends Component {
                             onRemovePerson={this.onRemovePerson}
                           />
                         ))}
-                      </ul>
+                      </React.Fragment>
                     )}
                   </Form.Group>
                 </Row>

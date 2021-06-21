@@ -20,23 +20,21 @@ class PersonHeading extends Component {
 
     return (
       <React.Fragment>
-        <li key={id}>
-          <Row className="mt-2 py-0">
-            <Col xs="8" className="px-1 my-auto">
-              <div className="m-0 py-1 px-2" style={{ backgroundColor: "#DDD"}}>{htmlText}</div>
-            </Col>
-            <Col className="my-auto">
-              <button
-                type="button"
-                className="btn btn-success"
-                style={{ backgroundColor: "#E9573F", width: "90px"}}
-                onClick={this.onRemovePerson}
-              >
-                Remove
-              </button>
-            </Col>
-          </Row>
-        </li>
+        <Row className="mt-2 mx-0 py-0">
+          <Col xs="9" className="my-auto px-2">
+            <div className="py-1 px-2" style={{ backgroundColor: "#DDD"}}>{htmlText}</div>
+          </Col>
+          <Col className="m-auto px-0" style={{ textAlign: "right"}}>
+            <button
+              type="button"
+              className="btn btn-success"
+              style={{ backgroundColor: "#E9573F", width: "100%", border: "0"}}
+              onClick={this.onRemovePerson}
+            >
+              Remove
+            </button>
+          </Col>
+        </Row>
       </React.Fragment>
     );
   }
