@@ -26,9 +26,7 @@ export default function bugReport(state = initialState, action = {}) {
         submitted: false
       });
     case CONTACT_SUPPORT:
-      return state.merge({
-        error: true
-      });
+      return state.set('error', action.result);
     case REPORT_SUCCESS:
       return state.merge({
         submitting: false,
@@ -57,7 +55,7 @@ export function sendContactDispatch(postData) {
     type: CONTACT_SUPPORT,
     promise: client => client.post(`${apiPath}/contact/support`, {
       data: {
-        postData
+        ...postData
       }
     })
   };
