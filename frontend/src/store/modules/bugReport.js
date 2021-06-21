@@ -8,7 +8,7 @@ const REPORT_SUCCESS = 'wr/bugReport/REPORT_SUCCESS';
 const REPORT_FAIL = 'wr/bugReport/REPORT_FAIL';
 
 const TOGGLE_MODAL = 'wr/bugReport/TOGGLE_MODAL';
-
+const CONTACT_SUPPORT = 'wr/bugReport/CONTACT_SUPPORT';
 const initialState = fromJS({
   reportModal: null,
   submitting: false,
@@ -24,6 +24,10 @@ export default function bugReport(state = initialState, action = {}) {
       return state.merge({
         submitting: true,
         submitted: false
+      });
+    case CONTACT_SUPPORT:
+      return state.merge({
+        error: true
       });
     case REPORT_SUCCESS:
       return state.merge({
