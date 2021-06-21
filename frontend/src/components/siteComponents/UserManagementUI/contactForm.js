@@ -31,11 +31,11 @@ class ContactForm extends Component {
 
   save = (evt) => {
     evt.preventDefault();
-    const { auth } = this.props;
+    const { auth,cb } = this.props;
     const { name, email, subject, msg } = this.state;
 
     let data = { name, email, subject, msg };
-    // this.props.cb(data); // do stuff with data
+     this.props.cb(data); // do stuff with data
   }
 
   handleChange = (evt) => {

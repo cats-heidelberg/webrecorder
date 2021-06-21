@@ -48,7 +48,16 @@ export function toggleModal(reportType = 'dnlr') {
     reportType
   };
 }
-
+export function sendContactDispatch(postData) {
+  return {
+    type: CONTACT_SUPPORT,
+    promise: client => client.post(`${apiPath}/contact/support`, {
+      data: {
+        ...postData
+      }
+    })
+  };
+}
 
 export function reportBug(postData, reportType = 'dnlr') {
   return {
