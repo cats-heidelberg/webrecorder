@@ -470,3 +470,19 @@ a.collection-title:hover {
     }
   }
 }
+
+.wr-create-modal {
+    overflow: auto !important;
+      .modal-body {
+          padding: 0;
+      }
+
+      .anon-cta {
+          padding: 1.5rem 3rem;
+
+          h5:nth-child(1n) {
+              margin-top: 1.5rem;
+              margin-bottom: 0;
+          }
+      }
+}

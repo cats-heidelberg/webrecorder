@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { FormGroup } from "react-bootstrap";
+import { Form, Row, Col } from "react-bootstrap";
 class PersonHeading extends Component {
   static propTypes = {
     id: PropTypes.string,
@@ -21,17 +21,21 @@ class PersonHeading extends Component {
     return (
       <React.Fragment>
         <li key={id}>
-          <FormGroup id="fieldset">
-            <div>{htmlText}</div>
-            <button
-              type="button"
-              class="btn btn-success"
-              style={{ float: "right", backgroundColor: "#E9573F" }}
-              onClick={this.onRemovePerson}
-            >
-              Remove header
-            </button>
-          </FormGroup>
+          <Row className="mt-2 py-0">
+            <Col xs="8" className="px-1 my-auto">
+              <div className="m-0 py-1 px-2" style={{ backgroundColor: "#DDD"}}>{htmlText}</div>
+            </Col>
+            <Col className="my-auto">
+              <button
+                type="button"
+                className="btn btn-success"
+                style={{ backgroundColor: "#E9573F", width: "90px"}}
+                onClick={this.onRemovePerson}
+              >
+                Remove
+              </button>
+            </Col>
+          </Row>
         </li>
       </React.Fragment>
     );

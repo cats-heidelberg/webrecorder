@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Toggle from "react-toggle";
-import Alert from 'react-bootstrap/Alert';
-import FormGroup from 'react-bootstrap/FormGroup';
-import FormControl from 'react-bootstrap/FormControl';
+import { Alert, Form, Row, Col, Container } from 'react-bootstrap';
 import { incrementCollCount } from "store/modules/auth";
 
 import { defaultCollectionTitle, apiPath } from "config";
@@ -628,14 +626,14 @@ class NewCollection extends Component {
             className="form-horizontal"
           >
             {error && (
-              <Alert bsStyle="danger">
+              <Alert Variant="danger">
                 {collection[error] || "Error encountered"}
               </Alert>
             )}
             {!__DESKTOP__ && (
-              <span className="col-xs-7 col-xs-offset-1">
-                <div>
-                  <FormGroup id="fieldset">
+              <Container>
+                <Row>
+                  <Form.Group id="fieldset" style={{"width": "100%"}}>
                     <label
                       style={{ display: "inline", float: "left" }}
                       onMouseOver={() => {
@@ -669,7 +667,7 @@ class NewCollection extends Component {
                     </div>
 
                     <p>email address:</p>
-                    <FormControl
+                    <Form.Control
                       style={{
                         border: emailValid
                           ? "1px solid black"
@@ -685,11 +683,11 @@ class NewCollection extends Component {
                       onChange={this.handleChange}
                       onBlur={this.checkEmail}
                     />
-                  </FormGroup>
-                </div>
+                  </Form.Group>
+                </Row>
 
-                <div>
-                  <FormGroup id="fieldset">
+                <Row>
+                  <Form.Group id="fieldset" style={{"width": "100%"}}>
                     <label
                       style={{
                         marginRight: "4px",
@@ -725,7 +723,7 @@ class NewCollection extends Component {
                     >
                       *URL(URL of recorded page if WARC provided):
                     </div>
-                    <FormControl
+                    <Form.Control
                       aria-label="url"
                       style={{
                         border: urlValid
@@ -791,11 +789,11 @@ class NewCollection extends Component {
                         </div>
                       )}
                     </div>
-                  </FormGroup>
-                </div>
+                  </Form.Group>
+                </Row>
 
-                <div>
-                  <FormGroup id="fieldset">
+                <Row>
+                  <Form.Group id="fieldset" style={{"width": "100%"}}>
                     <label
                       style={{
                         marginRight: "4px",
@@ -832,7 +830,7 @@ class NewCollection extends Component {
                       *Title (Latin alphabet):
                     </div>
 
-                    <FormControl
+                    <Form.Control
                       type="text"
                       validationState={this.validateTitle()}
                       placeholder="original script, e.g. Chinese, Japanese, Korean script."
@@ -883,7 +881,7 @@ class NewCollection extends Component {
                       Title (original script):
                     </div>
 
-                    <FormControl
+                    <Form.Control
                       type="text"
                       placeholder="you can change Record Title here"
                       inputRef={(obj) => {
@@ -929,7 +927,7 @@ class NewCollection extends Component {
                     </div>
 
                     <p >projektcode:</p>
-                    <FormControl
+                    <Form.Control
                       style={{
                         border: projektcodeValid
                           ? "1px solid black"
@@ -944,8 +942,8 @@ class NewCollection extends Component {
                       value={projektcode}
                       onChange={this.handleChange}
                     />
-                  </FormGroup>
-                  <FormGroup id="fieldset">
+                  </Form.Group>
+                  <Form.Group id="fieldset">
                     <label
                       style={{
                         marginRight: "4px",
@@ -997,7 +995,7 @@ class NewCollection extends Component {
                     >
                       [corporate/institutional name] or [personal name]:
                     </div>
-                    <FormControl
+                    <Form.Control
                       componentClass="select"
                       placeholder="corporate/institutional name"
                       inputRef={(ref) => {
@@ -1018,7 +1016,7 @@ class NewCollection extends Component {
                     {this.state.selectedGroupName ==
                     "corporate/institutional name" ? (
                       <React.Fragment>
-                        <FormControl
+                        <Form.Control
                           type="text"
                           validationState={this.validateAuthorship()}
                           placeholder="corporate/institutional name"
@@ -1072,7 +1070,7 @@ class NewCollection extends Component {
                           Authorship information (orig. script):
                         </div>
 
-                        <FormControl
+                        <Form.Control
                           type="text"
                           placeholder=""
                           inputRef={(obj) => {
@@ -1087,7 +1085,7 @@ class NewCollection extends Component {
                       </React.Fragment>
                     ) : (
                       <React.Fragment>
-                        <FormControl
+                        <Form.Control
                           type="text"
                           validationState={this.validateAuthorship()}
                           placeholder="Surname, given name"
@@ -1142,7 +1140,7 @@ class NewCollection extends Component {
                           Authorship information (orig. script):
                         </div>
 
-                        <FormControl
+                        <Form.Control
                           type="text"
                           placeholder=""
                           inputRef={(obj) => {
@@ -1156,15 +1154,6 @@ class NewCollection extends Component {
                         />
                       </React.Fragment>
                     )}
-                    <button
-                      type="button"
-                      class="btn btn-success"
-                      style={{ float: "right" }}
-                      onClick={this.onAddItem}
-                      disabled={!persName && !collTitle}
-                    >
-                      Add Creator
-                    </button>
                     {this.state.creatorList.length > 0 && (
                       <ul className="firstChildSpecial">
                         {this.state.creatorList.map((item) => (
@@ -1177,12 +1166,24 @@ class NewCollection extends Component {
                         ))}
                       </ul>
                     )}
-                  </FormGroup>
-                </div>
-                <React.Fragment>
-                  <FormGroup
+
+                    <button
+                      type="button"
+                      class="btn btn-success"
+                      style={{ display: "inline", float: "right"}}
+                      onClick={this.onAddItem}
+                      disabled={!persName && !collTitle}
+                    >
+                      Add Creator
+                    </button>
+                  </Form.Group>
+                </Row>
+
+                <Row>
+                  <Form.Group
                     id="fieldset"
                     validationState={this.titleValidation()}
+                    style={{"width": "100%"}}
                   >
                     <label
                       style={{
@@ -1220,7 +1221,7 @@ class NewCollection extends Component {
                       *Publisher (Latin alphabet):
                     </div>
 
-                    <FormControl
+                    <Form.Control
                       type="text"
                       placeholder="Publisher"
                       validationState={this.validatePublisher()}
@@ -1268,7 +1269,7 @@ class NewCollection extends Component {
                       Publisher (orig. script):
                     </div>
 
-                    <FormControl
+                    <Form.Control
                       type="text"
                       placeholder="publisherOriginal"
                       inputRef={(obj) => {
@@ -1315,7 +1316,7 @@ class NewCollection extends Component {
                       Publication date [YYYY-MM-DD]:
                     </div>
 
-                    <FormControl
+                    <Form.Control
                       type="text"
                       placeholder="Year of publication"
                       validationState={this.validatePublishYear()}
@@ -1328,139 +1329,152 @@ class NewCollection extends Component {
                       onChange={this.handleInput}
                       value={publishYear}
                     />
-                  </FormGroup>
-                </React.Fragment>
+                  </Form.Group>
+                </Row>
 
-                <div>
-                  <FormGroup id="fieldset">
-                    <label
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
-                      onMouseOver={() => {
-                        ReactTooltip.show(this.fooRef9);
-                      }}
-                      onMouseOut={() => {
-                        ReactTooltip.hide(this.fooRef9);
-                      }}
-                    >
-                      <span
-                        className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef9 = ref)}
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          width: "14px",
-                          float: "left",
-                        }}
-                        data-tip="Subject headings help to describe and categorize the web resource. The headings should conform to a list drawn from the Library of Congress, see http://id.loc.gov/authorities/subjects.html."
-                      />
-                    </label>
-                    <div
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
-                    >
-                      Subject headings (in English):
-                    </div>
+                <Row>
+                  <Form.Group id="fieldset" style={{"width": "100%"}}>
+                    <Row>
+                      <Col xs={9}>
+                        <label
+                          style={{
+                            marginRight: "4px",
+                            display: "inline",
+                            float: "left",
+                          }}
+                          onMouseOver={() => {
+                            ReactTooltip.show(this.fooRef9);
+                          }}
+                          onMouseOut={() => {
+                            ReactTooltip.hide(this.fooRef9);
+                          }}
+                        >
+                          <span
+                            className="glyphicon glyphicon-info-sign"
+                            ref={(ref) => (this.fooRef9 = ref)}
+                            style={{
+                              marginRight: "4px",
+                              display: "inline",
+                              width: "14px",
+                              float: "left",
+                            }}
+                            data-tip="Subject headings help to describe and categorize the web resource. The headings should conform to a list drawn from the Library of Congress, see http://id.loc.gov/authorities/subjects.html."
+                          />
+                        </label>
+                        <div
+                          style={{
+                            marginRight: "4px",
+                            display: "inline",
+                            float: "left",
+                          }}
+                        >
+                          Subject headings (in English):
+                        </div>
 
-                    <FormControl
-                      type="text"
-                      placeholder="subject"
-                      inputRef={(obj) => {
-                        this.input = obj;
-                      }}
-                      id="subjectHeadingText"
-                      name="subjectHeadingText"
-                      onFocus={this.focusInput}
-                      onChange={this.handleInput}
-                      value={subjectHeadingText}
-                    />
 
-                    <button
-                      type="button"
-                      class="btn btn-success"
-                      style={{ float: "right" }}
-                      onClick={this.onAddSubject}
-                      disabled={!subjectHeadingText}
-                    >
-                      Add header
-                    </button>
+                        <Form.Control
+                          type="text"
+                          placeholder="subject"
+                          inputRef={(obj) => {
+                            this.input = obj;
+                          }}
+                          id="subjectHeadingText"
+                          name="subjectHeadingText"
+                          onFocus={this.focusInput}
+                          onChange={this.handleInput}
+                          value={subjectHeadingText}
+                        />
+
+                      </Col>
+                      <Col className="mt-auto px-0">
+
+                      <button
+                        type="button"
+                        class="btn btn-success"
+                        onClick={this.onAddSubject}
+                        disabled={!subjectHeadingText}
+                      >
+                        Add subject
+                      </button>
+
+                      </Col>
+                    </Row>
                     {this.state.subjectHeaderList.length > 0 && (
-                      <ul className="firstChildSpecial">
+                      <ul className="m-0 px-2">
                         {this.state.subjectHeaderList.map((item) => (
                           <PersonHeading
                             id={item.id}
                             htmlText={item.htmlText}
                             item={item}
-                            onRemovePerson={this.onRemovePerson}
+                            onRemovePerson={this.onRemoveSubject}
                           />
                         ))}
                       </ul>
                     )}
-                  </FormGroup>
-                  <FormGroup id="fieldset">
-                    <label
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
-                      onMouseOver={() => {
-                        ReactTooltip.show(this.fooRef10);
-                      }}
-                      onMouseOut={() => {
-                        ReactTooltip.hide(this.fooRef10);
-                      }}
-                    >
-                      <span
-                        className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef10 = ref)}
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          width: "14px",
-                          float: "left",
-                        }}
-                        data-tip="Adding person headings allows for expanding the catalogue entry by the persons the web resource focuses on."
-                      />
-                    </label>
-                    <div
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
-                    >
-                      Person headings:
-                    </div>
+                  </Form.Group>
+                  <Form.Group id="fieldset" style={{"width": "100%"}}>
+                    <Row>
+                      <Col xs={9}>
+                        <label
+                          style={{
+                            marginRight: "4px",
+                            display: "inline",
+                            float: "left",
+                          }}
+                          onMouseOver={() => {
+                            ReactTooltip.show(this.fooRef10);
+                          }}
+                          onMouseOut={() => {
+                            ReactTooltip.hide(this.fooRef10);
+                          }}
+                        >
+                          <span
+                            className="glyphicon glyphicon-info-sign"
+                            ref={(ref) => (this.fooRef10 = ref)}
+                            style={{
+                              marginRight: "4px",
+                              display: "inline",
+                              width: "14px",
+                              float: "left",
+                            }}
+                            data-tip="Adding person headings allows for expanding the catalogue entry by the persons the web resource focuses on."
+                          />
+                        </label>
+                        <div
+                          style={{
+                            marginRight: "4px",
+                            display: "inline",
+                            float: "left",
+                          }}
+                        >
+                          Person headings:
+                        </div>
 
-                    <FormControl
-                      type="text"
-                      placeholder="person"
-                      inputRef={(obj) => {
-                        this.input = obj;
-                      }}
-                      id="personHeadingText"
-                      name="personHeadingText"
-                      onFocus={this.focusInput}
-                      onChange={this.handleInput}
-                      value={personHeadingText}
-                    />
-                    <button
-                      type="button"
-                      class="btn btn-success"
-                      style={{ float: "right" }}
-                      onClick={this.onAddPerson}
-                      disabled={!personHeadingText}
-                    >
-                      Add header
-                    </button>
+                        <Form.Control
+                          type="text"
+                          placeholder="person"
+                          inputRef={(obj) => {
+                            this.input = obj;
+                          }}
+                          id="personHeadingText"
+                          name="personHeadingText"
+                          onFocus={this.focusInput}
+                          onChange={this.handleInput}
+                          value={personHeadingText}
+                        />
+                      </Col>
+                      <Col className="mt-auto px-0">
+                        <button
+                          type="button"
+                          class="btn btn-success"
+                          onClick={this.onAddPerson}
+                          disabled={!personHeadingText}
+                        >
+                          Add Person
+                        </button>
 
+                      </Col>
+                    </Row>
                     {this.state.personHeaderList.length > 0 && (
                       <ul className="firstChildSpecial">
                         {this.state.personHeaderList.map((item) => (
@@ -1473,10 +1487,10 @@ class NewCollection extends Component {
                         ))}
                       </ul>
                     )}
-                  </FormGroup>
-                </div>
-                <div>
-                  <FormGroup id="fieldset">
+                  </Form.Group>
+                </Row>
+                <Row>
+                  <Form.Group id="fieldset" style={{"width": "100%"}}>
                     <label
                       style={{
                         marginRight: "4px",
@@ -1526,8 +1540,8 @@ class NewCollection extends Component {
                       onChange={this.handleInput}
                       value={noteToDachs}
                     />
-                  </FormGroup>
-                </div>
+                  </Form.Group>
+                </Row>
 
                 {isUploading && (
                   <React.Fragment>
@@ -1543,7 +1557,7 @@ class NewCollection extends Component {
                     {status && <p>{status}</p>}
                   </React.Fragment>
                 )}
-              </span>
+              </Container>
             )}
             <button
               className="btn btn-lg btn-primary btn-block"
