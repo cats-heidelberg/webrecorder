@@ -57,7 +57,7 @@ export function sendContactDispatch(postData) {
     type: CONTACT_SUPPORT,
     promise: client => client.post(`${apiPath}/contact/support`, {
       data: {
-        ...postData
+        postData
       }
     })
   };
