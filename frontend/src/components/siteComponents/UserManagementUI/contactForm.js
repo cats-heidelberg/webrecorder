@@ -35,6 +35,7 @@ class ContactForm extends Component {
     const { name, email, subject, msg } = this.state;
 
     let data = { name, email, subject, msg };
+    data = { ...data};
      this.props.cb(data); // do stuff with data
   }
 
