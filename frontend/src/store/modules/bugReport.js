@@ -8,7 +8,7 @@ const REPORT_SUCCESS = 'wr/bugReport/REPORT_SUCCESS';
 const REPORT_FAIL = 'wr/bugReport/REPORT_FAIL';
 
 const TOGGLE_MODAL = 'wr/bugReport/TOGGLE_MODAL';
-
+const CONTACT_SUPPORT = 'wr/bugReport/CONTACT_SUPPORT';
 const initialState = fromJS({
   reportModal: null,
   submitting: false,
@@ -25,6 +25,8 @@ export default function bugReport(state = initialState, action = {}) {
         submitting: true,
         submitted: false
       });
+    case CONTACT_SUPPORT:
+      return state.set('error', action.result);
     case REPORT_SUCCESS:
       return state.merge({
         submitting: false,
@@ -48,7 +50,16 @@ export function toggleModal(reportType = 'dnlr') {
     reportType
   };
 }
-
+export function sendContactDispatch(postData) {
+  return {
+    type: CONTACT_SUPPORT,
+    promise: client => client.post(`${apiPath}/contact/support`, {
+      data: {
+        ...postData
+      }
+    })
+  };
+}
 
 export function reportBug(postData, reportType = 'dnlr') {
   return {

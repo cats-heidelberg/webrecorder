@@ -34,6 +34,7 @@ class UserManagementUI extends PureComponent {
     open: PropTypes.bool,
     reportModal: PropTypes.bool,
     route: PropTypes.object,
+    sendContactProp: PropTypes.func,
     showModal: PropTypes.func,
     toggleBugModal: PropTypes.func,
   };
@@ -131,6 +132,9 @@ class UserManagementUI extends PureComponent {
     this.setState({ formError: false });
     this.props.loginFn(data);
   };
+  sendContact = (data) => {
+    this.props.sendContactProp(data);
+  }
 
   toggleBugModal = () => {
     const { route, reportModal } = this.props;
@@ -157,7 +161,7 @@ class UserManagementUI extends PureComponent {
         closeLogin={this.closeLogin}
       />
     );
-    const contactForm = <ContactForm />;
+    const contactForm = <ContactForm cb={this.sendContact}/>;
     const collCount = auth.getIn(["user", "num_collections"]);
     const user = auth.get("user");
     const username = user.get("username");
