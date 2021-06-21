@@ -25,8 +25,7 @@ export default function bugReport(state = initialState, action = {}) {
         submitting: true,
         submitted: false
       });
-    case CONTACT_SUPPORT:
-      return state.set('error', action.result);
+
     case REPORT_SUCCESS:
       return state.merge({
         submitting: false,
