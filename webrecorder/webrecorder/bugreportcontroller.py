@@ -1,7 +1,11 @@
 from webrecorder.basecontroller import BaseController, wr_api_spec
 from webrecorder.gh_reporter import GitHubIssueImporter
 from werkzeug.useragents import UserAgent
-from bottle import request
+from bottle import request,response, template
+
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 from datetime import datetime
 import os
@@ -50,22 +54,24 @@ class BugReportController(BaseController):
             else:
                 self._raise_error(401, 'Email sender unspecified')
             if result.get('msg'):
-                Body["msg"] = result['msg']
+                Body['msg'] = result['msg']
             else:
                 self._raise_error(401, 'emty message not allowed')
             if result.get('name'):
-                Body["name"] = result['name']
+                Body['name'] = result['name']
+            if result.get('subject'):
+                Body['subject'] = result['subject']
             reviewerMailText = template(
                 'webrecorder/templates/email_contact.html',
-                sender_name=Body["name"],
-                subject=Body["subject"],
-                msg=Body["msg"]
+                sender_name=Body['name'],
+                subject=Body['subject'],
+                msg=Body['msg']
 
             )
 
 
             mail['TO'] = 'webteam-cn@zo.uni-heidelberg.de'
-            mail['subject'] = Body["subject"]
+            mail['subject'] = Body['subject']
             host = "relays.uni-heidelberg.de"
             mailServer = smtplib.SMTP(host)
             mail.attach(MIMEText(reviewerMailText, "html"))
