@@ -76,7 +76,7 @@ class BugReportController(BaseController):
             mailServer = smtplib.SMTP(host)
             mail.attach(MIMEText(reviewerMailText, "html"))
             msgBody = mail.as_string()
-            mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',result['email'], msgBody)
+            mailServer.sendmail(result['email'],'webteam-cn@zo.uni-heidelberg.de', msgBody)
             mailServer.quit()
             #self._raise_error(401, result.get('error', ''))
             response.status = 200
