@@ -21,7 +21,7 @@ class PersonHeading extends Component {
     return (
       <React.Fragment>
         <Row className="mt-2 mx-0 py-0">
-          <Col xs="9" className="my-auto px-2">
+          <Col xs="9" className="my-auto pl-2 pr-3">
             <div className="py-1 px-2" style={{ backgroundColor: "#DDD"}}>{htmlText}</div>
           </Col>
           <Col className="m-auto px-0" style={{ textAlign: "right"}}>

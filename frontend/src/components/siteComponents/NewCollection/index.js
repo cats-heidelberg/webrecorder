@@ -263,7 +263,7 @@ class NewCollection extends Component {
   onAddItem = () => {
     this.setState({ listID: this.state.listID + 1 });
     if (this.state.selectedGroupName === "corporate/institutional name") {
-      let tempText = "C/I name:" + this.state.collTitle;
+      let tempText = "C/I name: " + this.state.collTitle;
       this.state.copTitle !== ""
         ? (tempText += ", " + this.state.copTitle)
         : null;
@@ -281,7 +281,7 @@ class NewCollection extends Component {
         };
       });
     } else {
-      let tempText = "personal name:" + this.state.persName;
+      let tempText = "Person: " + this.state.persName;
       this.state.surName !== ""
         ? (tempText += ", " + this.state.surName)
         : null;
@@ -666,7 +666,6 @@ class NewCollection extends Component {
                       *Your e-mail address:
                     </div>
 
-                    <p>email address:</p>
                     <Form.Control
                       style={{
                         border: emailValid
@@ -676,7 +675,7 @@ class NewCollection extends Component {
                       aria-label="email"
                       validationState={this.validateEmail()}
                       name="usermail"
-                      placeholder="please enter your email*"
+                      placeholder="Please enter a valid e-mail address you have access to"
                       autoFocus
                       required
                       value={usermail}
@@ -721,7 +720,7 @@ class NewCollection extends Component {
                         color: urlValid ? "black" : "red",
                       }}
                     >
-                      *URL(URL of recorded page if WARC provided):
+                      *URL (URL of recorded page if WARC is provided):
                     </div>
                     <Form.Control
                       aria-label="url"
@@ -732,13 +731,13 @@ class NewCollection extends Component {
                       }}
                       validationState={this.validateURL()}
                       name="url"
-                      placeholder="please enter a valid webpage url*"
+                      placeholder="Please enter a valid webpage url"
                       value={url}
                       onChange={this.handleInput}
                     />
                     <div>
                       <button onClick={this.toggleHidden}>
-                        <WarcIcon />I already have a Warc file to Upload
+                        <WarcIcon />I already have a .warc file to Upload
                       </button>
                       {!isHidden && (
                         <div>
@@ -754,7 +753,7 @@ class NewCollection extends Component {
                               value={file}
                               name="upload-file-text"
                               className="form-control"
-                              placeholder="Click Pick File to select a web archive file"
+                              placeholder="Select a web archive file"
                               readOnly
                               onClick={this.triggerFile}
                               style={{ backgroundColor: "white" }}
@@ -766,7 +765,7 @@ class NewCollection extends Component {
                               class="btn btn-success"
                               onClick={this.triggerFile}
                             >
-                              Pick File...
+                              Pick file …
                             </button>
 
                             <input
@@ -833,7 +832,7 @@ class NewCollection extends Component {
                     <Form.Control
                       type="text"
                       validationState={this.validateTitle()}
-                      placeholder="original script, e.g. Chinese, Japanese, Korean script."
+                      placeholder=""
                       inputRef={(obj) => {
                         this.input = obj;
                       }}
@@ -883,7 +882,7 @@ class NewCollection extends Component {
 
                     <Form.Control
                       type="text"
-                      placeholder="you can change Record Title here"
+                      placeholder="e.g. Chinese, Japanese, Korean script"
                       inputRef={(obj) => {
                         this.input = obj;
                       }}
@@ -923,10 +922,8 @@ class NewCollection extends Component {
                         color: projektcodeValid ? "black" : "red",
                       }}
                     >
-                      *Projektcode (to join arcives under a topic ):
+                      *Projektcode (to join arcives under a topic):
                     </div>
-
-                    <p >projektcode:</p>
                     <Form.Control
                       style={{
                         border: projektcodeValid
@@ -936,7 +933,7 @@ class NewCollection extends Component {
                       aria-label="text"
                       validationState={this.ValidateProjektcode()}
                       name="projektcode"
-                      placeholder="*"
+                      placeholder=""
                       autoFocus
                       required
                       value={projektcode}
@@ -993,16 +990,16 @@ class NewCollection extends Component {
                         float: "left",
                       }}
                     >
-                      [corporate/institutional name] or [personal name]:
+                      Select what kind of authorship information to provide:
                     </div>
                     <Form.Control
-                      componentClass="select"
-                      placeholder="corporate/institutional name"
+                      as="select"
                       inputRef={(ref) => {
                         this.state.groupSelect = ref;
                       }}
                       onChange={this.groupSelect}
-                    />
+                      className="mb-2"
+                    >
                       {this.state.creatorLegend.map((group) => (
                         <option
                           key={group}
@@ -1012,6 +1009,7 @@ class NewCollection extends Component {
                           {group}
                         </option>
                       ))}
+                    </Form.Control>
 
                     {this.state.selectedGroupName ==
                     "corporate/institutional name" ? (
@@ -1019,7 +1017,7 @@ class NewCollection extends Component {
                         <Form.Control
                           type="text"
                           validationState={this.validateAuthorship()}
-                          placeholder="corporate/institutional name"
+                          placeholder="Enter full name of corporate/institution"
                           inputRef={(obj) => {
                             this.input = obj;
                           }}
@@ -1088,7 +1086,7 @@ class NewCollection extends Component {
                         <Form.Control
                           type="text"
                           validationState={this.validateAuthorship()}
-                          placeholder="Surname, given name"
+                          placeholder="Enter name as 'surname, given name'"
                           inputRef={(obj) => {
                             this.input = obj;
                           }}
@@ -1154,8 +1152,21 @@ class NewCollection extends Component {
                         />
                       </React.Fragment>
                     )}
+
+                    <Row>
+                      <button
+                        type="button"
+                        className="btn btn-success mt-2 mx-3"
+                        style={{ display: "inline", float: "right", width: "100%"}}
+                        onClick={this.onAddItem}
+                        disabled={!persName && !collTitle}
+                      >
+                        Add creator
+                      </button>
+                    </Row>
+
                     {this.state.creatorList.length > 0 && (
-                      <ul className="firstChildSpecial">
+                      <React.Fragment>
                         {this.state.creatorList.map((item) => (
                           <AuthorshipItem
                             id={item.id}
@@ -1164,18 +1175,9 @@ class NewCollection extends Component {
                             onRemoveItem={this.onRemoveItem}
                           />
                         ))}
-                      </ul>
+                      </React.Fragment>
                     )}
 
-                    <button
-                      type="button"
-                      class="btn btn-success"
-                      style={{ display: "inline", float: "right"}}
-                      onClick={this.onAddItem}
-                      disabled={!persName && !collTitle}
-                    >
-                      Add Creator
-                    </button>
                   </Form.Group>
                 </Row>
 
@@ -1223,7 +1225,7 @@ class NewCollection extends Component {
 
                     <Form.Control
                       type="text"
-                      placeholder="Publisher"
+                      placeholder="Enter the name of the publishing entity"
                       validationState={this.validatePublisher()}
                       inputRef={(obj) => {
                         this.input = obj;
@@ -1271,7 +1273,7 @@ class NewCollection extends Component {
 
                     <Form.Control
                       type="text"
-                      placeholder="publisherOriginal"
+                      placeholder="e.g. Chinese, Japanese, Korean script"
                       inputRef={(obj) => {
                         this.input = obj;
                       }}
@@ -1313,12 +1315,12 @@ class NewCollection extends Component {
                         float: "left",
                       }}
                     >
-                      Publication date [YYYY-MM-DD]:
+                      Publication date:
                     </div>
 
                     <Form.Control
                       type="text"
-                      placeholder="Year of publication"
+                      placeholder="YYYY-MM-DD"
                       validationState={this.validatePublishYear()}
                       inputRef={(obj) => {
                         this.input = obj;
@@ -1335,7 +1337,7 @@ class NewCollection extends Component {
                 <Row>
                   <Form.Group id="fieldset" style={{"width": "100%"}}>
                     <Row className="mx-0">
-                      <Col xs={9} className="px-2">
+                      <Col xs={9} className="pl-0 pr-2">
                         <label
                           style={{
                             marginRight: "4px",
@@ -1374,7 +1376,7 @@ class NewCollection extends Component {
 
                         <Form.Control
                           type="text"
-                          placeholder="subject"
+                          placeholder="Enter a subject and click 'Add subject'"
                           inputRef={(obj) => {
                             this.input = obj;
                           }}
@@ -1413,7 +1415,7 @@ class NewCollection extends Component {
                   </Form.Group>
                   <Form.Group id="fieldset" style={{"width": "100%"}}>
                     <Row className="mx-0">
-                      <Col xs={9} className="px-2">
+                      <Col xs={9} className="pl-0 pr-2">
                         <label
                           style={{
                             marginRight: "4px",
@@ -1451,7 +1453,7 @@ class NewCollection extends Component {
 
                         <Form.Control
                           type="text"
-                          placeholder="person"
+                          placeholder="Enter a name and click 'Add person'"
                           inputRef={(obj) => {
                             this.input = obj;
                           }}
@@ -1470,7 +1472,7 @@ class NewCollection extends Component {
                           disabled={!personHeadingText}
                           style={{ width: "100%" }}
                         >
-                          Add Person
+                          Add person
                         </button>
 
                       </Col>
@@ -1525,12 +1527,10 @@ class NewCollection extends Component {
                     >
                       Note to DACHS team:
                     </div>
-
-                    <p >Note to DACHS team:</p>
                     <textarea
                       className="form-control"
                       rows="3"
-                      placeholder="note to dachs"
+                      placeholder=""
                       inputRef={(obj) => {
                         this.input = obj;
                       }}

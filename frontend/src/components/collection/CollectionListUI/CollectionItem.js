@@ -339,9 +339,6 @@ class CollectionItem extends Component {
                 <React.Fragment>
                   <DeleteCollection collection={collection}>
                     <TrashIcon />
-                    <Tooltip placement="top" className="in" id="tooltip-top">
-                      DELETE
-                    </Tooltip>
                   </DeleteCollection>
                 </React.Fragment>
               )}
