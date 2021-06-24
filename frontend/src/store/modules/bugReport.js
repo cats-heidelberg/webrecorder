@@ -9,6 +9,8 @@ const REPORT_FAIL = 'wr/bugReport/REPORT_FAIL';
 
 const TOGGLE_MODAL = 'wr/bugReport/TOGGLE_MODAL';
 const CONTACT_SUPPORT = 'wr/bugReport/CONTACT_SUPPORT';
+const CONTACT_SUPPORT_SUCCESS = 'wr/bugReport/CONTACT_SUPPORT_SUCCESS';
+const CONTACT_SUPPORT_FAIL = 'wr/bugReport/CONTACT_SUPPORT_FAIL';
 const initialState = fromJS({
   reportModal: null,
   submitting: false,
@@ -52,7 +54,7 @@ export function toggleModal(reportType = 'dnlr') {
 }
 export function sendContactDispatch(postData) {
   return {
-    type: CONTACT_SUPPORT,
+    types: [CONTACT_SUPPORT, CONTACT_SUPPORT_SUCCESS, CONTACT_SUPPORT_FAIL],
     promise: client => client.post(`${apiPath}/contact/support`, {
       data: {
         ...postData
