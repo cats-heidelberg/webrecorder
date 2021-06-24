@@ -6,7 +6,7 @@ import { incrementCollCount } from "store/modules/auth";
 
 import { defaultCollectionTitle, apiPath } from "config";
 import { apiFormatUrl } from "helpers/utils";
-import { WarcIcon } from "components/icons";
+import { WarcIcon, InfoIcon } from "components/icons";
 
 import { collection, upload as uploadErrors } from "helpers/userMessaging";
 import PersonHeading from "./PersonHeading";
@@ -634,27 +634,12 @@ class NewCollection extends Component {
               <Container>
                 <Row>
                   <Form.Group id="fieldset" style={{"width": "100%"}}>
-                    <label
-                      style={{ display: "inline", float: "left" }}
-                      onMouseOver={() => {
-                        ReactTooltip.show(this.fooRef);
-                      }}
-                      onMouseOut={() => {
-                        ReactTooltip.hide(this.fooRef);
-                      }}
-                    >
-                      <span
-                        className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef = ref)}
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          width: "14px",
-                          float: "left",
-                        }}
-                        data-tip="Any further information regarding your OpenDACHS request will be sent to this e-mail address."
-                      />
+                    <label data-tip data-for="email-info" className="mb-1">
+                      <InfoIcon />
                     </label>
+                    <ReactTooltip id="email-info" place="top" effect="solid">
+                      Any further information regarding your OpenDACHS request will be sent to this e-mail address.
+                    </ReactTooltip>
                     <div
                       style={{
                         marginRight: "4px",
@@ -687,31 +672,12 @@ class NewCollection extends Component {
 
                 <Row>
                   <Form.Group id="fieldset" style={{"width": "100%"}}>
-                    <label
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
-                      onMouseOver={() => {
-                        ReactTooltip.show(this.fooRef21);
-                      }}
-                      onMouseOut={() => {
-                        ReactTooltip.hide(this.fooRef21);
-                      }}
-                    >
-                      <span
-                        className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef21 = ref)}
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          width: "14px",
-                          float: "left",
-                        }}
-                        data-tip="URL of the web resource."
-                      />
+                    <label data-tip data-for="url-info" className="mb-1">
+                      <InfoIcon />
                     </label>
+                    <ReactTooltip id="url-info" place="top" effect="solid">
+                      URL of the web resource.
+                    </ReactTooltip>
                     <div
                       style={{
                         marginRight: "4px",
@@ -737,7 +703,7 @@ class NewCollection extends Component {
                     />
                     <div>
                       <button onClick={this.toggleHidden}>
-                        <WarcIcon />I already have a .warc file to Upload
+                        <WarcIcon /> I already have a .warc file to upload
                       </button>
                       {!isHidden && (
                         <div>
@@ -793,31 +759,12 @@ class NewCollection extends Component {
 
                 <Row>
                   <Form.Group id="fieldset" style={{"width": "100%"}}>
-                    <label
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
-                      onMouseOver={() => {
-                        ReactTooltip.show(this.fooRef1);
-                      }}
-                      onMouseOut={() => {
-                        ReactTooltip.hide(this.fooRef1);
-                      }}
-                    >
-                      <span
-                        className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef1 = ref)}
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          width: "14px",
-                          float: "left",
-                        }}
-                        data-tip="Name or title of the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."
-                      />
+                    <label data-tip data-for="title-info" className="mb-1">
+                      <InfoIcon />
                     </label>
+                    <ReactTooltip id="title-info" place="top" effect="solid">
+                      Name or title of the resource. If resource is in Chinese/Japanese/Korean etc., please put Latin transcription here (Pinyin, Hepbun etc.)
+                    </ReactTooltip>
                     <div
                       style={{
                         marginRight: "4px",
@@ -830,6 +777,7 @@ class NewCollection extends Component {
                     </div>
 
                     <Form.Control
+                      className="mb-2"
                       type="text"
                       validationState={this.validateTitle()}
                       placeholder=""
@@ -845,31 +793,12 @@ class NewCollection extends Component {
                       onChange={this.handleInput}
                       value={title}
                     />
-                    <label
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
-                      onMouseOver={() => {
-                        ReactTooltip.show(this.fooRef2);
-                      }}
-                      onMouseOut={() => {
-                        ReactTooltip.hide(this.fooRef2);
-                      }}
-                    >
-                      <span
-                        className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef2 = ref)}
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          width: "14px",
-                          float: "left",
-                        }}
-                        data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."
-                      />
+                    <label data-tip data-for="title-orig-info" className="mb-1">
+                      <InfoIcon />
                     </label>
+                    <ReactTooltip id="title-orig-info" place="top" effect="solid">
+                      if applicable: same information in original script, e.g. Chinese, Japanese, Korean script.
+                    </ReactTooltip>
                     <div
                       style={{
                         marginRight: "4px",
@@ -881,6 +810,7 @@ class NewCollection extends Component {
                     </div>
 
                     <Form.Control
+                      className="mb-2"
                       type="text"
                       placeholder="e.g. Chinese, Japanese, Korean script"
                       inputRef={(obj) => {
@@ -892,28 +822,12 @@ class NewCollection extends Component {
                       onChange={this.handleInput}
                       value={pubTitleOriginal}
                     />
-
-                    <label
-                      style={{ display: "inline", float: "left" }}
-                      onMouseOver={() => {
-                        ReactTooltip.show(this.fooRef24);
-                      }}
-                      onMouseOut={() => {
-                        ReactTooltip.hide(this.fooRef24);
-                      }}
-                    >
-                      <span
-                        className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef24 = ref)}
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          width: "14px",
-                          float: "left",
-                        }}
-                        data-tip="obligatory and choose wisely since projektcode is used to sort archives under a topic."
-                      />
+                    <label data-tip data-for="proj-code-info" className="mb-1">
+                      <InfoIcon />
                     </label>
+                    <ReactTooltip id="proj-code-info" place="top" effect="solid">
+                      data-tip="obligatory and choose wisely since projektcode is used to sort archives under a topic.
+                    </ReactTooltip>
                     <div
                       style={{
                         marginRight: "4px",
@@ -941,31 +855,12 @@ class NewCollection extends Component {
                     />
                   </Form.Group>
                   <Form.Group id="fieldset">
-                    <label
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
-                      onMouseOver={() => {
-                        ReactTooltip.show(this.fooRef3);
-                      }}
-                      onMouseOut={() => {
-                        ReactTooltip.hide(this.fooRef3);
-                      }}
-                    >
-                      <span
-                        className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef3 = ref)}
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          width: "14px",
-                          float: "left",
-                        }}
-                        data-tip="Person or institution that authored the resource. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc."
-                      />
+                    <label data-tip data-for="authorship-info" className="mb-1">
+                      <InfoIcon />
                     </label>
+                    <ReactTooltip id="authorship-info" place="top" effect="solid">
+                      Person or institution that authored the resource. If resource is in Chinese/Japanese/Korean etc., please put Latin transcription here (Pinyin, Hepbun etc.)
+                    </ReactTooltip>
                     <div
                       style={{
                         marginRight: "4px",
@@ -1015,6 +910,7 @@ class NewCollection extends Component {
                     "corporate/institutional name" ? (
                       <React.Fragment>
                         <Form.Control
+                          className="mb-2"
                           type="text"
                           validationState={this.validateAuthorship()}
                           placeholder="Enter full name of corporate/institution"
@@ -1033,31 +929,12 @@ class NewCollection extends Component {
                           onChange={this.handleInput}
                           value={collTitle}
                         />
-                        <label
-                          style={{
-                            marginRight: "4px",
-                            display: "inline",
-                            float: "left",
-                          }}
-                          onMouseOver={() => {
-                            ReactTooltip.show(this.fooRef4);
-                          }}
-                          onMouseOut={() => {
-                            ReactTooltip.hide(this.fooRef4);
-                          }}
-                        >
-                          <span
-                            className="glyphicon glyphicon-info-sign"
-                            ref={(ref) => (this.fooRef4 = ref)}
-                            style={{
-                              marginRight: "4px",
-                              display: "inline",
-                              width: "14px",
-                              float: "left",
-                            }}
-                            data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."
-                          />
+                        <label data-tip data-for="authorship-orig-info" className="mb-1">
+                          <InfoIcon />
                         </label>
+                        <ReactTooltip id="authorship-orig-info" place="top" effect="solid">
+                          If applicable: same information in original script, e.g. Chinese, Japanese, Korean script.
+                        </ReactTooltip>
                         <div
                           style={{
                             marginRight: "4px",
@@ -1084,6 +961,7 @@ class NewCollection extends Component {
                     ) : (
                       <React.Fragment>
                         <Form.Control
+                          className="mb-2"
                           type="text"
                           validationState={this.validateAuthorship()}
                           placeholder="Enter name as 'surname, given name'"
@@ -1103,31 +981,12 @@ class NewCollection extends Component {
                           value={persName}
                         />
 
-                        <label
-                          style={{
-                            marginRight: "4px",
-                            display: "inline",
-                            float: "left",
-                          }}
-                          onMouseOver={() => {
-                            ReactTooltip.show(this.fooRef5);
-                          }}
-                          onMouseOut={() => {
-                            ReactTooltip.hide(this.fooRef5);
-                          }}
-                        >
-                          <span
-                            className="glyphicon glyphicon-info-sign"
-                            ref={(ref) => (this.fooRef5 = ref)}
-                            style={{
-                              marginRight: "4px",
-                              display: "inline",
-                              width: "14px",
-                              float: "left",
-                            }}
-                            data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."
-                          />
+                        <label data-tip data-for="authorship-orig-info2" className="mb-1">
+                          <InfoIcon />
                         </label>
+                        <ReactTooltip id="authorship-orig-info2" place="top" effect="solid">
+                          If applicable: same information in original script, e.g. Chinese, Japanese, Korean script.
+                        </ReactTooltip>
                         <div
                           style={{
                             marginRight: "4px",
@@ -1187,31 +1046,12 @@ class NewCollection extends Component {
                     validationState={this.titleValidation()}
                     style={{"width": "100%"}}
                   >
-                    <label
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
-                      onMouseOver={() => {
-                        ReactTooltip.show(this.fooRef6);
-                      }}
-                      onMouseOut={() => {
-                        ReactTooltip.hide(this.fooRef6);
-                      }}
-                    >
-                      <span
-                        className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef6 = ref)}
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          width: "14px",
-                          float: "left",
-                        }}
-                        data-tip="The name of the entity that holds, archives, publishes, prints, distributes, releases, issues or produces the resource. This property will be used to formulate the citation. If resource is in Chinese/Japanese/Korean etc.: please put Latin transcription here (Pinyin, Hepbun etc.)"
-                      />
+                    <label data-tip data-for="authorship-orig-info2" className="mb-1">
+                      <InfoIcon />
                     </label>
+                    <ReactTooltip id="authorship-orig-info2" place="top" effect="solid">
+                      The name of the entity that holds, archives, publishes, prints, distributes, releases, issues or produces the resource. This property will be used to formulate the citation. If resource is in Chinese/Japanese/Korean etc., please put Latin transcription here (Pinyin, Hepbun etc.)
+                    </ReactTooltip>
                     <div
                       style={{
                         marginRight: "4px",
@@ -1224,6 +1064,7 @@ class NewCollection extends Component {
                     </div>
 
                     <Form.Control
+                      className="mb-2"
                       type="text"
                       placeholder="Enter the name of the publishing entity"
                       validationState={this.validatePublisher()}
@@ -1241,26 +1082,12 @@ class NewCollection extends Component {
                       onChange={this.handleInput}
                       value={publisher}
                     />
-                    <label
-                      onMouseOver={() => {
-                        ReactTooltip.show(this.fooRef7);
-                      }}
-                      onMouseOut={() => {
-                        ReactTooltip.hide(this.fooRef7);
-                      }}
-                    >
-                      <span
-                        className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef7 = ref)}
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          width: "14px",
-                          float: "left",
-                        }}
-                        data-tip="if applicable: same information in original script, e.g. Chinese, Japanese, Korean script."
-                      />
+                    <label data-tip data-for="publ-orig-info" className="mb-1">
+                      <InfoIcon />
                     </label>
+                    <ReactTooltip id="publ-orig-info" place="top" effect="solid">
+                      If applicable: same information in original script, e.g. Chinese, Japanese, Korean script.
+                    </ReactTooltip>
                     <div
                       style={{
                         marginRight: "4px",
@@ -1272,6 +1099,7 @@ class NewCollection extends Component {
                     </div>
 
                     <Form.Control
+                      className="mb-2"
                       type="text"
                       placeholder="e.g. Chinese, Japanese, Korean script"
                       inputRef={(obj) => {
@@ -1283,31 +1111,12 @@ class NewCollection extends Component {
                       onChange={this.handleInput}
                       value={publisherOriginal}
                     />
-                    <label
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
-                      onMouseOver={() => {
-                        ReactTooltip.show(this.fooRef8);
-                      }}
-                      onMouseOut={() => {
-                        ReactTooltip.hide(this.fooRef8);
-                      }}
-                    >
-                      <span
-                        className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef8 = ref)}
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          width: "14px",
-                          float: "left",
-                        }}
-                        data-tip="Date when the data is made publicly available."
-                      />
+                    <label data-tip data-for="date-info" className="mb-1">
+                      <InfoIcon />
                     </label>
+                    <ReactTooltip id="date-info" place="top" effect="solid">
+                      Date at which the data was made publicly available.
+                    </ReactTooltip>
                     <div
                       style={{
                         marginRight: "4px",
@@ -1338,31 +1147,12 @@ class NewCollection extends Component {
                   <Form.Group id="fieldset" style={{"width": "100%"}}>
                     <Row className="mx-0">
                       <Col xs={9} className="pl-0 pr-2">
-                        <label
-                          style={{
-                            marginRight: "4px",
-                            display: "inline",
-                            float: "left",
-                          }}
-                          onMouseOver={() => {
-                            ReactTooltip.show(this.fooRef9);
-                          }}
-                          onMouseOut={() => {
-                            ReactTooltip.hide(this.fooRef9);
-                          }}
-                        >
-                          <span
-                            className="glyphicon glyphicon-info-sign"
-                            ref={(ref) => (this.fooRef9 = ref)}
-                            style={{
-                              marginRight: "4px",
-                              display: "inline",
-                              width: "14px",
-                              float: "left",
-                            }}
-                            data-tip="Subject headings help to describe and categorize the web resource. The headings should conform to a list drawn from the Library of Congress, see http://id.loc.gov/authorities/subjects.html."
-                          />
+                        <label data-tip data-for="subj-info" className="mb-1">
+                          <InfoIcon />
                         </label>
+                        <ReactTooltip id="subj-info" place="top" effect="solid">
+                          Subject headings help to describe and categorize the web resource. The headings should conform to a list drawn from the Library of Congress, see http://id.loc.gov/authorities/subjects.html.
+                        </ReactTooltip>
                         <div
                           style={{
                             marginRight: "4px",
@@ -1416,31 +1206,12 @@ class NewCollection extends Component {
                   <Form.Group id="fieldset" style={{"width": "100%"}}>
                     <Row className="mx-0">
                       <Col xs={9} className="pl-0 pr-2">
-                        <label
-                          style={{
-                            marginRight: "4px",
-                            display: "inline",
-                            float: "left",
-                          }}
-                          onMouseOver={() => {
-                            ReactTooltip.show(this.fooRef10);
-                          }}
-                          onMouseOut={() => {
-                            ReactTooltip.hide(this.fooRef10);
-                          }}
-                        >
-                          <span
-                            className="glyphicon glyphicon-info-sign"
-                            ref={(ref) => (this.fooRef10 = ref)}
-                            style={{
-                              marginRight: "4px",
-                              display: "inline",
-                              width: "14px",
-                              float: "left",
-                            }}
-                            data-tip="Adding person headings allows for expanding the catalogue entry by the persons the web resource focuses on."
-                          />
+                        <label data-tip data-for="person-info" className="mb-1">
+                          <InfoIcon />
                         </label>
+                        <ReactTooltip id="person-info" place="top" effect="solid">
+                          Adding person headings allows for expanding the catalogue entry by the persons the web resource focuses on.
+                        </ReactTooltip>
                         <div
                           style={{
                             marginRight: "4px",
@@ -1493,31 +1264,12 @@ class NewCollection extends Component {
                 </Row>
                 <Row>
                   <Form.Group id="fieldset" style={{"width": "100%"}}>
-                    <label
-                      style={{
-                        marginRight: "4px",
-                        display: "inline",
-                        float: "left",
-                      }}
-                      onMouseOver={() => {
-                        ReactTooltip.show(this.fooRef11);
-                      }}
-                      onMouseOut={() => {
-                        ReactTooltip.hide(this.fooRef11);
-                      }}
-                    >
-                      <span
-                        className="glyphicon glyphicon-info-sign"
-                        ref={(ref) => (this.fooRef11 = ref)}
-                        style={{
-                          marginRight: "4px",
-                          display: "inline",
-                          width: "14px",
-                          float: "left",
-                        }}
-                        data-tip="If you have comments for the DACHS team you can post them here."
-                      />
+                    <label data-tip data-for="note-to-dachs-info" className="mb-1">
+                      <InfoIcon />
                     </label>
+                    <ReactTooltip id="note-to-dachs-info" place="top" effect="solid">
+                      If you have comments for the DACHS team you can post them here.
+                    </ReactTooltip>
                     <div
                       style={{
                         marginRight: "4px",
