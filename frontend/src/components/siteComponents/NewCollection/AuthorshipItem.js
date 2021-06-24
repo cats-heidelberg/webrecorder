@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { FormGroup } from "react-bootstrap";
+import { Form, Row, Col } from "react-bootstrap";
 class AuthorshipItem extends Component {
   static propTypes = {
     id: PropTypes.string,
@@ -20,30 +20,32 @@ class AuthorshipItem extends Component {
 
     return (
       <React.Fragment>
-        <li key={id}>
-          <FormGroup id="fieldset">
-            <h5
-              style={{
-                display: "flex",
-                flexGrow: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                lineHeight: "40px",
-              }}
-            >
-              Authorhip information:
-            </h5>
-            <div>{htmlText}</div>
+        <Row className="mt-2 mx-0 py-0">
+          {/*<h5
+            style={{
+              display: "flex",
+              flexGrow: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              lineHeight: "40px",
+            }}
+          >
+            Authorhip information:
+          </h5>*/}
+          <Col xs="9" className="my-auto pl-2 pr-3">
+            <div className="py-1 px-2" style={{ backgroundColor: "#DDD"}}>{htmlText}</div>
+          </Col>
+          <Col className="m-auto px-0" style={{ textAlign: "right"}}>
             <button
               type="button"
               class="btn btn-success"
-              style={{ float: "right", backgroundColor: "#E9573F" }}
-              onClick={this.onRemovePerson}
+              style={{ backgroundColor: "#E9573F", width: "100%", border: "0"}}
+              onClick={this.onRemoveItem}
             >
-              Remove header
+              Remove
             </button>
-          </FormGroup>
-        </li>
+          </Col>
+        </Row>
       </React.Fragment>
     );
   }

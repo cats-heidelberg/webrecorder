@@ -76,6 +76,7 @@ class LoginForm extends Component {
             anonCTA &&
               <h4>Please sign in to manage collections.</h4>
           }
+          <Form id="loginform" className="col-12" onSubmit={this.save}>
           {
             error &&
               <Alert variant="danger">
@@ -84,7 +85,6 @@ class LoginForm extends Component {
                 }
               </Alert>
           }
-          <Form id="loginform" className="col-12" onSubmit={this.save}>
             <FormGroup
               key="username">
               <label htmlFor="username" className="sr-only">Username</label>
