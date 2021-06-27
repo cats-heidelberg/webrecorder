@@ -400,7 +400,7 @@ const mapDispatchToProps = (dispatch, { history }) => {
       dispatch(
         completeRecordingDispatch(user, collID, ticketState, projektcode)
       ).then((res) =>
-        dispatch(reviewDataToRevis(user, collID, res.collection.doi))
+        { console.log("sendingToRevis"); dispatch(reviewDataToRevis(user, collID, res.collection.doi)); }
       );
       setTimeout(() => {
         history.push(`/${user}`);

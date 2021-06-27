@@ -194,7 +194,7 @@ class UserManagementUI extends PureComponent {
           </li>
           {auth.getIn(["user", "role"]) === "admin" && (
             <li className="hidden-xs">
-              {__DESKTOP__ ? (
+              
                 <button
                   className="button-link"
                   onClick={this.openReview}
@@ -202,11 +202,7 @@ class UserManagementUI extends PureComponent {
                 >
                   Review
                 </button>
-              ) : (
-                <a href={`${config.appHost}/${username}/review`} target="_self">
-                  Review
-                </a>
-              )}
+              
             </li>
           )}
           <li className="navbar-text">
