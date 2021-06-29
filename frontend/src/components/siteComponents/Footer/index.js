@@ -31,9 +31,12 @@ function Footer() {
                   </a>
                 </li>
                 <li>
-                  <Link to="https://www.uni-heidelberg.de/datenschutzerklaerung_web.html">
+                  <a
+                    href="https://www.uni-heidelberg.de/datenschutzerklaerung_web.html"
+                    target="_blank"
+                  >
                     Datenschutzerklärung
-                  </Link>
+                  </a>
                 </li>
               </ul>
             </div>
