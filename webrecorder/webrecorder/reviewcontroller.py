@@ -12,6 +12,8 @@ class ReviewController(BaseController):
         @self.app.get('/api/v1/review')
         @self.api(resp='reviewcolls')
         def get_review():
+#            if not self.access.is_superuser():
+#                return ('Access Denied')
             collections = list()
             for r in self.redis.smembers('review'):
                 j = json.loads(r)
@@ -24,8 +26,10 @@ class ReviewController(BaseController):
         @self.api(query=[],
                   req_desc='review coll')
         def post_review():
-            print("reviewControllerpostDOI"+request.query.get('doi'))
-            self.redis.sadd('review', json.dumps([request.query['user'], request.query['collID'], request.query['doi']]))
+#            if not self.access.is_superuser():
+#                return ('Access Denied')
+            print("reviewControllerpost"+request.query.get('collID'))
+            self.redis.sadd('review', json.dumps([request.query['user'], request.query.get('collID')]))
 
             return ("OK")
 
@@ -33,5 +37,7 @@ class ReviewController(BaseController):
         @self.api(query=[],
                   req_desc='review coll delete')
         def delete_review():
+            if not self.access.is_superuser():
+                return ('Access Denied')
             print("reviewControllerdelete"+request.query.get('collID'))
             self.redis.srem('review', json.dumps([request.query['user'], request.query.get('collID')]))

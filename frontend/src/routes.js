@@ -19,6 +19,7 @@ import {
   Record,
   RegisterAccount,
   Replay,
+  Review,
   UserSignup
 } from './containers';
 
@@ -37,6 +38,14 @@ const userRoutes = [
     exact: true,
     footer: true,
     name: 'collection'
+  },
+  {
+    path: `${userPath}/review`,
+    breadcrumb: 'collListReview',
+    component: Review,
+    exact: true,
+    footer: true,
+    name: 'review'
   },
   {
     path: `${userPath}/_settings`,

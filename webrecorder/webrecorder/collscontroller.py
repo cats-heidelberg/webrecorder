@@ -461,11 +461,10 @@ class CollsController(BaseController):
                 possibleDOI = "10.25354/"+data['projektcode']+"."+str(today.year)+"."+str(today.month)
                 tempInc = 1
                 while self.redis.sismember('doimodel', possibleDOI) == 1:
-                    possibleDOI = possibleDOIBase+"-"+str(tempInc)
                     tempInc += 1
+                possibleDOI = possibleDOIBase+"-"+str(tempInc)
                 self.redis.sadd('doimodel', possibleDOI)
                 collection['doi'] = possibleDOI
-                print("reviewControllerpost"+possibleDOI)
             else:
                 print(collection['doi'])
             if 'publishYear' in data:

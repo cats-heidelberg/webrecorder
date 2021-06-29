@@ -52,14 +52,12 @@ class DownloadController(BaseController):
             self.redir_host()
 
             return self.handle_download(user, coll, '*')
-        @self.app.get('/<user>/<coll>/$download_warc')
-        @self.api(
-            query=['?doi'],
-            resp='handle_download_name',
-            description='save Warc to SDS'
-        )
+        @self.app.post('/api/v1/<user>/<coll>/$download_warc')
         def download_warc_sds(user, coll):
-            return self.handle_download_name(user, coll)
+            data = request.json or {}
+            warc_name = data.get('doi', '').replace("/","_")
+            print ("imdownload"+warc_name)
+            return self.handle_download_name(user, coll, warc_name)
 
         @self.app.get('/api/v1/download/webdata')
         @self.api(
@@ -211,9 +209,10 @@ class DownloadController(BaseController):
             response.headers['Transfer-Encoding'] = 'chunked'
 
             return read_all(iter_infos())
-    def handle_download_name(self, user, coll_name):
+    def handle_download_name(self, user, coll_name, warc_name):
         #username = request.query.getunicode('user')
-        warc_name = request.query.getunicode('doi')
+
+        #warc_name = request.query.getunicode('doi')
         # some clients use collection rather than coll_name so we must check for both
         #coll_name = request.query.getunicode('collection')
 
@@ -247,7 +246,8 @@ class DownloadController(BaseController):
 
         Stats(self.redis).incr_download(collection)
 
-        download_path = self.get_origin() + "/api/v1/download/{}/{}/{}".format(user_name, coll_name, warc_name)
+        download_path = self.get_origin() + "/api/v1/download/{}/".format(user_name)
+        print(download_path)
         local_storage = LocalFileStorage(self.redis)
 
         commit_storage = collection.get_storage()
@@ -256,10 +256,9 @@ class DownloadController(BaseController):
             is_committed = recording.is_fully_committed()
             is_open = not is_committed and recording.get_pending_count() > 0
             storage = commit_storage if is_committed else local_storage
-            with open(os.path.join(os.environ['RECORD_ROOT'],user_name, warc_name), 'wb') as output:
+            with open(os.path.join(os.environ['RECORD_ROOT'],user_name, warc_name.replace("/","\/"),".warc"), 'wb') as output:
                 writer = WARCWriter(output, gzip=True)
                 for name, path in recording.iter_all_files(include_index=False):
-                    print(name)
                     local_download = download_path.format(user=user.name, coll=collection.name, filename=name)
                     warc_key = collection.get_warc_key()
                     warc_path = self.redis.hget(warc_key, name)

@@ -1,7 +1,11 @@
 from webrecorder.basecontroller import BaseController, wr_api_spec
 from webrecorder.gh_reporter import GitHubIssueImporter
 from werkzeug.useragents import UserAgent
-from bottle import request
+from bottle import request,response, template
+
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 from datetime import datetime
 import os
@@ -32,7 +36,51 @@ class BugReportController(BaseController):
 
     def init_routes(self):
         wr_api_spec.set_curr_tag('Bug Reporting')
+        # LOGIN
+        @self.app.post('/api/v1/contact/support')
+        def sendContact():
+            """Send Contact form to admin"""
 
+            result = request.json or {}
+            mail = MIMEMultipart()
+            Body = {
+              "name": "",
+              "subject": "",
+              "msg": ""
+            }
+
+            if result.get('email'):
+                mail['FROM'] = result['email']
+            else:
+                self._raise_error(401, 'Email sender unspecified')
+            if result.get('msg'):
+                Body['msg'] = result['msg']
+            else:
+                self._raise_error(401, 'emty message not allowed')
+            if result.get('name'):
+                Body['name'] = result['name']
+            if result.get('subject'):
+                Body['subject'] = result['subject']
+            reviewerMailText = template(
+                'webrecorder/templates/email_contact.html',
+                sender_name=Body['name'],
+                subject=Body['subject'],
+                msg=Body['msg']
+
+            )
+
+
+            mail['TO'] = 'webteam-cn@zo.uni-heidelberg.de'
+            mail['subject'] = Body['subject']
+            host = "relays.uni-heidelberg.de"
+            mailServer = smtplib.SMTP(host)
+            mail.attach(MIMEText(reviewerMailText, "html"))
+            msgBody = mail.as_string()
+            mailServer.sendmail(result['email'],'webteam-cn@zo.uni-heidelberg.de', msgBody)
+            mailServer.quit()
+            #self._raise_error(401, result.get('error', ''))
+            response.status = 200
+            return {}
         @self.app.post('/api/v1/report/dnlr')
         def report_issues():
             useragent = request.headers.get('User-Agent')
