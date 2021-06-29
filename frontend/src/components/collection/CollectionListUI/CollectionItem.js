@@ -167,13 +167,13 @@ class CollectionItem extends Component {
           style={{
             backgroundColor:
               collection.get("ticketState") === "denied"
-                ? "#fabebe"
+                ? "#edc7c7"
                 : collection.get("ticketState") === "pending"
-                ? "#ececec"
+                ? "#e5e5e5"
                 : collection.get("ticketState") === "completed"
-                ? "#c3e5aa"
-                : "#FFF",
-              borderBottom: "3px solid #DDD",
+                ? "#dcf0c9"
+                : "#fff",
+              borderBottom: "3px solid #ccc",
           }}
         >
           {headline !== "" && (
