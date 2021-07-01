@@ -172,6 +172,8 @@ class CollectionItem extends Component {
                 ? "#e5e5e5"
                 : collection.get("ticketState") === "completed"
                 ? "#dcf0c9"
+                : collection.get("ticketState") === "approved"
+                ? "#e5e5e5"
                 : "#fff",
               borderBottom: "3px solid #ccc",
           }}
@@ -268,17 +270,14 @@ class CollectionItem extends Component {
                             </a>
                           </p>
                           <Button
-                            className="rounded new-session"
+                            className="col-5"
                             onClick={this.sendArchive}
                           >
+                            <span className="mx-3">Confirm</span>
                             <CheckIcon />
-                            <span className="hidden-xs">confirm.</span>
                           </Button>
-                        </React.Fragment>
-                      }
-                      <Button onClick={this.close} className="rectangular">
-                        Close
-                      </Button>
+                      </React.Fragment>
+                    }
                     </Modal>
                   )}
                 </React.Fragment>
@@ -330,9 +329,9 @@ class CollectionItem extends Component {
                 </React.Fragment>
               )}
             </Col>
-            <div className="collection-time">
-              Created {buildDate(collection.get("created_at"), false, true)}
-            </div>
+              <div className="collection-time">
+                Created {buildDate(collection.get("created_at"), false, true)}
+              </div>
             <div
               className="collection-delete-action">
               {canAdmin && (

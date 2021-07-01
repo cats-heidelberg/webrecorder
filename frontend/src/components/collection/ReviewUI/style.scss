@@ -333,6 +333,20 @@ a.collection-title:hover {
   }
 }
 
+.wr-modal {
+    overflow: auto !important;
+
+      .anon-cta {
+          background: $gray200;
+          padding: 1.5rem 3rem;
+
+          h5:nth-child(1n) {
+              margin-top: 1.5rem;
+              margin-bottom: 0;
+          }
+      }
+}
+
 @media (min-width: 768px) {
   .dat-modal {
     overflow: auto;
@@ -386,5 +400,18 @@ a.collection-title:hover {
       margin-bottom: 1.5rem;
       padding: 0;
     }
+  }
+}
+
+
+.collection-options {
+  font-size: 1rem !important;
+  padding: 0 0.2rem !important;
+  margin-right: 5px;
+  margin-top: 5px;
+  text-decoration: none;
+
+  @media (max-width: $md) {
+    width: 100% !important;
   }
 }

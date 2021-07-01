@@ -125,13 +125,8 @@ class ReviewUI extends Component {
           <title>{`${displayName}'s Collections`}</title>
         </Helmet>
         <Row>
-          <Col
-            xs={15}
-            sm={__DESKTOP__ ? 10 : 9}
-            smOffset={__DESKTOP__ ? 2 : 2}
-            className="wr-coll-meta"
-          >
-            {(isAnon || !canAdmin) && (
+          <Col className="mx-auto col-sm-10 col-lg-8">
+            {/*(isAnon || !canAdmin) && (
               <Row>
                 <Col
                   xs={15}
@@ -144,8 +139,8 @@ class ReviewUI extends Component {
                   )}
                 </Col>
               </Row>
-            )}
-            {!isAnon && canAdmin && (
+            )*/}
+            {/*!isAnon && canAdmin && (
               <Row>
                 <Col
                   xs={15}
@@ -156,10 +151,10 @@ class ReviewUI extends Component {
                   {__DESKTOP__ && <h4>To be reviewed:</h4>}
                 </Col>
               </Row>
-            )}
+            )*/}
             {collections && collections.get("loaded") && canAdmin && (
-              <Row>
-                <ul className="list-group collection-list">
+              <Row className="my-5">
+                <ul className="collection-list mt-3 pl-0">
                   {collections.get("collections").map((coll) => {
                     return (
                       <CollectionItem

@@ -8,7 +8,6 @@ import config from "config";
 import { DownloadIcon } from "components/icons";
 import { Link } from "react-router-dom";
 import { Button, Col, Row, Tooltip } from "react-bootstrap";
-import { CheckIcon } from "components/icons";
 
 import { buildDate, getCollectionLink, truncate } from "helpers/utils";
 
@@ -17,7 +16,7 @@ import Modal from "components/Modal";
 
 import { ReviewMetadata } from "components/siteComponents";
 import { DeleteCollection } from "containers";
-import { TrashIcon, PlusIcon, LockIcon } from "components/icons";
+import { TrashIcon, PlusIcon, LockIcon, CheckIcon } from "components/icons";
 
 class CollectionItem extends Component {
   static propTypes = {
@@ -119,7 +118,7 @@ class CollectionItem extends Component {
 
   render() {
     const { canAdmin, collection, error } = this.props;
-    const { showModalFinish, open, openDeny, ticketState, doi } = this.state;
+    const { modalSessionSave, showModalFinish, open, openDeny, ticketState, doi } = this.state;
     const descClasses = classNames("left-buffer list-group-item", {
       "has-description": collection.get("desc"),
     });
@@ -134,12 +133,13 @@ class CollectionItem extends Component {
               collection.get("ticketState") === "pending"
                 ? "#FFF"
                 : collection.get("ticketState") === "approved"
-                ? "#c3e5aa"
+                ? "#ececec"
                 : "#ececec",
+              borderBottom: "3px solid #ccc",
           }}
         >
-          <Row>
-            <Col sm={15} md={12}>
+          <Row className="m-0 mt-3">
+            <Col className="p-0 col-12">
               <h3>{collection.get("title")}</h3>
               <p className="collection-list-description">
                 {truncate(
@@ -151,13 +151,13 @@ class CollectionItem extends Component {
               {canAdmin && (
                 <React.Fragment>
                   <Button
-                    className="rounded new-session"
+                    className="collection-options new-session"
                     onClick={this.newSession}
                   >
                     <span> Review </span>
                   </Button>
                   <Button
-                    className="rounded new-session"
+                    className="collection-options new-session"
                     onClick={this.downloadAction}
                   >
                     <span>
@@ -169,14 +169,14 @@ class CollectionItem extends Component {
                     </span>
                   </Button>
                   <Button
-                    className="rounded new-session"
+                    className="collection-options new-session"
                     onClick={this.closeModal}
                   >
                     <span> look at Meta data </span>
                   </Button>
 
                   <Button
-                    className="rounded new-session"
+                    className="collection-options new-session"
                     onClick={this.readyApprove}
                     disabled={collection.get("ticketState") !== "pending"}
                   >
@@ -184,14 +184,14 @@ class CollectionItem extends Component {
                   </Button>
 
                   <Button
-                    className="rounded new-session"
+                    className="collection-options new-session"
                     onClick={this.toggleDeny}
                     disabled={collection.get("ticketState") !== "pending"}
                   >
                     <span> Deny</span>
                   </Button>
                   <Button
-                    className="rounded new-session"
+                    className="collection-options new-session"
                     onClick={this.toggleSessionSave}
                   >
                     <CheckIcon />
@@ -199,10 +199,10 @@ class CollectionItem extends Component {
                   </Button>
                   {collection.get("ticketState") === "approved" && (
                     <Modal
-                      visible={this.state.modalSessionSave}
-                      closeCb={this.state.toggleSessionSave}
+                      visible={modalSessionSave}
+                      closeCb={this.toggleSessionSave}
                       header="Please confirm DOI generation."
-                      dialogClassName="table-header-modal dat-modal"
+                      dialogClassName="wr-modal"
                     >
                       {
                         <React.Fragment>
@@ -215,24 +215,18 @@ class CollectionItem extends Component {
                             <br />
                             Create DOI? {collection.get("doi")}
                           </p>
-
                           <Button
-                            className="rounded new-session"
+                            className="col-5"
                             onClick={this.sendForDOI}
                             disabled={
                               collection.get("ticketState") !== "approved"
                             }
                           >
-                            <span> Confirm </span>
+                            <span className="mx-3">Confirm</span>
+                            <CheckIcon />
                           </Button>
                         </React.Fragment>
                       }
-                      <Button
-                        onClick={this.toggleSessionSave}
-                        className="rectangular"
-                      >
-                        Close
-                      </Button>
                     </Modal>
                   )}
 
@@ -284,9 +278,9 @@ class CollectionItem extends Component {
                   </React.Fragment>
                 )}
             </Col>
-            <Col className="collection-time" xs={6} md={2}>
+            <div className="collection-time">
               Created {buildDate(collection.get("created_at"), false, true)}
-            </Col>
+            </div>
 
             <ReviewMetadata
               coll={collection}
