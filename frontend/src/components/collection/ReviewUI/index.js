@@ -71,10 +71,10 @@ class ReviewUI extends Component {
     }
   }
 
-  completeReview = (user, collID, ticketState, doi) => {
+  completeReview = (user, collID, ticketState, doi, url) => {
     const { completeReview } = this.props;
     console.log("rewiew/index/76/"+doi);
-    completeReview(user, collID, ticketState, doi);
+    completeReview(user, collID, ticketState, doi, url);
   };
 
   Reviewed = (user, collID, ticketState) => {

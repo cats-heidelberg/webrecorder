@@ -72,12 +72,12 @@ const mapStateToProps = ({ app }) => {
 
 const mapDispatchToProps = (dispatch, { history }) => {
   return {
-    completeReview: (user, collID, ticketState = "denied", doi) => {
+    completeReview: (user, collID, ticketState = "denied", doi, url) => {
       dispatch(completeRecordingDispatch(user, collID, ticketState))
         .then(() => {
           dispatch(completeReviewDispatch(user, collID, doi));
         }).then(() => { ticketState=="completed" ?
-          dispatch(pushWarcToServerDispatch(user, collID, doi)) : {};
+          dispatch(pushWarcToServerDispatch(user, collID, doi, url)) : {};
         })
         .catch((error) => {
           console.log(error);
