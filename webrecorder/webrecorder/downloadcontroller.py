@@ -247,23 +247,23 @@ class DownloadController(BaseController):
         Stats(self.redis).incr_download(collection)
 
         download_path = self.get_origin() + "/api/v1/download/{}/".format(user_name)
-
+        warc_name_broke=warc_name.replace("/","\/")
         local_storage = LocalFileStorage(self.redis)
         landingpage = template(
             'webrecorder/templates/landingpage.html',
             title=coll_name,
-            warc_file=os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name.replace("/","\/"),".html"),
+            warc_file=os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+'.html',
             url=url
         )
-         with open(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name.replace("/","\/"),".html"), 'w') as static_file:
-            static_file.write(landingpage)
+        with open(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+".html", 'w') as output:
+            output.write(landingpage)
         commit_storage = collection.get_storage()
 
         for recording in collection.get_recordings():
             is_committed = recording.is_fully_committed()
             is_open = not is_committed and recording.get_pending_count() > 0
             storage = commit_storage if is_committed else local_storage
-            with open(os.path.join(os.environ['RECORD_ROOT'],user_name, warc_name.replace("/","\/"),".warc"), 'wb') as output:
+            with open(os.path.join(os.environ['STORAGE_REPLAY'],'warc', warc_name_broke)+".warc", 'wb') as output:
                 writer = WARCWriter(output, gzip=True)
                 for name, path in recording.iter_all_files(include_index=False):
                     local_download = download_path.format(user=user.name, coll=collection.name, filename=name)
