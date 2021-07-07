@@ -42,6 +42,7 @@ class CollectionItem extends Component {
       showModalFinish: false,
       modalSessionSave: false,
       open: false,
+      openApprove: false,
       openDeny: false,
       doi: "",
       ticketState: "open",
@@ -56,9 +57,15 @@ class CollectionItem extends Component {
     this.setState({ openDeny: !this.state.openDeny });
   };
 
+  toggleApprove = () => {
+    this.setState({ openApprove: !this.state.openApprove });
+  }
+
   close = () => {
     this.setState({ open: false });
     this.setState({ openDeny: false });
+    this.setState({ openApprove: false });
+    this.setState({ modalSessionSave: false });
     this.refresh();
   };
 
@@ -118,7 +125,7 @@ class CollectionItem extends Component {
 
   render() {
     const { canAdmin, collection, error } = this.props;
-    const { modalSessionSave, showModalFinish, open, openDeny, ticketState, doi } = this.state;
+    const { modalSessionSave, showModalFinish, open, openApprove, openDeny, ticketState, doi } = this.state;
     const descClasses = classNames("left-buffer list-group-item", {
       "has-description": collection.get("desc"),
     });
@@ -165,34 +172,40 @@ class CollectionItem extends Component {
                       <DownloadIcon /> {__DESKTOP__
                         ? "Export"
                         : "Download"}{" "}
-                      Collection{" "}
+                      collection{" "}
                     </span>
                   </Button>
                   <Button
                     className="collection-options new-session"
                     onClick={this.closeModal}
                   >
-                    <span> look at Meta data </span>
+                    <span>View/edit metadata </span>
                   </Button>
 
-                  <Button
-                    className="collection-options new-session"
-                    onClick={this.readyApprove}
-                    disabled={collection.get("ticketState") !== "pending"}
-                  >
-                    <span> Approve </span>
-                  </Button>
+                  {collection.get("ticketState") === "pending" && (
+                    <React.Fragment>
+                      <Button
+                        className="collection-options new-session"
+                        onClick={this.toggleApprove}
+                        disabled={collection.get("ticketState") !== "pending"}
+                      >
+                        <span> Approve </span>
+                      </Button>
 
-                  <Button
-                    className="collection-options new-session"
-                    onClick={this.toggleDeny}
-                    disabled={collection.get("ticketState") !== "pending"}
-                  >
-                    <span> Deny</span>
-                  </Button>
+                      <Button
+                        className="collection-options new-session"
+                        onClick={this.toggleDeny}
+                        disabled={collection.get("ticketState") !== "pending"}
+                      >
+                        <span> Deny</span>
+                      </Button>
+                    </React.Fragment>
+                  )}
+
                   <Button
                     className="collection-options new-session"
                     onClick={this.toggleSessionSave}
+                    disabled={collection.get("ticketState") !== "approved"}
                   >
                     <CheckIcon />
                     <span className="hidden-xs"> Complete and add DOI </span>
@@ -200,7 +213,7 @@ class CollectionItem extends Component {
                   {collection.get("ticketState") === "approved" && (
                     <Modal
                       visible={modalSessionSave}
-                      closeCb={this.toggleSessionSave}
+                      closeCb={this.close}
                       header="Please confirm DOI generation."
                       dialogClassName="wr-modal"
                     >
@@ -213,7 +226,9 @@ class CollectionItem extends Component {
                             <br />
                             Please take note that this DOI is not editable:
                             <br />
-                            Create DOI? {collection.get("doi")}
+                            <span style={{ color: "black", fontWeight: "bold" }}>{collection.get("doi")}</span>
+                            <br /> <br />
+                            Create DOI? <br />
                           </p>
                           <Button
                             className="col-5"
@@ -241,23 +256,44 @@ class CollectionItem extends Component {
                         <React.Fragment>
                           <h4>Attention</h4>
                           <p>
-                            If you submit this archive as denied user has to
+                            If you mark this archive as denied the user will have to
                             start from stratch.
                             <br /> <br />
                             Deny archive?{" "}
                           </p>
                           <Button
-                            className="rounded new-session"
+                            className="col-5"
                             onClick={this.denyArchive}
                           >
-                            <CheckIcon />
-                            <span className="hidden-xs">confirm.</span>
+                            <span className="mx-3">Confirm</span>
+                              <CheckIcon />
                           </Button>
                         </React.Fragment>
                       }
-                      <Button onClick={this.close} className="rectangular">
-                        Close
-                      </Button>
+                    </Modal>
+                  )}
+                  {collection.get("ticketState") === "pending" && (
+                    <Modal
+                      visible={openApprove}
+                      closeCb={this.close}
+                      header="To approve archive please confirm."
+                      dialogClassName="table-header-modal dat-modal"
+                    >
+                      {
+                        <React.Fragment>
+                          <h4>Attention</h4>
+                          <p>
+                            Are you sure you would like to approve this archive?{" "}
+                          </p>
+                          <Button
+                            className="col-5"
+                            onClick={this.readyApprove}
+                          >
+                            <span className="mx-3">Confirm</span>
+                              <CheckIcon />
+                          </Button>
+                        </React.Fragment>
+                      }
                     </Modal>
                   )}
                 </React.Fragment>

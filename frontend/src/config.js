@@ -107,11 +107,11 @@ export default Object.assign({
   untitledEntry: '',
   userRegex: new RegExp(/[A-Za-z0-9][\w-]{2,15}/),
   app: {
-    title: 'Conifer',
+    title: 'OpenDACHS',
     head: {
-      titleTemplate: 'Conifer | %s',
+      titleTemplate: 'OpenDACHS – Webrecorder | %s',
       meta: [
-        { name: 'title', content: 'Conifer' },
+        { name: 'title', content: 'OpenDACHS' },
         { name: 'description', content: 'Collect and revisit web pages — Free, open-source web archiving service.' },
         { charset: 'utf-8' },
         { property: 'og:type', content: 'website' },

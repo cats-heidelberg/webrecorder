@@ -343,7 +343,7 @@ a.collection-title:hover {
 
 @media (min-width: 768px) {
   .dat-modal {
-    overflow: auto;
+    overflow: auto !important;
     .dat-info {
       input[name="datUrl"] {
         width: 65%;
