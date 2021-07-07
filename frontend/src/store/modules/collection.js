@@ -347,7 +347,7 @@ export function completeReviewDispatch(user, collID, doi) {
       }),
   };
 }
-export function pushWarcToServerDispatch(user, collID, doi) {
+export function pushWarcToServerDispatch(user, collID, doi, url) {
   return {
     types: [
       WARC_DOWNLOAD,
@@ -358,7 +358,8 @@ export function pushWarcToServerDispatch(user, collID, doi) {
       client.post(`${apiPath}/${user}/${collID}/$download_warc`, {
         params: {user},
         data: {
-          doi
+          doi,
+          url
         },
       }),
   };

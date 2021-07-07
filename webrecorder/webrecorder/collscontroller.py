@@ -247,7 +247,7 @@ class CollsController(BaseController):
 
                     listID = _col.get('listID', 0)
 
-                    ticketState = _col.get('ticketState')
+                    ticketState = 'open'
 
                     isCollLoaded = _col.get('isCollLoaded', True)
 

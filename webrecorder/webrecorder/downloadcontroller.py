@@ -15,7 +15,7 @@ from webrecorder.models.stats import Stats
 from webrecorder.utils import get_bool
 from webrecorder.rec.storage import LocalFileStorage
 
-from bottle import response, request
+from bottle import response, request, template
 from six.moves.urllib.parse import quote
 from six import iteritems
 from collections import OrderedDict
@@ -56,8 +56,8 @@ class DownloadController(BaseController):
         def download_warc_sds(user, coll):
             data = request.json or {}
             warc_name = data.get('doi', '').replace("/","_")
-            print ("imdownload"+warc_name)
-            return self.handle_download_name(user, coll, warc_name)
+            url = data.get('url', '')
+            return self.handle_download_name(user, coll, warc_name, url)
 
         @self.app.get('/api/v1/download/webdata')
         @self.api(
@@ -209,7 +209,7 @@ class DownloadController(BaseController):
             response.headers['Transfer-Encoding'] = 'chunked'
 
             return read_all(iter_infos())
-    def handle_download_name(self, user, coll_name, warc_name):
+    def handle_download_name(self, user, coll_name, warc_name, url):
         #username = request.query.getunicode('user')
 
         #warc_name = request.query.getunicode('doi')
@@ -247,16 +247,23 @@ class DownloadController(BaseController):
         Stats(self.redis).incr_download(collection)
 
         download_path = self.get_origin() + "/api/v1/download/{}/".format(user_name)
-        print(download_path)
+        warc_name_broke=warc_name.replace("/","\/")
         local_storage = LocalFileStorage(self.redis)
-
+        landingpage = template(
+            'webrecorder/templates/landingpage.html',
+            title=coll_name,
+            warc_file=os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+'.html',
+            url=url
+        )
+        with open(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+".html", 'w') as output:
+            output.write(landingpage)
         commit_storage = collection.get_storage()
 
         for recording in collection.get_recordings():
             is_committed = recording.is_fully_committed()
             is_open = not is_committed and recording.get_pending_count() > 0
             storage = commit_storage if is_committed else local_storage
-            with open(os.path.join(os.environ['RECORD_ROOT'],user_name, warc_name.replace("/","\/"),".warc"), 'wb') as output:
+            with open(os.path.join(os.environ['STORAGE_REPLAY'],'warc', warc_name_broke)+".warc", 'wb') as output:
                 writer = WARCWriter(output, gzip=True)
                 for name, path in recording.iter_all_files(include_index=False):
                     local_download = download_path.format(user=user.name, coll=collection.name, filename=name)
