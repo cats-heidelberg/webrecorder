@@ -264,7 +264,7 @@ class CollectionItem extends Component {
                             If you submit your archive for DOI creation you
                             won't be able to record more content.
                             <br /> <br />
-                            End recording archive?{" "}
+                            Please confirm you want to end recording this archive.{" "}
                             <a href="https://datproject.org/" target="_blank">
                               Learn more
                             </a>
@@ -316,15 +316,14 @@ class CollectionItem extends Component {
                     Your recording has been reviewed by the library team and has
                     been approved.
                     <br />
-                    A DOI has been created.
+                    A DOI has been created:
                     <br />
-                    <h4 style={{ color: "black" }}>
+                    <h5 style={{ color: "black", marginBottom: "0", marginTop: "10px"}}>
                       {collection.get("doi") !== undefined &&
                       collection.get("doi") !== null
                         ? collection.get("doi")
                         : "There is a problem with the DOI, please contact an OpenDachs admin."}
-                    </h4>
-                    <br />
+                    </h5>
                   </p>
                 </React.Fragment>
               )}
