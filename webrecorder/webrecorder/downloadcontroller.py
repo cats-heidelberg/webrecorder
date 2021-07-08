@@ -263,7 +263,7 @@ class DownloadController(BaseController):
             is_committed = recording.is_fully_committed()
             is_open = not is_committed and recording.get_pending_count() > 0
             storage = commit_storage if is_committed else local_storage
-            with open(os.path.join(os.environ['RECORD_ROOT'],user_name, warc_name.replace("/","\/"),".warc"), 'wb') as output:
+            with open(os.path.join(os.environ['STORAGE_REPLAY'],user_name, warc_name.replace("/","\/"),".warc"), 'wb') as output:
                 writer = WARCWriter(output, gzip=True)
                 for name, path in recording.iter_all_files(include_index=False):
                     local_download = download_path.format(user=user.name, coll=collection.name, filename=name)
