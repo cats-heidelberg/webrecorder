@@ -255,6 +255,14 @@ class DownloadController(BaseController):
             warc_file=os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+'.html',
             url=url
         )
+        if  not os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'])):
+            os.mkdir(os.path.join(os.environ['STORAGE_ROOT']))
+            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'])))
+
+        if  not os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata')):
+            os.mkdir(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata'))
+            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata')))
+
         if  not os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')):
             os.mkdir(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp'))
             print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')))
