@@ -259,16 +259,16 @@ class DownloadController(BaseController):
             os.makedirs(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp'))
             print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')))
         except FileExistsError:
-            print("Directory '% s' already created!" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')))
+            print("Directory '% s' already created!" % os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp'))
         except FileNotFoundError:
-            print("Directory '% s' No such file or directory!" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')))
+            print("Directory '% s' No such file or directory!" % os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp'))
         try:
             os.makedirs(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc'))
             print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc')))
         except FileExistsError:
-            print("Directory '% s' already created!" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc')))
+            print("Directory '% s' already created!" % os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc'))
         except FileNotFoundError:
-            print("Directory '% s' No such file or directory!" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc')))
+            print("Directory '% s' No such file or directory!" % os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc'))
 
 
         try:
@@ -306,7 +306,7 @@ class DownloadController(BaseController):
                 print(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc', warc_name_broke)+".warc exists")
             except FileNotFoundError:
                 print(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc', warc_name_broke)+".warc doesn't exists")
-            
+
 
 
 
