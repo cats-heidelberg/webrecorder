@@ -255,17 +255,28 @@ class DownloadController(BaseController):
             warc_file=os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+'.html',
             url=url
         )
-        if  not os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata')):
+        try:
+            os.mkdir(os.path.join(os.environ['STORAGE_ROOT']))
+            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'])))
+        except
+            print("Directory '% s' already created!" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'])))
+        try:
             os.mkdir(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata'))
             print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata')))
-
-        if  not os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')):
+        except
+            print("Directory '% s' already created!" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata')))
+        try:
             os.mkdir(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp'))
             print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')))
-
-        if  not os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc')):
+        except
+            print("Directory '% s' already created!" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')))
+        try:
             os.mkdir(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc'))
             print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc')))
+        except
+            print("Directory '% s' already created!" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc')))
+
+
 
         with open(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+".html", 'w') as output:
             output.write(landingpage)
