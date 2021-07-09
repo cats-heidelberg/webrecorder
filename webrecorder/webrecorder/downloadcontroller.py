@@ -285,8 +285,9 @@ class DownloadController(BaseController):
             is_committed = recording.is_fully_committed()
             is_open = not is_committed and recording.get_pending_count() > 0
             storage = commit_storage if is_committed else local_storage
-            with open(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc', warc_name_broke)+".warc", 'wb') as output:
-                writer = WARCWriter(output, gzip=True)
+            try:
+                f = open(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc', warc_name_broke)+".warc", 'wb')
+                writer = WARCWriter(f, gzip=True)
                 for name, path in recording.iter_all_files(include_index=False):
                     local_download = download_path.format(user=user.name, coll=collection.name, filename=name)
                     warc_key = collection.get_warc_key()
@@ -300,6 +301,13 @@ class DownloadController(BaseController):
                     with open(warc_path, 'rb') as stream:
                         for record in ArchiveIterator(stream):
                             writer.write_record (record)
+                f.close()
+            except FileExistsError:
+                print(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc', warc_name_broke)+".warc exists")
+            except FileNotFoundError:
+                print(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc', warc_name_broke)+".warc doesn't exists")
+            
+
 
 
 
