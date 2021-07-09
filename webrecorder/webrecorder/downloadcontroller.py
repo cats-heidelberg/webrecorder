@@ -252,10 +252,10 @@ class DownloadController(BaseController):
         landingpage = template(
             'webrecorder/templates/landingpage.html',
             title=coll_name,
-            warc_file=os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+'.html',
+            warc_file=os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+'.html',
             url=url
         )
-        with open(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+".html", 'w') as output:
+        with open(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+".html", 'w') as output:
             output.write(landingpage)
         commit_storage = collection.get_storage()
 
@@ -263,7 +263,7 @@ class DownloadController(BaseController):
             is_committed = recording.is_fully_committed()
             is_open = not is_committed and recording.get_pending_count() > 0
             storage = commit_storage if is_committed else local_storage
-            with open(os.path.join(os.environ['STORAGE_REPLAY'],'warc', warc_name_broke)+".warc", 'wb') as output:
+            with open(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc', warc_name_broke)+".warc", 'wb') as output:
                 writer = WARCWriter(output, gzip=True)
                 for name, path in recording.iter_all_files(include_index=False):
                     local_download = download_path.format(user=user.name, coll=collection.name, filename=name)
