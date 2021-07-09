@@ -266,6 +266,11 @@ class DownloadController(BaseController):
         if  not os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')):
             os.mkdir(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp'))
             print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')))
+
+        if  not os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc')):
+            os.mkdir(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc'))
+            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc')))
+
         with open(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+".html", 'w') as output:
             output.write(landingpage)
         commit_storage = collection.get_storage()
