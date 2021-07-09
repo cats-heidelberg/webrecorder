@@ -271,8 +271,14 @@ class DownloadController(BaseController):
             print("Directory '% s' No such file or directory!" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc')))
 
 
-        with open(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+".html", 'w') as output:
-            output.write(landingpage)
+        try:
+            f = open(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+".html", 'w')
+            f.write(landingpage)
+            f.close()
+        except FileExistsError:
+            print(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+".html exists")
+        except FileNotFoundError:
+            print(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+".html doesn't exists")
         commit_storage = collection.get_storage()
 
         for recording in collection.get_recordings():
