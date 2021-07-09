@@ -258,22 +258,22 @@ class DownloadController(BaseController):
         try:
             os.mkdir(os.path.join(os.environ['STORAGE_ROOT']))
             print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'])))
-        except FileNotFoundError:
+        except FileExistsError:
             print("Directory '% s' already created!" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'])))
         try:
             os.mkdir(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata'))
             print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata')))
-        except FileNotFoundError:
+        except FileExistsError:
             print("Directory '% s' already created!" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata')))
         try:
             os.mkdir(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp'))
             print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')))
-        except FileNotFoundError:
+        except FileExistsError:
             print("Directory '% s' already created!" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')))
         try:
             os.mkdir(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc'))
             print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc')))
-        except FileNotFoundError:
+        except FileExistsError:
             print("Directory '% s' already created!" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc')))
 
 
