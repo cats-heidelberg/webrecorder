@@ -256,7 +256,7 @@ class DownloadController(BaseController):
             url=url
         )
         if  not os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')):
-            os.mkdir(os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')))
+            os.mkdir(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp'))
             print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')))
         with open(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+".html", 'w') as output:
             output.write(landingpage)
