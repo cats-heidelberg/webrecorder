@@ -252,33 +252,33 @@ class DownloadController(BaseController):
         landingpage = template(
             'webrecorder/templates/landingpage.html',
             title=coll_name,
-            warc_file=os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+'.html',
+            warc_file=os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+'.html',
             url=url
         )
         try:
-            os.makedirs(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp'))
-            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp')))
+            os.makedirs(os.path.join(os.environ['STORAGE_REPLAY'],'lp'))
+            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_REPLAY'],'lp')))
         except FileExistsError:
-            print("Directory '% s' already created!" % os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp'))
+            print("Directory '% s' already created!" % os.path.join(os.environ['STORAGE_REPLAY'],'lp'))
         except FileNotFoundError:
-            print("Directory '% s' No such file or directory!" % os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp'))
+            print("Directory '% s' No such file or directory!" % os.path.join(os.environ['STORAGE_REPLAY'],'lp'))
         try:
-            os.makedirs(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc'))
-            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc')))
+            os.makedirs(os.path.join(os.environ['STORAGE_REPLAY'],'warc'))
+            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_REPLAY'],'warc')))
         except FileExistsError:
-            print("Directory '% s' already created!" % os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc'))
+            print("Directory '% s' already created!" % os.path.join(os.environ['STORAGE_REPLAY'],'warc'))
         except FileNotFoundError:
-            print("Directory '% s' No such file or directory!" % os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc'))
+            print("Directory '% s' No such file or directory!" % os.path.join(os.environ['STORAGE_REPLAY'],'warc'))
 
 
         try:
-            f = open(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+".html", 'w')
+            f = open(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+".html", 'w')
             f.write(landingpage)
             f.close()
         except FileExistsError:
-            print(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+".html exists")
+            print(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+".html exists")
         except FileNotFoundError:
-            print(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','lp', warc_name_broke)+".html doesn't exists")
+            print(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+".html doesn't exists")
         commit_storage = collection.get_storage()
 
         for recording in collection.get_recordings():
@@ -286,7 +286,7 @@ class DownloadController(BaseController):
             is_open = not is_committed and recording.get_pending_count() > 0
             storage = commit_storage if is_committed else local_storage
             try:
-                f = open(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc', warc_name_broke)+".warc", 'wb')
+                f = open(os.path.join(os.environ['STORAGE_REPLAY'],'warc', warc_name_broke)+".warc", 'wb')
                 writer = WARCWriter(f, gzip=True)
                 for name, path in recording.iter_all_files(include_index=False):
                     local_download = download_path.format(user=user.name, coll=collection.name, filename=name)
@@ -303,9 +303,9 @@ class DownloadController(BaseController):
                             writer.write_record (record)
                 f.close()
             except FileExistsError:
-                print(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc', warc_name_broke)+".warc exists")
+                print(os.path.join(os.environ['STORAGE_REPLAY'],'warc', warc_name_broke)+".warc exists")
             except FileNotFoundError:
-                print(os.path.join(os.environ['STORAGE_ROOT'],'webarchivedata','warc', warc_name_broke)+".warc doesn't exists")
+                print(os.path.join(os.environ['STORAGE_REPLAY'],'warc', warc_name_broke)+".warc doesn't exists")
 
 
 

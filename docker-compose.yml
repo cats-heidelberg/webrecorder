@@ -59,6 +59,7 @@ services:
 
         volumes:
             - ./data:/data
+            - ./data/webarchivedata:/data/webarchivedata
             - ./data/dat/secret_keys:/root/.dat/secret_keys
 
     recorder:
@@ -106,6 +107,8 @@ services:
             - behaviors
 
         volumes:
+
+            - ./data/webarchivedata:/data/webarchivedata
             - ./data:/data
             - ./webrecorder/:/code/
             - ./frontend/:/frontend/
