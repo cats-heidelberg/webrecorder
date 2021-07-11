@@ -19,6 +19,7 @@ services:
         volumes:
             - ./webrecorder/:/code/
             - ./data:/data
+            - /opt/webarchivedata/:/webarchivedata
 
         networks:
             - default
