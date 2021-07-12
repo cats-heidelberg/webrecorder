@@ -252,7 +252,7 @@ class DownloadController(BaseController):
         landingpage = template(
             'webrecorder/templates/landingpage.html',
             title=coll_name,
-            warc_file='../lp/'+warc_name_broke+'.html',
+            warc_file='../warc/'+warc_name_broke+'.html',
             url=url
         )
         try:
