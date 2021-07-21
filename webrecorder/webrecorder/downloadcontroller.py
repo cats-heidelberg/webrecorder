@@ -252,19 +252,42 @@ class DownloadController(BaseController):
         landingpage = template(
             'webrecorder/templates/landingpage.html',
             title=coll_name,
-            warc_file=os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+'.html',
+            warc_file='../warc/'+warc_name_broke+'.warc',
             url=url
         )
-        with open(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+".html", 'w') as output:
-            output.write(landingpage)
+        try:
+            os.makedirs(os.path.join(os.environ['STORAGE_REPLAY'],'lp'))
+            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_REPLAY'],'lp')))
+        except FileExistsError:
+            print("Directory '% s' already created!" % os.path.join(os.environ['STORAGE_REPLAY'],'lp'))
+        except FileNotFoundError:
+            print("Directory '% s' No such file or directory!" % os.path.join(os.environ['STORAGE_REPLAY'],'lp'))
+        try:
+            os.makedirs(os.path.join(os.environ['STORAGE_REPLAY'],'warc'))
+            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_REPLAY'],'warc')))
+        except FileExistsError:
+            print("Directory '% s' already created!" % os.path.join(os.environ['STORAGE_REPLAY'],'warc'))
+        except FileNotFoundError:
+            print("Directory '% s' No such file or directory!" % os.path.join(os.environ['STORAGE_REPLAY'],'warc'))
+
+
+        try:
+            f = open(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+".html", 'w')
+            f.write(landingpage)
+            f.close()
+        except FileExistsError:
+            print(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+".html exists")
+        except FileNotFoundError:
+            print(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+".html doesn't exists")
         commit_storage = collection.get_storage()
 
         for recording in collection.get_recordings():
             is_committed = recording.is_fully_committed()
             is_open = not is_committed and recording.get_pending_count() > 0
             storage = commit_storage if is_committed else local_storage
-            with open(os.path.join(os.environ['STORAGE_REPLAY'],'warc', warc_name_broke)+".warc", 'wb') as output:
-                writer = WARCWriter(output, gzip=True)
+            try:
+                f = open(os.path.join(os.environ['STORAGE_REPLAY'],'warc', warc_name_broke)+".warc", 'wb')
+                writer = WARCWriter(f, gzip=True)
                 for name, path in recording.iter_all_files(include_index=False):
                     local_download = download_path.format(user=user.name, coll=collection.name, filename=name)
                     warc_key = collection.get_warc_key()
@@ -278,6 +301,13 @@ class DownloadController(BaseController):
                     with open(warc_path, 'rb') as stream:
                         for record in ArchiveIterator(stream):
                             writer.write_record (record)
+                f.close()
+            except FileExistsError:
+                print(os.path.join(os.environ['STORAGE_REPLAY'],'warc', warc_name_broke)+".warc exists")
+            except FileNotFoundError:
+                print(os.path.join(os.environ['STORAGE_REPLAY'],'warc', warc_name_broke)+".warc doesn't exists")
+
+
 
 
 
