@@ -13,7 +13,7 @@ import { buildDate, getCollectionLink, truncate } from "helpers/utils";
 import SizeFormat from "components/SizeFormat";
 import Modal from "components/Modal";
 
-import { EditMetadata } from "components/siteComponents";
+import { NewCollection } from "components/siteComponents";
 import { DeleteCollection } from "containers";
 import { TrashIcon, PlusIcon, LockIcon } from "components/icons";
 
@@ -341,12 +341,13 @@ class CollectionItem extends Component {
                 </React.Fragment>
               )}
             </div>
-            <EditMetadata
+            <NewCollection
               coll={collection}
               editCollection={this.editCollectiontemp}
               close={this.closeModal}
               visible={showModalFinish}
               error={error}
+              createOrEdit="edit"
             />
           </Row>
         </li>

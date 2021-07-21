@@ -876,6 +876,7 @@ class CollectionListUI extends Component {
           progressProp={progress}
           statusProp={status}
           isUploadingProp={isUploading}
+          createOrEdit="create"
         />
       </React.Fragment>
     );
