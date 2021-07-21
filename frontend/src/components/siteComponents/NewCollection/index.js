@@ -26,6 +26,8 @@ class NewCollection extends Component {
   static propTypes = {
     activeCollection: PropTypes.string,
     close: PropTypes.func,
+    editCollection: PropTypes.func,
+    coll: PropTypes.object,
     createCollection: PropTypes.func,
     creatingCollection: PropTypes.bool,
     createCollectionBrowseWarc: PropTypes.func,
@@ -33,6 +35,7 @@ class NewCollection extends Component {
     fromCollection: PropTypes.string,
     showModal: PropTypes.bool,
     visible: PropTypes.bool,
+    createOrEdit: PropTypes.string,
   };
 
   constructor(props) {
@@ -79,6 +82,68 @@ class NewCollection extends Component {
       targetColl: props.fromCollection ? "chosen" : "auto",
       doi: "",
     };
+  }
+
+  // only if used in "edit metadata" or "view/edit metadata", not in "create new archive"
+  componentDidMount() {
+    if (this.props.createOrEdit === "edit") {
+      const self = this;
+      const promise1 = new Promise(function (resolve, reject) {
+        console.log(self.props.coll.get("personHeaderList"));
+        var didSucceed = JSON.parse(
+          self.props.coll.get("personHeaderList").replace(/'/g, '"')
+        );
+        resolve(didSucceed);
+      });
+      const promise2 = new Promise(function (resolve, reject) {
+        console.log(self.props.coll.get("subjectHeaderList"));
+        var didSucceed = JSON.parse(
+          self.props.coll.get("subjectHeaderList").replace(/'/g, '"')
+        );
+        resolve(didSucceed);
+      });
+      const promise3 = new Promise(function (resolve, reject) {
+        console.log(self.props.coll.get("creatorList"));
+        var didSucceed = JSON.parse(
+          self.props.coll.get("creatorList").replace(/'/g, '"')
+        );
+        resolve(didSucceed);
+      });
+
+      Promise.all([promise1, promise2, promise3])
+        .then(function (values) {
+          self.setState((state) => {
+            return {
+              personHeaderList: values[0],
+              subjectHeaderList: values[1],
+              creatorList: values[2],
+            };
+          });
+        })
+        .catch((err) => console.log("There was an error:" + err));
+
+      this.setState((state) => {
+        return {
+          listID: this.props.coll.get("listID"),
+          publisher: this.props.coll.get("publisher"),
+          publisherOriginal: this.props.coll.get("publisherOriginal"),
+          subjectHeadingText: this.props.coll.get("subjectHeadingText"),
+          personHeadingText: this.props.coll.get("personHeadingText"),
+          collTitle: this.props.coll.get("collTitle"),
+          title: this.props.coll.get("title"),
+          pubTitleOriginal: this.props.coll.get("pubTitleOriginal"),
+          collYear: this.props.coll.get("collYear"),
+          copTitle: this.props.coll.get("copTitle"),
+          noteToDachs: this.props.coll.get("noteToDachs"),
+          surName: this.props.coll.get("surName"),
+          persName: this.props.coll.get("persName"),
+          usermail: this.props.coll.get("usermail"),
+          publishYear: this.props.coll.get("publishYear"),
+          selectedGroupName: "corporate/institutional name",
+          url: this.props.coll.get("url"),
+        };
+      });
+    }
   }
 
   cancelWarc = () => {
@@ -443,6 +508,57 @@ class NewCollection extends Component {
       return this.xhr;
     }
   };
+
+  submitChanges = (evt) => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    const {
+      title,
+      creatorList,
+      noteToDachs,
+      subjectHeaderList,
+      subjectHeadingText,
+      personHeaderList,
+      publisher,
+      publisherOriginal,
+      pubTitleOriginal,
+      personHeadingText,
+      collTitle,
+      collYear,
+      copTitle,
+      surName,
+      persName,
+      usermail,
+      selectedGroupName,
+      publishYear,
+      listID,
+    } = this.state;
+    const { coll } = this.props;
+    this.props.editCollection(
+      coll.get("id"),
+      title,
+      JSON.stringify(creatorList),
+      JSON.stringify(subjectHeaderList),
+      JSON.stringify(personHeaderList),
+      noteToDachs,
+      publisher,
+      collTitle,
+      publisherOriginal,
+      collYear,
+      copTitle,
+      surName,
+      persName,
+      usermail,
+      selectedGroupName,
+      publishYear,
+      pubTitleOriginal,
+      personHeadingText,
+      subjectHeadingText,
+      listID
+    );
+    this.props.close();
+  };
+
   toggleHidden = (evt) => {
     evt.stopPropagation();
     evt.preventDefault();
@@ -1313,7 +1429,7 @@ class NewCollection extends Component {
             )}
             <button
               className="btn btn-lg btn-primary btn-block"
-              onClick={this.submit}
+              onClick={this.props.createOrEdit === "create" ? this.submit : this.submitChanges}
               disabled={
                 !emailValid ||
                 !urlValid ||
@@ -1327,7 +1443,7 @@ class NewCollection extends Component {
               }
               type="button"
             >
-              Create
+              {this.props.createOrEdit === "create" ? "Create" : "Save changes"}
             </button>
           </form>
         </Modal>
