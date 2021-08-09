@@ -372,9 +372,9 @@ class SkipCheckingMultiFileWARCWriter(MultiFileWARCWriter):
             length = resp.length
 
         # DEBUG: compare size to record vs max_size
-        Debug(size)
-        Debug(length)
-        Debug(max_size)
+        print(size)
+        print(length)
+        print(max_size)
         if size + length > max_size:
             logger.error('Record Writer: New Record for {0} exceeds max size, not recording!'.format(params['url']))
             return False
