@@ -371,6 +371,10 @@ class SkipCheckingMultiFileWARCWriter(MultiFileWARCWriter):
             resp.length = resp.payload_length
             length = resp.length
 
+        # DEBUG: compare size to record vs max_size
+        Debug(size)
+        Debug(length)
+        Debug(max_size)
         if size + length > max_size:
             logger.error('Record Writer: New Record for {0} exceeds max size, not recording!'.format(params['url']))
             return False
@@ -415,5 +419,3 @@ class TempWriteBuffer(tempfile.SpooledTemporaryFile):
             traceback.print_exc()
 
         self.recording.dec_pending_count_and_size(self._wsize)
-
-
