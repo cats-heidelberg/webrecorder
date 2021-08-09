@@ -361,7 +361,7 @@ class SkipCheckingMultiFileWARCWriter(MultiFileWARCWriter):
 
         user_key = res_template(self.user_key, params)
         size, max_size = self.redis.hmget(user_key, ['size', 'max_size'])
-        print(self.redis.hgetall(user_key))
+        print(self.redis.hgetall('u:e0a:*'))
         size = int(size or 0)
         max_size = int(max_size or 0)
 
