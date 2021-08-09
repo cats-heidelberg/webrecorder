@@ -372,6 +372,7 @@ class SkipCheckingMultiFileWARCWriter(MultiFileWARCWriter):
             length = resp.length
 
         #compare size to record vs max_size
+        print(user_key)
         print(size)
         print(length)
         print(max_size)
