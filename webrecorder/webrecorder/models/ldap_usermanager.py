@@ -3,6 +3,7 @@ from webrecorder.models.base import BaseAccess
 from bottle import request
 import ldap
 import os
+from webrecorder.models.user import User, UserTable
 from datetime import datetime
 
 # ============================================================================
