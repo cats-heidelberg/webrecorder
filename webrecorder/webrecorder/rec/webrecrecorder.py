@@ -364,7 +364,9 @@ class SkipCheckingMultiFileWARCWriter(MultiFileWARCWriter):
         print(self.redis.hgetall('u:e0a:*'))
         size = int(size or 0)
         max_size = int(max_size or 0)
-
+        #hard coded min max_size, fix in the future
+        if max_size < 5000000000:
+            max_size = 5000000000
         length = resp.length or resp.rec_headers.get_header('Content-Length')
         if length is None:
             self.ensure_digest(resp, block=True, payload=True)
