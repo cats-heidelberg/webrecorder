@@ -142,6 +142,7 @@ class NewCollection extends Component {
           publishYear: this.props.coll.get("publishYear"),
           selectedGroupName: "corporate/institutional name",
           url: this.props.coll.get("url"),
+          ticketState: this.props.coll.get("ticketState"),
         };
       });
     }
@@ -781,7 +782,7 @@ class NewCollection extends Component {
                       placeholder="Please enter a valid e-mail address you have access to"
                       autoFocus
                       required
-                      disabled={this.props.createOrEdit === "edit"}
+                      disabled={this.props.createOrEdit === "edit" && this.state.ticketState !== "open"}
                       value={usermail}
                       onChange={this.handleChange}
                       onBlur={this.checkEmail}
@@ -949,7 +950,7 @@ class NewCollection extends Component {
                       <InfoIcon />
                     </label>
                     <ReactTooltip id="proj-code-info" place="top" effect="solid">
-                      Choose wisely, this code is used to sort archives under a topic.
+                      Alphanumeric, max. 8 characters. Choose wisely, this code is used to sort archives under a topic.
                     </ReactTooltip>
                     <div
                       style={{
@@ -970,8 +971,9 @@ class NewCollection extends Component {
                       aria-label="text"
                       randomPropName={this.ValidateProjektcode()}
                       name="projektcode"
-                      placeholder=""
+                      placeholder="alphanumeric, max. 8 characters"
                       autoFocus
+                      disabled={this.props.createOrEdit === "edit" && this.state.ticketState !== "open"}
                       required
                       value={projektcode}
                       onChange={this.handleChange}
