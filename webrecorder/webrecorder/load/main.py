@@ -135,7 +135,9 @@ class WRWarcServer(object):
 
         filter_list = load_yaml_config(patch_archives_index)
         filter_list = filter_list.get('webarchive_ids', {})
-
+        #somehow server breaks here, local deployment doesnt
+        if not archives.keys():
+            return patch_archives
         for name in archives.keys():
             if name in filter_list:
                 patch_archives[name] = archives[name]
@@ -177,4 +179,3 @@ if __name__ == "__main__":
     from gevent.wsgi import WSGIServer
     server = WSGIServer(('', 8080), application)
     server.serve_forever()
-
