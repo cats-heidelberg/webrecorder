@@ -141,7 +141,7 @@ class WRWarcServer(object):
                 if name in filter_list:
                     patch_archives[name] = archives[name]
             except Exception as e:
-                print("filter_list not iterable"+e)
+                print(e)
 
 
         return patch_archives
