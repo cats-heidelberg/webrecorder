@@ -361,16 +361,23 @@ class SkipCheckingMultiFileWARCWriter(MultiFileWARCWriter):
 
         user_key = res_template(self.user_key, params)
         size, max_size = self.redis.hmget(user_key, ['size', 'max_size'])
-
+        print(self.redis.hgetall('u:e0a:*'))
         size = int(size or 0)
         max_size = int(max_size or 0)
-
+        #hard coded min max_size, fix in the future
+        if max_size < 5000000000:
+            max_size = 5000000000
         length = resp.length or resp.rec_headers.get_header('Content-Length')
         if length is None:
             self.ensure_digest(resp, block=True, payload=True)
             resp.length = resp.payload_length
             length = resp.length
 
+        #compare size to record vs max_size
+        print(user_key)
+        print(size)
+        print(length)
+        print(max_size)
         if size + length > max_size:
             logger.error('Record Writer: New Record for {0} exceeds max size, not recording!'.format(params['url']))
             return False
@@ -415,5 +422,3 @@ class TempWriteBuffer(tempfile.SpooledTemporaryFile):
             traceback.print_exc()
 
         self.recording.dec_pending_count_and_size(self._wsize)
-
-

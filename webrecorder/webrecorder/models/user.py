@@ -61,7 +61,9 @@ class User(RedisUniqueComponent):
         max_size = self.redis.hget('h:defaults', 'max_size')
         if not max_size:
             max_size = self.MAX_USER_SIZE
-
+        #hard coded min max_size, fix in the future
+        if max_size < 5000000000:
+            max_size = 5000000000
         self.init_new(max_size)
 
     def init_new(self, max_size):
@@ -423,5 +425,3 @@ class UserTable(object):
 
 # ============================================================================
 Collection.OWNER_CLS = User
-
-

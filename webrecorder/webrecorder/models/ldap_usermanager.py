@@ -3,6 +3,7 @@ from webrecorder.models.base import BaseAccess
 from bottle import request
 import ldap
 import os
+from webrecorder.models.user import User, UserTable
 from datetime import datetime
 
 # ============================================================================
@@ -10,6 +11,14 @@ class LdapUserManager(UserManager):
     def __init__(self, redis, cork, config):
         super().__init__(redis, cork, config)
         self.admin_override = False
+        try:
+            self.redis.hsetnx('h:defaults', 'max_size', int(config['default_max_size']))
+            self.redis.hsetnx('h:defaults', 'max_anon_size', int(config['default_max_anon_size']))
+        except Exception as e:
+            print('WARNING: Unable to init defaults: ' + str(e))
+
+        self.all_users = UserTable(self.redis, self._get_access)
+
 
     def _get_access(self):
         if self.admin_override:
