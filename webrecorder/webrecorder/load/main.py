@@ -135,12 +135,14 @@ class WRWarcServer(object):
 
         filter_list = load_yaml_config(patch_archives_index)
         filter_list = filter_list.get('webarchive_ids', {})
-        #somehow server breaks here, local deployment doesnt
-        if not archives.keys():
-            return patch_archives
+        #weird error remains
         for name in archives.keys():
-            if name in filter_list:
-                patch_archives[name] = archives[name]
+            try:
+                if name in filter_list:
+                    patch_archives[name] = archives[name]
+            except Exception as e:
+                print("filter_list not iterable"+e)
+
 
         return patch_archives
 
