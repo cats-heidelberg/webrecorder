@@ -497,7 +497,7 @@ class CollsController(BaseController):
                 collection['url'] = data['url']
 
             if ticketStateChanged:
-                if data['ticketState'] == 'complete':
+                if data['ticketState'] == 'completed':
                     reviewerMailText = template(
                         'webrecorder/templates/complete_mail.html',
                         coll_name=coll_name,
