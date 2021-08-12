@@ -132,6 +132,7 @@ class NewCollection extends Component {
           collTitle: this.props.coll.get("collTitle"),
           title: this.props.coll.get("title"),
           pubTitleOriginal: this.props.coll.get("pubTitleOriginal"),
+          projektcode: this.props.coll.get("projektcode"),
           collYear: this.props.coll.get("collYear"),
           copTitle: this.props.coll.get("copTitle"),
           noteToDachs: this.props.coll.get("noteToDachs"),
@@ -729,7 +730,8 @@ class NewCollection extends Component {
       creatorList,
     } = this.state;
 
-    const text = `To edit Metadata, please use the information form below.${"\n"} Fields marked with asterisk (*) are required`;
+    const text =
+      this.props.createOrEdit === "create" ? `Fields marked with asterisk (*) are required. You can still edit them after creating a collection.` : ``
     if (visible) {
       this.rebuildTooltip();
     }
@@ -774,11 +776,12 @@ class NewCollection extends Component {
                           : "1px solid #ff1a1a",
                       }}
                       aria-label="email"
-                      validationState={this.validateEmail()}
+                      randomPropName={this.validateEmail()}
                       name="usermail"
                       placeholder="Please enter a valid e-mail address you have access to"
                       autoFocus
                       required
+                      disabled={this.props.createOrEdit === "edit"}
                       value={usermail}
                       onChange={this.handleChange}
                       onBlur={this.checkEmail}
@@ -811,14 +814,18 @@ class NewCollection extends Component {
                           ? "1px solid black"
                           : "1px solid #ff1a1a",
                       }}
-                      validationState={this.validateURL()}
+                      randomPropName={this.validateURL()}
                       name="url"
+                      disabled={this.props.createOrEdit === "edit"}
                       placeholder="Please enter a valid webpage url"
                       value={url}
                       onChange={this.handleInput}
                     />
                     <div>
-                      <button onClick={this.toggleHidden}>
+                      <button
+                        onClick={this.toggleHidden}
+                        disabled={this.props.createOrEdit === "edit"}
+                      >
                         <WarcIcon /> I already have a .warc file to upload
                       </button>
                       {!isHidden && (
@@ -895,7 +902,7 @@ class NewCollection extends Component {
                     <Form.Control
                       className="mb-2"
                       type="text"
-                      validationState={this.validateTitle()}
+                      randomPropName={this.validateTitle()}
                       placeholder=""
                       inputRef={(obj) => {
                         this.input = obj;
@@ -942,7 +949,7 @@ class NewCollection extends Component {
                       <InfoIcon />
                     </label>
                     <ReactTooltip id="proj-code-info" place="top" effect="solid">
-                      data-tip="obligatory and choose wisely since projektcode is used to sort archives under a topic.
+                      Choose wisely, this code is used to sort archives under a topic.
                     </ReactTooltip>
                     <div
                       style={{
@@ -961,7 +968,7 @@ class NewCollection extends Component {
                           : "1px solid #ff1a1a",
                       }}
                       aria-label="text"
-                      validationState={this.ValidateProjektcode()}
+                      randomPropName={this.ValidateProjektcode()}
                       name="projektcode"
                       placeholder=""
                       autoFocus
@@ -1028,7 +1035,7 @@ class NewCollection extends Component {
                         <Form.Control
                           className="mb-2"
                           type="text"
-                          validationState={this.validateAuthorship()}
+                          randomPropName={this.validateAuthorship()}
                           placeholder="Enter full name of corporate/institution"
                           inputRef={(obj) => {
                             this.input = obj;
@@ -1079,7 +1086,7 @@ class NewCollection extends Component {
                         <Form.Control
                           className="mb-2"
                           type="text"
-                          validationState={this.validateAuthorship()}
+                          randomPropName={this.validateAuthorship()}
                           placeholder="Enter name as 'surname, given name'"
                           inputRef={(obj) => {
                             this.input = obj;
@@ -1159,7 +1166,7 @@ class NewCollection extends Component {
                 <Row>
                   <Form.Group
                     id="fieldset"
-                    validationState={this.titleValidation()}
+                    randomPropName={this.titleValidation()}
                     style={{"width": "100%"}}
                   >
                     <label data-tip data-for="authorship-orig-info2" className="mb-1">
@@ -1183,7 +1190,7 @@ class NewCollection extends Component {
                       className="mb-2"
                       type="text"
                       placeholder="Enter the name of the publishing entity"
-                      validationState={this.validatePublisher()}
+                      randomPropName={this.validatePublisher()}
                       inputRef={(obj) => {
                         this.input = obj;
                       }}
@@ -1246,7 +1253,7 @@ class NewCollection extends Component {
                     <Form.Control
                       type="text"
                       placeholder="YYYY-MM-DD"
-                      validationState={this.validatePublishYear()}
+                      randomPropName={this.validatePublishYear()}
                       inputRef={(obj) => {
                         this.input = obj;
                       }}
