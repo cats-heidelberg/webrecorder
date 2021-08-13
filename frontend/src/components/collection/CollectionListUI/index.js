@@ -289,7 +289,6 @@ class CollectionListUI extends Component {
         res.json();
       })
       .then(({ url }) => {
-        console.log("whats the url"+url.replace(config.appHost, ""))
         this.props.history.push(url.replace(config.appHost, ""));
       })
       .catch((err) => {

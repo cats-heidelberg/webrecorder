@@ -567,6 +567,22 @@ class CollsController(BaseController):
 
             collection.mark_updated()
             return {'collection': collection.serialize()}
+        @self.app.post('/api/v1/collection/appropriateurl/<coll_name>')
+        @self.api(query=['user'],
+                  req=['url'],
+                  resp='collection')
+        def update_malformedurl(coll_name):
+            user, collection = self.load_user_coll(coll_name=coll_name)
+
+            self.access.assert_can_admin_coll(collection)
+
+            data = request.json or {}
+
+            if 'url' in data:
+                collection['url'] = data['url']
+
+            collection.mark_updated()
+            return {'collection': collection.serialize()}
 
         @self.app.get('/api/v1/collection/<coll_name>/page_bookmarks')
         @self.api(query=['user'],

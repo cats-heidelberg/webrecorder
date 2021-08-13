@@ -67,6 +67,10 @@ const REVIEW_CREATE = "wr/coll/REVIEW_CREATE_COUNT";
 const REVIEW_CREATE_SUCCESS = "wr/coll/REVIEW_CREATE_COUNT_SUCCESS";
 const REVIEW_CREATE_FAIL = "wr/coll/REVIEW_CREATE_COUNT_FAIL";
 
+const URL_EDIT = "wr/coll/URL_EDIT";
+const URL_EDIT_SUCCESS = "wr/coll/URL_EDIT_SUCCESS";
+const URL_EDIT_FAIL = "wr/coll/URL_EDIT_FAIL";
+
 const initialState = fromJS({
   editing: false,
   reviewing: false,
@@ -403,6 +407,20 @@ export function sendMetaDispatch(user, collID) {
         params: { user },
         data: {
           collID,
+        },
+      }),
+  };
+}
+//update malformed URL
+export function injectRealUrlDispatch(user, url, collID)
+{
+  return {
+    types: [URL_EDIT, URL_EDIT_SUCCESS, URL_EDIT_FAIL],
+    promise: (client) =>
+      client.post(`${apiPath}/collection/appropriateurl/${collID}`, {
+        params: { user },
+        data: {
+          url
         },
       }),
   };

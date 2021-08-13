@@ -62,7 +62,7 @@ class User(RedisUniqueComponent):
         if not max_size:
             max_size = self.MAX_USER_SIZE
         #hard coded min max_size, fix in the future
-        if max_size < 5000000000:
+        if int(max_size) < 5000000000:
             max_size = 5000000000
         self.init_new(max_size)
 
