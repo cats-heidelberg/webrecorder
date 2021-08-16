@@ -348,23 +348,19 @@ export function completeReviewDispatch(user, collID, doi) {
     ],
     promise: (client) =>
       client.del(`${apiPath}/review`, {
-        params: { user, collID, doi },
+        params: { user, collID },
       }),
   };
 }
 export function pushWarcToServerDispatch(user, collID, doi, url) {
   return {
-    types: [
-      WARC_DOWNLOAD,
-      WARC_DOWNLOAD_SUCCESS,
-      WARC_DOWNLOAD_FAIL,
-    ],
+    types: [WARC_DOWNLOAD, WARC_DOWNLOAD_SUCCESS, WARC_DOWNLOAD_FAIL],
     promise: (client) =>
       client.post(`${apiPath}/${user}/${collID}/$download_warc`, {
-        params: {user},
+        params: { user },
         data: {
           doi,
-          url
+          url,
         },
       }),
   };
@@ -396,7 +392,7 @@ export function reviewDataToRevis(user, collID, doi) {
     types: [REVIEW_CREATE, REVIEW_CREATE_SUCCESS, REVIEW_CREATE_FAIL],
     promise: (client) =>
       client.post(`${apiPath}/review`, {
-        params: { user, collID, doi },
+        params: { user, collID },
       }),
   };
 }
@@ -413,15 +409,14 @@ export function sendMetaDispatch(user, collID) {
   };
 }
 //update malformed URL
-export function injectRealUrlDispatch(user, url, collID)
-{
+export function injectRealUrlDispatch(user, url, collID) {
   return {
     types: [URL_EDIT, URL_EDIT_SUCCESS, URL_EDIT_FAIL],
     promise: (client) =>
       client.post(`${apiPath}/collection/appropriateurl/${collID}`, {
         params: { user },
         data: {
-          url
+          url,
         },
       }),
   };
