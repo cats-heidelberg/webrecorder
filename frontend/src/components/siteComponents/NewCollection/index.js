@@ -66,6 +66,7 @@ class NewCollection extends Component {
       persName: "",
       progress: 0,
       usermail: "",
+      emailOfRightsholder: "",
       creatorList,
       isPublic: false,
       creatorLegend,
@@ -139,6 +140,7 @@ class NewCollection extends Component {
           surName: this.props.coll.get("surName"),
           persName: this.props.coll.get("persName"),
           usermail: this.props.coll.get("usermail"),
+          emailOfRightsholder: this.props.coll.get("emailOfRightsholder"),
           publishYear: this.props.coll.get("publishYear"),
           selectedGroupName: "corporate/institutional name",
           url: this.props.coll.get("url"),
@@ -247,6 +249,7 @@ class NewCollection extends Component {
       surName,
       persName,
       usermail,
+      emailOfRightsholder,
       selectedGroupName,
       projektcode,
       publishYear,
@@ -270,6 +273,7 @@ class NewCollection extends Component {
       surName,
       persName,
       usermail,
+      emailOfRightsholder,
       selectedGroupName,
       projektcode,
       publishYear,
@@ -443,6 +447,7 @@ class NewCollection extends Component {
       surName,
       persName,
       usermail,
+      emailOfRightsholder,
       selectedGroupName,
       projektcode,
       publishYear,
@@ -474,6 +479,7 @@ class NewCollection extends Component {
         surName,
         persName,
         usermail,
+        emailOfRightsholder,
         selectedGroupName,
         projektcode,
         publishYear,
@@ -531,6 +537,7 @@ class NewCollection extends Component {
       surName,
       persName,
       usermail,
+      emailOfRightsholder,
       selectedGroupName,
       publishYear,
       listID,
@@ -551,6 +558,7 @@ class NewCollection extends Component {
       surName,
       persName,
       usermail,
+      emailOfRightsholder,
       selectedGroupName,
       publishYear,
       pubTitleOriginal,
@@ -715,6 +723,7 @@ class NewCollection extends Component {
       publisherOriginal,
       publishYear,
       usermail,
+      emailOfRightsholder,
       persName,
       progress,
       pubTitleOriginal,
@@ -745,7 +754,7 @@ class NewCollection extends Component {
             className="form-horizontal"
           >
             {error && (
-              <Alert Variant="danger">
+              <Alert variant="danger">
                 {collection[error] || "Error encountered"}
               </Alert>
             )}
@@ -1264,6 +1273,35 @@ class NewCollection extends Component {
                       onFocus={this.focusInput}
                       onChange={this.handleInput}
                       value={publishYear}
+                    />
+                  </Form.Group>
+                </Row>
+
+                <Row>
+                  <Form.Group id="fieldset" style={{"width": "100%"}}>
+                    <label data-tip data-for="email-rightsholder-info" className="mb-1">
+                      <InfoIcon />
+                    </label>
+                    <ReactTooltip id="email-rightsholder-info" place="top" effect="solid">
+                      E-mail address of the rightsholder.
+                    </ReactTooltip>
+                    <div
+                      style={{
+                        marginRight: "4px",
+                        display: "inline",
+                        float: "left",
+                      }}
+                    >
+                      E-mail of rightsholder:
+                    </div>
+
+                    <Form.Control
+                      aria-label="email"
+                      name="emailOfRightsholder"
+                      placeholder=""
+                      autoFocus
+                      value={emailOfRightsholder}
+                      onChange={this.handleChange}
                     />
                   </Form.Group>
                 </Row>

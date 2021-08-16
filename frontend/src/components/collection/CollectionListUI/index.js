@@ -132,6 +132,7 @@ class CollectionListUI extends Component {
     surName,
     persName,
     usermail,
+    emailOfRightsholder,
     selectedGroupName,
     projektcode,
     publishYear,
@@ -168,6 +169,7 @@ class CollectionListUI extends Component {
       surName,
       persName,
       usermail,
+      emailOfRightsholder,
       selectedGroupName,
       projektcode,
       publishYear,
@@ -341,6 +343,7 @@ class CollectionListUI extends Component {
     surName,
     persName,
     usermail,
+    emailOfRightsholder,
     selectedGroupName,
     projektcode,
     publishYear,
@@ -383,6 +386,7 @@ class CollectionListUI extends Component {
       surName,
       persName,
       usermail,
+      emailOfRightsholder,
       selectedGroupName,
       projektcode,
       publishYear,
@@ -413,6 +417,7 @@ class CollectionListUI extends Component {
     surName,
     persName,
     usermail,
+    emailOfRightsholder,
     selectedGroupName,
     projektcode,
     publishYear,
@@ -443,6 +448,7 @@ class CollectionListUI extends Component {
       surName,
       persName,
       usermail,
+      emailOfRightsholder,
       selectedGroupName,
       projektcode,
       publishYear,
@@ -468,6 +474,7 @@ class CollectionListUI extends Component {
     surName,
     persName,
     usermail,
+    emailOfRightsholder,
     selectedGroupName,
     projektcode,
     publishYear,
@@ -499,6 +506,7 @@ class CollectionListUI extends Component {
       surName,
       persName,
       usermail,
+      emailOfRightsholder,
       selectedGroupName,
       projektcode,
       publishYear,
@@ -750,7 +758,7 @@ class CollectionListUI extends Component {
                       {_sortBy ? sortByActive : "Sorting unavailable"}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      {_sortBy.map((sort, index) => (
+                      {[...new Set(_sortBy)].map((sort, index) => (
                         <Dropdown.Item key={sort} eventKey={index}>
                           {sort}
                         </Dropdown.Item>
