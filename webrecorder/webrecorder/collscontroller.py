@@ -514,6 +514,22 @@ class CollsController(BaseController):
                     msgBody = mail.as_string()
                     mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
                     mailServer.quit()
+                elif data['ticketState'] == 'approved':
+                    reviewerMailText = template(
+                        'webrecorder/templates/approve_mail.html',
+                        coll_name=coll_name
+                    )
+
+                    mail = MIMEMultipart()
+                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    mail['TO'] = collection['usermail']
+                    mail['subject'] = 'Webrecorder: Your archive request has been approved!'
+                    host = "relays.uni-heidelberg.de"
+                    mailServer = smtplib.SMTP(host)
+                    mail.attach(MIMEText(reviewerMailText, "html"))
+                    msgBody = mail.as_string()
+                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
+                    mailServer.quit()
                 elif data['ticketState'] == 'denied':
                     reviewerMailText = template(
                         'webrecorder/templates/deny_mail.html',
@@ -523,7 +539,7 @@ class CollsController(BaseController):
                     mail = MIMEMultipart()
                     mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
                     mail['TO'] = collection['usermail']
-                    mail['subject'] = 'Webrecorder: Your archive request has been reviewed and denied!'
+                    mail['subject'] = 'Webrecorder: Your archive request has been denied!'
                     host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     mail.attach(MIMEText(reviewerMailText, "html"))
@@ -543,13 +559,9 @@ class CollsController(BaseController):
 
                     host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
-                    MSG = "Your archives state has been changesd from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
+                    MSG = "Your archive's state has been changed from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
                     mail.attach(MIMEText(reviewerMailText, "html"))
                     msgBody = mail.as_string()
-                    #part1 = MIMEText(MSG, 'plain')
-                    #part2 = MIMEText(html, 'html')
-                    #mail.attach(part1)
-                    #mail.attach(part2)
                     mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
                     mailServer.quit()
 

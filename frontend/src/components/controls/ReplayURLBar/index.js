@@ -74,15 +74,11 @@ class ReplayURLBar extends Component {
             }
 
             <div className="wr-app-url">
-              <input type="text" active={!wedontneednourl} disabled={wedontneednourl} onChange={this.handleInput} onKeyPress={this.handleSubmit} style={{ height: '3.2rem' }} className="form-control dropdown-toggle" name="url" aria-haspopup="true" value={url} autoComplete="off" />
-              <div className="wr-replay-info">
-                <InfoWidget />
-                <span className="replay-date main-replay-date hidden-xs">
-                  <TimeFormat dt={timestamp} />
-                </span>
-              </div>
+              <input type="text" active={!wedontneednourl} disabled={wedontneednourl} onChange={this.handleInput} onKeyPress={this.handleSubmit} style={{ height: '3.2rem', width: '100%' }} className="form-control dropdown-toggle" name="url" aria-haspopup="true" value={url} autoComplete="off" />
             </div>
-
+            <div className="timestamp p-3">
+              <TimeFormat dt={timestamp} />
+            </div>
           </div>
         </form>
       </div>
