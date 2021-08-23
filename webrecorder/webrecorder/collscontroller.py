@@ -97,6 +97,8 @@ class CollsController(BaseController):
 
             usermail = data.get('usermail', '')
 
+            emailOfRightsholder = data.get('emailOfRightsholder', '')
+
             #if not usermail:
             #    self._raise_error(400, 'invalid email adress')
 
@@ -135,7 +137,7 @@ class CollsController(BaseController):
                 collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList,
                                                     personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal,
                                                     pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText,
-                                                    surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear,
+                                                    surName=surName, persName=persName, usermail=usermail, emailOfRightsholder=emailOfRightsholder, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear,
                                                     listID=listID, desc='', public=is_public, public_index=is_public_index, ticketState=ticketState, isCollLoaded=isCollLoaded,
                                                     recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp, doi=doi)
 
@@ -220,6 +222,8 @@ class CollsController(BaseController):
 
                     noteToDachs = _col.get('noteToDachs', '')
 
+                    emailOfRightsholder = _col.get('emailOfRightsholder', '')
+
                     publisherOriginal = _col.get('publisherOriginal', '')
 
                     pubTitleOriginal = _col.get('pubTitleOriginal', '')
@@ -274,7 +278,7 @@ class CollsController(BaseController):
                         collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList,
                                                             personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal,
                                                             pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText,
-                                                            surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear,
+                                                            surName=surName, persName=persName, usermail=usermail, emailOfRightsholder=emailOfRightsholder, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear,
                                                             listID=listID, desc='', public=is_public, public_index=is_public_index, ticketState=ticketState, isCollLoaded=isCollLoaded,
                                                             recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp, doi=doi)
 
@@ -452,6 +456,9 @@ class CollsController(BaseController):
             if 'usermail' in data:
                 collection['usermail'] = data['usermail']
 
+            if 'emailOfRightsholder' in data:
+                collection['emailOfRightsholder'] = data['emailOfRightsholder']
+
             if 'selectedGroupName' in data:
                 collection['selectedGroupName'] = data['selectedGroupName']
             if 'ticketState' in data and data['ticketState'] == "pending" and 'projektcode' in data and data['projektcode'] != "" and collection['doi'] is None:
@@ -594,6 +601,7 @@ class CollsController(BaseController):
                 collection['url'] = data['url']
 
             collection.mark_updated()
+            print(collection['url'])
             return {'collection': collection.serialize()}
 
         @self.app.get('/api/v1/collection/<coll_name>/page_bookmarks')
