@@ -173,7 +173,17 @@ const mapDispatchToProps = (dispatch, { history }) => {
 
             apiFetch("/new", data, { method: "POST" })
               .then((res) => res.json())
-              .then(({ url }) => { dispatch(injectRealUrlDispatch(user, url.substring(url.indexOf("record/") + 7),title)); history.push(url.replace(appHost, "")); })
+              .then(({ url }) => {
+                dispatch(
+                  injectRealUrlDispatch(
+                    user,
+                    url.substring(url.indexOf("record/") + 7),
+                    title
+                  )
+                );
+                console.log(url.substring(url.indexOf("record/") + 7), title);
+                history.push(url.replace(appHost, ""));
+              })
               .catch((err) => console.log("error", err));
           },
           (err) => console.log(err)
@@ -408,9 +418,10 @@ const mapDispatchToProps = (dispatch, { history }) => {
     ) => {
       dispatch(
         completeRecordingDispatch(user, collID, ticketState, projektcode)
-      ).then((res) =>
-        { console.log("sendingToRevis"); dispatch(reviewDataToRevis(user, collID, res.collection.doi)); }
-      );
+      ).then((res) => {
+        console.log("sendingToRevis");
+        dispatch(reviewDataToRevis(user, collID, res.collection.doi));
+      });
       setTimeout(() => {
         history.push(`/${user}`);
       }, 100);

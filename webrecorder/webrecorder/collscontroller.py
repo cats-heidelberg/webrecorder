@@ -97,6 +97,8 @@ class CollsController(BaseController):
 
             usermail = data.get('usermail', '')
 
+            emailOfRightsholder = data.get('emailOfRightsholder', '')
+
             #if not usermail:
             #    self._raise_error(400, 'invalid email adress')
 
@@ -135,7 +137,7 @@ class CollsController(BaseController):
                 collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList,
                                                     personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal,
                                                     pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText,
-                                                    surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear,
+                                                    surName=surName, persName=persName, usermail=usermail, emailOfRightsholder=emailOfRightsholder, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear,
                                                     listID=listID, desc='', public=is_public, public_index=is_public_index, ticketState=ticketState, isCollLoaded=isCollLoaded,
                                                     recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp, doi=doi)
 
@@ -220,6 +222,8 @@ class CollsController(BaseController):
 
                     noteToDachs = _col.get('noteToDachs', '')
 
+                    emailOfRightsholder = _col.get('emailOfRightsholder', '')
+
                     publisherOriginal = _col.get('publisherOriginal', '')
 
                     pubTitleOriginal = _col.get('pubTitleOriginal', '')
@@ -274,7 +278,7 @@ class CollsController(BaseController):
                         collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList,
                                                             personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal,
                                                             pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText,
-                                                            surName=surName, persName=persName, usermail=usermail, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear,
+                                                            surName=surName, persName=persName, usermail=usermail, emailOfRightsholder=emailOfRightsholder, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear,
                                                             listID=listID, desc='', public=is_public, public_index=is_public_index, ticketState=ticketState, isCollLoaded=isCollLoaded,
                                                             recordingUrl=recordingUrl, recordingTimestamp=recordingTimestamp, doi=doi)
 
@@ -452,6 +456,9 @@ class CollsController(BaseController):
             if 'usermail' in data:
                 collection['usermail'] = data['usermail']
 
+            if 'emailOfRightsholder' in data:
+                collection['emailOfRightsholder'] = data['emailOfRightsholder']
+
             if 'selectedGroupName' in data:
                 collection['selectedGroupName'] = data['selectedGroupName']
             if 'ticketState' in data and data['ticketState'] == "pending" and 'projektcode' in data and data['projektcode'] != "" and collection['doi'] is None:
@@ -515,9 +522,11 @@ class CollsController(BaseController):
                     mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
                     mailServer.quit()
                 elif data['ticketState'] == 'approved':
+                    #inform user his doi is about to be dropped
                     reviewerMailText = template(
-                        'webrecorder/templates/approve_mail.html',
-                        coll_name=coll_name
+                        'webrecorder/templates/approve_mail_user.html',
+                        coll_name=coll_name,
+                        username=user.name
                     )
 
                     mail = MIMEMultipart()
@@ -530,6 +539,30 @@ class CollsController(BaseController):
                     msgBody = mail.as_string()
                     mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
                     mailServer.quit()
+                    #the internal doi creation related library worker
+                    reviewerMailText = template(
+                        'webrecorder/templates/approve_mail_katalogisierungsmitarbeiter.html',
+                        coll_name=coll_name,
+                        host=os.environ['APP_HOST'],
+                        username=user.name, title=collection['title'], url=collection['url'], creatorList=collection['creatorList'], noteToDachs=collection['noteToDachs'], subjectHeaderList=collection['subjectHeaderList'],
+                                                            personHeaderList=collection['personHeaderList'], publisher=collection['publisher'], collTitle=collection['collTitle'], publisherOriginal=collection['publisherOriginal'],
+                                                            pubTitleOriginal=collection['pubTitleOriginal'], personHeadingText=collection['personHeadingText'], collYear=collection['collYear'], copTitle=collection['copTitle'], subjectHeadingText=collection['subjectHeadingText'],
+                                                            surName=collection['surName'], persName=collection['persName'], usermail=collection['usermail'], emailOfRightsholder=collection['emailOfRightsholder'], selectedGroupName=collection['selectedGroupName'], projektcode=collection['projektcode'], publishYear=collection['publishYear'],
+                                                            listID=collection['listID'], desc=collection['desc'], public=collection['is_public'], public_index=collection['is_public_index'], ticketState=collection['ticketState'], isCollLoaded=collection['isCollLoaded'],
+                                                            recordingUrl=collection['recordingUrl'], recordingTimestamp=collection['recordingTimestamp'], doi=collection['doi']
+                    )
+
+                    mail = MIMEMultipart()
+                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    mail['TO'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    mail['subject'] = 'Webrecorder: Archive approved.Please create Landingpage and DOI'
+                    host = "relays.uni-heidelberg.de"
+                    mailServer = smtplib.SMTP(host)
+                    mail.attach(MIMEText(reviewerMailText, "html"))
+                    msgBody = mail.as_string()
+                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de','webteam-cn@zo.uni-heidelberg.de', msgBody)
+                    mailServer.quit()
+
                 elif data['ticketState'] == 'denied':
                     reviewerMailText = template(
                         'webrecorder/templates/deny_mail.html',
@@ -547,8 +580,9 @@ class CollsController(BaseController):
                     mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
                     mailServer.quit()
                 elif data['ticketState'] == 'pending':
+                    #send user an info mail to ease him
                     reviewerMailText = template(
-                        'webrecorder/templates/pending_mail.html',
+                        'webrecorder/templates/pending_mail_user.html',
                         coll_name=coll_name
                     )
 
@@ -564,11 +598,26 @@ class CollsController(BaseController):
                     msgBody = mail.as_string()
                     mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
                     mailServer.quit()
+                    #send admins an infomail to get them to work
+                    reviewerMailText = template(
+                        'webrecorder/templates/pending_mail_admin.html',
+                        coll_name=coll_name
+                    )
 
-                    #self.cork.mailer = Mailer('eray.alpdogan@zo.uni-heidelberg.de', 'smtp://relays.uni-heidelberg.de:25')
+                    mail = MIMEMultipart()
+                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    mail['TO'] = collection['usermail']
+                    mail['subject'] = 'Webrecorder: New collection awaiting review!'
+
+                    host = "relays.uni-heidelberg.de"
+                    mailServer = smtplib.SMTP(host)
+                    MSG = "Your archive's state has been changed from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
+                    mail.attach(MIMEText(reviewerMailText, "html"))
+                    msgBody = mail.as_string()
+                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de','webteam-cn@zo.uni-heidelberg.de', msgBody)
+                    mailServer.quit()
 
 
-            # TODO: notify the user if this is a request from the admin panel
             if 'public' in data:
                 #if self.access.is_superuser() and data.get('notify'):
                 #    pass
@@ -594,6 +643,7 @@ class CollsController(BaseController):
                 collection['url'] = data['url']
 
             collection.mark_updated()
+            print(collection['url'])
             return {'collection': collection.serialize()}
 
         @self.app.get('/api/v1/collection/<coll_name>/page_bookmarks')
