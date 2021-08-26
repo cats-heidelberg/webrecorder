@@ -227,7 +227,7 @@ class CollectionItem extends Component {
                   <Button
                     className="collection-options new-session"
                     onClick={this.toggleSessionSave}
-                    // disabled={collection.get("ticketState") !== "approved"}
+                    disabled={collection.get("ticketState") !== "approved"}
                   >
                     <span className="hidden-xs">Complete and add DOI </span>
                   </Button>
