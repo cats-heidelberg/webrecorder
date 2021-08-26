@@ -16,7 +16,7 @@ import Modal from "components/Modal";
 
 import { NewCollection } from "components/siteComponents";
 import { DeleteCollection } from "containers";
-import { TrashIcon, PlusIcon, LockIcon, CheckIcon } from "components/icons";
+import { TrashIcon, PlusIcon, LockIcon, CheckIcon, NextIcon } from "components/icons";
 
 class CollectionItem extends Component {
   static propTypes = {
@@ -33,6 +33,8 @@ class CollectionItem extends Component {
     Reviewed: PropTypes.func,
     selected: PropTypes.bool,
     history: PropTypes.string,
+    reviewCompleted: PropTypes.bool,
+    metadataCompleted: PropTypes.bool,
   };
 
   constructor(props) {
@@ -46,6 +48,8 @@ class CollectionItem extends Component {
       openDeny: false,
       doi: "",
       ticketState: "open",
+      reviewCompleted: this.props.collection.get("ticketState") === "approved" || this.props.collection.get("ticketState") === "completed",
+      metadataCompleted: this.props.collection.get("ticketState") === "approved" || this.props.collection.get("ticketState") === "completed",
     };
   }
 
@@ -70,7 +74,10 @@ class CollectionItem extends Component {
   };
 
   closeModal = () => {
-    this.setState({ showModalFinish: !this.state.showModalFinish });
+    this.setState({
+      metadataCompleted: true,
+      showModalFinish: !this.state.showModalFinish,
+    });
   };
 
   downloadAction = (evt) => {
@@ -88,15 +95,21 @@ class CollectionItem extends Component {
   editCollectiontemp = () => {};
 
   newSession = () => {
+    this.setState({ reviewCompleted: true });
     //  const { collection } = this.props;
 
     //this.props.onPatch(collection.get('id'),collection.get('url'));
     const { collection, history } = this.props;
-    history.push(
-      `/${collection.get("owner")}/${collection.get("id")}/${collection.get(
-        "recordingTimestamp"
-      )}/${collection.get("recordingUrl")}`
-    );
+    // history.push(
+    //   `/${collection.get("owner")}/${collection.get("id")}/${collection.get(
+    //     "recordingTimestamp"
+    //   )}/${collection.get("recordingUrl")}`
+    // );
+    // open in new window instead of history.push:
+    const win = window.open(
+      `/${collection.get("owner")}/${collection.get("id")}/${collection.get("recordingTimestamp")}/${collection.get("recordingUrl")}`,
+      "_blank");
+    win.focus();
   };
 
   refresh = () => {
@@ -161,8 +174,9 @@ class CollectionItem extends Component {
                     className="collection-options new-session"
                     onClick={this.newSession}
                   >
-                    <span> Review </span>
+                    <span>Review </span>{this.state.reviewCompleted ? <CheckIcon /> : ""}
                   </Button>
+                  {/*
                   <Button
                     className="collection-options new-session"
                     onClick={this.downloadAction}
@@ -175,40 +189,47 @@ class CollectionItem extends Component {
                       collection{" "}
                     </span>
                   </Button>
+                  */}
                   <Button
                     className="collection-options new-session"
                     onClick={this.closeModal}
                   >
-                    <span>View/edit metadata </span>
+                    <span>View/edit metadata </span>{this.state.metadataCompleted ? <CheckIcon /> : ""}
                   </Button>
 
-                  {collection.get("ticketState") === "pending" && (
-                    <React.Fragment>
-                      <Button
-                        className="collection-options new-session"
-                        onClick={this.toggleApprove}
-                        disabled={collection.get("ticketState") !== "pending"}
-                      >
-                        <span> Approve </span>
-                      </Button>
+                  <NextIcon />
 
-                      <Button
-                        className="collection-options new-session"
-                        onClick={this.toggleDeny}
-                        disabled={collection.get("ticketState") !== "pending"}
-                      >
-                        <span> Deny</span>
-                      </Button>
-                    </React.Fragment>
-                  )}
+                  <React.Fragment>
+                    <Button
+                      className="collection-options new-session"
+                      onClick={this.toggleApprove}
+                      disabled={!(this.state.metadataCompleted && this.state.reviewCompleted)}
+                    >
+                      <span> Approve </span>
+                      {
+                        collection.get("ticketState") == "approved" ||
+                        collection.get("ticketState") == "completed"
+                        ? <CheckIcon /> : ""
+                      }
+                    </Button>
+
+                    <Button
+                      className="collection-options new-session"
+                      onClick={this.toggleDeny}
+                      disabled={!(this.state.metadataCompleted && this.state.reviewCompleted) || collection.get("ticketState") == "approved"}
+                    >
+                      <span> Deny</span>
+                    </Button>
+                  </React.Fragment>
+
+                  <NextIcon />
 
                   <Button
                     className="collection-options new-session"
                     onClick={this.toggleSessionSave}
                     disabled={collection.get("ticketState") !== "approved"}
                   >
-                    <CheckIcon />
-                    <span className="hidden-xs"> Complete and add DOI </span>
+                    <span className="hidden-xs">Complete and add DOI </span>
                   </Button>
                   {collection.get("ticketState") === "approved" && (
                     <Modal

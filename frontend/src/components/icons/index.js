@@ -22,6 +22,7 @@ export LoaderIcon from './Loader';
 export LogoIcon from './Logo';
 export LockIcon from './Lock';
 export MailIcon from './Mail';
+export NextIcon from './Next';
 export MoreIcon from './More';
 export PatchIcon from './Patch';
 export PencilIcon from './Pencil';
