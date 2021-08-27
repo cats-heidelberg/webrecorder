@@ -155,7 +155,7 @@ class CollectionItem extends Component {
   openReplay = () => {
     const { collection } = this.props;
     const win = window.open(
-      `https://projects.zo.uni-heidelberg.de/dachstest/webarchive/lp/${collection.get("doi").replace("/","_").html}`,
+      `https://projects.zo.uni-heidelberg.de/dachstest/webarchive/lp/${collection.get("doi").replace("/","_")}.html`,
       "_blank");
     win.focus();
   }
