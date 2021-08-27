@@ -15,7 +15,7 @@ import Modal from "components/Modal";
 
 import { NewCollection } from "components/siteComponents";
 import { DeleteCollection } from "containers";
-import { TrashIcon, PlusIcon, LockIcon } from "components/icons";
+import { TrashIcon, PlusIcon, LockIcon, NextIcon } from "components/icons";
 
 class CollectionItem extends Component {
   static propTypes = {
@@ -215,7 +215,7 @@ class CollectionItem extends Component {
                 <React.Fragment>
                   {collection.get("ticketState") === "open" ? (
                     <Button className="collection-options" onClick={this.newSession}>
-                      <span>Review and Edit</span>
+                      <span>Review and edit</span>
                     </Button>
                   ) : collection.get("ticketState") === "completed" ? (
                     <Button className="collection-options" onClick={this.openReplay}>
@@ -227,35 +227,21 @@ class CollectionItem extends Component {
                     </Button>
                   )}
 
+
                   {collection.get("ticketState") === "open" && (
+                  <React.Fragment>
+                    <NextIcon />
                     <Button
                       className="collection-options new-session"
                       onClick={this.closeModal}
                     >
-                      <span> Edit Metadata</span>
+                      <span> Edit metadata</span>
                     </Button>
+                    <NextIcon />
+                  </React.Fragment>
                   )}
-                  <Button
-                    className="collection-options new-session"
-                    onClick={this.duplicateAction}
-                  >
-                    <span>
-                      {" "}
-                      <Collection /> Duplicate Collection{" "}
-                    </span>
-                  </Button>
-                  <Button
-                    className="collection-options new-session"
-                    onClick={this.downloadAction}
-                  >
-                    <span>
-                      {" "}
-                      <DownloadIcon /> {__DESKTOP__
-                        ? "Export"
-                        : "Download"}{" "}
-                      Collection{" "}
-                    </span>
-                  </Button>
+
+
                   {collection.get("ticketState") === "open" && (
                     <Button
                       className="collection-options new-session"
@@ -294,6 +280,32 @@ class CollectionItem extends Component {
                     }
                     </Modal>
                   )}
+
+                  <svg height="40px" width="15px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 9 40">
+                    <line x1="2" y1="8" x2="2" y2="36" stroke-linecap="round" stroke-width="2" stroke="#999" />
+                  </svg>
+
+                  <Button
+                    className="collection-options new-session"
+                    onClick={this.duplicateAction}
+                  >
+                    <span>
+                      {" "}
+                      <Collection /> Duplicate {" "}
+                    </span>
+                  </Button>
+                  <Button
+                    className="collection-options new-session"
+                    onClick={this.downloadAction}
+                  >
+                    <span>
+                      {" "}
+                      <DownloadIcon /> {__DESKTOP__
+                        ? "Export"
+                        : "Download"}{" "}
+                      for personal use{" "}
+                    </span>
+                  </Button>
                 </React.Fragment>
               )}
               {canAdmin && collection.get("ticketState") === "pending" && (
