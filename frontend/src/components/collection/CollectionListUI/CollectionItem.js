@@ -152,6 +152,14 @@ class CollectionItem extends Component {
     );
   };
 
+  openReplay = () => {
+    const { collection } = this.props;
+    const win = window.open(
+      `https://projects.zo.uni-heidelberg.de/dachstest/webarchive/lp/${collection.get("doi").replace("/","_").html}`,
+      "_blank");
+    win.focus();
+  }
+
   sendForReview = () => {};
 
   render() {
@@ -208,6 +216,10 @@ class CollectionItem extends Component {
                   {collection.get("ticketState") === "open" ? (
                     <Button className="collection-options" onClick={this.newSession}>
                       <span>Review and Edit</span>
+                    </Button>
+                  ) : collection.get("ticketState") === "completed" ? (
+                    <Button className="collection-options" onClick={this.openReplay}>
+                      <span>View</span>
                     </Button>
                   ) : (
                     <Button className="collection-options" onClick={this.newSession}>
