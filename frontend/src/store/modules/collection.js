@@ -73,7 +73,7 @@ const URL_EDIT_FAIL = "wr/coll/URL_EDIT_FAIL";
 
 const initialState = fromJS({
   editing: false,
-  reviewing: false,
+  reviewing: true,
   datProcessing: false,
   datError: null,
   edited: false,

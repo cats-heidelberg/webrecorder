@@ -24,6 +24,7 @@ class ModeSelectorUI extends PureComponent {
     activeBrowser: PropTypes.string,
     match: PropTypes.object,
     timestamp: PropTypes.string,
+    reviewing: PropTypes.bool,
     url: PropTypes.string,
   };
 
@@ -44,11 +45,12 @@ class ModeSelectorUI extends PureComponent {
       },
       collection,
       auth,
+      reviewing
     } = this.props;
     const username = auth.getIn(["user", "username"]);
     const ownername = collection.get("owner");
     const isOwner = username === ownername;
-    if (!isOwner || collection.get("reviewing")) {
+    if (reviewing) {
       //this.props.history.push('/');
       this.props.history.push(`/${user}/review`);
     } else if (this.context.currMode === "live") {
@@ -191,11 +193,11 @@ class ModeSelectorUI extends PureComponent {
 
   render() {
     const { currMode } = this.context;
-    const { collection, auth } = this.props;
+    const { collection, auth, reviewing } = this.props;
     const { open } = this.state;
     let modeMessage;
     let modeMarkup;
-
+    console.log(reviewing);
     const username = auth.getIn(["user", "username"]);
     const ownername = collection.get("owner");
     const isOwner = username === ownername;
@@ -267,17 +269,27 @@ class ModeSelectorUI extends PureComponent {
 
     return (
       <React.Fragment>
-        <button
-          onClick={this.onStop}
-          className="btn btn-default wr-mode-message content-action"
-          aria-label={`Finish ${modeMessage} session`}
-          type="button"
-        >
-          <span className="btn-content">
-            <span className="glyphicon glyphicon-stop" />{" "}
-            <span className="hidden-xs">Stop</span>
-          </span>
-        </button>
+        {reviewing ? <button
+                          onClick={this.onStop}
+                          className="btn btn-default wr-mode-message content-action"
+                          aria-label={`Finish ${modeMessage} session`}
+                          type="button"
+                        >
+                          <span className="btn-content">
+                            <span className="glyphicon glyphicon-stop" />{" "}
+                            <span className="hidden-xs">Back to Review</span>
+                          </span>
+                        </button> : <button
+                          onClick={this.onStop}
+                          className="btn btn-default wr-mode-message content-action"
+                          aria-label={`Finish ${modeMessage} session`}
+                          type="button"
+                        >
+                          <span className="btn-content">
+                            <span className="glyphicon glyphicon-stop" />{" "}
+                            <span className="hidden-xs">Back to Dashboard</span>
+                          </span>
+                        </button>}
         {currMode == "replay" ? (
           <button
             onClick={this.onPatch}

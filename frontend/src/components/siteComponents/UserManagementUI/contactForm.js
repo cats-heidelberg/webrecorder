@@ -15,7 +15,7 @@ class ContactForm extends Component {
     auth: PropTypes.object,
     cb: PropTypes.func,
     error: PropTypes.bool,
-    closeLogin: PropTypes.func
+    closeContactForm: PropTypes.func
   };
 
   constructor(props) {
@@ -36,6 +36,7 @@ class ContactForm extends Component {
 
     let data = { name, email, subject, msg };
     this.props.cb(data); // do stuff with data
+    this.props.closeContactForm();
   }
 
   handleChange = (evt) => {

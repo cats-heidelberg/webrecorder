@@ -32,6 +32,7 @@ class ReviewUI extends Component {
     collections: PropTypes.object,
     editCollection: PropTypes.func,
     edited: PropTypes.bool,
+    reviewing: PropTypes.bool,
     loadReviewCollections: PropTypes.func,
     onPatch: PropTypes.func,
     match: PropTypes.object,

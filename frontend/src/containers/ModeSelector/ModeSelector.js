@@ -10,6 +10,7 @@ const mapStateToProps = ({ app }) => {
     auth: app.get("auth"),
     timestamp: app.getIn(["controls", "timestamp"]),
     collection: app.get("collection"),
+    reviewing: app.getIn(["collection", "reviewing"]),
     url: app.getIn(["controls", "url"]),
   };
 };

@@ -132,8 +132,22 @@ class UserManagementUI extends PureComponent {
     this.setState({ formError: false });
     this.props.loginFn(data);
   };
+  //add some other options
   sendContact = (data) => {
-    this.props.sendContactProp(data);
+    switch (data.subject) {
+      case "signUp":
+        this.props.cb(data);
+        break;
+      case "general":
+        this.props.sendContactProp(data);
+        break;  
+        
+      default:
+        this.props.cb(data);
+        break;
+
+    }
+    
   }
 
   toggleBugModal = () => {
@@ -161,7 +175,7 @@ class UserManagementUI extends PureComponent {
         closeLogin={this.closeLogin}
       />
     );
-    const contactForm = <ContactForm cb={this.sendContact}/>;
+    const contactForm = <ContactForm cb={this.sendContact} closeContactForm={this.closeContactForm}/>;
     const collCount = auth.getIn(["user", "num_collections"]);
     const user = auth.get("user");
     const username = user.get("username");
@@ -194,7 +208,7 @@ class UserManagementUI extends PureComponent {
           </li>
           {auth.getIn(["user", "role"]) === "admin" && (
             <li className="hidden-xs">
-              
+
                 <button
                   className="button-link"
                   onClick={this.openReview}
@@ -202,7 +216,7 @@ class UserManagementUI extends PureComponent {
                 >
                   Review
                 </button>
-              
+
             </li>
           )}
           <li className="navbar-text">

@@ -33,6 +33,7 @@ const initialState = fromJS({
   error: null,
   creatingCollection: false,
   accessed: null,
+  reviewing: true,
   sortBy: fromJS({
     sort: "created_at",
     dir: "DESC",
@@ -51,6 +52,7 @@ export default function collections(state = initialState, action = {}) {
       return state.merge({
         loading: false,
         loaded: true,
+        reviewing: false,
         accessed: action.accessed,
         error: null,
 
@@ -84,13 +86,13 @@ export default function collections(state = initialState, action = {}) {
     case REVIEW_COLLS_LOAD:
       return state.set("loading", true);
     case REVIEW_COLLS_LOAD_SUCCESS:
-      console.log("review load success");
+      console.log("Review load success");
       return state.merge({
         loading: false,
         loaded: true,
         accessed: action.accessed,
         error: null,
-
+        reviewing: true,
         user: fromJS(action.result.user),
         collections: fromJS(action.result.collections)
           .sort((a, b) => sortByCreatedWithinStatus(a, b)),
@@ -230,6 +232,7 @@ export function load(user) {
   };
 }
 export function loadReviewList() {
+
   return {
     types: [
       REVIEW_COLLS_LOAD,

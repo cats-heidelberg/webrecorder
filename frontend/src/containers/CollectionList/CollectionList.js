@@ -76,6 +76,7 @@ const mapStateToProps = ({ app }) => {
     numCollections: app.getIn(["user", "num_collections"]),
     timestamp: app.getIn(["controls", "timestamp"]),
     sortBy: app.getIn(["collections", "sortBy"]),
+    reviewing: app.getIn(["collections", "reviewing"]),
     user: app.get("user"),
   };
 };

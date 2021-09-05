@@ -3,7 +3,7 @@ import json
 import redis
 import os
 
-from bottle import request, response
+from bottle import request, response, template
 
 from webrecorder.basecontroller import BaseController, wr_api_spec
 
@@ -12,6 +12,10 @@ from webrecorder.utils import get_bool
 
 from urllib.parse import urlencode
 
+from datetime import datetime
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 # ============================================================================
 class UserController(BaseController):
@@ -132,15 +136,31 @@ class UserController(BaseController):
         @self.app.post('/api/v1/auth/register')
         def api_register_user():
             data = request.json or {}
+            reviewerMailText = template(
+                'webrecorder/templates/register.html',
+                email=data.get('email')
+            )
+            mail = MIMEMultipart()
+            mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
+            mail['TO'] = 'webteam-cn@zo.uni-heidelberg.de'
+            mail['subject'] = 'Webrecorder: New collection awaiting review!'
 
-            msg, redir_extra = self.user_manager.register_user(data, self.get_host())
+            host = "relays.uni-heidelberg.de"
+            mailServer = smtplib.SMTP(host)
+            MSG = "We will inform you with further updates as soon as possible."
+            mail.attach(MIMEText(reviewerMailText, "html"))
+            msgBody = mail.as_string()
+            mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de','webteam-cn@zo.uni-heidelberg.de', msgBody)
+            mailServer.quit()
 
-            if 'success' in msg:
-                return msg
+            #msg, redir_extra = self.user_manager.register_user(data, self.get_host())
 
-            response.status = 400
+            #if 'success' in msg:
+            #    return msg
+            #
+            #response.status = 400
 
-            return {'errors': msg}
+            #return {'errors': msg}
 
         @self.app.post('/api/v1/auth/validate')
         def api_validate_reg_user():

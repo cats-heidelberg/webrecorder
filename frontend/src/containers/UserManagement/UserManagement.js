@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import { load, login } from 'store/modules/auth';
 import { toggleModal, sendContactDispatch } from 'store/modules/bugReport';
 import { showModal } from 'store/modules/userLogin';
+import { sendSignup } from 'store/modules/userSignup';
 
 import { UserManagementUI } from 'components/siteComponents';
 
@@ -21,6 +22,7 @@ const mapStateToProps = ({ app }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    cb: data => dispatch(sendSignup(data)),
     loadAuth: () => dispatch(load()),
     loginFn: data => dispatch(login(data)),
     sendContactProp: data => dispatch(sendContactDispatch(data)),
