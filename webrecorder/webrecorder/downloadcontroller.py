@@ -248,37 +248,38 @@ class DownloadController(BaseController):
 
         download_path = self.get_origin() + "/api/v1/download/{}/".format(user_name)
         warc_name_broke=warc_name.replace("/","\/")
+        warc_name_broke=warc_name.replace("10.25354/","")
         local_storage = LocalFileStorage(self.redis)
         landingpage = template(
             'webrecorder/templates/landingpage.html',
             title=coll_name,
-            warc_file='https://projects.zo.uni-heidelberg.de/dachstest/webarchive/warc/'+warc_name_broke+'.warc',
+            warc_file='https://projects.zo.uni-heidelberg.de/dachstest/webarchive/warc/10.25354/'+warc_name_broke+'.warc',
             url=url
         )
         try:
-            os.makedirs(os.path.join(os.environ['STORAGE_REPLAY'],'lp'))
-            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_REPLAY'],'lp')))
+            os.makedirs(os.path.join(os.environ['STORAGE_REPLAY'],'lp','10.25354'))
+            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_REPLAY'],'lp','10.25354')))
         except FileExistsError:
-            print("Directory '% s' already created!" % os.path.join(os.environ['STORAGE_REPLAY'],'lp'))
+            print("Directory '% s' already created!" % os.path.join(os.environ['STORAGE_REPLAY'],'lp','10.25354'))
         except FileNotFoundError:
-            print("Directory '% s' No such file or directory!" % os.path.join(os.environ['STORAGE_REPLAY'],'lp'))
+            print("Directory '% s' No such file or directory!" % os.path.join(os.environ['STORAGE_REPLAY'],'lp','10.25354'))
         try:
-            os.makedirs(os.path.join(os.environ['STORAGE_REPLAY'],'warc'))
-            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_REPLAY'],'warc')))
+            os.makedirs(os.path.join(os.environ['STORAGE_REPLAY'],'warc','10.25354'))
+            print("Directory '% s' created" % os.path.isfile(os.path.join(os.environ['STORAGE_REPLAY'],'warc','10.25354')))
         except FileExistsError:
-            print("Directory '% s' already created!" % os.path.join(os.environ['STORAGE_REPLAY'],'warc'))
+            print("Directory '% s' already created!" % os.path.join(os.environ['STORAGE_REPLAY'],'warc','10.25354'))
         except FileNotFoundError:
-            print("Directory '% s' No such file or directory!" % os.path.join(os.environ['STORAGE_REPLAY'],'warc'))
+            print("Directory '% s' No such file or directory!" % os.path.join(os.environ['STORAGE_REPLAY'],'warc','10.25354'))
 
 
         try:
-            f = open(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+".html", 'w')
+            f = open(os.path.join(os.environ['STORAGE_REPLAY'],'lp','10.25354', warc_name_broke)+".html", 'w')
             f.write(landingpage)
             f.close()
         except FileExistsError:
-            print(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+".html exists")
+            print(os.path.join(os.environ['STORAGE_REPLAY'],'lp','10.25354', warc_name_broke)+".html exists")
         except FileNotFoundError:
-            print(os.path.join(os.environ['STORAGE_REPLAY'],'lp', warc_name_broke)+".html doesn't exists")
+            print(os.path.join(os.environ['STORAGE_REPLAY'],'lp','10.25354', warc_name_broke)+".html doesn't exists")
         commit_storage = collection.get_storage()
 
         for recording in collection.get_recordings():
@@ -286,7 +287,7 @@ class DownloadController(BaseController):
             is_open = not is_committed and recording.get_pending_count() > 0
             storage = commit_storage if is_committed else local_storage
             try:
-                f = open(os.path.join(os.environ['STORAGE_REPLAY'],'warc', warc_name_broke)+".warc", 'wb')
+                f = open(os.path.join(os.environ['STORAGE_REPLAY'],'warc','10.25354', warc_name_broke)+".warc", 'wb')
                 writer = WARCWriter(f, gzip=True)
                 for name, path in recording.iter_all_files(include_index=False):
                     local_download = download_path.format(user=user.name, coll=collection.name, filename=name)
@@ -303,9 +304,9 @@ class DownloadController(BaseController):
                             writer.write_record (record)
                 f.close()
             except FileExistsError:
-                print(os.path.join(os.environ['STORAGE_REPLAY'],'warc', warc_name_broke)+".warc exists")
+                print(os.path.join(os.environ['STORAGE_REPLAY'],'warc','10.25354', warc_name_broke)+".warc exists")
             except FileNotFoundError:
-                print(os.path.join(os.environ['STORAGE_REPLAY'],'warc', warc_name_broke)+".warc doesn't exists")
+                print(os.path.join(os.environ['STORAGE_REPLAY'],'warc','10.25354', warc_name_broke)+".warc doesn't exists")
 
 
 
