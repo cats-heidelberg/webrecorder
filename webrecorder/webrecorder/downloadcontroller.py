@@ -55,7 +55,7 @@ class DownloadController(BaseController):
         @self.app.post('/api/v1/<user>/<coll>/$download_warc')
         def download_warc_sds(user, coll):
             data = request.json or {}
-            warc_name = data.get('doi', '').replace("/","_")
+            warc_name = data.get('doi', '')
             url = data.get('url', '')
             return self.handle_download_name(user, coll, warc_name, url)
 
