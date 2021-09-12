@@ -57,10 +57,7 @@ class DownloadController(BaseController):
             data = request.json or {}
             warc_name = data.get('doi', '')
             url = data.get('url', '')
-            if (url.__contains__("http")):
-                print("String contains http/https already!")
-            else:
-                url = "http://"+url
+            
 
 
             return self.handle_download_name(user, coll, warc_name, url)

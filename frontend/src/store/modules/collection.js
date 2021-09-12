@@ -139,6 +139,7 @@ export default function collection(state = initialState, action = {}) {
       return state.set("loading", true);
     case COLL_EDIT_SUCCESS:
     case REVIEW_EDIT_SUCCESS:
+    case URL_EDIT_SUCCESS:
     case COLL_LOAD_SUCCESS: {
       const {
         collection: {
