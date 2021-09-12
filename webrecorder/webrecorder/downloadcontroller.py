@@ -60,8 +60,8 @@ class DownloadController(BaseController):
             if (url.__contains__("http")):
                 print("String contains http/https already!")
             else:
-                url = "http//:"+url
-            
+                url = "http://"+url
+
 
             return self.handle_download_name(user, coll, warc_name, url)
 
