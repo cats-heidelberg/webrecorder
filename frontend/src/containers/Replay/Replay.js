@@ -10,7 +10,7 @@ import { getCollectionLink, remoteBrowserMod, truncate } from 'helpers/utils';
 import config from 'config';
 
 import { getActivePage } from 'store/selectors';
-import { isLoaded, load as loadColl } from 'store/modules/collection';
+import { isLoaded, load as loadColl, injectRealUrlDispatch as injectRealUrl} from 'store/modules/collection';
 import { getArchives, setBookmarkId, setList, updateUrl, updateUrlAndTimestamp } from 'store/modules/controls';
 import { resetStats } from 'store/modules/infoStats';
 import { listLoaded, load as loadList } from 'store/modules/list';
@@ -46,6 +46,7 @@ class Replay extends Component {
     collection: PropTypes.object,
     dispatch: PropTypes.func,
     expanded: PropTypes.bool,
+    injectRealUrl: PropTypes.func,
     list: PropTypes.object,
     loaded: PropTypes.bool,
     match: PropTypes.object,
@@ -119,11 +120,13 @@ class Replay extends Component {
       `${config.contentHost}/${user}/${coll}/list/${listSlug}/b${activeBookmarkId}/` :
       `${config.contentHost}/${user}/${coll}/`;
   }
-
+ 
   showCollectionNav = (bool = true) => {
     this.setState({ collectionNav: bool });
   }
-
+  justTest = (url, user, collID) => {
+    this.props.injectRealUrl(url, user, collID);
+  }
   render() {
     const { isEmbed, isMobile } = this.context;
     const {
@@ -207,11 +210,14 @@ class Replay extends Component {
               activeBrowser={activeBrowser}
               canGoBackward={__DESKTOP__ ? appSettings.get('canGoBackward') : false}
               canGoForward={__DESKTOP__ ? appSettings.get('canGoForward') : false}
+              user={auth.getIn(['user', 'username'])}
+              inject={this.justTest}
               params={params}
               timestamp={timestamp}
               sidebarExpanded={this.props.expanded}
               toggle={this.props.toggleSidebar}
-              url={url} />
+              url={url}
+              />
         }
         <div className={classNames('iframe-container', { embed: isEmbed && params.embed !== '_embed_noborder' })}>
           {
@@ -396,6 +402,11 @@ const mapStateToProps = (outerState) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    injectRealUrl: (url,user,collID) => dispatch(injectRealUrl(
+                    user,
+                    url,
+                    collID
+                  )).then(res=>console.log("url result is"+res.get("url"))),
     toggleSidebar: b => dispatch(toggleSidebar(b)),
     dispatch
   };

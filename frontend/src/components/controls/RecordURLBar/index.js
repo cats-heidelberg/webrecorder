@@ -20,6 +20,7 @@ class RecordURLBar extends Component {
     activeBrowser: PropTypes.string,
     activeCollection: PropTypes.object,
     autopilotRunning: PropTypes.bool,
+    getFirstURL: PropTypes.func,
     history: PropTypes.object,
     params: PropTypes.object,
     timestamp: PropTypes.string,
@@ -29,12 +30,19 @@ class RecordURLBar extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { url: props.url || '' };
+    this.state = { urlHasBeenInjected: false, url: props.url || '' };
+  }
+  getFirstRightURLisaFunction = (url, collId, user) => {
+    this.props.getFirstURL(url, collId, user);
   }
 
   componentWillReceiveProps(nextProps) {
+    const { params: { coll, collId}, } = this.props;
     if (nextProps.url !== this.props.url) {
-      this.setState({ url: nextProps.url });
+      if (!this.state.urlHasBeenInjected) {
+        this.getFirstRightURLisaFunction(nextProps.url, coll);
+      }
+      this.setState({ urlHasBeenInjected: true, url: nextProps.url });
     }
   }
 

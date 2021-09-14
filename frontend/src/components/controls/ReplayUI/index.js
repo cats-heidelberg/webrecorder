@@ -17,11 +17,13 @@ class ReplayUI extends Component {
     autopilotRunning: PropTypes.bool,
     canGoBackward: PropTypes.bool,
     canGoForward: PropTypes.bool,
+    inject: PropTypes.func,
     params: PropTypes.object,
     sidebarExpanded: PropTypes.bool,
     timestamp: PropTypes.string,
     toggle: PropTypes.func,
-    url: PropTypes.string
+    url: PropTypes.string,
+    user: PropTypes.string,
   };
 
   static contextTypes = {
@@ -30,10 +32,19 @@ class ReplayUI extends Component {
     isMobile: PropTypes.bool
   };
 
+  injectRealUrl = (url, collID) => {
+    const { params: { user }, inject} = this.props;
+    console.log("aaaaaaaaaa"+user);
+    console.log("aaaaaaaaaa"+url);
+    console.log("aaaaaaaaaa"+collID);
+    console.log("aaaaaaaaaa"+inject);
+    inject(url,user, collID);
+  }
+
   toggleSidebar = () => {
     this.props.toggle(!this.props.sidebarExpanded);
   }
-
+  
   triggerBack = () => {
     const { canGoBackward } = this.props;
 
@@ -41,7 +52,7 @@ class ReplayUI extends Component {
       window.dispatchEvent(new Event('wr-go-back'));
     }
   }
-
+  
   triggerForward = () => {
     const { canGoForward } = this.props;
 
@@ -107,7 +118,9 @@ class ReplayUI extends Component {
 
         {
           isWrite ?
-            <RecordURLBar {...this.props} /> :
+            <RecordURLBar 
+            getFirstURL={this.injectRealUrl} 
+            {...this.props} /> :
             <ReplayURLBar {...this.props} />
         }
 

@@ -187,7 +187,7 @@ export default function collection(state = initialState, action = {}) {
           url,
         },
       } = action.result;
-
+      console.log("url has been changed"+url);
       const pgs = {};
       if (pages) {
         pages.forEach((pg) => {
@@ -232,6 +232,7 @@ export default function collection(state = initialState, action = {}) {
         timespan,
         title,
         updated_at,
+        url,
 
         ...editState,
       });
