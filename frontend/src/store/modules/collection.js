@@ -415,7 +415,7 @@ export function injectRealUrlDispatch(user, url, collID) {
   return {
     types: [URL_EDIT, URL_EDIT_SUCCESS, URL_EDIT_FAIL],
     promise: (client) =>
-      client.post(`${apiPath}/collection/appropriateurl/${collID}`, {
+      client.post(`${apiPath}/collection/${collID}/appropriateurl`, {
         params: { url },
         data: {
           url,

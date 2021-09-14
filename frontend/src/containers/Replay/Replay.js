@@ -124,8 +124,8 @@ class Replay extends Component {
   showCollectionNav = (bool = true) => {
     this.setState({ collectionNav: bool });
   }
-  justTest = (url, user, collID) => {
-    this.props.injectRealUrl(url, user, collID);
+  justTest = (user, url, collID) => {
+    this.props.injectRealUrl(user, url, collID);
   }
   render() {
     const { isEmbed, isMobile } = this.context;

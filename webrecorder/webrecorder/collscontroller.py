@@ -628,7 +628,7 @@ class CollsController(BaseController):
 
             collection.mark_updated()
             return {'collection': collection.serialize()}
-        @self.app.post('/api/v1/collection/appropriateurl/<coll_name>')
+        @self.app.post('/api/v1/collection/<coll_name>/appropriateurl')
         @self.api(query=['user'],
                   req=['url'],
                   resp='collection')

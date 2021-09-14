@@ -38,7 +38,7 @@ class ReplayUI extends Component {
     console.log("aaaaaaaaaa"+url);
     console.log("aaaaaaaaaa"+collID);
     console.log("aaaaaaaaaa"+inject);
-    inject(url,user, collID);
+    inject(user, url, collID);
   }
 
   toggleSidebar = () => {
