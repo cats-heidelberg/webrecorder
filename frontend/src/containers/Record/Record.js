@@ -6,7 +6,7 @@ import { asyncConnect } from 'redux-connect';
 
 import config from 'config';
 
-import { isLoaded, load as loadColl } from 'store/modules/collection';
+import { isLoaded, load as loadColl, injectRealUrlDispatch } from 'store/modules/collection';
 import { getArchives, updateUrl } from 'store/modules/controls';
 import { resetStats } from 'store/modules/infoStats';
 import { loadRecording } from 'store/modules/recordings';
@@ -75,6 +75,11 @@ class Record extends Component {
     this.props.dispatch(resetStats());
   }
 
+  justTest = (url, user, collID) => {
+    console.log("im JustTest"+url);
+    this.props.dispatch(injectRealUrlDispatch(url, user, collID));
+  }
+
   // shouldComponentUpdate(nextProps) {
   //   // don't rerender for loading changes
   //   if (!nextProps.loaded) {
@@ -101,6 +106,7 @@ class Record extends Component {
           autopilotRunning={autopilotRunning}
           canGoBackward={__DESKTOP__ ? appSettings.get('canGoBackward') : false}
           canGoForward={__DESKTOP__ ? appSettings.get('canGoForward') : false}
+          inject={this.justTest}
           params={params}
           url={url} />
 

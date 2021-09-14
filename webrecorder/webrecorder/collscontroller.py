@@ -643,6 +643,7 @@ class CollsController(BaseController):
                 collection['url'] = data['url']
 
             collection.mark_updated()
+            print("aaaaaaaaaaaaaaaaaaaaaaaaaaaa")
             print(collection['url'])
             return {'collection': collection.serialize()}
 
