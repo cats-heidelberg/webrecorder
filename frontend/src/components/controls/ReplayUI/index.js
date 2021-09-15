@@ -34,10 +34,6 @@ class ReplayUI extends Component {
 
   injectRealUrl = (url, collID) => {
     const { params: { user }, inject} = this.props;
-    console.log("aaaaaaaaaa"+user);
-    console.log("aaaaaaaaaa"+url);
-    console.log("aaaaaaaaaa"+collID);
-    console.log("aaaaaaaaaa"+inject);
     inject(user, url, collID);
   }
 

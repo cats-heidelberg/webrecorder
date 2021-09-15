@@ -629,23 +629,28 @@ class CollsController(BaseController):
             collection.mark_updated()
             return {'collection': collection.serialize()}
         @self.app.post('/api/v1/collection/<coll_name>/appropriateurl')
-        @self.api(query=['user'],
-                  req=['url'],
-                  resp='collection')
-        def update_malformedurl(coll_name):
+        def dat_do_share(coll_name):
             user, collection = self.load_user_coll(coll_name=coll_name)
+            print(user)
+            # BETA only
+            self.require_admin_beta_access(collection)
 
-            self.access.assert_can_admin_coll(collection)
+            try:
+                data = request.json or {}
+                print(data)
 
-            data = request.json or {}
+                if 'url' in data:
+                    collection['url'] = data['url']
+                    result = {'collection': collection.serialize()}
+            except Exception as e:
+                result = {'error': 'api_error', 'details': str(e)}
 
-            if 'url' in data:
-                collection['url'] = data['url']
+            if 'error' in result:
+                self._raise_error(400, result['error'])
 
-            collection.mark_updated()
-            print("aaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-            print(collection['url'])
-            return {'collection': collection.serialize()}
+            return result
+
+
 
         @self.app.get('/api/v1/collection/<coll_name>/page_bookmarks')
         @self.api(query=['user'],
