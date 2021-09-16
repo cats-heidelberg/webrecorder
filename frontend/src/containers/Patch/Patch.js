@@ -72,6 +72,9 @@ class Patch extends Component {
     // clear info stats
     this.props.dispatch(resetStats());
   }
+  justTest = (user, url, collID) => {
+    //needs to be deleted next refactoring
+  }
 
   render() {
     const { activeBrowser, appSettings, autopilotRunning, dispatch, match: { params }, timestamp, url } = this.props;
@@ -90,6 +93,7 @@ class Patch extends Component {
           autopilotRunning={autopilotRunning}
           canGoBackward={__DESKTOP__ ? appSettings.get('canGoBackward') : false}
           canGoForward={__DESKTOP__ ? appSettings.get('canGoForward') : false}
+          inject={this.justTest}
           params={params}
           timestamp={timestamp}
           url={url} />
