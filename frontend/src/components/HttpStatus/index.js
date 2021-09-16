@@ -36,12 +36,11 @@ class HttpStatus extends PureComponent {
         <Helmet>
           <title>There's been an error</title>
         </Helmet>
-        <Panel bsStyle="danger" className="wr-error-notice">
-          <Panel.Heading>There's been an error</Panel.Heading>
-          <Panel.Body>
-            { children || 'No such page or content is not accessible.'}
-          </Panel.Body>
-        </Panel>
+        
+        <div class="panel panel-default">
+          <div class="panel-heading">There's been an error</div>
+          <div class="panel-body">{ children || 'No such page or content is not accessible.'}</div>
+        </div>
       </SetStatus>
     );
   }
