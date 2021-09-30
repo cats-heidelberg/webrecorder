@@ -57,7 +57,7 @@ class DownloadController(BaseController):
             data = request.json or {}
             warc_name = data.get('doi', '')
             url = data.get('url', '')
-            
+
 
 
             return self.handle_download_name(user, coll, warc_name, url)
@@ -256,7 +256,7 @@ class DownloadController(BaseController):
         landingpage = template(
             'webrecorder/templates/landingpage.html',
             title=coll_name,
-            warc_file='https://projects.zo.uni-heidelberg.de/dachstest/webarchive/warc/10.25354/'+warc_name_broke+'.warc',
+            warc_file='https://projects.zo.uni-heidelberg.de/webarchive/warc/10.25354/'+warc_name_broke+'.warc',
             url=url
         )
         try:
