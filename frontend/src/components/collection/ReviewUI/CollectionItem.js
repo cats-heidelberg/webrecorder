@@ -108,7 +108,8 @@ class CollectionItem extends Component {
     // open in new window instead of history.push:
     const win = window.open(
       `/${collection.get("owner")}/${collection.get("id")}/${collection.get("recordingTimestamp")}/${collection.get("recordingUrl")}`,
-      "_blank");
+      'newwindow',
+      'fullscreen=yes');
     win.focus();
   };
 
