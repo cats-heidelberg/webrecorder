@@ -206,7 +206,7 @@ class CollectionItem extends Component {
                       onClick={this.toggleApprove}
                       disabled={!(this.state.metadataCompleted && this.state.reviewCompleted)}
                     >
-                      <span> Approve </span>
+                      <span> Approve and add DOI</span>
                       {
                         collection.get("ticketState") == "approved" ||
                         collection.get("ticketState") == "completed"
@@ -230,13 +230,13 @@ class CollectionItem extends Component {
                     onClick={this.toggleSessionSave}
                     disabled={collection.get("ticketState") !== "approved"}
                   >
-                    <span className="hidden-xs">Complete and add DOI </span>
+                    <span className="hidden-xs">Complete</span>
                   </Button>
                   {collection.get("ticketState") === "approved" && (
                     <Modal
                       visible={modalSessionSave}
                       closeCb={this.close}
-                      header="Please confirm DOI generation."
+                      header="Please confirm archive completion."
                       dialogClassName="wr-modal"
                     >
                       {
@@ -245,12 +245,6 @@ class CollectionItem extends Component {
                           <p>
                             If you submit this archive as completed user or
                             admin won't be able to do further changes.
-                            <br />
-                            Please take note that this DOI is not editable:
-                            <br />
-                            <span style={{ color: "black", fontWeight: "bold" }}>{collection.get("doi")}</span>
-                            <br /> <br />
-                            Create DOI? <br />
                           </p>
                           <Button
                             className="col-5"
@@ -305,7 +299,13 @@ class CollectionItem extends Component {
                         <React.Fragment>
                           <h4>Attention</h4>
                           <p>
-                            Are you sure you would like to approve this archive?{" "}
+                            Are you sure you would like to approve this archive?
+                            <br />
+                            This will create the following DOI. Please note that it is not editable:
+                            <br />
+                            <span style={{ color: "black", fontWeight: "bold" }}>{collection.get("doi")}</span>
+                            <br /> <br />
+                            Create DOI? <br />
                           </p>
                           <Button
                             className="col-5"
