@@ -52,7 +52,8 @@ class ModeSelectorUI extends PureComponent {
     const isOwner = username === ownername;
     if (reviewing) {
       //this.props.history.push('/');
-      this.props.history.push(`/${user}/review`);
+      // this.props.history.push(`/${user}/review`);
+      window.close();
     } else if (this.context.currMode === "live") {
       //this.props.history.push('/');
       this.props.history.push(`/${user}`);
@@ -277,7 +278,7 @@ class ModeSelectorUI extends PureComponent {
                         >
                           <span className="btn-content">
                             <span className="glyphicon glyphicon-stop" />{" "}
-                            <span className="hidden-xs">Back to Review</span>
+                            <span className="hidden-xs">Close</span>
                           </span>
                         </button> : <button
                           onClick={this.onStop}
@@ -287,7 +288,7 @@ class ModeSelectorUI extends PureComponent {
                         >
                           <span className="btn-content">
                             <span className="glyphicon glyphicon-stop" />{" "}
-                            <span className="hidden-xs">Back to Dashboard</span>
+                            <span className="hidden-xs">Stop</span>
                           </span>
                         </button>}
         {currMode == "replay" ? (
