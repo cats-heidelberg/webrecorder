@@ -896,7 +896,7 @@ class NewCollection extends Component {
                       <InfoIcon />
                     </label>
                     <ReactTooltip id="title-info" place="top" effect="solid">
-                      Name or title of the resource. If resource is in Chinese/Japanese/Korean etc., please put Latin transcription here (Pinyin, Hepbun etc.)
+                      Name or title of the resource. If resource is in Chinese/Japanese/Korean etc., please put Latin transcription here (Pinyin, Hepburn etc.).
                     </ReactTooltip>
                     <div
                       style={{
@@ -930,7 +930,7 @@ class NewCollection extends Component {
                       <InfoIcon />
                     </label>
                     <ReactTooltip id="title-orig-info" place="top" effect="solid">
-                      if applicable: same information in original script, e.g. Chinese, Japanese, Korean script.
+                      If applicable: same information in original script, e.g. Chinese, Japanese, Korean script.
                     </ReactTooltip>
                     <div
                       style={{
@@ -959,7 +959,7 @@ class NewCollection extends Component {
                       <InfoIcon />
                     </label>
                     <ReactTooltip id="proj-code-info" place="top" effect="solid">
-                      Alphanumeric, max. 8 characters. Choose wisely, this code is used to sort archives under a topic.
+                      Alphanumeric, max. 8 characters, no special characters. Suggestion: Use acronym or significant title word of your publication. Choose wisely, this code is used to group archives under a topic, e.g. all web resources you cited in your publication.
                     </ReactTooltip>
                     <div
                       style={{
@@ -969,7 +969,7 @@ class NewCollection extends Component {
                         color: projektcodeValid ? "black" : "red",
                       }}
                     >
-                      *Projektcode (to join arcives under a topic):
+                      *Project code (to join arcives under a topic):
                     </div>
                     <Form.Control
                       style={{
@@ -980,7 +980,7 @@ class NewCollection extends Component {
                       aria-label="text"
                       randomPropName={this.ValidateProjektcode()}
                       name="projektcode"
-                      placeholder="alphanumeric, max. 8 characters"
+                      placeholder="Alphanumeric, max. 8 characters, no special characters"
                       autoFocus
                       disabled={this.props.createOrEdit === "edit" && this.state.ticketState !== "open"}
                       required
@@ -993,7 +993,7 @@ class NewCollection extends Component {
                       <InfoIcon />
                     </label>
                     <ReactTooltip id="authorship-info" place="top" effect="solid">
-                      Person or institution that authored the resource. If resource is in Chinese/Japanese/Korean etc., please put Latin transcription here (Pinyin, Hepbun etc.)
+                      Person or institution that authored the resource. If resource is in Chinese/Japanese/Korean etc., please put Latin transcription here (Pinyin, Hepburn etc.).
                     </ReactTooltip>
                     <div
                       style={{
@@ -1010,7 +1010,7 @@ class NewCollection extends Component {
                             : "red",
                       }}
                     >
-                      *Authorship information (Latin alphabet):
+                      *Author/creator information (Latin alphabet):
                     </div>
                     <div
                       style={{
@@ -1019,7 +1019,7 @@ class NewCollection extends Component {
                         float: "left",
                       }}
                     >
-                      Select what kind of authorship information to provide:
+                      Select what kind of author/creator to provide:
                     </div>
                     <Form.Control
                       as="select"
@@ -1076,7 +1076,7 @@ class NewCollection extends Component {
                             float: "left",
                           }}
                         >
-                          Authorship information (orig. script):
+                          Author/creator information (orig. script):
                         </div>
 
                         <Form.Control
@@ -1128,7 +1128,7 @@ class NewCollection extends Component {
                             float: "left",
                           }}
                         >
-                          Authorship information (orig. script):
+                          Author/creator information (orig. script):
                         </div>
 
                         <Form.Control
@@ -1154,7 +1154,7 @@ class NewCollection extends Component {
                         onClick={this.onAddItem}
                         disabled={!persName && !collTitle}
                       >
-                        Add creator
+                        Add further author/creator
                       </button>
                     </Row>
 
@@ -1184,7 +1184,7 @@ class NewCollection extends Component {
                       <InfoIcon />
                     </label>
                     <ReactTooltip id="authorship-orig-info2" place="top" effect="solid">
-                      The name of the entity that holds, archives, publishes, prints, distributes, releases, issues or produces the resource. This property will be used to formulate the citation. If resource is in Chinese/Japanese/Korean etc., please put Latin transcription here (Pinyin, Hepbun etc.)
+                      The name of the entity that holds, archives, publishes, prints, distributes, releases, issues or produces the resource. This property will be used to formulate the citation. If resource is in Chinese/Japanese/Korean etc., please put Latin transcription here (Pinyin, Hepburn etc.).
                     </ReactTooltip>
                     <div
                       style={{
@@ -1249,7 +1249,7 @@ class NewCollection extends Component {
                       <InfoIcon />
                     </label>
                     <ReactTooltip id="date-info" place="top" effect="solid">
-                      Date at which the data was made publicly available.
+                      Date at which the resource was made publicly available.
                     </ReactTooltip>
                     <div
                       style={{
@@ -1283,7 +1283,7 @@ class NewCollection extends Component {
                       <InfoIcon />
                     </label>
                     <ReactTooltip id="email-rightsholder-info" place="top" effect="solid">
-                      E-mail address of the rightsholder.
+                      E-mail address of the rightsholder. The e-mail address is usually found at the end of the webpage, e.g. under "copyright information", "contact", "about" etc.
                     </ReactTooltip>
                     <div
                       style={{
@@ -1323,7 +1323,7 @@ class NewCollection extends Component {
                             float: "left",
                           }}
                         >
-                          Subject headings (in English):
+                          Subject headings (in English; <a href="http://id.loc.gov/authorities/subjects.html" target="_blank">LoC list</a>):
                         </div>
 
 
@@ -1373,7 +1373,7 @@ class NewCollection extends Component {
                           <InfoIcon />
                         </label>
                         <ReactTooltip id="person-info" place="top" effect="solid">
-                          Adding person headings allows for expanding the catalogue entry by the persons the web resource focuses on.
+                          Person headings are persons the web resource focuses on (e.g. a website ABOUT Shakespeare).
                         </ReactTooltip>
                         <div
                           style={{
