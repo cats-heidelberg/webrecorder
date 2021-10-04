@@ -104,6 +104,9 @@ class ReviewUI extends Component {
     const { collectionsReview, showModal, showModalFinish } = this.state;
     const userParam = params.user;
 
+    let headlinelast = "";
+    let headline = "";
+    
     const displayName = user.get("full_name") || userParam;
     const canAdmin = auth.getIn(["user", "role"]) === "admin";
 
@@ -157,20 +160,38 @@ class ReviewUI extends Component {
               <Row className="my-5">
                 <ul className="collection-list mt-3 pl-0">
                   {collections.get("collections").map((coll) => {
-                    return (
-                      <CollectionItem
-                        key={coll.get("id")}
-                        canAdmin={canAdmin}
-                        collection={coll}
-                        collUser={user}
-                        completeReview={this.completeReview}
-                        Reviewed={this.Reviewed}
-                        error={collections.get("error")}
-                        history={history}
-                        onPatch={() => {}}
-                      />
-                    );
-                  })}
+                          const temp =
+                            coll.get("ticketState") !== headline &&
+                            coll.get("ticketState") !== headlinelast
+                              ? coll.get("ticketState")
+                              : headline !== headlinelast &&
+                                coll.get("ticketState") !== headline &&
+                                coll.get("ticketState") === headlinelast
+                              ? coll.get("ticketState")
+                              : "";
+                          coll.get("ticketState") !== headline
+                            ? (headline = coll.get("ticketState"))
+                            : headline !== headlinelast
+                            ? (headlinelast = headline)
+                            : null;
+
+                          return (
+                            <CollectionItem
+                              key={coll.get("id")}
+                              canAdmin={canAdmin}
+                              collection={coll}
+                              collUser={user}
+                              duplicateCollection={this.duplicateCollection}
+                              editCollection={this.editColl}
+                              completeRec={this.completeRec}
+                              error={collections.get("error")}
+                              history={history}
+                              onPatch={this.onPatch}
+                              headline={temp}
+                              ticketState={coll.get("ticketState")}
+                            />
+                          );
+                        })}
                 </ul>
               </Row>
             )}

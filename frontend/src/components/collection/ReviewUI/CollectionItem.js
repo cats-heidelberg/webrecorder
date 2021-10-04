@@ -28,6 +28,7 @@ class CollectionItem extends Component {
     completeReview: PropTypes.func,
     id: PropTypes.string,
     isOver: PropTypes.bool,
+    headline: PropTypes.string,
     collection: PropTypes.object,
     onPatch: PropTypes.func,
     Reviewed: PropTypes.func,
@@ -138,7 +139,7 @@ class CollectionItem extends Component {
   };
 
   render() {
-    const { canAdmin, collection, error } = this.props;
+    const { canAdmin, collection, error, headline } = this.props;
     const { modalSessionSave, showModalFinish, open, openApprove, openDeny, ticketState, doi } = this.state;
     const descClasses = classNames("left-buffer list-group-item", {
       "has-description": collection.get("desc"),
@@ -159,6 +160,19 @@ class CollectionItem extends Component {
               borderBottom: "3px solid #ccc",
           }}
         >
+        {headline !== "" && (
+            <h2
+              style={{
+                display: "flex",
+                flexGrow: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                lineHeight: "60px",
+              }}
+            >
+              {headline.toUpperCase()}
+            </h2>
+          )}
           <Row className="m-0 mt-3">
             <Col className="p-0 col-12">
               <h3>{collection.get("title")}</h3>
