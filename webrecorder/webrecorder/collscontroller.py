@@ -465,11 +465,12 @@ class CollsController(BaseController):
                 collection['projektcode'] = data['projektcode']
                 today = datetime.utcnow()
                 possibleDOIBase = "10.25354/"+data['projektcode']+"."+str(today.year)+"."+str(today.month)
-                possibleDOI = "10.25354/"+data['projektcode']+"."+str(today.year)+"."+str(today.month)
                 tempInc = 1
+                possibleDOI = possibleDOIBase+"-"+tempInc;
+
                 while self.redis.sismember('doimodel', possibleDOI) == 1:
                     tempInc += 1
-                possibleDOI = possibleDOIBase+"-"+str(tempInc)
+                    possibleDOI = possibleDOIBase+"-"+tempInc;
                 self.redis.sadd('doimodel', possibleDOI)
                 collection['doi'] = possibleDOI
             else:
