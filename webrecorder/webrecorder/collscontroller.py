@@ -555,12 +555,12 @@ class CollsController(BaseController):
                     mail = MIMEMultipart()
                     mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
                     mail['TO'] = 'webteam-cn@zo.uni-heidelberg.de'
-                    mail['subject'] = 'Webrecorder: Archive approved.Please create Landingpage and DOI'
+                    mail['subject'] = 'Webrecorder: Archive approved. Please create Landingpage and DOI'
                     host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     mail.attach(MIMEText(reviewerMailText, "html"))
                     msgBody = mail.as_string()
-                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de','webteam-cn@zo.uni-heidelberg.de', msgBody)
+                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de','lib-dachs-team@zo.uni-heidelberg.de', msgBody)
                     mailServer.quit()
 
                 elif data['ticketState'] == 'denied':
@@ -614,7 +614,7 @@ class CollsController(BaseController):
                     MSG = "Your archive's state has been changed from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
                     mail.attach(MIMEText(reviewerMailText, "html"))
                     msgBody = mail.as_string()
-                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de','webteam-cn@zo.uni-heidelberg.de', msgBody)
+                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de','lib-dachs-team@zo.uni-heidelberg.de', msgBody)
                     mailServer.quit()
 
 
