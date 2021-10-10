@@ -190,7 +190,7 @@ class CollsController(BaseController):
                     if not coll_name:
                         self._raise_error(400, 'invalid_coll_name')
 
-                    doi = _col.get('doi', '') # TODO: generate doi here
+                    doi = '' # TODO: generate doi here
                     #
                     #TODO: add redis object, key: jahr.monat, value: counter
 
@@ -215,7 +215,7 @@ class CollsController(BaseController):
 
                     personHeadingText = _col.get('personHeadingText', '')
 
-                    collTitle = _col.get('collTitle', '')
+                    collTitle = title
 
                     #if not collTitle:
                     #    self._raise_error(400, 'please enter the authership information of the resource')

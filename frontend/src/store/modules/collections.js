@@ -118,6 +118,7 @@ export default function collections(state = initialState, action = {}) {
         error: null,
         // nullify collections cache
         accessed: null,
+        collection: fromJS(action.result.collection)
       });
     case CREATE_COLL_FAIL:
       return state.set("error", action.error.error);
