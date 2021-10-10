@@ -174,7 +174,7 @@ class CollsController(BaseController):
             collections= user.get_collections()
             for _col in collections:
                 print(_col.get('title'))
-                if _col.get('title') == coll_name:
+                if _col.get('title') == title:
                     coll_name += "_duplicate"
                     title = coll_name
                     #if not title:
