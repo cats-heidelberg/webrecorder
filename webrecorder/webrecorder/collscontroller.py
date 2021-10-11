@@ -605,7 +605,8 @@ class CollsController(BaseController):
                     #send admins an infomail to get them to work
                     reviewerMailText = template(
                         'webrecorder/templates/pending_mail_admin.html',
-                        coll_name=coll_name
+                        coll_name=coll_name,
+                        host=host
                     )
 
                     mail = MIMEMultipart()
@@ -613,7 +614,7 @@ class CollsController(BaseController):
                     mail['TO'] = collection['usermail']
                     mail['subject'] = 'Webrecorder: New collection awaiting review!'
 
-                    host = "relays.uni-heidelberg.de"
+
                     mailServer = smtplib.SMTP(host)
                     MSG = "Your archive's state has been changed from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
                     mail.attach(MIMEText(reviewerMailText, "html"))
