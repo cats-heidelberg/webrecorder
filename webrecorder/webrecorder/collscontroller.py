@@ -447,6 +447,9 @@ class CollsController(BaseController):
             if 'personHeadingText' in data:
                 collection['personHeadingText'] = data['personHeadingText']
 
+            if 'projektcode' in data:
+                collection['projektcode'] = data['projektcode']
+
             if 'pubTitleOriginal' in data:
                 collection['pubTitleOriginal'] = data['pubTitleOriginal']
 
