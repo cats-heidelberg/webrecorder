@@ -207,6 +207,7 @@ class ModeSelectorUI extends PureComponent {
     const isExtract = currMode.indexOf("extract") !== -1;
     const isPatch = currMode === "patch";
     const isLive = currMode === "live";
+    const isAdmin = auth.getIn(['user', 'role']) === 'admin';
     const isWrite = ["extract", "extract_only", "patch", "record"].includes(
       currMode
     );
@@ -270,62 +271,51 @@ class ModeSelectorUI extends PureComponent {
 
     return (
       <React.Fragment>
-        {reviewing ? <button
-                          onClick={this.onStop}
-                          className="btn btn-default wr-mode-message content-action"
-                          aria-label={`Finish ${modeMessage} session`}
-                          type="button"
-                        >
-                          <span className="btn-content">
-                            <span className="glyphicon glyphicon-stop" />{" "}
-                            <span className="hidden-xs">Close</span>
-                          </span>
-                        </button> : <button
-                          onClick={this.onStop}
-                          className="btn btn-default wr-mode-message content-action"
-                          aria-label={`Finish ${modeMessage} session`}
-                          type="button"
-                        >
-                          <span className="btn-content">
-                            <span className="glyphicon glyphicon-stop" />{" "}
-                            <span className="hidden-xs">Stop</span>
-                          </span>
-                        </button>}
-        {currMode == "replay" ? (
+        {isRecord ? <button
+                      onClick={this.onStop}
+                      className="btn btn-default wr-mode-message content-action"
+                      aria-label={`Finish ${modeMessage} session`}
+                      type="button"
+                    >
+                      <div className="btn-content" style={{ display: "flex", alignItems: "center" }}>
+                        <svg width="10" height="10"><rect x="0" y="0" width="10" height="10" fill="#b81d12" /></svg>
+                        <span style={{ display: "inline-block", textAlign: "left", paddingLeft: "10px" }}>
+                          Stop <br/> Recording
+                        </span>
+                      </div>
+                    </button>
+                  : <button
+                      onClick={this.onStop}
+                      className="btn btn-default wr-mode-message content-action"
+                      aria-label={`Finish ${modeMessage} session`}
+                      type="button"
+                    >
+                      <span style={{ display: "inline-block", textAlign: "left", paddingLeft: "10px" }}>
+                        Conclude <br/> Review
+                      </span>
+                    </button>}
+
+        {currMode == "replay-coll" ? (
           <button
             onClick={this.onPatch}
             disabled={
-              isRecord ||
-              isLive ||
-              (collection.get("ticketState") !== "pending" &&
-                collection.get("reviewing")) ||
-              (collection.get("ticketState") !== "open" &&
-                !collection.get("reviewing"))
+              (collection.get("reviewing") && collection.get("ticketState") == "completed") ||
+              (!collection.get("reviewing") && collection.get("ticketState") != "open")
             }
             className="btn btn-default wr-mode-message content-action"
             title={
-              isRecord
-                ? "Only available from replay after finishing a recording"
-                : (collection.get("ticketState") !== "open" &&
-                    !collection.get("reviewing")) ||
-                  (collection.get("ticketState") !== "pending" &&
-                    collection.get("reviewing"))
-                ? "Not possible since Collection is in Review"
-                : "Record elements that are not yet in the collection"
+              collection.get("reviewing") || collection.get("ticketState") == "open"
+                ? "Record elements that are not yet in the collection."
+                : "You cannot patch as the collection is already scheduled for review."
             }
             type="button"
           >
             <span className="btn-content">
               <PatchIcon />{" "}
               <span className="hidden-xs">
-                {isPatch
-                  ? "Currently Patching"
-                  : (collection.get("ticketState") !== "open" &&
-                      !collection.get("reviewing")) ||
-                    (collection.get("ticketState") !== "pending" &&
-                      collection.get("reviewing"))
-                  ? "already in review"
-                  : "Add more Content"}
+                {collection.get("reviewing") || collection.get("ticketState") == "open"
+                  ? "Add more content"
+                  : "Already in review"}
               </span>
             </span>
           </button>
@@ -347,42 +337,20 @@ class ModeSelectorUI extends PureComponent {
         ) : (
           <button
             onClick={this.onPatch}
-            disabled={
-              isRecord ||
-              isLive ||
-              (collection.get("ticketState") !== "pending" &&
-                collection.get("reviewing")) ||
-              (collection.get("ticketState") !== "open" &&
-                !collection.get("reviewing"))
-            }
+            disabled="true"
             className="btn btn-default wr-mode-message content-action"
-            title={
-              isRecord
-                ? "Only available from replay after finishing a recording"
-                : (collection.get("ticketState") !== "open" &&
-                    !collection.get("reviewing")) ||
-                  (collection.get("ticketState") !== "pending" &&
-                    collection.get("reviewing"))
-                ? "Not possible since Collection is in Review"
-                : "Record elements that are not yet in the collection"
-            }
+            title="Patching is available after finishing a recording and before submitting it for review."
             type="button"
           >
             <span className="btn-content">
               <PatchIcon />{" "}
               <span className="hidden-xs">
-                {isPatch
-                  ? "Currently Patching"
-                  : (collection.get("ticketState") !== "open" &&
-                      !collection.get("reviewing")) ||
-                    (collection.get("ticketState") !== "pending" &&
-                      collection.get("reviewing"))
-                  ? "already in review"
-                  : "Add more Content"}
+                Add more content
               </span>
             </span>
           </button>
         )}
+      {/*<button onClick={() => { console.log(this.context.currMode); console.log("reviewing: " + this.props.collection.get("reviewing")) }}>bla</button>*/}
       </React.Fragment>
     );
   }
