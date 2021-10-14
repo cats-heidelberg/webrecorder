@@ -184,6 +184,7 @@ class ReviewUI extends Component {
                               duplicateCollection={this.duplicateCollection}
                               editCollection={this.editColl}
                               completeRec={this.completeRec}
+                              Reviewed={this.Reviewed}
                               error={collections.get("error")}
                               history={history}
                               onPatch={this.onPatch}
