@@ -20,7 +20,7 @@ export function apiFetch(path, data, opts = {}) {
       'x-requested-with': 'XMLHttpRequest'
     })
   }, opts);
-
+  console.log("utils get from config appHost"+config.appHost+"and apiPath"+config.apiPath);
   return fetch(`${config.appHost}${config.apiPath}${path}`, options);
 }
 
