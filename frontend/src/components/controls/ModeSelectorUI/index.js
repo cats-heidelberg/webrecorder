@@ -126,7 +126,7 @@ class ModeSelectorUI extends PureComponent {
     // generate recording url
     apiFetch("/new", data, { method: "POST" })
       .then((res) => {
-        res.json();
+        return res.json();
       })
       .then(({ url }) => history.push(url.replace(config.appHost, "")))
       .catch((err) => {
