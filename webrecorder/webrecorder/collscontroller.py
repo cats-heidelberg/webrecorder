@@ -547,7 +547,7 @@ class CollsController(BaseController):
                     mailServer = smtplib.SMTP(host)
                     mail.attach(MIMEText(reviewerMailText, "html"))
                     msgBody = mail.as_string()
-                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
+                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de','lib-dachs-team@zo.uni-heidelberg.de', msgBody)
                     mailServer.quit()
                 elif data['ticketState'] == 'approved':
                     #inform user his doi is about to be dropped
