@@ -509,8 +509,9 @@ class CollsController(BaseController):
 
             if ticketStateChanged:
                 if data['ticketState'] == 'completed':
+                    # to user
                     reviewerMailText = template(
-                        'webrecorder/templates/complete_mail.html',
+                        'webrecorder/templates/complete_mail_user.html',
                         coll_name=coll_name,
                         coll_doi=collection['doi']
                     )
@@ -518,7 +519,30 @@ class CollsController(BaseController):
                     mail = MIMEMultipart()
                     mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
                     mail['TO'] = collection['usermail']
-                    mail['subject'] = 'Webrecorder: DOI creation has been completed!'
+                    mail['subject'] = 'Webrecorder: Archive Complete'
+                    host = "relays.uni-heidelberg.de"
+                    mailServer = smtplib.SMTP(host)
+                    mail.attach(MIMEText(reviewerMailText, "html"))
+                    msgBody = mail.as_string()
+                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
+                    mailServer.quit()
+                    reviewerMailText = template(
+                        'webrecorder/templates/complete_mail.html',
+                        coll_name=coll_name,
+                        coll_doi=collection['doi']
+                    )
+
+                    # to Hiwi/Katalogisierungsmitarbeiter/Reviewer
+                    reviewerMailText = template(
+                        'webrecorder/templates/complete_mail_hiwi.html',
+                        coll_name=coll_name,
+                        coll_doi=collection['doi']
+                    )
+
+                    mail = MIMEMultipart()
+                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    mail['TO'] = collection['usermail']
+                    mail['subject'] = 'Webrecorder: Archive complete'
                     host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     mail.attach(MIMEText(reviewerMailText, "html"))
@@ -530,13 +554,18 @@ class CollsController(BaseController):
                     reviewerMailText = template(
                         'webrecorder/templates/approve_mail_user.html',
                         coll_name=coll_name,
-                        username=user.name
+                        username=user.name, title=collection['title'], url=collection['url'], creatorList=collection['creatorList'], noteToDachs=collection['noteToDachs'], subjectHeaderList=collection['subjectHeaderList'],
+                                                            personHeaderList=collection['personHeaderList'], publisher=collection['publisher'], collTitle=collection['collTitle'], publisherOriginal=collection['publisherOriginal'],
+                                                            pubTitleOriginal=collection['pubTitleOriginal'], personHeadingText=collection['personHeadingText'], collYear=collection['collYear'], copTitle=collection['copTitle'], subjectHeadingText=collection['subjectHeadingText'],
+                                                            surName=collection['surName'], persName=collection['persName'], usermail=collection['usermail'], emailOfRightsholder=collection['emailOfRightsholder'], selectedGroupName=collection['selectedGroupName'], projektcode=collection['projektcode'], publishYear=collection['publishYear'],
+                                                            listID=collection['listID'], desc=collection['desc'], public=collection['is_public'], public_index=collection['is_public_index'], ticketState=collection['ticketState'], isCollLoaded=collection['isCollLoaded'],
+                                                            recordingUrl=collection['recordingUrl'], recordingTimestamp=collection['recordingTimestamp'], doi=collection['doi']
                     )
 
                     mail = MIMEMultipart()
                     mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
                     mail['TO'] = collection['usermail']
-                    mail['subject'] = 'Webrecorder: Your archive request has been approved!'
+                    mail['subject'] = 'Webrecorder: Archive approved'
                     host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     mail.attach(MIMEText(reviewerMailText, "html"))
@@ -545,7 +574,7 @@ class CollsController(BaseController):
                     mailServer.quit()
                     #the internal doi creation related library worker
                     reviewerMailText = template(
-                        'webrecorder/templates/approve_mail_katalogisierungsmitarbeiter.html',
+                        'webrecorder/templates/approve_mail_hiwi.html',
                         coll_name=coll_name,
                         host=os.environ['APP_HOST'],
                         username=user.name, title=collection['title'], url=collection['url'], creatorList=collection['creatorList'], noteToDachs=collection['noteToDachs'], subjectHeaderList=collection['subjectHeaderList'],
@@ -559,7 +588,7 @@ class CollsController(BaseController):
                     mail = MIMEMultipart()
                     mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
                     mail['TO'] = 'webteam-cn@zo.uni-heidelberg.de'
-                    mail['subject'] = 'Webrecorder: Archive approved. Please create Landingpage and DOI'
+                    mail['subject'] = 'Webrecorder: Archive approved'
                     host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     mail.attach(MIMEText(reviewerMailText, "html"))
@@ -568,40 +597,63 @@ class CollsController(BaseController):
                     mailServer.quit()
 
                 elif data['ticketState'] == 'denied':
+                    # to user
                     reviewerMailText = template(
-                        'webrecorder/templates/deny_mail.html',
+                        'webrecorder/templates/deny_mail_user.html',
                         coll_name=coll_name
                     )
 
                     mail = MIMEMultipart()
                     mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
                     mail['TO'] = collection['usermail']
-                    mail['subject'] = 'Webrecorder: Your archive request has been denied!'
+                    mail['subject'] = 'Webrecorder: Archive denied'
                     host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     mail.attach(MIMEText(reviewerMailText, "html"))
                     msgBody = mail.as_string()
                     mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
                     mailServer.quit()
-                elif data['ticketState'] == 'pending':
-                    #send user an info mail to ease him
+
+                    # to Hiwi
                     reviewerMailText = template(
-                        'webrecorder/templates/pending_mail_user.html',
-                        coll_name=coll_name
+                        'webrecorder/templates/deny_mail_hiwi.html',
+                        coll_name=coll_name,
+                        host=host,
+                        usermail=collection['usermail']
                     )
 
                     mail = MIMEMultipart()
                     mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
                     mail['TO'] = collection['usermail']
-                    mail['subject'] = 'Webrecorder: New collection awaiting review!'
+                    mail['subject'] = 'Webrecorder: Archive denied'
 
-                    host = "relays.uni-heidelberg.de"
+
                     mailServer = smtplib.SMTP(host)
                     MSG = "Your archive's state has been changed from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
                     mail.attach(MIMEText(reviewerMailText, "html"))
                     msgBody = mail.as_string()
-                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
+                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de','lib-dachs-team@zo.uni-heidelberg.de', msgBody)
                     mailServer.quit()
+
+                elif data['ticketState'] == 'pending':
+                    # #send user an info mail to ease him
+                    # reviewerMailText = template(
+                    #     'webrecorder/templates/pending_mail_user.html',
+                    #     coll_name=coll_name
+                    # )
+                    #
+                    # mail = MIMEMultipart()
+                    # mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    # mail['TO'] = collection['usermail']
+                    # mail['subject'] = 'Webrecorder: New collection awaiting review!'
+                    #
+                    # host = "relays.uni-heidelberg.de"
+                    # mailServer = smtplib.SMTP(host)
+                    # MSG = "Your archive's state has been changed from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
+                    # mail.attach(MIMEText(reviewerMailText, "html"))
+                    # msgBody = mail.as_string()
+                    # mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
+                    # mailServer.quit()
                     #send admins an infomail to get them to work
                     reviewerMailText = template(
                         'webrecorder/templates/pending_mail_admin.html',
@@ -612,7 +664,7 @@ class CollsController(BaseController):
                     mail = MIMEMultipart()
                     mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
                     mail['TO'] = collection['usermail']
-                    mail['subject'] = 'Webrecorder: New collection awaiting review!'
+                    mail['subject'] = 'Webrecorder: Awaiting review'
 
 
                     mailServer = smtplib.SMTP(host)
