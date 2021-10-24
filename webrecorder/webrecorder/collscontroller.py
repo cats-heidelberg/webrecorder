@@ -557,13 +557,13 @@ class CollsController(BaseController):
                         coll_name=coll_name,
                         username=user.name,
                         doi=collection['doi'],
-                        username=user.name, title=collection['title'], url=collection['url'], creatorList=collection['creatorList'], noteToDachs=collection['noteToDachs'], subjectHeaderList=collection['subjectHeaderList'],
+                        title=collection['title'],
+                        url=collection['url'], creatorList=collection['creatorList'], noteToDachs=collection['noteToDachs'], subjectHeaderList=collection['subjectHeaderList'],
                                                             personHeaderList=collection['personHeaderList'], publisher=collection['publisher'], collTitle=collection['collTitle'], publisherOriginal=collection['publisherOriginal'],
                                                             pubTitleOriginal=collection['pubTitleOriginal'], personHeadingText=collection['personHeadingText'], collYear=collection['collYear'], copTitle=collection['copTitle'], subjectHeadingText=collection['subjectHeadingText'],
                                                             surName=collection['surName'], persName=collection['persName'], usermail=collection['usermail'], emailOfRightsholder=collection['emailOfRightsholder'], selectedGroupName=collection['selectedGroupName'], projektcode=collection['projektcode'], publishYear=collection['publishYear'],
                                                             listID=collection['listID'], desc=collection['desc'], public=collection['is_public'], public_index=collection['is_public_index'], ticketState=collection['ticketState'], isCollLoaded=collection['isCollLoaded'],
-                                                            recordingUrl=collection['recordingUrl'], recordingTimestamp=collection['recordingTimestamp'], doi=collection['doi']
->>>>>>> 5baa3d7cf33dcff132265eddfe38578cd7d3f77d
+                                                            recordingUrl=collection['recordingUrl'], recordingTimestamp=collection['recordingTimestamp']
                     )
 
                     mail = MIMEMultipart()
@@ -662,7 +662,7 @@ class CollsController(BaseController):
                     reviewerMailText = template(
                         'webrecorder/templates/pending_mail_admin.html',
                         coll_name=coll_name,
-                        host=host
+                        host=os.environ['APP_HOST']
                     )
 
                     mail = MIMEMultipart()
