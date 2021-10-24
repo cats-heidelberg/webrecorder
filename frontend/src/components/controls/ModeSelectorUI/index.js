@@ -275,6 +275,7 @@ class ModeSelectorUI extends PureComponent {
                       onClick={this.onStop}
                       className="btn btn-default wr-mode-message content-action"
                       aria-label={`Finish ${modeMessage} session`}
+                      title="You are recording all the pages you viewed in this session. Click here to finish this recording session and return to the collection list. You can still add more content later."
                       type="button"
                     >
                       <div className="btn-content" style={{ display: "flex", alignItems: "center" }}>
@@ -288,6 +289,7 @@ class ModeSelectorUI extends PureComponent {
                       onClick={this.onStop}
                       className="btn btn-default wr-mode-message content-action"
                       aria-label={`Finish ${modeMessage} session`}
+                      title="Finish this reviewing session and return to the collection list."
                       type="button"
                     >
                       <span style={{ display: "inline-block", textAlign: "left", paddingLeft: "10px" }}>
@@ -309,10 +311,11 @@ class ModeSelectorUI extends PureComponent {
                 : "You cannot patch as the collection is already scheduled for review."
             }
             type="button"
+            style={{width: "220px"}}
           >
             <span className="btn-content">
               <PatchIcon />{" "}
-              <span className="hidden-xs">
+              <span className="hidden-xs" style={{width: "100px"}}>
                 {collection.get("reviewing") || collection.get("ticketState") == "open"
                   ? "Add more content"
                   : "Already in review"}
@@ -341,6 +344,7 @@ class ModeSelectorUI extends PureComponent {
             className="btn btn-default wr-mode-message content-action"
             title="Patching is available after finishing a recording and before submitting it for review."
             type="button"
+            style={{width: "220px"}}
           >
             <span className="btn-content">
               <PatchIcon />{" "}

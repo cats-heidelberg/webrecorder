@@ -164,7 +164,7 @@ this.waitForStamp();
 
         {
           isWrite && currMode !== 'live' &&
-            <button className={autopilotClasses} onClick={this.toggleAutopilotSidebar} type="button"><WandIcon />Autopilot</button>
+            <button className={autopilotClasses} onClick={this.toggleAutopilotSidebar} type="button" title="Show Autopilot Menu"><WandIcon />Autopilot</button>
         }
 
         {
