@@ -536,7 +536,8 @@ class CollsController(BaseController):
                     reviewerMailText = template(
                         'webrecorder/templates/complete_mail_hiwi.html',
                         coll_name=coll_name,
-                        coll_doi=collection['doi']
+                        coll_doi=collection['doi'],
+			doi=collection['doi']
                     )
 
                     mail = MIMEMultipart()
