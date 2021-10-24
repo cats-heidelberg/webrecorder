@@ -554,10 +554,8 @@ class CollsController(BaseController):
                     reviewerMailText = template(
                         'webrecorder/templates/approve_mail_user.html',
                         coll_name=coll_name,
-<<<<<<< HEAD
                         username=user.name,
-                        doi=collection['doi']
-=======
+                        doi=collection['doi'],
                         username=user.name, title=collection['title'], url=collection['url'], creatorList=collection['creatorList'], noteToDachs=collection['noteToDachs'], subjectHeaderList=collection['subjectHeaderList'],
                                                             personHeaderList=collection['personHeaderList'], publisher=collection['publisher'], collTitle=collection['collTitle'], publisherOriginal=collection['publisherOriginal'],
                                                             pubTitleOriginal=collection['pubTitleOriginal'], personHeadingText=collection['personHeadingText'], collYear=collection['collYear'], copTitle=collection['copTitle'], subjectHeadingText=collection['subjectHeadingText'],
