@@ -530,7 +530,8 @@ class CollsController(BaseController):
                     reviewerMailText = template(
                         'webrecorder/templates/approve_mail_user.html',
                         coll_name=coll_name,
-                        username=user.name
+                        username=user.name,
+                        doi=collection['doi']
                     )
 
                     mail = MIMEMultipart()
