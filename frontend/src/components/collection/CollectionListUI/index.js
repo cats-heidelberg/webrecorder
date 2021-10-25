@@ -405,6 +405,7 @@ class CollectionListUI extends Component {
   editColl = (
     collID,
     title,
+    doi,
     creatorList,
     subjectHeaderList,
     personHeaderList,
@@ -436,6 +437,7 @@ class CollectionListUI extends Component {
       user,
       collID,
       title,
+      doi,
       creatorList,
       subjectHeaderList,
       personHeaderList,
@@ -462,6 +464,7 @@ class CollectionListUI extends Component {
   createCollectionWarc = (
     collID,
     title,
+    doi,
     creatorList,
     subjectHeaderList,
     personHeaderList,
@@ -494,6 +497,7 @@ class CollectionListUI extends Component {
       user,
       collID,
       title,
+      doi,
       creatorList,
       subjectHeaderList,
       personHeaderList,
