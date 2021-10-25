@@ -631,7 +631,7 @@ class CollsController(BaseController):
                     mail['TO'] = collection['usermail']
                     mail['subject'] = 'Webrecorder: Archive denied'
 
-
+                    host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     MSG = "Your archive's state has been changed from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
                     mail.attach(MIMEText(reviewerMailText, "html"))
@@ -670,7 +670,7 @@ class CollsController(BaseController):
                     mail['TO'] = collection['usermail']
                     mail['subject'] = 'Webrecorder: Awaiting review'
 
-
+                    host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     MSG = "Your archive's state has been changed from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
                     mail.attach(MIMEText(reviewerMailText, "html"))
