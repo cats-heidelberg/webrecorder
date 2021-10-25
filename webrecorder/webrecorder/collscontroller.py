@@ -410,8 +410,9 @@ class CollsController(BaseController):
             if 'creatorList' in data:
                 collection['creatorList'] = data['creatorList']
 
-            #if 'doi' in data:
-            #    collection['doi'] = data['doi']
+            if 'doi' in data:
+                if 'ticketState' in data and data['ticketState'] is not "approved" and data['ticketState'] is not "completed"
+                    collection['doi'] = data['doi']
 
             if 'subjectHeaderList' in data:
                 collection['subjectHeaderList'] = data['subjectHeaderList']
@@ -537,7 +538,7 @@ class CollsController(BaseController):
                         'webrecorder/templates/complete_mail_hiwi.html',
                         coll_name=coll_name,
                         coll_doi=collection['doi'],
-			doi=collection['doi']
+			            doi=collection['doi']
                     )
 
                     mail = MIMEMultipart()
