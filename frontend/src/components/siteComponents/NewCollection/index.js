@@ -1314,7 +1314,7 @@ class NewCollection extends Component {
                           <InfoIcon />
                         </label>
                         <ReactTooltip id="subj-info" place="top" effect="solid">
-                          Subject headings help to describe and categorize the web resource. The headings should conform to a list drawn from the Library of Congress, see http://id.loc.gov/authorities/subjects.html.
+                          Subject headings help to describe and categorize the web resource. The headings should conform to a list drawn from the Library of Congress, see 'LoC list'.
                         </ReactTooltip>
                         <div
                           style={{
