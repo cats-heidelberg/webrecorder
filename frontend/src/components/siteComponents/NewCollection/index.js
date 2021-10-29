@@ -132,6 +132,7 @@ class NewCollection extends Component {
           personHeadingText: this.props.coll.get("personHeadingText"),
           collTitle: this.props.coll.get("collTitle"),
           title: this.props.coll.get("title"),
+          doi: this.props.coll.get("doi"),
           pubTitleOriginal: this.props.coll.get("pubTitleOriginal"),
           projektcode: this.props.coll.get("projektcode"),
           collYear: this.props.coll.get("collYear"),
@@ -522,6 +523,7 @@ class NewCollection extends Component {
     evt.preventDefault();
     const {
       title,
+      doi,
       creatorList,
       noteToDachs,
       subjectHeaderList,
@@ -546,6 +548,7 @@ class NewCollection extends Component {
     this.props.editCollection(
       coll.get("id"),
       title,
+      doi,
       JSON.stringify(creatorList),
       JSON.stringify(subjectHeaderList),
       JSON.stringify(personHeaderList),

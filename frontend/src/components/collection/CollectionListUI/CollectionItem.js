@@ -93,6 +93,7 @@ class CollectionItem extends Component {
   editCollectiontemp = (
     collID,
     title,
+    doi,
     creatorList,
     subjectHeaderList,
     personHeaderList,
@@ -117,6 +118,7 @@ class CollectionItem extends Component {
     this.props.editCollection(
       collID,
       title,
+      doi,
       creatorList,
       subjectHeaderList,
       personHeaderList,

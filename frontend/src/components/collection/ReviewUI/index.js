@@ -181,6 +181,7 @@ class ReviewUI extends Component {
                               canAdmin={canAdmin}
                               collection={coll}
                               collUser={user}
+                              completeReview={this.completeReview}
                               duplicateCollection={this.duplicateCollection}
                               editCollection={this.editColl}
                               completeRec={this.completeRec}

@@ -427,6 +427,7 @@ export function editCollectionDispatch(
   user,
   collID,
   title,
+  doi,
   creatorList,
   subjectHeaderList,
   personHeaderList,
@@ -455,6 +456,7 @@ export function editCollectionDispatch(
         params: { user },
         data: {
           title,
+          doi,
           creatorList,
           subjectHeaderList,
           personHeaderList,

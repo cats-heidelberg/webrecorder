@@ -410,8 +410,9 @@ class CollsController(BaseController):
             if 'creatorList' in data:
                 collection['creatorList'] = data['creatorList']
 
-            #if 'doi' in data:
-            #    collection['doi'] = data['doi']
+            if 'doi' in data:
+                if 'ticketState' in data and data['ticketState'] is not "approved" and data['ticketState'] is not "completed"
+                    collection['doi'] = data['doi']
 
             if 'subjectHeaderList' in data:
                 collection['subjectHeaderList'] = data['subjectHeaderList']
@@ -464,7 +465,7 @@ class CollsController(BaseController):
 
             if 'selectedGroupName' in data:
                 collection['selectedGroupName'] = data['selectedGroupName']
-            if 'ticketState' in data and data['ticketState'] == "pending" and 'projektcode' in data and data['projektcode'] != "" and collection['doi'] is None:
+            if 'ticketState' in data and data['ticketState'] == "approved" and 'projektcode' in data and data['projektcode'] != "" and collection['doi'] is None:
                 collection['projektcode'] = data['projektcode']
                 today = datetime.utcnow()
                 possibleDOIBase = "10.25354/"+data['projektcode']+"."+str(today.year)+"."+str(today.month)
@@ -536,7 +537,8 @@ class CollsController(BaseController):
                     reviewerMailText = template(
                         'webrecorder/templates/complete_mail_hiwi.html',
                         coll_name=coll_name,
-                        coll_doi=collection['doi']
+                        coll_doi=collection['doi'],
+			            doi=collection['doi']
                     )
 
                     mail = MIMEMultipart()
@@ -554,12 +556,15 @@ class CollsController(BaseController):
                     reviewerMailText = template(
                         'webrecorder/templates/approve_mail_user.html',
                         coll_name=coll_name,
-                        username=user.name, title=collection['title'], url=collection['url'], creatorList=collection['creatorList'], noteToDachs=collection['noteToDachs'], subjectHeaderList=collection['subjectHeaderList'],
+                        username=user.name,
+                        doi=collection['doi'],
+                        title=collection['title'],
+                        url=collection['url'], creatorList=collection['creatorList'], noteToDachs=collection['noteToDachs'], subjectHeaderList=collection['subjectHeaderList'],
                                                             personHeaderList=collection['personHeaderList'], publisher=collection['publisher'], collTitle=collection['collTitle'], publisherOriginal=collection['publisherOriginal'],
                                                             pubTitleOriginal=collection['pubTitleOriginal'], personHeadingText=collection['personHeadingText'], collYear=collection['collYear'], copTitle=collection['copTitle'], subjectHeadingText=collection['subjectHeadingText'],
                                                             surName=collection['surName'], persName=collection['persName'], usermail=collection['usermail'], emailOfRightsholder=collection['emailOfRightsholder'], selectedGroupName=collection['selectedGroupName'], projektcode=collection['projektcode'], publishYear=collection['publishYear'],
                                                             listID=collection['listID'], desc=collection['desc'], public=collection['is_public'], public_index=collection['is_public_index'], ticketState=collection['ticketState'], isCollLoaded=collection['isCollLoaded'],
-                                                            recordingUrl=collection['recordingUrl'], recordingTimestamp=collection['recordingTimestamp'], doi=collection['doi']
+                                                            recordingUrl=collection['recordingUrl'], recordingTimestamp=collection['recordingTimestamp']
                     )
 
                     mail = MIMEMultipart()
@@ -627,7 +632,7 @@ class CollsController(BaseController):
                     mail['TO'] = collection['usermail']
                     mail['subject'] = 'Webrecorder: Archive denied'
 
-
+                    host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     MSG = "Your archive's state has been changed from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
                     mail.attach(MIMEText(reviewerMailText, "html"))
@@ -658,7 +663,7 @@ class CollsController(BaseController):
                     reviewerMailText = template(
                         'webrecorder/templates/pending_mail_admin.html',
                         coll_name=coll_name,
-                        host=host
+                        host=os.environ['APP_HOST']
                     )
 
                     mail = MIMEMultipart()
@@ -666,7 +671,7 @@ class CollsController(BaseController):
                     mail['TO'] = collection['usermail']
                     mail['subject'] = 'Webrecorder: Awaiting review'
 
-
+                    host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     MSG = "Your archive's state has been changed from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
                     mail.attach(MIMEText(reviewerMailText, "html"))
