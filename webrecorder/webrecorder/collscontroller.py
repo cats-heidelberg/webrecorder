@@ -518,14 +518,14 @@ class CollsController(BaseController):
                     )
 
                     mail = MIMEMultipart()
-                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    mail['FROM'] = 'lib-dachs-team@cats.uni-heidelberg.de'
                     mail['TO'] = collection['usermail']
                     mail['subject'] = 'Webrecorder: Archive Complete'
                     host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     mail.attach(MIMEText(reviewerMailText, "html"))
                     msgBody = mail.as_string()
-                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
+                    mailServer.sendmail('lib-dachs-team@cats.uni-heidelberg.de',collection['usermail'], msgBody)
                     mailServer.quit()
                     reviewerMailText = template(
                         'webrecorder/templates/complete_mail.html',
@@ -542,14 +542,14 @@ class CollsController(BaseController):
                     )
 
                     mail = MIMEMultipart()
-                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
-                    mail['TO'] = collection['usermail']
+                    mail['FROM'] = 'lib-dachs-team@cats.uni-heidelberg.de'
+                    mail['TO'] = 'lib-dachs-team@cats.uni-heidelberg.de'
                     mail['subject'] = 'Webrecorder: Archive complete'
                     host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     mail.attach(MIMEText(reviewerMailText, "html"))
                     msgBody = mail.as_string()
-                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de','lib-dachs-team@zo.uni-heidelberg.de', msgBody)
+                    mailServer.sendmail('lib-dachs-team@cats.uni-heidelberg.de','lib-dachs-team@cats.uni-heidelberg.de', msgBody)
                     mailServer.quit()
                 elif data['ticketState'] == 'approved':
                     #inform user his doi is about to be dropped
@@ -568,14 +568,14 @@ class CollsController(BaseController):
                     )
 
                     mail = MIMEMultipart()
-                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    mail['FROM'] = 'lib-dachs-team@cats.uni-heidelberg.de'
                     mail['TO'] = collection['usermail']
                     mail['subject'] = 'Webrecorder: Archive approved'
                     host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     mail.attach(MIMEText(reviewerMailText, "html"))
                     msgBody = mail.as_string()
-                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
+                    mailServer.sendmail('lib-dachs-team@cats.uni-heidelberg.de',collection['usermail'], msgBody)
                     mailServer.quit()
                     #the internal doi creation related library worker
                     reviewerMailText = template(
@@ -591,14 +591,14 @@ class CollsController(BaseController):
                     )
 
                     mail = MIMEMultipart()
-                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
-                    mail['TO'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    mail['FROM'] = 'lib-dachs-team@cats.uni-heidelberg.de'
+                    mail['TO'] = 'lib-dachs-team@cats.uni-heidelberg.de'
                     mail['subject'] = 'Webrecorder: Archive approved'
                     host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     mail.attach(MIMEText(reviewerMailText, "html"))
                     msgBody = mail.as_string()
-                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de','lib-dachs-team@zo.uni-heidelberg.de', msgBody)
+                    mailServer.sendmail('lib-dachs-team@cats.uni-heidelberg.de','lib-dachs-team@cats.uni-heidelberg.de', msgBody)
                     mailServer.quit()
 
                 elif data['ticketState'] == 'denied':
@@ -609,14 +609,14 @@ class CollsController(BaseController):
                     )
 
                     mail = MIMEMultipart()
-                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    mail['FROM'] = 'lib-dachs-team@cats.uni-heidelberg.de'
                     mail['TO'] = collection['usermail']
                     mail['subject'] = 'Webrecorder: Archive denied'
                     host = "relays.uni-heidelberg.de"
                     mailServer = smtplib.SMTP(host)
                     mail.attach(MIMEText(reviewerMailText, "html"))
                     msgBody = mail.as_string()
-                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
+                    mailServer.sendmail('lib-dachs-team@cats.uni-heidelberg.de',collection['usermail'], msgBody)
                     mailServer.quit()
 
                     # to Hiwi
@@ -628,8 +628,8 @@ class CollsController(BaseController):
                     )
 
                     mail = MIMEMultipart()
-                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
-                    mail['TO'] = collection['usermail']
+                    mail['FROM'] = 'lib-dachs-team@cats.uni-heidelberg.de'
+                    mail['TO'] = 'lib-dachs-team@cats.uni-heidelberg.de'
                     mail['subject'] = 'Webrecorder: Archive denied'
 
                     host = "relays.uni-heidelberg.de"
@@ -637,7 +637,7 @@ class CollsController(BaseController):
                     MSG = "Your archive's state has been changed from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
                     mail.attach(MIMEText(reviewerMailText, "html"))
                     msgBody = mail.as_string()
-                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de','lib-dachs-team@zo.uni-heidelberg.de', msgBody)
+                    mailServer.sendmail('lib-dachs-team@cats.uni-heidelberg.de','lib-dachs-team@cats.uni-heidelberg.de', msgBody)
                     mailServer.quit()
 
                 elif data['ticketState'] == 'pending':
@@ -648,7 +648,7 @@ class CollsController(BaseController):
                     # )
                     #
                     # mail = MIMEMultipart()
-                    # mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
+                    # mail['FROM'] = 'lib-dachs-team@cats.uni-heidelberg.de'
                     # mail['TO'] = collection['usermail']
                     # mail['subject'] = 'Webrecorder: New collection awaiting review!'
                     #
@@ -657,7 +657,7 @@ class CollsController(BaseController):
                     # MSG = "Your archive's state has been changed from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
                     # mail.attach(MIMEText(reviewerMailText, "html"))
                     # msgBody = mail.as_string()
-                    # mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de',collection['usermail'], msgBody)
+                    # mailServer.sendmail('lib-dachs-team@cats.uni-heidelberg.de',collection['usermail'], msgBody)
                     # mailServer.quit()
                     #send admins an infomail to get them to work
                     reviewerMailText = template(
@@ -667,8 +667,8 @@ class CollsController(BaseController):
                     )
 
                     mail = MIMEMultipart()
-                    mail['FROM'] = 'webteam-cn@zo.uni-heidelberg.de'
-                    mail['TO'] = collection['usermail']
+                    mail['FROM'] = 'lib-dachs-team@cats.uni-heidelberg.de'
+                    mail['TO'] = 'lib-dachs-team@cats.uni-heidelberg.de'
                     mail['subject'] = 'Webrecorder: Awaiting review'
 
                     host = "relays.uni-heidelberg.de"
@@ -676,7 +676,7 @@ class CollsController(BaseController):
                     MSG = "Your archive's state has been changed from {} to {}. We will inform you with further updates as soon as possible.".format(prevState, newState)
                     mail.attach(MIMEText(reviewerMailText, "html"))
                     msgBody = mail.as_string()
-                    mailServer.sendmail('webteam-cn@zo.uni-heidelberg.de','lib-dachs-team@zo.uni-heidelberg.de', msgBody)
+                    mailServer.sendmail('lib-dachs-team@cats.uni-heidelberg.de','lib-dachs-team@cats.uni-heidelberg.de', msgBody)
                     mailServer.quit()
 
 

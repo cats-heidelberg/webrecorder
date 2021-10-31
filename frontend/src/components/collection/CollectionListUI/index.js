@@ -66,8 +66,8 @@ class CollectionListUI extends Component {
     this.state = {
       canCancel: true,
       _collectionsSorted: null,
-      _sortBy: ["sorted by state"],
-      sortByActive: "sorted by state",
+      _sortBy: ["status"],
+      sortByActive: "status",
       isUploading: false,
       numCollections: 0,
       showModal: false,
@@ -93,7 +93,7 @@ class CollectionListUI extends Component {
     const { sortCollections, sortBy, collections } = this.props;
     const { _sortBy } = this.state;
 
-    const soLangsamEy = ["sorted by state"];
+    const soLangsamEy = ["status"];
     var promise = new Promise((resolve, reject) => {
       collections.get("collections").map((coll) => {
         if (
@@ -586,11 +586,11 @@ class CollectionListUI extends Component {
   };
 
   reOrder = (evt) => {
-    this.setState({ sortByActive: this.state._sortBy[evt] });
-    const { _collectionsSorted, _sortBy } = this.state;
+    this.setState({ sortByActive: evt });
+    const { _collectionsSorted } = this.state;
     const { collections } = this.props;
     const temp = [{}];
-    const code = _sortBy[evt];
+    const code = evt;
 
     var promise = new Promise((resolve, reject) => {
       // call resolve if the method succeeds
@@ -756,14 +756,26 @@ class CollectionListUI extends Component {
                   {/* Update Sort by*/}
                 </Col>
                 <Col className="admin-section update-role p-0" style={{ textAlign: "right" }}>
-                  <div className="sort-list m-2">Sort list:</div>
+                  <div className="sort-list m-2">Sort by:</div>
                   <Dropdown id="roleDropdown" onSelect={this.reOrder} className="sort-list">
                     <Dropdown.Toggle>
                       {_sortBy ? sortByActive : "Sorting unavailable"}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      {[...new Set(_sortBy)].map((sort, index) => (
-                        <Dropdown.Item key={sort} eventKey={index}>
+                      <Dropdown.Item key={_sortBy[0]} eventKey={0}>
+                        {_sortBy[0]}
+                      </Dropdown.Item>
+                      <Dropdown.Divider />
+                      <span style={{
+                        "color": "grey",
+                        "margin": "17px",
+                        "font-size": "13px",
+                        "font-style": "italic"
+                      }}>
+                        Project codes:
+                      </span>
+                      {[...new Set(_sortBy.slice(1))].sort().map((sort) => (
+                        <Dropdown.Item key={sort} eventKey={sort}>
                           {sort}
                         </Dropdown.Item>
                       ))}
@@ -777,7 +789,7 @@ class CollectionListUI extends Component {
                 <ul className="collection-list mt-3 pl-0">
                   {(() => {
                     switch (sortByActive) {
-                      case "sorted by state":
+                      case "status":
                         return collections.get("collections").map((coll) => {
                           const temp =
                             coll.get("ticketState") !== headline &&
