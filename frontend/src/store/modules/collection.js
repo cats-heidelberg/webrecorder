@@ -326,7 +326,6 @@ export function completeRecordingDispatch(
   user,
   collID,
   ticketState,
-  projektcode = ""
 ) {
   return {
     types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
@@ -335,7 +334,6 @@ export function completeRecordingDispatch(
         params: { user },
         data: {
           ticketState,
-          projektcode,
         },
       }),
   };
