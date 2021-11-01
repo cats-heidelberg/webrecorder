@@ -98,12 +98,16 @@
                       <p>
                         You are receiving this email to confirm that your
                         archive
-                        <b>{{coll_name}}</b> has been approved and the following
-                        DOI was assigned:
+                        <b>{{coll_name}}</b> has been approved and the following DOI was assigned:
                       </p>
-                      <p>
-                        <b>{{doi}}</b>
-                      </p>
+
+                      {% if doi %}
+                                {% block doi %}
+                                  <p>
+                                    <b>{{doi}}</b>
+                                  </p>
+                                {% endblock %}
+                      {% endif %}
                       <p>
                         This is the metadata of your archive:
                         <ul>

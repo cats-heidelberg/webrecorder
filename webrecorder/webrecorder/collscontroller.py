@@ -557,6 +557,7 @@ class CollsController(BaseController):
                         'webrecorder/templates/approve_mail_user.html',
                         coll_name=coll_name,
                         username=user.name,
+                        coll_doi=collection['doi'],
                         doi=collection['doi'],
                         title=collection['title'],
                         url=collection['url'], creatorList=collection['creatorList'], noteToDachs=collection['noteToDachs'], subjectHeaderList=collection['subjectHeaderList'],
