@@ -392,7 +392,8 @@ class CollsController(BaseController):
             ticketStateChanged = False
 
             data = request.json or {}
-
+            if "ticketState" in data:
+                print(data['ticketState'])
             if 'title' in data:
                 new_coll_title = data['title']
                 new_coll_name = self.sanitize_title(new_coll_title)
