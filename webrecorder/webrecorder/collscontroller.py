@@ -411,7 +411,7 @@ class CollsController(BaseController):
                 collection['creatorList'] = data['creatorList']
 
             if 'doi' in data:
-                if 'ticketState' in data and data['ticketState'] is not "approved" and data['ticketState'] is not "completed"
+                if 'ticketState' in data and data['ticketState'] is not "approved" and data['ticketState'] is not "completed":
                     collection['doi'] = data['doi']
 
             if 'subjectHeaderList' in data:
