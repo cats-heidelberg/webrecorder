@@ -131,7 +131,7 @@ class CollectionItem extends Component {
   denyArchive = () => {
     const { doi } = this.state;
     const { completeReview, collection } = this.props;
-    completeReview(collection.get("owner"), collection.get("id"), "denied", "");
+    completeReview(collection.get("owner"), collection.get("id"), "denied", "","");
   };
 
   handleInput = (event) => {
@@ -315,10 +315,8 @@ class CollectionItem extends Component {
                           <p>
                             Are you sure you would like to approve this archive?
                             <br />
-                            This will create the following DOI. Please note that it is not editable:
+                            This will mark it as ready for DOI creation.
                             <br />
-                            <span style={{ color: "black", fontWeight: "bold" }}>{collection.get("doi")}</span>
-                            <br /> <br />
                             Create DOI? <br />
                           </p>
                           <Button
