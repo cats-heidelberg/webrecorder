@@ -388,7 +388,11 @@ class CollsController(BaseController):
             user, collection = self.load_user_coll(coll_name=coll_name)
 
             self.access.assert_can_admin_coll(collection)
-
+            print('THIS IS IMPORTANT')
+            print('USER:')
+            print(user)
+            print('COLLECTION:')
+            print(collection)
             ticketStateChanged = False
 
             data = request.json or {}
@@ -411,7 +415,7 @@ class CollsController(BaseController):
                 collection['creatorList'] = data['creatorList']
 
             if 'doi' in data:
-                if 'ticketState' in data and data['ticketState'] is not "approved" and data['ticketState'] is not "completed"
+                if 'ticketState' in data and data['ticketState'] is not "approved" and data['ticketState'] is not "completed":
                     collection['doi'] = data['doi']
 
             if 'subjectHeaderList' in data:
