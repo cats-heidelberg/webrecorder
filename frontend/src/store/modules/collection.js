@@ -323,9 +323,7 @@ export function deleteCollection(user, coll) {
   };
 }
 export function completeRecordingDispatch(
-  user,
-  collID,
-  ticketState,
+  user, collID, ticketState, projektcode
 ) {
   return {
     types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],

@@ -80,6 +80,7 @@ class ReviewUI extends Component {
 
   Reviewed = (user, collID, ticketState) => {
     const { Reviewed } = this.props;
+    console.log("REVIEWED"+collID);
     Reviewed(user, collID, ticketState);
   };
 

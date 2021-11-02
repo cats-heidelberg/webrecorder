@@ -396,7 +396,8 @@ class CollsController(BaseController):
             ticketStateChanged = False
 
             data = request.json or {}
-
+            if "ticketState" in data:
+                print(data['ticketState'])
             if 'title' in data:
                 new_coll_title = data['title']
                 new_coll_name = self.sanitize_title(new_coll_title)
@@ -453,7 +454,10 @@ class CollsController(BaseController):
                 collection['personHeadingText'] = data['personHeadingText']
 
             if 'projektcode' in data:
-                collection['projektcode'] = data['projektcode']
+                if  collection['ticketState'] is not "approved" and collection['ticketState'] is not "completed":
+                    print('projectcode changed!!!!!!!!!!')
+                    collection['projektcode'] = data['projektcode']
+                    print(collection['projectcode'])
 
             if 'pubTitleOriginal' in data:
                 collection['pubTitleOriginal'] = data['pubTitleOriginal']
@@ -469,18 +473,32 @@ class CollsController(BaseController):
 
             if 'selectedGroupName' in data:
                 collection['selectedGroupName'] = data['selectedGroupName']
-            if 'ticketState' in data and data['ticketState'] == "approved" and 'projektcode' in data and data['projektcode'] != "" and collection['doi'] is None:
-                collection['projektcode'] = data['projektcode']
-                today = datetime.utcnow()
-                possibleDOIBase = "10.25354/"+data['projektcode']+"."+str(today.year)+"."+str(today.month)
-                tempInc = 1
-                possibleDOI = possibleDOIBase+"-"+str(tempInc);
-
-                while self.redis.sismember('doimodel', possibleDOI) == 1:
-                    tempInc += 1
+            if data['ticketState'] == "approved" and ('projektcode' in data or 'projektcode' in collection):
+                if data['projektcode'] != "":
+                    print('doi has changed!!!!')
+                    collection['projektcode'] = data['projektcode']
+                    today = datetime.utcnow()
+                    possibleDOIBase = "10.25354/"+data['projektcode']+"."+str(today.year)+"."+str(today.month)
+                    tempInc = 1
                     possibleDOI = possibleDOIBase+"-"+str(tempInc);
-                self.redis.sadd('doimodel', possibleDOI)
-                collection['doi'] = possibleDOI
+                    while self.redis.sismember('doimodel', possibleDOI) == 1:
+                        tempInc += 1
+                        possibleDOI = possibleDOIBase+"-"+str(tempInc);
+                    self.redis.sadd('doimodel', possibleDOI)
+                    collection['doi'] = possibleDOI
+                    print(collection['doi'])
+                else:
+                    print('doi has changed!!!!')
+                    today = datetime.utcnow()
+                    possibleDOIBase = "10.25354/"+collection['projektcode']+"."+str(today.year)+"."+str(today.month)
+                    tempInc = 1
+                    possibleDOI = possibleDOIBase+"-"+str(tempInc);
+                    while self.redis.sismember('doimodel', possibleDOI) == 1:
+                        tempInc += 1
+                        possibleDOI = possibleDOIBase+"-"+str(tempInc);
+                    self.redis.sadd('doimodel', possibleDOI)
+                    collection['doi'] = possibleDOI
+                    print(collection['doi'])
             else:
                 print(collection['doi'])
             if 'publishYear' in data:
@@ -561,6 +579,7 @@ class CollsController(BaseController):
                         'webrecorder/templates/approve_mail_user.html',
                         coll_name=coll_name,
                         username=user.name,
+                        coll_doi=collection['doi'],
                         doi=collection['doi'],
                         title=collection['title'],
                         url=collection['url'], creatorList=collection['creatorList'], noteToDachs=collection['noteToDachs'], subjectHeaderList=collection['subjectHeaderList'],

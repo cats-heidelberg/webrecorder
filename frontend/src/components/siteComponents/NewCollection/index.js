@@ -283,7 +283,7 @@ class NewCollection extends Component {
       subjectHeadingText,
       listID,
       url,
-      doi
+      ""
     );
     this.props.close();
   };
@@ -491,7 +491,8 @@ class NewCollection extends Component {
         ticketState,
         isCollLoaded,
         recordingUrl,
-        recordingTimestamp
+        recordingTimestamp,
+        ""
       );
     } else {
       this.xhr = new XMLHttpRequest();

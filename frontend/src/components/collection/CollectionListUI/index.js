@@ -356,7 +356,7 @@ class CollectionListUI extends Component {
     recordingUrl = "",
     recordingTimestamp = "",
     file,
-    doi
+    doi=""
   ) => {
     const {
       createNewCollectionBrowseWarc,
