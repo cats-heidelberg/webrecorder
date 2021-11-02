@@ -417,7 +417,10 @@ class CollsController(BaseController):
 
             if 'doi' in data:
                 if 'ticketState' in data and data['ticketState'] is not "approved" and data['ticketState'] is not "completed":
-                    collection['doi'] = data['doi']
+                    try:
+                        collection['doi'] = data['doi']
+                    except DupeNameException as de:
+                        self._raise_error(400, 'weird problem')
 
             if 'subjectHeaderList' in data:
                 collection['subjectHeaderList'] = data['subjectHeaderList']
@@ -474,31 +477,34 @@ class CollsController(BaseController):
             if 'selectedGroupName' in data:
                 collection['selectedGroupName'] = data['selectedGroupName']
             if data['ticketState'] == "approved" and ('projektcode' in data or 'projektcode' in collection):
-                if data['projektcode'] != "":
-                    print('doi has changed!!!!')
-                    collection['projektcode'] = data['projektcode']
-                    today = datetime.utcnow()
-                    possibleDOIBase = "10.25354/"+data['projektcode']+"."+str(today.year)+"."+str(today.month)
-                    tempInc = 1
-                    possibleDOI = possibleDOIBase+"-"+str(tempInc);
-                    while self.redis.sismember('doimodel', possibleDOI) == 1:
-                        tempInc += 1
+                try:
+                    if data['projektcode'] != "":
+                        print('doi has changed!!!!')
+                        collection['projektcode'] = data['projektcode']
+                        today = datetime.utcnow()
+                        possibleDOIBase = "10.25354/"+data['projektcode']+"."+str(today.year)+"."+str(today.month)
+                        tempInc = 1
                         possibleDOI = possibleDOIBase+"-"+str(tempInc);
-                    self.redis.sadd('doimodel', possibleDOI)
-                    collection['doi'] = possibleDOI
-                    print(collection['doi'])
-                else:
-                    print('doi has changed!!!!')
-                    today = datetime.utcnow()
-                    possibleDOIBase = "10.25354/"+collection['projektcode']+"."+str(today.year)+"."+str(today.month)
-                    tempInc = 1
-                    possibleDOI = possibleDOIBase+"-"+str(tempInc);
-                    while self.redis.sismember('doimodel', possibleDOI) == 1:
-                        tempInc += 1
+                        while self.redis.sismember('doimodel', possibleDOI) == 1:
+                            tempInc += 1
+                            possibleDOI = possibleDOIBase+"-"+str(tempInc);
+                        self.redis.sadd('doimodel', possibleDOI)
+                        collection['doi'] = possibleDOI
+                        print(collection['doi'])
+                    else:
+                        print('doi has changed!!!!')
+                        today = datetime.utcnow()
+                        possibleDOIBase = "10.25354/"+collection['projektcode']+"."+str(today.year)+"."+str(today.month)
+                        tempInc = 1
                         possibleDOI = possibleDOIBase+"-"+str(tempInc);
-                    self.redis.sadd('doimodel', possibleDOI)
-                    collection['doi'] = possibleDOI
-                    print(collection['doi'])
+                        while self.redis.sismember('doimodel', possibleDOI) == 1:
+                            tempInc += 1
+                            possibleDOI = possibleDOIBase+"-"+str(tempInc);
+                        self.redis.sadd('doimodel', possibleDOI)
+                        collection['doi'] = possibleDOI
+                        print(collection['doi'])
+                except DupeNameException as de:
+                    self._raise_error(400, 'weird problem')
             else:
                 print(collection['doi'])
             if 'publishYear' in data:
