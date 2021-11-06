@@ -692,7 +692,7 @@ class CollsController(BaseController):
                     reviewerMailText = template(
                         'webrecorder/templates/pending_mail_admin.html',
                         coll_name=coll_name,
-                        host=os.environ['APP_HOST']
+                        host=self.app_host
                     )
 
                     mail = MIMEMultipart()
