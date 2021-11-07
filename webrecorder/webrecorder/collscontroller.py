@@ -388,11 +388,6 @@ class CollsController(BaseController):
             user, collection = self.load_user_coll(coll_name=coll_name)
 
             self.access.assert_can_admin_coll(collection)
-            print('THIS IS IMPORTANT')
-            print('USER:')
-            print(user)
-            print('COLLECTION:')
-            print(collection)
             ticketStateChanged = False
 
             data = request.json or {}
@@ -424,12 +419,12 @@ class CollsController(BaseController):
             if 'creatorList' in data:
                 collection['creatorList'] = data['creatorList']
 
-            if 'doi' in data:
-                if 'ticketState' in data and data['ticketState'] is not "approved" and data['ticketState'] is not "completed":
-                    try:
-                        collection['doi'] = data['doi']
-                    except DupeNameException as de:
-                        self._raise_error(400, 'weird problem')
+            #if 'doi' in data:
+            #    if 'ticketState' in data and data['ticketState'] is not "approved" and data['ticketState'] is not "completed":
+            #        try:
+            #            collection['doi'] = data['doi']
+            #        except DupeNameException as de:
+            #            self._raise_error(400, 'weird problem')
 
             if 'subjectHeaderList' in data:
                 collection['subjectHeaderList'] = data['subjectHeaderList']
@@ -486,7 +481,8 @@ class CollsController(BaseController):
             if 'selectedGroupName' in data:
                 collection['selectedGroupName'] = data['selectedGroupName']
             try:
-                if collection['ticketState'] == "approved" and collection['projektcode']!="":
+                print("WKAERISHAPPENING")
+                if collection['ticketState'] == "approved" and ticketStateChanged:
                     print("if ticketState approved succeeded")
                     try:
                         print('doi has changed!!!!')
