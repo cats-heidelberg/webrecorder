@@ -485,23 +485,10 @@ class CollsController(BaseController):
 
             if 'selectedGroupName' in data:
                 collection['selectedGroupName'] = data['selectedGroupName']
-            if (data['ticketState'] == "approved" or collection['ticketState'] == "approved") and ('projektcode' in data or 'projektcode' in collection):
-                print("if ticketState approved succeeded")
-                try:
-                    if data['projektcode'] != "":
-                        print('doi has changed!!!!')
-                        collection['projektcode'] = data['projektcode']
-                        today = datetime.utcnow()
-                        possibleDOIBase = "10.25354/"+data['projektcode']+"."+str(today.year)+"."+str(today.month)
-                        tempInc = 1
-                        possibleDOI = possibleDOIBase+"-"+tempInc;
-                        while self.redis.sismember('doimodel', possibleDOI) == 1:
-                            tempInc += 1
-                            possibleDOI = possibleDOIBase+"-"+tempInc;
-                        self.redis.sadd('doimodel', possibleDOI)
-                        collection['doi'] = possibleDOI
-                        print(collection['doi'])
-                    else:
+            try:
+                if collection['ticketState'] == "approved" and 'projektcode' in collection:
+                    print("if ticketState approved succeeded")
+                    try:
                         print('doi has changed!!!!')
                         today = datetime.utcnow()
                         possibleDOIBase = "10.25354/"+collection['projektcode']+"."+str(today.year)+"."+str(today.month)
@@ -513,10 +500,12 @@ class CollsController(BaseController):
                         self.redis.sadd('doimodel', possibleDOI)
                         collection['doi'] = possibleDOI
                         print(collection['doi'])
-                except DupeNameException as de:
-                    self._raise_error(400, 'weird problem')
-            else:
-                print("if ticketState approved DIDNT succeeded")
+                    except DupeNameException as de:
+                        self._raise_error(400, 'weird problem')
+                else:
+                    print("if ticketState approved DIDNT succeeded")
+            except DupeNameException as de:
+                self._raise_error(400, 'weird problem2')        
             if 'publishYear' in data:
                 collection['publishYear'] = data['publishYear']
 
