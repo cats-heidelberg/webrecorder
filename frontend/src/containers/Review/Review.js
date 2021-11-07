@@ -85,7 +85,7 @@ const mapDispatchToProps = (dispatch, { history }) => {
         });
       setTimeout(() => {
         history.push(`/${user}/review`);
-      }, 100);
+      }, 5000);
     },
     getCollectionsReview: (collections, sortBy) => {
       dispatch(loadReviewList()).then(() => {

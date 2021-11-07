@@ -526,48 +526,53 @@ class CollsController(BaseController):
                 collection['url'] = data['url']
 
             if ticketStateChanged:
+                print("TICKETSTATECHANGED529")
                 if data['ticketState'] == 'completed':
-                    # to user
-                    reviewerMailText = template(
-                        'webrecorder/templates/complete_mail_user.html',
-                        coll_name=coll_name,
-                        coll_doi=collection['doi']
-                    )
+                    try:
+                        # to user
+                        reviewerMailText = template(
+                            'webrecorder/templates/complete_mail_user.html',
+                            coll_name=coll_name,
+                            coll_doi=collection['doi']
+                        )
 
-                    mail = MIMEMultipart()
-                    mail['FROM'] = 'lib-dachs-team@cats.uni-heidelberg.de'
-                    mail['TO'] = collection['usermail']
-                    mail['subject'] = 'Webrecorder: Archive Complete'
-                    host = "relays.uni-heidelberg.de"
-                    mailServer = smtplib.SMTP(host)
-                    mail.attach(MIMEText(reviewerMailText, "html"))
-                    msgBody = mail.as_string()
-                    mailServer.sendmail('lib-dachs-team@cats.uni-heidelberg.de',collection['usermail'], msgBody)
-                    mailServer.quit()
-                    reviewerMailText = template(
-                        'webrecorder/templates/complete_mail.html',
-                        coll_name=coll_name,
-                        coll_doi=collection['doi']
-                    )
+                        mail = MIMEMultipart()
+                        mail['FROM'] = 'lib-dachs-team@cats.uni-heidelberg.de'
+                        mail['TO'] = collection['usermail']
+                        mail['subject'] = 'Webrecorder: Archive Complete'
+                        host = "relays.uni-heidelberg.de"
+                        mailServer = smtplib.SMTP(host)
+                        mail.attach(MIMEText(reviewerMailText, "html"))
+                        msgBody = mail.as_string()
+                        mailServer.sendmail('lib-dachs-team@cats.uni-heidelberg.de',collection['usermail'], msgBody)
+                        mailServer.quit()
+                        reviewerMailText = template(
+                            'webrecorder/templates/complete_mail.html',
+                            coll_name=coll_name,
+                            coll_doi=collection['doi']
+                        )
 
-                    # to Hiwi/Katalogisierungsmitarbeiter/Reviewer
-                    reviewerMailText = template(
-                        'webrecorder/templates/complete_mail_hiwi.html',
-                        coll_name=coll_name,
-                        coll_doi=collection['doi'],
-			            doi=collection['doi']
-                    )
+                        # to Hiwi/Katalogisierungsmitarbeiter/Reviewer
+                        reviewerMailText = template(
+                            'webrecorder/templates/complete_mail_hiwi.html',
+                            coll_name=coll_name,
+                            coll_doi=collection['doi'],
+    			            doi=collection['doi']
+                        )
 
-                    mail = MIMEMultipart()
-                    mail['FROM'] = 'lib-dachs-team@cats.uni-heidelberg.de'
-                    mail['TO'] = 'lib-dachs-team@cats.uni-heidelberg.de'
-                    mail['subject'] = 'Webrecorder: Archive complete'
-                    host = "relays.uni-heidelberg.de"
-                    mailServer = smtplib.SMTP(host)
-                    mail.attach(MIMEText(reviewerMailText, "html"))
-                    msgBody = mail.as_string()
-                    mailServer.sendmail('lib-dachs-team@cats.uni-heidelberg.de','lib-dachs-team@cats.uni-heidelberg.de', msgBody)
-                    mailServer.quit()
+                        mail = MIMEMultipart()
+                        mail['FROM'] = 'lib-dachs-team@cats.uni-heidelberg.de'
+                        mail['TO'] = 'lib-dachs-team@cats.uni-heidelberg.de'
+                        mail['subject'] = 'Webrecorder: Archive complete'
+                        host = "relays.uni-heidelberg.de"
+                        mailServer = smtplib.SMTP(host)
+                        mail.attach(MIMEText(reviewerMailText, "html"))
+                        msgBody = mail.as_string()
+                        mailServer.sendmail('lib-dachs-team@cats.uni-heidelberg.de','lib-dachs-team@cats.uni-heidelberg.de', msgBody)
+                        mailServer.quit()
+                    except Exception as e:
+                        result = {'error': 'api_error', 'details': str(e)}
+
                 elif data['ticketState'] == 'approved':
                     #inform user his doi is about to be dropped
                     reviewerMailText = template(
@@ -707,6 +712,7 @@ class CollsController(BaseController):
                 collection.set_bool_prop('public_index', data['public_index'])
 
             collection.mark_updated()
+            print("sendBackCollection")
             return {'collection': collection.serialize()}
         @self.app.post('/api/v1/collection/<coll_name>/appropriateurl')
         def dat_do_share(coll_name):
