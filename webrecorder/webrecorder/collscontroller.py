@@ -398,6 +398,15 @@ class CollsController(BaseController):
             data = request.json or {}
             if "ticketState" in data:
                 print(data['ticketState'])
+
+            if 'ticketState' in data:
+                if collection['ticketState'] != data['ticketState']:
+                    prevState = collection['ticketState']
+                    newState = data['ticketState']
+                    ticketStateChanged = True
+                    print("Ticket State changed from {} to {}".format(collection['title'], newState))
+                collection['ticketState'] = data['ticketState']
+                print(collection['ticketState'])
             if 'title' in data:
                 new_coll_title = data['title']
                 new_coll_name = self.sanitize_title(new_coll_title)
@@ -527,13 +536,7 @@ class CollsController(BaseController):
             if 'desc' in data:
                 collection['desc'] = data['desc']
 
-            if 'ticketState' in data:
-                if collection['ticketState'] != data['ticketState']:
-                    prevState = collection['ticketState']
-                    newState = data['ticketState']
-                    ticketStateChanged = True
-                    print("Ticket State changed from {} to {}".format(collection['title'], newState))
-                collection['ticketState'] = data['ticketState']
+
             if 'url' in data:
                 collection['url'] = data['url']
 
