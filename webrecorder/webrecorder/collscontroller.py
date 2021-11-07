@@ -476,7 +476,8 @@ class CollsController(BaseController):
 
             if 'selectedGroupName' in data:
                 collection['selectedGroupName'] = data['selectedGroupName']
-            if data['ticketState'] == "approved" and ('projektcode' in data or 'projektcode' in collection):
+            if (data['ticketState'] == "approved" or collection['ticketState'] == "approved") and ('projektcode' in data or 'projektcode' in collection):
+                print("if ticketState approved succeeded")
                 try:
                     if data['projektcode'] != "":
                         print('doi has changed!!!!')
@@ -506,7 +507,7 @@ class CollsController(BaseController):
                 except DupeNameException as de:
                     self._raise_error(400, 'weird problem')
             else:
-                print(collection['doi'])
+                print("if ticketState approved DIDNT succeeded")
             if 'publishYear' in data:
                 collection['publishYear'] = data['publishYear']
 
