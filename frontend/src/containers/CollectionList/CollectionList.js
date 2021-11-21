@@ -398,7 +398,7 @@ const mapDispatchToProps = (dispatch, { history }) => {
       )
         .then(dispatch(incrementCollCount(1)))
         .then(() => {
-          console.log("before pushing url after adding warc":url);
+          console.log("before pushing url after adding warc"+url);
           const _untidyURL = url;
           const cleanUrl = addTrailingSlash(fixMalformedUrls(_untidyURL));
 
