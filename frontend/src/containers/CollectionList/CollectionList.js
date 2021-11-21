@@ -395,17 +395,15 @@ const mapDispatchToProps = (dispatch, { history }) => {
           listID,
           url
         )
-      )
-        .then(dispatch(incrementCollCount(1)))
-        .then(() => {
+      ).then((res) => {
           console.log("before pushing url after adding warc"+url);
-          const _untidyURL = url;
+          const _untidyURL = res.url;
           const cleanUrl = addTrailingSlash(fixMalformedUrls(_untidyURL));
 
           // data to create new recording
           history.push(`/${user}/${collID}/0000000000000000/${cleanUrl}`);
         })
-
+        .then(dispatch(incrementCollCount(1)))
         .catch((err) => console.log("error", err));
     },
     completeRecording: (
