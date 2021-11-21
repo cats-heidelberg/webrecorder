@@ -283,7 +283,6 @@ class NewCollection extends Component {
       subjectHeadingText,
       listID,
       url,
-      ""
     );
     this.props.close();
   };
@@ -498,7 +497,7 @@ class NewCollection extends Component {
       this.xhr = new XMLHttpRequest();
       const target = targetColl === "chosen" ? activeCollection : "";
       const url = apiFormatUrl(
-        `${apiPath}/upload?force-coll=${target}&filename=${file}`
+        `${apiPath}/upload?force-coll=${title}&filename=${file}`
       );
 
       this.xhr.upload.addEventListener("progress", this.uploadProgress);

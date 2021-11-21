@@ -464,7 +464,6 @@ class CollectionListUI extends Component {
   createCollectionWarc = (
     collID,
     title,
-    doi,
     creatorList,
     subjectHeaderList,
     personHeaderList,
@@ -493,11 +492,11 @@ class CollectionListUI extends Component {
         params: { user },
       },
     } = this.props;
+    console.log("url to added after warc collection creation"+url);
     createNewCollectionBrowseWarc(
       user,
       collID,
       title,
-      doi,
       creatorList,
       subjectHeaderList,
       personHeaderList,
