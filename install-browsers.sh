@@ -26,7 +26,7 @@ docker pull oldwebtoday/chrome:76
 
 # Firefox
 # for java support, include ff 49
-docker pull oldwebtoday/firefox:49
+#docker pull oldwebtoday/firefox:49
 #docker pull oldwebtoday/firefox:56
 #docker pull oldwebtoday/firefox:57
 docker pull oldwebtoday/firefox:68
