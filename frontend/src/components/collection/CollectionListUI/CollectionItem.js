@@ -361,7 +361,7 @@ class CollectionItem extends Component {
               </div>
             <div
               className="collection-delete-action">
-              {canAdmin && collection.get("ticketState") !== "completed" && (
+              {canAdmin && collection.get("ticketState") !== "completed" && collection.get("ticketState") !== "approved" && collection.get("ticketState") !== "pending" && (
                 <React.Fragment>
                   <DeleteCollection collection={collection}>
                     <TrashIcon />
