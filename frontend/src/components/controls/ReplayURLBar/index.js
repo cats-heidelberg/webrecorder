@@ -59,7 +59,7 @@ class ReplayURLBar extends Component {
     const { params, timestamp } = this.props;
     const { url } = this.state;
     const wedontneednourl = true;
-    const wedontneednoremoteBrowser = true;
+    const wedontneednoremoteBrowser = false;
     return (
       <div className="main-bar">
         <form className="form-group-recorder-url">

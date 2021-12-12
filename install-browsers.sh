@@ -23,6 +23,7 @@ docker pull webrecorder/behaviors
 #docker pull oldwebtoday/chrome:67
 #docker pull oldwebtoday/chrome:73
 docker pull oldwebtoday/chrome:76
+docker pull oldwebtoday/chrome:91
 
 # Firefox
 # for java support, include ff 49
