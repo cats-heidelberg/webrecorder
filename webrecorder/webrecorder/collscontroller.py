@@ -35,7 +35,17 @@ class CollsController(BaseController):
 
             data = request.json or {}
             title = data.get('title', '')
-            coll_name = self.sanitize_title(title)
+            coll_namePossible = self.sanitize_title(title)
+            collections= user.get_collections()
+            increment=0
+            for _col in collections:
+                print(_col['coll_name'])
+                if user.has_collection(coll_namePossible):
+                    coll_namePossible=coll_namePossible+"-"+str(increment)
+                    increment += 1
+            coll_name=coll_namePossible
+            print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+            print(coll_name)
             #if not title:
             #    title._raise_error(400, 'please enter a title to record')
 
@@ -168,13 +178,12 @@ class CollsController(BaseController):
 
             data = request.json or {}
             title = data.get('title', '')
-            coll_name = self.sanitize_title(title)
+            coll_name = data.get('coll_name', '')
             resp = None
             collection = None
             collections= user.get_collections()
             for _col in collections:
-                print(_col.get('title'))
-                if _col.get('title') == title:
+                if _col.get('coll_name') == coll_name:
                     coll_name += "_duplicate"
                     title = coll_name
                     #if not title:
