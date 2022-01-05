@@ -77,7 +77,7 @@ class ImportStatusChecker(object):
         props['files'] = int(props['files'])
         props['total_files'] = int(props['total_files'])
         props['done'] = (props.get('done') == '1')
-
+        props['url'] = (props.get('url') == '1')
         if props.get('files') == 0:
             props['size'] = props['total_size']
 
@@ -150,7 +150,7 @@ class BaseImporter(ImportStatusChecker):
         logger.debug('Parsed {0} recordings, Buffer Size {1}'.format(num_recs, total_size))
 
         first_coll, rec_infos = self.process_upload(user, force_coll_name, infos, stream,
-                                                    filename, total_size, num_recs)
+                                                    filename, total_size, num_recs, upload_key)
 
         if not rec_infos:
             print('NO ARCHIVES!')
@@ -176,7 +176,7 @@ class BaseImporter(ImportStatusChecker):
                 'user': user.name
                }
 
-    def _init_upload_status(self, user, total_size, num_files, filename=None, expire=None):
+    def _init_upload_status(self, user, total_size, num_files, filename=None, expire=None,url=None):
         """Initialize upload status.
 
         :param User user: user
@@ -202,7 +202,10 @@ class BaseImporter(ImportStatusChecker):
 
             if filename:
                 pi.hset(upload_key, 'filename', filename)
-
+            if url:
+                pi.hset(upload_key, 'url', url)
+            else:
+                pi.hset(upload_key, 'url', "")
             if expire:
                 pi.expire(upload_key, expire)
 
@@ -311,6 +314,7 @@ class BaseImporter(ImportStatusChecker):
 
             for page in pages:
                 page['page_id'] = page['id']
+                print(page['url'])
                 bookmark = blist.create_bookmark(page, incr_stats=False)
                 self.redis.hincrby(upload_key, 'size', incr)
 
@@ -338,7 +342,7 @@ class BaseImporter(ImportStatusChecker):
         out.seek(0)
         return out, size
 
-    def process_upload(self, user, force_coll_name, infos, stream, filename, total_size, num_recs):
+    def process_upload(self, user, force_coll_name, infos, stream, filename, total_size, num_recs, upload_key):
         """Process WARC archive.
 
         :param User user: user
@@ -376,13 +380,24 @@ class BaseImporter(ImportStatusChecker):
                     collection = self.make_collection(user, filename, info)
                 lists = info.get('lists')
 
-
-            elif type == 'recording':
+            i=0
+            if type == 'recording':
                 if not collection:
                     collection = self.make_collection(user, filename, self.upload_coll_info, info)
 
                 desc = info.get('desc', '')
+                print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
+                url=info.get('pages', None)[0].get('url', None)
+                if url and i == 0 :
+                    i+=1
+                    collection = user.get_collection_by_name(force_coll_name)
+                    collection['url'] = url
+                    with redis_pipeline(self.redis) as pi:
+                        pi.hset(upload_key, 'url', url)
+                    print(collection['url'])
+                    print(collection['title'])
+                    collection.mark_updated()
                 # if title was auto-generated for compatibility on export,
                 # set title to blank
                 if info.get('auto_title'):
@@ -1014,4 +1029,3 @@ class InplaceImporter(BaseImporter):
         self.the_collection.set_bool_prop('public', True)
 
         return self.the_collection
-

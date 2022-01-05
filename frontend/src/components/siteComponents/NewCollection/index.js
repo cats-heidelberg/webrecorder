@@ -232,7 +232,7 @@ class NewCollection extends Component {
         .then(this.indexResponse);
     }, 75);
   };
-  indexingComplete = (user, coll) => {
+  indexingComplete = (user, coll, res_url) => {
     const {
       title,
       creatorList,
@@ -255,7 +255,6 @@ class NewCollection extends Component {
       projektcode,
       publishYear,
       listID,
-      url,
       doi,
     } = this.state;
 
@@ -282,7 +281,7 @@ class NewCollection extends Component {
       personHeadingText,
       subjectHeadingText,
       listID,
-      url,
+      res_url
     );
     this.props.close();
   };
@@ -298,7 +297,7 @@ class NewCollection extends Component {
         data.total_files
       }`;
     }
-
+    console.log(data.url)
     if (data.size && data.total_size) {
       stateUpdate.progress =
         50 + Math.round((50 * data.size) / data.total_size);
@@ -311,7 +310,7 @@ class NewCollection extends Component {
 
     if (data.size >= data.total_size && data.done) {
       clearInterval(this.interval);
-      this.indexingComplete(data.user, data.coll);
+      this.indexingComplete(data.user, data.coll, data.url);
     }
   };
   onRemoveItem = (item) => {
@@ -612,7 +611,7 @@ class NewCollection extends Component {
     }
   };
 
-  uploadSuccess = (evt) => this.setState({ progress: 50 });
+  uploadSuccess = (evt) => this.setState({ progress: 100 });
 
   validateEmail = () => {
     const { emailValid, usermail } = this.state;

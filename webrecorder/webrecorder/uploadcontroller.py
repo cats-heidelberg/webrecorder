@@ -2,6 +2,7 @@ from webrecorder.apiutils import wr_api_spec
 from webrecorder.basecontroller import BaseController
 from webrecorder.models.importer import UploadImporter
 from webrecorder.models.stats import Stats
+from webrecorder.collscontroller import CollsController as c
 
 from bottle import request
 
@@ -28,12 +29,11 @@ class UploadController(BaseController):
                 collection = user.get_collection_by_name(force_coll_name)
             else:
                 collection = None
-
             # allow uploading to external collections
             if not collection or not collection.is_external():
                 if user.is_anon():
                     return self._raise_error(400, 'not_logged_in')
-
+                user.create_collection(force_coll_name,title=force_coll_name, public=False)
             expected_size = int(request.headers['Content-Length'])
 
             if not expected_size:
@@ -49,6 +49,7 @@ class UploadController(BaseController):
                                     force_coll_name)
 
             if 'error' in res:
+                print("Error acceured on the old uploader")
                 return self._raise_error(400, res['error'])
 
             Stats(self.redis).incr_upload(user, expected_size)
@@ -64,4 +65,3 @@ class UploadController(BaseController):
                 return self._raise_error(400, 'upload_expired')
 
             return props
-

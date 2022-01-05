@@ -419,7 +419,7 @@ class CollsController(BaseController):
                     self._raise_error(400, 'invalid_coll_name')
 
                 try:
-                    new_coll_name = user.colls.rename(collection, new_coll_name, allow_dupe=False)
+                    new_coll_name = user.colls.rename(collection, new_coll_name, allow_dupe=True)
                 except DupeNameException as de:
                     self._raise_error(400, 'duplicate_name')
 

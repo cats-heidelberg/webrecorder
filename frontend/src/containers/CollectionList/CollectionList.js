@@ -366,7 +366,7 @@ const mapDispatchToProps = (dispatch, { history }) => {
       personHeadingText,
       subjectHeadingText,
       listID,
-      url
+      res_url
     ) => {
       dispatch(
         editCollectionDispatchWARC(
@@ -392,12 +392,11 @@ const mapDispatchToProps = (dispatch, { history }) => {
           pubTitleOriginal,
           personHeadingText,
           subjectHeadingText,
-          listID,
-          url
+          listID
         )
       ).then((res) => {
-          console.log("before pushing url after adding warc"+url);
-          const _untidyURL = res.url;
+          console.log("before pushing url after adding warc"+res.collection.url);
+          const _untidyURL = res.collection.url;
           const cleanUrl = addTrailingSlash(fixMalformedUrls(_untidyURL));
 
           // data to create new recording

@@ -484,7 +484,7 @@ class CollectionListUI extends Component {
     personHeadingText,
     subjectHeadingText,
     listID,
-    url
+    res_url
   ) => {
     const {
       createNewCollectionBrowseWarc,
@@ -492,7 +492,7 @@ class CollectionListUI extends Component {
         params: { user },
       },
     } = this.props;
-    console.log("url to added after warc collection creation"+url);
+    console.log("url to added after warc collection creation"+res_url);
     createNewCollectionBrowseWarc(
       user,
       collID,
@@ -517,7 +517,7 @@ class CollectionListUI extends Component {
       personHeadingText,
       subjectHeadingText,
       listID,
-      url
+      res_url
     );
   };
 

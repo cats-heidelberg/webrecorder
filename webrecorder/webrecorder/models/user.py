@@ -76,7 +76,7 @@ class User(RedisUniqueComponent):
         self.info_key = self.INFO_KEY.format_map({self.MY_TYPE: self.my_id})
         return self.my_id
 
-    def create_collection(self, coll_name, allow_dupe=False, **kwargs):
+    def create_collection(self, coll_name, allow_dupe=True, **kwargs):
         coll_name = self.colls.reserve_obj_name(coll_name, allow_dupe=allow_dupe)
 
         collection = Collection(redis=self.redis,
