@@ -257,7 +257,7 @@ class NewCollection extends Component {
       listID,
       doi,
     } = this.state;
-
+    
     this.props.createCollectionBrowseWarc(
       coll,
       title,

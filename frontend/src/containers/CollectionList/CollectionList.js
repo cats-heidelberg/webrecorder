@@ -395,12 +395,15 @@ const mapDispatchToProps = (dispatch, { history }) => {
           listID
         )
       ).then((res) => {
+          //weird bug not showing uploaded page. Added delay to history push
           console.log("before pushing url after adding warc"+res.collection.url);
           const _untidyURL = res.collection.url;
           const cleanUrl = addTrailingSlash(fixMalformedUrls(_untidyURL));
-
-          // data to create new recording
-          history.push(`/${user}/${collID}/0000000000000000/${cleanUrl}`);
+          setTimeout(() => {
+            // data to create new recording
+            history.push(`/${user}/${collID}/0000000000000000/${cleanUrl}`);
+          }, 750);
+          
         })
         .then(dispatch(incrementCollCount(1)))
         .catch((err) => console.log("error", err));
