@@ -77,7 +77,10 @@ class Record extends Component {
 
   justTest = (user, url, collID) => {
     console.log("im JustTest"+url);
-    this.props.dispatch(injectRealUrlDispatch(user, url, collID));
+    if (this.props.collection.get("url").indexOf("https:")==-1) {
+      this.props.dispatch(injectRealUrlDispatch(user, url, collID));
+    }
+    
   }
 
   // shouldComponentUpdate(nextProps) {

@@ -611,7 +611,7 @@ class NewCollection extends Component {
     }
   };
 
-  uploadSuccess = (evt) => this.setState({ progress: 100 });
+  uploadSuccess = (evt) => this.setState({ progress: 50 });
 
   validateEmail = () => {
     const { emailValid, usermail } = this.state;
