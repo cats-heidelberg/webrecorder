@@ -76,10 +76,11 @@ class Record extends Component {
   }
 
   justTest = (user, url, collID) => {
+    //our waybackmachine would give an error, if the url didnt consists of a https. This seems to have solved itself
     console.log("im JustTest"+url);
-    if (this.props.collection.get("url").indexOf("https:")==-1) {
-      this.props.dispatch(injectRealUrlDispatch(user, url, collID));
-    }
+    //if (this.props.collection.get("url").indexOf("https:")==-1 && url.indexOf("https:")==1) {
+      //this.props.dispatch(injectRealUrlDispatch(user, url, collID));
+    //}
     
   }
 
