@@ -23,13 +23,14 @@ class ReviewController(BaseController):
             return {'collections': [coll.serialize() for coll in collections]}
 
         @self.app.post('/api/v1/review')
-        @self.api(query=[],
-                  req_desc='review coll')
         def post_review():
 #            if not self.access.is_superuser():
 #                return ('Access Denied')
-            print("reviewControllerpost"+request.query.get('collID'))
-            self.redis.sadd('review', json.dumps([request.query['user'], request.query.get('collID')]))
+
+            data = request.json or {}
+            print("reviewControllerpostusername"+request.query['user'])
+            print("reviewControllerpostcolltitle"+data.get('collID'))
+            self.redis.sadd('review', json.dumps([request.query['user'], data.get('collID')]))
 
             return ("OK")
 

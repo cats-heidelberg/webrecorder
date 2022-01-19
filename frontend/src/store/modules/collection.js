@@ -332,12 +332,13 @@ export function completeRecordingDispatch(
         params: { user },
         data: {
           ticketState,
+          collID
         },
       }),
   };
 }
 
-export function completeReviewDispatch(user, collID, doi) {
+export function completeReviewDispatch(user, collTitle, doi) {
   return {
     types: [
       COLL_REVIEWCOMPLETE,
@@ -345,8 +346,11 @@ export function completeReviewDispatch(user, collID, doi) {
       COLL_REVIEWCOMPLETE_FAIL,
     ],
     promise: (client) =>
-      client.del(`${apiPath}/review`, {
-        params: { user, collID },
+      client.del(`${apiPath}/review/${user}`, {
+        params: { user },
+        data: {
+          collTitle 
+        }
       }),
   };
 }
@@ -390,7 +394,10 @@ export function reviewDataToRevis(user, collID, doi) {
     types: [REVIEW_CREATE, REVIEW_CREATE_SUCCESS, REVIEW_CREATE_FAIL],
     promise: (client) =>
       client.post(`${apiPath}/review`, {
-        params: { user, collID },
+        params: { user },
+        data: {
+          collID,
+        },
       }),
   };
 }

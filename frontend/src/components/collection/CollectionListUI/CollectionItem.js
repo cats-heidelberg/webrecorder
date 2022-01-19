@@ -65,7 +65,8 @@ class CollectionItem extends Component {
     const { collection, completeRec } = this.props;
     const collID = collection.get("id");
     const projektcode = collection.get("projektcode");
-    completeRec(collID, "pending", projektcode);
+    console.log("COLLECTIONGETID"+collection.get("id"));
+    completeRec(collection.get("id"), "pending", projektcode);
     this.setState({ ticketState: "pending" });
   };
 
@@ -87,7 +88,7 @@ class CollectionItem extends Component {
 
   duplicateAction = () => {
     const { collection } = this.props;
-    this.props.duplicateCollection(collection.get("title"));
+    this.props.duplicateCollection(collection.get("id"));
   };
 
   editCollectiontemp = (
