@@ -134,9 +134,9 @@ class DownloadController(BaseController):
 
         return self.create_warcinfo(user, isPartOf_name, metadata, recording, serialized, filename)
 
-    def handle_download(self, user, coll_name, recs):
+    def handle_download(self, user, coll_nameID, recs):
         user=self.user_manager.get_user(user)
-        collection = user.get_collection_by_name(coll_name)
+        collection = user.get_collection_by_name(coll_nameID)
         if not collection:
             self._raise_error(404, 'no_such_collection')
 
@@ -149,7 +149,7 @@ class DownloadController(BaseController):
 
         now = timestamp_now()
 
-        name = coll_name
+        name = coll_nameID
         if recs != '*':
             rec_list = recs.split(',')
             if len(rec_list) == 1:
@@ -212,7 +212,7 @@ class DownloadController(BaseController):
             response.headers['Transfer-Encoding'] = 'chunked'
 
             return read_all(iter_infos())
-    def handle_download_name(self, user, coll_name, warc_name, url):
+    def handle_download_name(self, user, coll_nameID, warc_name, url):
         #username = request.query.getunicode('user')
 
         #warc_name = request.query.getunicode('doi')
@@ -238,7 +238,7 @@ class DownloadController(BaseController):
         #files = []
         user_name = user
         user=self.user_manager.get_user(user)
-        collection = user.get_collection_by_name(coll_name)
+        collection = user.get_collection_by_name(coll_nameID)
         if not collection:
             self._raise_error(404, 'no_such_collection')
 
@@ -255,7 +255,7 @@ class DownloadController(BaseController):
         local_storage = LocalFileStorage(self.redis)
         landingpage = template(
             'webrecorder/templates/landingpage.html',
-            title=coll_name,
+            title=coll_nameID,
             warc_file='https://projects.zo.uni-heidelberg.de/webarchive/warc/10.25354/'+warc_name_broke+'.warc',
             url=url
         )
@@ -341,7 +341,7 @@ class DownloadController(BaseController):
         username = request.query.getunicode('user')
 
         # some clients use collection rather than coll_name so we must check for both
-        coll_name = request.query.getunicode('collection')
+        coll_nameID = request.query.getunicode('collection')
 
         user = self._get_wasapi_user()
 
@@ -349,8 +349,8 @@ class DownloadController(BaseController):
 
         colls = None
 
-        if coll_name:
-            collection = user.get_collection_by_name(coll_name)
+        if coll_nameID:
+            collection = user.get_collection_by_name(coll_nameID)
             if collection:
                 colls = [collection]
             else:
@@ -404,13 +404,13 @@ class DownloadController(BaseController):
 
         return {'files': files, 'include-extra': len(files) > 0}
 
-    def wasapi_download(self, username, coll_name, filename):
+    def wasapi_download(self, username, coll_nameID, filename):
         user = self._get_wasapi_user(username)
 
         if not user:
             self._raise_error(404, 'no_such_user')
 
-        collection = user.get_collection_by_name(coll_name)
+        collection = user.get_collection_by_name(coll_nameID)
 
         if not collection:
             self._raise_error(404, 'no_such_collection')

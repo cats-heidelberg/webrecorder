@@ -29,8 +29,8 @@ class ReviewController(BaseController):
 
             data = request.json or {}
             print("reviewControllerpostusername"+request.query['user'])
-            print("reviewControllerpostcolltitle"+data.get('collID'))
-            self.redis.sadd('review', json.dumps([request.query['user'], data.get('collID')]))
+            print("reviewControllerpostcolltitle"+data.get('coll_nameID'))
+            self.redis.sadd('review', json.dumps([request.query['user'], data.get('coll_nameID')]))
 
             return ("OK")
 
@@ -40,5 +40,5 @@ class ReviewController(BaseController):
         def delete_review():
             if not self.access.is_superuser():
                 return ('Access Denied')
-            print("reviewControllerdelete"+request.query.get('collID'))
-            self.redis.srem('review', json.dumps([request.query['user'], request.query.get('collID')]))
+            print("reviewControllerdelete"+request.query.get('coll_nameID'))
+            self.redis.srem('review', json.dumps([request.query['user'], request.query.get('coll_nameID')]))

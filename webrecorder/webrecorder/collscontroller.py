@@ -35,17 +35,14 @@ class CollsController(BaseController):
 
             data = request.json or {}
             title = data.get('title', '')
-            coll_namePossible = self.sanitize_title(title)
+            coll_nameID = self.sanitize_title(title)
             collections= user.get_collections()
             increment=0
             for _col in collections:
                 print(_col['coll_name'])
-                if user.has_collection(coll_namePossible):
-                    coll_namePossible=coll_namePossible+"-"+str(increment)
+                if user.has_collection(coll_nameID):
+                    coll_nameID=coll_nameID+"-"+str(increment)
                     increment += 1
-            coll_name=coll_namePossible
-            print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-            print(coll_name)
             #if not title:
             #    title._raise_error(400, 'please enter a title to record')
 
@@ -56,8 +53,8 @@ class CollsController(BaseController):
 
 
 
-            if not coll_name:
-                self._raise_error(400, 'invalid_coll_name')
+            if not coll_nameID:
+                self._raise_error(400, 'invalid_coll_nameID')
 
             doi = data.get('doi', '') # TODO: generate doi here
             #
@@ -137,14 +134,14 @@ class CollsController(BaseController):
                 #    self._raise_error(400, 'not_valid_for_external')
 
             elif is_anon:
-                if coll_name != 'temp':
+                if coll_nameID != 'temp':
                     self._raise_error(400, 'invalid_temp_coll_name')
 
-            if user.has_collection(coll_name):
-                self._raise_error(400, 'duplicate_name')
+            if user.has_collection(coll_nameID):
+                self._raise_error(400, 'Something went wrong. Your archive could not be created due to a duplicate ID')
 
             try:
-                collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList,
+                collection = user.create_collection(coll_nameID, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList,
                                                     personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal,
                                                     pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText,
                                                     surName=surName, persName=persName, usermail=usermail, emailOfRightsholder=emailOfRightsholder, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear,
@@ -160,12 +157,12 @@ class CollsController(BaseController):
                 resp = {'collection': collection.serialize()}
 
             except DupeNameException as de:
-                self._raise_error(400, 'duplicate_name')
+                self._raise_error(400, 'duplicate_ID')
 
             except Exception as ve:
                 print(ve)
                 self.flash_message(str(ve))
-                self._raise_error(400, 'duplicate_name')
+                self._raise_error(400, 'duplicate_ID')
             return resp
 
 
@@ -178,14 +175,15 @@ class CollsController(BaseController):
 
             data = request.json or {}
             title = data.get('title', '')
-            coll_name = data.get('coll_name', '')
+            coll_nameID = self.sanitize_title(title)
+
             resp = None
             collection = None
             collections= user.get_collections()
             for _col in collections:
-                if _col.get('coll_name') == coll_name:
-                    coll_name += "_duplicate"
-                    title = coll_name
+                if _col.get('coll_nameID') == coll_name:
+                    coll_nameID += "_duplicate"
+                    #title = coll_name
                     #if not title:
                     #    title._raise_error(400, 'please enter a title to record')
 
@@ -194,7 +192,7 @@ class CollsController(BaseController):
                     #if not url:
                     #    self._raise_error(400, 'please enter a URL to record')
 
-                    coll_name = title
+                    coll_nameID = title
 
                     if not coll_name:
                         self._raise_error(400, 'invalid_coll_name')
@@ -284,7 +282,7 @@ class CollsController(BaseController):
                         self._raise_error(400, 'duplicate_name')
 
                     try:
-                        collection = user.create_collection(coll_name, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList,
+                        collection = user.create_collection(coll_nameID, title=title, url=url, creatorList=creatorList, noteToDachs=noteToDachs, subjectHeaderList=subjectHeaderList,
                                                             personHeaderList=personHeaderList, publisher=publisher, collTitle=collTitle, publisherOriginal=publisherOriginal,
                                                             pubTitleOriginal=pubTitleOriginal, personHeadingText=personHeadingText, collYear=collYear, copTitle=copTitle, subjectHeadingText=subjectHeadingText,
                                                             surName=surName, persName=persName, usermail=usermail, emailOfRightsholder=emailOfRightsholder, selectedGroupName=selectedGroupName, projektcode=projektcode, publishYear=publishYear,
@@ -340,29 +338,29 @@ class CollsController(BaseController):
         @self.app.get('/api/v1/collection/<coll_name>')
         @self.api(query=['user'],
                   resp='collection')
-        def get_collection(coll_name):
+        def get_collection(coll_nameID):
             user = self.get_user(api=True, redir_check=False)
 
-            return self.get_collection_info(coll_name, user=user)
+            return self.get_collection_info(coll_nameID, user=user)
 
         @self.app.delete('/api/v1/collection/<coll_name>')
         @self.api(query=['user'],
                   resp='deleted')
-        def delete_collection(coll_name):
-            user, collection = self.load_user_coll(coll_name=coll_name)
+        def delete_collection(coll_nameID):
+            user, collection = self.load_user_coll(coll_nameID=coll_nameID)
 
             errs = user.remove_collection(collection, delete=True)
             if errs.get('error'):
                 return self._raise_error(400, errs['error'])
             else:
-                return {'deleted_id': coll_name}
+                return {'deleted_id': coll_nameID}
 
-        @self.app.put('/api/v1/collection/<coll_name>/warc')
-        def add_external_warc(coll_name):
+        @self.app.put('/api/v1/collection/<coll_nameID>/warc')
+        def add_external_warc(coll_nameID):
             if not self.allow_external:
                 self._raise_error(403, 'external_not_allowed')
 
-            user, collection = self.load_user_coll(coll_name=coll_name)
+            user, collection = self.load_user_coll(coll_nameID=coll_nameID)
 
             self.access.assert_can_admin_coll(collection)
 
@@ -373,12 +371,12 @@ class CollsController(BaseController):
 
             return {'success': num_added}
 
-        @self.app.put('/api/v1/collection/<coll_name>/cdx')
-        def add_external_cdxj(coll_name):
+        @self.app.put('/api/v1/collection/<coll_nameID>/cdx')
+        def add_external_cdxj(coll_nameID):
             if not self.allow_external:
                 self._raise_error(403, 'external_not_allowed')
 
-            user, collection = self.load_user_coll(coll_name=coll_name)
+            user, collection = self.load_user_coll(coll_nameID=coll_nameID)
 
             self.access.assert_can_admin_coll(collection)
 
@@ -389,14 +387,14 @@ class CollsController(BaseController):
 
             return {'success': num_added}
 
-        @self.app.post('/api/v1/collection/<coll_name>')
+        @self.app.post('/api/v1/collection/<coll_nameID>')
         @self.api(query=['user'],
                   req=['title'],
                   resp='collection')
-        def update_collection(coll_name):
+        def update_collection(coll_nameID):
             data = request.json or {}
-            user, collection = self.load_user_coll(coll_name=data['collID'])
-            print("collIDinComplete"+data['collID'])
+            user, collection = self.load_user_coll(coll_nameID=data['coll_nameID'])
+            print("collIDinComplete"+data['coll_nameID'])
             self.access.assert_can_admin_coll(collection)
             ticketStateChanged = False
 
@@ -413,8 +411,7 @@ class CollsController(BaseController):
                 collection['ticketState'] = data['ticketState']
                 print(collection['ticketState'])
             if 'title' in data:
-                new_coll_title = data['title']
-                new_coll_name = self.sanitize_title(new_coll_title)
+                new_coll_name = data['title']
 
                 if not new_coll_name:
                     self._raise_error(400, 'invalid_coll_name')
@@ -542,7 +539,7 @@ class CollsController(BaseController):
                         # to user
                         reviewerMailText = template(
                             'webrecorder/templates/complete_mail_user.html',
-                            coll_name=coll_name,
+                            coll_name=coll_nameID,
                             coll_doi=collection['doi']
                         )
 
@@ -558,14 +555,14 @@ class CollsController(BaseController):
                         mailServer.quit()
                         reviewerMailText = template(
                             'webrecorder/templates/complete_mail.html',
-                            coll_name=coll_name,
+                            coll_name=coll_nameID,
                             coll_doi=collection['doi']
                         )
 
                         # to Hiwi/Katalogisierungsmitarbeiter/Reviewer
                         reviewerMailText = template(
                             'webrecorder/templates/complete_mail_hiwi.html',
-                            coll_name=coll_name,
+                            coll_name=coll_nameID,
                             coll_doi=collection['doi'],
     			            doi=collection['doi']
                         )
@@ -587,7 +584,7 @@ class CollsController(BaseController):
                     #inform user his doi is about to be dropped
                     reviewerMailText = template(
                         'webrecorder/templates/approve_mail_user.html',
-                        coll_name=coll_name,
+                        coll_name=coll_nameID,
                         username=user.name,
                         coll_doi=collection['doi'],
                         doi=collection['doi'],
@@ -613,7 +610,7 @@ class CollsController(BaseController):
                     #the internal doi creation related library worker
                     reviewerMailText = template(
                         'webrecorder/templates/approve_mail_hiwi.html',
-                        coll_name=coll_name,
+                        coll_name=coll_nameID,
                         host=os.environ['APP_HOST'],
                         username=user.name, title=collection['title'], url=collection['url'], creatorList=collection['creatorList'], noteToDachs=collection['noteToDachs'], subjectHeaderList=collection['subjectHeaderList'],
                                                             personHeaderList=collection['personHeaderList'], publisher=collection['publisher'], collTitle=collection['collTitle'], publisherOriginal=collection['publisherOriginal'],
@@ -655,7 +652,7 @@ class CollsController(BaseController):
                     # to Hiwi
                     reviewerMailText = template(
                         'webrecorder/templates/deny_mail_hiwi.html',
-                        coll_name=coll_name,
+                        coll_name=coll_nameID,
                         host=host,
                         usermail=collection['usermail']
                     )
@@ -695,7 +692,7 @@ class CollsController(BaseController):
                     #send admins an infomail to get them to work
                     reviewerMailText = template(
                         'webrecorder/templates/pending_mail_admin.html',
-                        coll_name=coll_name,
+                        coll_name=coll_nameID,
                         #host=self.app_host
                     )
 
@@ -724,9 +721,9 @@ class CollsController(BaseController):
             collection.mark_updated()
             print("sendBackCollection")
             return {'collection': collection.serialize()}
-        @self.app.post('/api/v1/collection/<coll_name>/appropriateurl')
-        def dat_do_share(coll_name):
-            user, collection = self.load_user_coll(coll_name=coll_name)
+        @self.app.post('/api/v1/collection/<coll_nameID>/appropriateurl')
+        def dat_do_share(coll_nameID):
+            user, collection = self.load_user_coll(coll_nameID=coll_nameID)
             print(user)
             # BETA only
             self.require_admin_beta_access(collection)
@@ -748,11 +745,11 @@ class CollsController(BaseController):
 
 
 
-        @self.app.get('/api/v1/collection/<coll_name>/page_bookmarks')
+        @self.app.get('/api/v1/collection/<coll_nameID>/page_bookmarks')
         @self.api(query=['user'],
                   resp='bookmarks')
-        def get_page_bookmarks(coll_name):
-            user, collection = self.load_user_coll(coll_name=coll_name)
+        def get_page_bookmarks(coll_nameID):
+            user, collection = self.load_user_coll(coll_nameID=coll_nameID)
 
             rec = request.query.get('rec')
             if rec:
@@ -767,9 +764,9 @@ class CollsController(BaseController):
             return {'page_bookmarks': collection.get_all_page_bookmarks(rec_pages)}
 
         # DAT
-        @self.app.post('/api/v1/collection/<coll_name>/dat/share')
-        def dat_do_share(coll_name):
-            user, collection = self.load_user_coll(coll_name=coll_name)
+        @self.app.post('/api/v1/collection/<coll_nameID>/dat/share')
+        def dat_do_share(coll_nameID):
+            user, collection = self.load_user_coll(coll_nameID=coll_nameID)
             print(user)
             # BETA only
             self.require_admin_beta_access(collection)
@@ -786,9 +783,9 @@ class CollsController(BaseController):
 
             return result
 
-        @self.app.post('/api/v1/collection/<coll_name>/dat/unshare')
-        def dat_do_unshare(coll_name):
-            user, collection = self.load_user_coll(coll_name=coll_name)
+        @self.app.post('/api/v1/collection/<coll_nameID>/dat/unshare')
+        def dat_do_unshare(coll_nameID):
+            user, collection = self.load_user_coll(coll_nameID=coll_nameID)
 
             # BETA only
             self.require_admin_beta_access(collection)
@@ -804,11 +801,11 @@ class CollsController(BaseController):
             return result
 
 
-        @self.app.post('/api/v1/collection/<coll_name>/sendmeta')
+        @self.app.post('/api/v1/collection/<coll_nameID>/sendmeta')
         @self.api(query=['user'],
                   resp='reviewed')
-        def send_meta(coll_name):
-            user, collection = self.load_user_coll(coll_name=coll_name)
+        def send_meta(coll_nameID):
+            user, collection = self.load_user_coll(coll_nameID=coll_nameID)
             # Serializing json
             json_object = json.dumps(collection, indent = 4)
             print(json_object)
@@ -816,9 +813,9 @@ class CollsController(BaseController):
             with open("sample.json", "w") as outfile:
                 outfile.write(json_object)
 
-        @self.app.post('/api/v1/collection/<coll_name>/commit')
-        def commit_file(coll_name):
-            user, collection = self.load_user_coll(coll_name=coll_name)
+        @self.app.post('/api/v1/collection/<coll_nameID>/commit')
+        def commit_file(coll_nameID):
+            user, collection = self.load_user_coll(coll_nameID=coll_nameID)
 
             self.access.assert_can_admin_coll(collection)
 
@@ -832,23 +829,23 @@ class CollsController(BaseController):
 
         # LEGACY ENDPOINTS (to remove)
         # Collection view (all recordings)
-        @self.app.get(['/<user>/<coll_name>', '/<user>/<coll_name>/'])
+        @self.app.get(['/<user>/<coll_name>', '/<user>/<coll_nameID>/'])
         @self.jinja2_view('collection_info.html')
-        def coll_info(user, coll_name):
-            return self.get_collection_info_for_view(user, coll_name)
+        def coll_info(user, coll_nameID):
+            return self.get_collection_info_for_view(user, coll_nameID)
 
-        @self.app.get(['/<user>/<coll_name>/<rec_list:re:([\w,-]+)>', '/<user>/<coll_name>/<rec_list:re:([\w,-]+)>/'])
+        @self.app.get(['/<user>/<coll_nameID>/<rec_list:re:([\w,-]+)>', '/<user>/<coll_nameID>/<rec_list:re:([\w,-]+)>/'])
         @self.jinja2_view('collection_info.html')
-        def coll_info(user, coll_name, rec_list):
+        def coll_info(user, coll_nameID, rec_list):
             #rec_list = [self.sanitize_title(title) for title in rec_list.split(',')]
-            return self.get_collection_info_for_view(user, coll_name)
+            return self.get_collection_info_for_view(user, coll_nameID)
 
         wr_api_spec.set_curr_tag(None)
 
-    def get_collection_info_for_view(self, user, coll_name):
+    def get_collection_info_for_view(self, user, coll_nameID):
         self.redir_host()
 
-        result = self.get_collection_info(coll_name, user=user, include_pages=True)
+        result = self.get_collection_info(coll_nameID, user=user, include_pages=True)
 
         result['coll'] = result['collection']['id']
         result['coll_name'] = result['coll']
@@ -859,8 +856,8 @@ class CollsController(BaseController):
 
         return result
 
-    def get_collection_info(self, coll_name, user=None, include_pages=False):
-        user, collection = self.load_user_coll(user=user, coll_name=coll_name)
+    def get_collection_info(self, coll_nameID, user=None, include_pages=False):
+        user, collection = self.load_user_coll(user=user, coll_nameID=coll_nameID)
 
         result = {'collection': collection.serialize(include_rec_pages=include_pages,
                                                      include_lists=True,

@@ -135,17 +135,17 @@ class BaseController(object):
 
         return user
 
-    def load_user_coll(self, api=True, redir_check=True, user=None, coll_name=None):
+    def load_user_coll(self, api=True, redir_check=True, user=None, coll_nameID=None):
         if not isinstance(user, User):
             user = self.get_user(api=api, redir_check=redir_check, user=user)
 
-        if not coll_name:
-            coll_name = request.query.getunicode('coll')
+        if not coll_nameID:
+            coll_nameID = request.query.getunicode('coll')
 
-        if not coll_name:
+        if not coll_nameID:
             self._raise_error(400, 'no_collection_specified')
 
-        collection = user.get_collection_by_name(coll_name)
+        collection = user.get_collection_by_name(coll_nameID)
         if not collection:
             self._raise_error(404, 'no_such_collection')
 
@@ -297,4 +297,3 @@ class BaseController(object):
     @property
     def access(self):
         return request.environ['webrec.access']
-

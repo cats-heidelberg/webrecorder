@@ -79,6 +79,7 @@ class WRAPISpec(object):
         'username': 'User',
         'coll': 'Collection Slug',
         'coll_name': 'Collection Slug',
+        'coll_nameID': 'Collection Slug used as ID',
         'collection': 'Collection Slug',
         'doi': 'DOI Slug',
         'rec': 'Session Id',

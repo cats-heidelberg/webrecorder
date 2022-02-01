@@ -76,32 +76,32 @@ class User(RedisUniqueComponent):
         self.info_key = self.INFO_KEY.format_map({self.MY_TYPE: self.my_id})
         return self.my_id
 
-    def create_collection(self, coll_name, allow_dupe=True, **kwargs):
-        coll_name = self.colls.reserve_obj_name(coll_name, allow_dupe=allow_dupe)
+    def create_collection(self, coll_nameID, allow_dupe=True, **kwargs):
+        coll_nameID = self.colls.reserve_obj_name(coll_nameID, allow_dupe=allow_dupe)
 
         collection = Collection(redis=self.redis,
                                 access=self.access)
 
-        coll = collection.init_new(coll_name, **kwargs)
+        coll = collection.init_new(coll_nameID, **kwargs)
 
-        self.colls.add_object(coll_name, collection, owner=True)
+        self.colls.add_object(coll_nameID, collection, owner=True)
 
         return collection
 
-    def has_collection(self, coll_name):
-        return self.colls.name_to_id(coll_name) != None
+    def has_collection(self, coll_nameID):
+        return self.colls.name_to_id(coll_nameID) != None
 
-    def get_collection_by_name(self, coll_name):
-        coll = self.colls.name_to_id(coll_name)
+    def get_collection_by_name(self, coll_nameID):
+        coll = self.colls.name_to_id(coll_nameID)
 
-        return self.get_collection_by_id(coll, coll_name)
+        return self.get_collection_by_id(coll, coll_nameID)
 
-    def get_collection_by_id(self, coll, coll_name):
+    def get_collection_by_id(self, coll, coll_nameID):
         if not coll:
             return None
 
         collection = Collection(my_id=coll,
-                                name=coll_name,
+                                name=coll_nameID,
                                 redis=self.redis,
                                 access=self.access)
 

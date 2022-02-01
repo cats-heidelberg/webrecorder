@@ -323,22 +323,22 @@ export function deleteCollection(user, coll) {
   };
 }
 export function completeRecordingDispatch(
-  user, collID, ticketState, projektcode
+  user, coll_nameID, ticketState, projektcode
 ) {
   return {
     types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
     promise: (client) =>
-      client.post(`${apiPath}/collection/${collID}`, {
+      client.post(`${apiPath}/collection/${coll_nameID}`, {
         params: { user },
         data: {
           ticketState,
-          collID
+          coll_nameID
         },
       }),
   };
 }
 
-export function completeReviewDispatch(user, collTitle, doi) {
+export function completeReviewDispatch(user, coll_nameID, doi) {
   return {
     types: [
       COLL_REVIEWCOMPLETE,
@@ -349,16 +349,16 @@ export function completeReviewDispatch(user, collTitle, doi) {
       client.del(`${apiPath}/review/${user}`, {
         params: { user },
         data: {
-          collTitle 
+          coll_nameID 
         }
       }),
   };
 }
-export function pushWarcToServerDispatch(user, collID, doi, url) {
+export function pushWarcToServerDispatch(user, coll_nameID, doi, url) {
   return {
     types: [WARC_DOWNLOAD, WARC_DOWNLOAD_SUCCESS, WARC_DOWNLOAD_FAIL],
     promise: (client) =>
-      client.post(`${apiPath}/${user}/${collID}/$download_warc`, {
+      client.post(`${apiPath}/${user}/${coll_nameID}/$download_warc`, {
         params: { user },
         data: {
           doi,
@@ -370,7 +370,7 @@ export function pushWarcToServerDispatch(user, collID, doi, url) {
 
 export function editCollectionRecording(
   user,
-  collID,
+  coll_nameID,
   isCollLoaded = false,
   recordingUrl,
   recordingTimestamp
@@ -378,7 +378,7 @@ export function editCollectionRecording(
   return {
     types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
     promise: (client) =>
-      client.post(`${apiPath}/collection/${collID}`, {
+      client.post(`${apiPath}/collection/${coll_nameID}`, {
         params: { user },
         data: {
           isCollLoaded,
@@ -389,36 +389,36 @@ export function editCollectionRecording(
   };
 }
 
-export function reviewDataToRevis(user, collID, doi) {
+export function reviewDataToRevis(user, coll_nameID, doi) {
   return {
     types: [REVIEW_CREATE, REVIEW_CREATE_SUCCESS, REVIEW_CREATE_FAIL],
     promise: (client) =>
       client.post(`${apiPath}/review`, {
         params: { user },
         data: {
-          collID,
+          coll_nameID,
         },
       }),
   };
 }
-export function sendMetaDispatch(user, collID) {
+export function sendMetaDispatch(user, coll_nameID) {
   return {
     types: [META_CREATE, META_CREATE_SUCCESS, META_CREATE_FAIL],
     promise: (client) =>
-      client.post(`${apiPath}/collection/${collID}/sendMeta`, {
+      client.post(`${apiPath}/collection/${coll_nameID}/sendMeta`, {
         params: { user },
         data: {
-          collID,
+          coll_nameID,
         },
       }),
   };
 }
 //update malformed URL
-export function injectRealUrlDispatch(user, url, collID) {
+export function injectRealUrlDispatch(user, url, coll_nameID) {
   return {
     types: [URL_EDIT, URL_EDIT_SUCCESS, URL_EDIT_FAIL],
     promise: (client) =>
-      client.post(`${apiPath}/collection/${collID}/appropriateurl`, {
+      client.post(`${apiPath}/collection/${coll_nameID}/appropriateurl`, {
         params: { user },
         data: {
           url,
@@ -428,7 +428,7 @@ export function injectRealUrlDispatch(user, url, collID) {
 }
 export function editCollectionDispatch(
   user,
-  collID,
+  coll_nameID,
   title,
   doi,
   creatorList,
@@ -455,7 +455,7 @@ export function editCollectionDispatch(
   return {
     types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
     promise: (client) =>
-      client.post(`${apiPath}/collection/${collID}`, {
+      client.post(`${apiPath}/collection/${coll_nameID}`, {
         params: { user },
         data: {
           title,
@@ -486,7 +486,7 @@ export function editCollectionDispatch(
 }
 export function editCollectionDispatchWARC(
   user,
-  collID,
+  coll_nameID,
   title,
   creatorList,
   subjectHeaderList,
@@ -513,7 +513,7 @@ export function editCollectionDispatchWARC(
   return {
     types: [COLL_EDIT, COLL_EDIT_SUCCESS, COLL_EDIT_FAIL],
     promise: (client) =>
-      client.post(`${apiPath}/collection/${collID}`, {
+      client.post(`${apiPath}/collection/${coll_nameID}`, {
         params: { user },
         data: {
           title,
