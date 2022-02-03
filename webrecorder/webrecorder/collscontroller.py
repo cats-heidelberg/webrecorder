@@ -395,7 +395,7 @@ class CollsController(BaseController):
             data = request.json or {}
             if "coll_nameID" in data:
                 user, collection = self.load_user_coll(coll_name=data['coll_nameID'])
-            else
+            else:
                 user, collection = self.load_user_coll(coll_name=data['title'])
             print("collIDinComplete"+data['coll_nameID'])
             self.access.assert_can_admin_coll(collection)
