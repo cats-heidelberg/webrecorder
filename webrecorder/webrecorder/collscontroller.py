@@ -393,7 +393,6 @@ class CollsController(BaseController):
         def update_collection(coll_nameID):
             data = request.json or {}
             user, collection = self.load_user_coll(coll_nameID=coll_nameID)
-            print("collIDinComplete"+data['coll_nameID'])
             self.access.assert_can_admin_coll(collection)
             ticketStateChanged = False
 
