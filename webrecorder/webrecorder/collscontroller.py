@@ -335,7 +335,7 @@ class CollsController(BaseController):
 
             return {'collections': [coll.serialize(**kwargs) for coll in collections]}
 
-        @self.app.get('/api/v1/collection/<coll_name>')
+        @self.app.get('/api/v1/collection/<coll_nameID>')
         @self.api(query=['user'],
                   resp='collection')
         def get_collection(coll_nameID):
