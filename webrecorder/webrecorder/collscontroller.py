@@ -39,7 +39,6 @@ class CollsController(BaseController):
             collections= user.get_collections()
             increment=0
             for _col in collections:
-                print(_col['coll_name'])
                 if user.has_collection(coll_nameID):
                     coll_nameID=coll_nameID+"-"+str(increment)
                     increment += 1
@@ -80,8 +79,8 @@ class CollsController(BaseController):
             #    self._raise_error(400, 'please enter the publisher of the resource')
 
             personHeadingText = data.get('personHeadingText', '')
-
-            collTitle = data.get('collTitle', '')
+            if 'collTitle' in data:
+                collTitle = data.get('collTitle', '')
 
             #if not collTitle:
             #    self._raise_error(400, 'please enter the authership information of the resource')
@@ -192,7 +191,7 @@ class CollsController(BaseController):
                     #if not url:
                     #    self._raise_error(400, 'please enter a URL to record')
 
-                    coll_nameID = title
+                    #coll_nameID = title
 
                     if not coll_name:
                         self._raise_error(400, 'invalid_coll_name')
