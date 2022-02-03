@@ -863,7 +863,7 @@ class CollsController(BaseController):
                                                      include_lists=True,
                                                      include_recordings=True,
                                                      include_pages=True,
-                                                     check_slug=coll_name)}
+                                                     check_slug=coll_nameID)}
 
         result['user'] = user.my_id
         result['size_remaining'] = user.get_size_remaining()
