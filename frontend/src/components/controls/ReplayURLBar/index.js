@@ -20,6 +20,7 @@ class ReplayURLBar extends Component {
   static propTypes = {
     activeBrowser: PropTypes.string,
     bookmarks: PropTypes.object,
+    collection: PropTypes.object,
     history: PropTypes.object,
     params: PropTypes.object,
     recordingIndex: PropTypes.number,
@@ -56,9 +57,9 @@ class ReplayURLBar extends Component {
 
   render() {
     const { canAdmin } = this.context;
-    const { params, timestamp } = this.props;
+    const { params, timestamp, collection } = this.props;
     const { url } = this.state;
-    const wedontneednourl = true;
+    const wedontneednourl = collection.get("ticketState") === "completed";
     const wedontneednoremoteBrowser = true;
     return (
       <div className="main-bar">

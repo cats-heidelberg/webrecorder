@@ -20,6 +20,7 @@ class RecordURLBar extends Component {
     activeBrowser: PropTypes.string,
     activeCollection: PropTypes.object,
     autopilotRunning: PropTypes.bool,
+    collection: PropTypes.object,
     getFirstURL: PropTypes.func,
     history: PropTypes.object,
     params: PropTypes.object,
@@ -84,7 +85,7 @@ class RecordURLBar extends Component {
     const { activeCollection, autopilotRunning, params } = this.props;
     const { url } = this.state;
     const wedontneednoremoteBrowser = true;
-    const wedontneednourl = true;
+    const wedontneednourl = false; //collection.get("ticketState") === "completed" ? true : false;
     const isNew = currMode === 'new';
     const isExtract = currMode.indexOf('extract') !== -1;
     const isPatch = currMode === 'patch';

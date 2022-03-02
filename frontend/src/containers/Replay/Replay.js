@@ -210,6 +210,7 @@ class Replay extends Component {
               activeBrowser={activeBrowser}
               canGoBackward={__DESKTOP__ ? appSettings.get('canGoBackward') : false}
               canGoForward={__DESKTOP__ ? appSettings.get('canGoForward') : false}
+              collection={this.collection}
               user={auth.getIn(['user', 'username'])}
               inject={this.justTest}
               params={params}
