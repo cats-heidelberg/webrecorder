@@ -82,10 +82,10 @@ class RecordURLBar extends Component {
 
   render() {
     const { currMode, canAdmin } = this.context;
-    const { activeCollection, autopilotRunning, params } = this.props;
+    const { activeCollection, autopilotRunning, params, collection } = this.props;
     const { url } = this.state;
     const wedontneednoremoteBrowser = true;
-    const wedontneednourl = false; //collection.get("ticketState") === "completed" ? true : false;
+    const wedontneednourl = collection.get("ticketState") === "completed";
     const isNew = currMode === 'new';
     const isExtract = currMode.indexOf('extract') !== -1;
     const isPatch = currMode === 'patch';

@@ -94,7 +94,7 @@ class Record extends Component {
   // }
 
   render() {
-    const { activeBrowser, appSettings, autopilotRunning, dispatch, match: { params }, timestamp, url } = this.props;
+    const { activeBrowser, appSettings, autopilotRunning, dispatch, match: { params }, timestamp, url, collection } = this.props;
     const { user, coll, rec } = params;
 
     const appPrefix = `${config.appHost}/${user}/${coll}/${rec}/record/`;
@@ -108,6 +108,7 @@ class Record extends Component {
         <ReplayUI
           activeBrowser={activeBrowser}
           autopilotRunning={autopilotRunning}
+          collection={collection}
           canGoBackward={__DESKTOP__ ? appSettings.get('canGoBackward') : false}
           canGoForward={__DESKTOP__ ? appSettings.get('canGoForward') : false}
           inject={this.justTest}

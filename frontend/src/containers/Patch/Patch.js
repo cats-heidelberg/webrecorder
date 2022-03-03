@@ -77,7 +77,7 @@ class Patch extends Component {
   }
 
   render() {
-    const { activeBrowser, appSettings, autopilotRunning, dispatch, match: { params }, timestamp, url } = this.props;
+    const { activeBrowser, appSettings, autopilotRunning, collection, dispatch, match: { params }, timestamp, url } = this.props;
     const { user, coll, rec } = params;
 
     const appPrefix = `${config.appHost}/${user}/${coll}/${rec}/patch/`;
@@ -93,6 +93,7 @@ class Patch extends Component {
           autopilotRunning={autopilotRunning}
           canGoBackward={__DESKTOP__ ? appSettings.get('canGoBackward') : false}
           canGoForward={__DESKTOP__ ? appSettings.get('canGoForward') : false}
+          collection={collection}
           inject={this.justTest}
           params={params}
           timestamp={timestamp}
